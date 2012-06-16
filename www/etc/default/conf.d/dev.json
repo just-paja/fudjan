@@ -1,0 +1,8 @@
+{
+	"datatype_schema":{
+		"debug":{"type":"bool"},
+		"disable-offcom":{"type":"bool"}
+	},
+	"debug":true,
+	"disable-offcom":true
+}

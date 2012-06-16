@@ -1,0 +1,9 @@
+{
+	"Price level":"Cenová hladina",
+	"Price levels":"Cenové hladiny",
+	"Price level admin":"Správa cenových hladin",
+	"You have no active price levels. Please create at least one.":"Nemáte nastaveny žádné cenové hladiny. Bez cenových hladin nebude možné nastavit položkám katalogu cenu.",
+	"Create price level":"Vytvořit cenovou hladinu",
+	"Edit price level":"Upravit cenovou hladinu",
+	"Delete price level":"Smazat cenovou hladinu"
+}

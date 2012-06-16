@@ -1,0 +1,6 @@
+{
+	"datatype_schema":{
+		"theme":{"type":"string"}
+	},
+	"theme":"default"
+}

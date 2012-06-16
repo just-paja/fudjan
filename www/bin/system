@@ -1,0 +1,256 @@
+#!/usr/bin/php
+<?
+
+
+// -- BASICS
+
+	define("ROOT", realpath(__DIR__.'/..'));
+	define("NAME", basename($_SERVER['SCRIPT_NAME']));
+
+	require_once ROOT."/lib/include/core.cli.php";
+
+
+// -- CLASSES
+
+	// Options container
+	abstract class CLIOptions extends YacmsCLIOptions
+	{
+		/* Override for console options parent
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::$opts = array(
+				"env"   => array(
+					"value" => false,
+					"short" => 'e',
+					"desc"  => 'Use this environment',
+				),
+				"force"   => array(
+					"value" => false,
+					"short" => 'f',
+					"desc"  => 'Force action',
+				),
+				"help"   => array(
+					"value" => false,
+					"short" => 'h',
+					"desc"  => 'Show this help',
+				),
+				"verbose" => array(
+					"value" => false,
+					"short" => 'v',
+					"desc"  => 'Talkative mode',
+				),
+				"command" => array(
+					"value" => null
+				),
+				"params"  => array(
+					"value" => array()
+				),
+			);
+
+			self::$commands = array(
+				"branches" => 'List all YaCMS package branches',
+				"broken"   => 'List all YaCMS files that have been changed',
+				"files"    => 'List all YaCMS files',
+				"info"     => 'Get info about yout YaCMS',
+				"updates" => array(
+					'single' => "Get list of available stable versions",
+					'branch' => "Get list of available versions from this branch",
+				),
+				"update" => array(
+					'single'  => "Update to the latest version",
+					'branch'  => "Select package from this branch",
+					'version' => "Update to this version. Format: branch/version or branch/latest",
+				),
+			);
+
+			self::$info = array(
+				"name" => NAME,
+				"head" =>
+					'YaCMS manager'.CR.
+					'Universal manager, that allows you to change settings, update system and other'.CR,
+
+				"foot" => '',
+			);
+		}
+	}
+
+
+	abstract class CLICommands extends YacmsCLICommands
+	{
+		/** Print basic system info to STDOUT
+		 * @return void
+		 */
+		public static function info()
+		{
+			$ext_modules = array();
+			$dir = opendir($p = ROOT.Core\System\Module::BASE_DIR);
+			while ($file = readdir($dir)) {
+				if (strpos($file, ".") !== 0 && is_dir($p.'/'.$file)) {
+					$dirs[] = $p.'/'.$file.'/';
+				}
+			}
+
+			closedir($dir);
+
+			foreach ($dirs as $d) {
+				$dir = opendir($d);
+				while ($file = readdir($dir)) {
+					if (strpos($file, ".") !== 0 && strpos($file, ".php")) {
+						$ext_modules[] = str_replace(ROOT.Core\System\Module::BASE_DIR, '', $d.$file);
+					}
+				}
+			}
+
+			out_flist(array(
+				"CMS Name" => cfg('own', 'name'),
+				"Version"    => Core\System\Output::introduce(),
+				"Branch"     => cfg('own', 'branch'),
+			));
+			
+			if (CLIOptions::get('verbose')) {
+				out();
+				out("External modules: ", false);
+				if (any($ext_modules)) {
+					out();
+					foreach ($ext_modules as $mod) {
+						out("  ". $mod);
+					}
+					out();
+				} else out("none");
+			}
+		}
+
+
+		/* Generate .gitignore and print it into STDOUT
+		 * @return void
+		 */
+		public static function files()
+		{
+			$files = Core\System\Update::get_file_manifest();
+			foreach ($files as $file) {
+				out(substr($file['path'], 1));
+			}
+		}
+
+
+		/* Generate .gitignore and print it into STDOUT
+		 * @return void
+		 */
+		public static function broken()
+		{
+			$files = Core\System\Update::get_file_manifest();
+			$mod = $del = 0;
+
+			foreach ($files as $file) {
+				//out(ROOT.$file['path']);
+				if (file_exists(ROOT.$file['path'])) {
+					$sum = md5(file_get_contents(ROOT.$file['path']));
+					if ($sum != $file['checksum']) {
+						out("modified: ".$file['path']);
+						$mod ++;
+					}
+				} else {
+					out("deleted: ".$file['path']);
+					$del ++;
+				}
+			}
+
+			if ($mod || $del) {
+				vout();
+				if ($mod && $del) {
+					vout("Total of ".$mod." modified and ".$del." deleted files");
+				} elseif ($mod) {
+					vout("Total of ".$mod." modified files");
+				} else {
+					vout("Total of ".$del." deleted files");
+				}
+			}
+		}
+
+
+		/* Connect to mothership and check for new code
+		 * @return array Set of updates
+		 */
+		public static function updates()
+		{
+			$params = CLIOptions::get('params');
+			!isset($params[0]) && $params[0] = 'stable';
+			
+			$branch = $params[0];
+			$updates = Core\System\Update::get_update_list($branch);
+			
+			foreach ($updates['list'] as $up) {
+				out('YaCMS '.$up['version']. ' ('.format_date($up['ctime'], 'sql').')');
+			}
+			
+			empty($updates['list']) && vout("No updates found in branch '".$branch."'");
+			
+		}
+
+
+		/* Update the system
+		 * @return array Set of updates
+		 */
+		public static function update()
+		{
+			$params = CLIOptions::get('params');
+			!isset($params[0]) && $params[0] = 'stable';
+
+			@list($branch, $version) = explode('/', $params[0], 2);
+			$updates = Core\System\Update::get_update_list($branch);
+			
+			if (!isset($version) || !$version) {
+
+				out("0: Latest");
+				foreach ($updates['list'] as $key => $up) {
+					out($key+1 . ': YaCMS '.$up['version']. ' ('.format_date($up['ctime'], 'sql').')');
+				}
+				
+				out();
+				$str = read("Pick your new version [0-".(count($updates['list']))."]: ");
+				($str == '' || $str < 0 || $str > count($updates)) && give_up("Invalid choice");
+
+				$version = $str == 0 ? $updates['latest']:$updates[$str]['version'];
+				vout();
+			}
+			
+			if ($version == 'latest') {
+				$version = $updates['latest'];
+			}
+			
+			foreach ($updates['list'] as $up) {
+				if ($up['version'] == $version) {
+					$ok = true;
+					break;
+				}
+			}
+			
+			if ($ok) {
+				vout("Downloading package ..");
+				Core\System\Update::download($branch, $version);
+
+				vout("Installing package ..");
+				Core\System\Update::apply($branch, $version);
+
+				out("YaCMS was updated to '".$version."'");
+			} else give_up("Requested package not found: '".$version."'");
+		}
+		
+		
+		public static function branches()
+		{
+			$branches = Core\System\Update::get_branches();
+			foreach ($branches as $branch => $data) {
+				out("Core '".$branch. "' (".$data['count'].")");
+			}
+		}
+	}
+
+
+
+
+// -- RUNTIME
+
+	require_once ROOT."/etc/init.d/cli.php";

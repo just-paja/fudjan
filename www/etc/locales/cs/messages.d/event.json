@@ -1,0 +1,18 @@
+{
+	"Event":"Událost",
+	"Events":"Události",
+	"List of events":"Seznam událostí",
+	"Create event":"Vytvoření události",
+	"Edit event":"Upravit události",
+	"Delete event":"Smazat události",
+	"Event occurrence":"Výskyt události",
+	"Occurrences":"Výskyty",
+	"Create occurrence":"Vytvořit výskyt",
+	"Edit occurrence":"Upravit výskyt",
+	"Delete occurrence":"Smazat výskyt",
+	"List of occurrences":"Seznam výskytů",
+	"Create reservation":"Vytvořit rezervaci",
+	"Change reservation":"Změnit rezervaci",
+	"List of reservations":"Seznam rezervací",
+	"List of occurrences":"Seznam výskytů"
+}

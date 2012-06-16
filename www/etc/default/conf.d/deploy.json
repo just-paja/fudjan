@@ -1,0 +1,31 @@
+{
+	"datatype_schema":{
+		"protocol":{"type":"string"},
+
+		"ftp_host":{"type":"string"},
+		"ftp_username":{"type":"string"},
+		"ftp_password":{"type":"string"},
+		"ftp_root":{"type":"string"},
+
+		"ssh_host":{"type":"string"},
+		"ssh_username":{"type":"string"},
+		"ssh_password":{"type":"string"},
+		"ssh_root":{"type":"string"},
+
+		"file_root":{"type":"string"}
+	},
+
+	"protocol":"ftp",
+
+	"ftp_host":"",
+	"ftp_username":"",
+	"ftp_password":"",
+	"ftp_root":"",
+
+	"ssh_host":"",
+	"ssh_username":"",
+	"ssh_password":"",
+	"ssh_root":"",
+
+	"file_root":""
+}

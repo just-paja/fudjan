@@ -1,0 +1,24 @@
+{
+	"datatype_schema":{
+		"driver":{
+			"type":"enum",
+			"options":[
+				"mysqli", "mysql", "mssql", "mssql2005", "firebird",
+				"postgre","sqlite","sqlite3","oracle","odbc"
+			]
+		},
+		"host":{"type":"string"},
+		"username":{"type":"string"},
+		"password":{"type":"password"},
+		"database":{"type":"string"},
+		"charset":{"type":"string"},
+		"lazy":{"type":"bool"}
+	},
+	"host":"localhost",
+	"username":"",
+	"password":"",
+	"database":"",
+	"driver":"mysql",
+	"charset":"utf8",
+	"lazy":true
+}

@@ -1,0 +1,9 @@
+{
+	"Storage":"Skladiště",
+	"Storages":"Skladiště",
+	"Storage admin":"Správa skladišť",
+	"You have no active storages. Please create at least one.":"Nemáte vytvořeno žádné skladiště. Pro fungování skladu je zapotřebí alespoň jedno.",
+	"Create storage":"Vytvořit skladiště",
+	"Edit storage":"Upravit skladiště",
+	"Delete storage":"Smazat skladiště"
+}

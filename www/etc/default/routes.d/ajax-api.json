@@ -1,0 +1,48 @@
+{
+	"#":{},
+
+	"sorty":{"#":{
+			"modules":[
+				["core/utils/sorty"]
+			]
+	}}, 
+
+
+	"item-list":{
+		"#":{"template":"ajax_dialog"},
+		"*":{
+			"#":{
+				"controller":"core\/item-list",
+				"seoname":"show",
+				"template":"ajax_dialog",
+				"modules":[
+					["core\/item-list\/show", {"id":"#{0}"}]
+				]
+			},
+
+			"*":{
+				"#":[],
+				"edit":{"#":{
+						"controller":"core\/item-list",
+						"template":"ajax_dialog",
+						"modules":[
+							["core\/item-list\/edit-item",{ "id":"#{0}", "item_id":"#{1}" }]
+						]
+				}},
+
+				"delete":{"#":[
+				]}
+			},
+
+			"add":{"#":{
+					"controller":"core\/item-list",
+					"template":"ajax_dialog",
+					"modules":[
+						["core\/item-list\/edit-item", { "id":"#{0}", "new":true }]
+					]
+			}}
+
+		}
+	}
+
+}

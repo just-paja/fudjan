@@ -1,0 +1,21 @@
+{
+	"datatype_schema":{
+		"title":{
+			"type":"string"
+		},
+		"title_separator":{
+			"type":"string"
+		},
+		"home_page":{
+			"type":"string",
+			"fetch_values":1
+		},
+		"update_server":{
+			"type":"string"
+		}
+	},
+	"title":"Yet Another CMS",
+	"title_separator":" :: ",
+	"home_page":"home",
+	"update_server":"http:\/\/yacms-updates.local"
+}

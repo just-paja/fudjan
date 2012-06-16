@@ -1,0 +1,584 @@
+#!/usr/bin/php
+<?
+
+
+// -- BASICS
+
+	define("ROOT", realpath(__DIR__.'/..'));
+	define("NAME", basename($_SERVER['SCRIPT_NAME']));
+
+	require_once ROOT."/lib/include/core.cli.php";
+
+
+// -- CLASSES
+
+	// Options container
+	abstract class CLIOptions extends YacmsCLIOptions
+	{
+		/* Override for console options parent
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::$opts = array(
+				"env"     => array(
+					"value" => null,
+					"short" => 'e',
+					"desc"  => 'Use this environment',
+					"type"  => 'string',
+				),
+				"force"   => array(
+					"value" => false,
+					"short" => 'f',
+					"desc"  => 'Force action',
+				),
+				"help"   => array(
+					"value" => false,
+					"short" => 'h',
+					"desc"  => 'Show this help',
+				),
+				"verbose" => array(
+					"value" => false,
+					"short" => 'v',
+					"desc"  => 'Talkative mode',
+				),
+				"skip"    => array(
+					"value" => false,
+					"desc"  => 'Mark first migration ok and skip it',
+				),
+				"no-backups" => array(
+					"value" => false,
+					"desc"  => 'Make no backups during the process',
+				),
+				"command" => array(
+					"value" => null
+				),
+				"params"  => array(
+					"value" => array()
+				),
+			);
+
+			self::$commands = array(
+				"backup" => array(
+					'single' => "Generate database backup to STDOUT",
+					'path'   => "Save backup into file"
+				),
+				"drop"     => 'Drop database',
+				"init"     => 'Create basic database with initial data',
+				"info"     => 'Get some database information',
+				"migrate" => array(
+					'single' => "Process new migrations",
+					'search' => "Process migrations like [param]",
+				),
+				"migrations" => array(
+					'single' => "List migrations",
+					'search' => "List migrations like [param]",
+				),
+				"purge"    => 'Delete all data from the database',
+				"rebuild"  => 'Drop database and rebuild it from scratch',
+				"reset"    => 'Reset database to default state',
+				"restore"  => array(
+					"single" => 'Check for saved backups and restore database',
+					"path" => 'Read sql file and import it',
+				),
+				"save"     => 'Save database backup into standart path',
+				"setup"    => 'Setup basic information to run database',
+				"seed"     => 'Fill database with initial data if empty',
+			);
+
+			self::$forced_commands = array("purge");
+
+			self::$info = array(
+				"name" => NAME,
+				"head" =>
+					'Modify YaCMS database'.CR.
+					'Read settings from your environment and perform action'.CR,
+
+				"foot" =>
+					'If no options are set, config is read from \$root/\$env'.CR,
+			);
+		}
+	}
+
+
+	// Execution container
+	abstract class CLICommands extends YacmsCLICommands
+	{
+		/* Get some info about database
+		 * @return void
+		 */
+		public static function info()
+		{
+			vout("Querying data ..");
+
+			$size = Dibi::query("
+				SELECT
+						sum(data_length + index_length) 'size',
+						sum( data_free ) 'free'
+					FROM information_schema.TABLES
+					WHERE table_schema = '".cfg('database', 'database')."'
+					GROUP BY table_schema;
+			")->fetch()->toArray();
+
+			try {
+				$cname = "\\Core\\System\\Migration";
+				$mig = $cname::get_new();
+				$mcount = count($mig);
+				$mlast = get_first("\Core\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
+				$stat = "Ok";
+			} catch (Exception $e) {
+				$stat = "Migrating database is necessary.";
+			}
+
+			vout("");
+			vout("YaCMS database info");
+
+			out_flist(array(
+				"Driver"         => cfg('database', 'driver'),
+				"Host name"      => cfg('database', 'host'),
+				"Database name"  => cfg('database', 'database'),
+				"User"           => cfg('database', 'username'),
+				"Used charset"   => cfg('database', 'charset'),
+				"Lazy driver"    => cfg('database', 'lazy') ? 'yes':'no',
+				"Size"           => Core\System\Template::convert_value('information', $size['size']),
+				"Free space"     => Core\System\Template::convert_value('information', $size['free']),
+				"Structure"      => $stat,
+				"Last migrated"  => format_date($mlast->updated_at, 'sql'),
+				"New migrations" => $mcount,
+			));
+			vout("");
+			vout($mcount > 0 ? "We recommend running migrations":"All fine here");
+		}
+
+
+		/* Get mysql dump
+		 * @outputs a lot of crap
+		 * @return void
+		 */
+		public static function backup($file = null)
+		{
+			$params = CLIOptions::get('params');
+			if (isset($params[0])) {
+				$file = $params[0];
+			}
+
+			$cmd = "mysqldump";
+			cfg('database', 'password') && $cmd .= " -p".cfg('database', 'password');
+			cfg('database', 'username') && $cmd .= " -u ".cfg('database', 'username');
+			cfg('database', 'host') && $cmd .= " -h ".cfg('database', 'host');
+
+			$cmd .= " ".cfg('database', 'database');
+
+			if (!is_null($file)) {
+				shell_exec("mkdir -m775 -p ".dirname($file));
+				$cmd .= " > ".$file;
+			}
+
+			passthru($cmd);
+		}
+
+
+		/* List available migrations
+		 * @return void
+		 */
+		public static function migrations()
+		{
+			$params = CLIOptions::get('params');
+			if (empty($params)) {
+				$mig = Core\System\Migration::get_new();
+				array_reverse($mig);
+				self::print_migrations($mig);
+			} else {
+
+				$mig = self::find_migrations($params[0]);
+				if (any($mig)) {
+					vout("Found ".count($mig)." migration".(count($mig) == 1 ? '':'s').":");
+					vout("");
+					self::print_migrations($mig);
+				}
+			}
+		}
+
+
+		/* Proceed with migrations
+		 * @return void
+		 */
+		public static function migrate($backup = true)
+		{
+			$params = CLIOptions::get('params');
+			if (empty($params)) {
+
+				$mig = Core\System\Migration::get_new();
+				array_reverse($mig);
+
+				if (any($mig)) {
+					self::process_migrations($mig);
+				} else vout("Did not find any usable migrations");
+
+			} else {
+
+				$mig = self::find_migrations($params[0]);
+				if (any($mig)) {
+
+					out("Found ".count($mig)." migration".(count($mig) == 1 ? '':'s').":");
+					self::print_migrations($mig, $padding = 2);
+					out("");
+
+					if (!CLIOptions::get('force')) {
+						out("Do you wish to proceed? (y/n) ", false);
+						$str = trim(shell_exec("read str; echo \$str"));
+					}
+
+					if (CLIOptions::get('force') || in_array(strtolower($str), array("y", "1", "a"))) {
+						self::save();
+						self::process_migrations($mig);
+					}
+				} else out("Did not match any migration");
+			}
+		}
+
+
+		/* Drop whole database structure
+		 * @return void
+		 */
+		public static function drop()
+		{
+			if (self::database_exists()) {
+
+				if (!CLIOptions::get('force')) {
+					out("Are you sure you want to get rid of database? (yes/no) ", false);
+					$str = trim(shell_exec("read str; echo \$str"));
+				}
+
+
+				if (CLIOptions::get('force') || is_yes($str)) {
+					$name = cfg('database', 'database');
+
+					self::save();
+					out("Dropping database '".$name."'");
+					$cmd = "echo \"DROP DATABASE \`".$name."\`\" | ".self::assemble_mysql_command('mysql');
+					passthru($cmd);
+
+					vout("She's dead, Jim.");
+				}
+			}
+		}
+
+
+		/* Drop whole database structure and rebuild it
+		 * @return void
+		 */
+		public static function rebuild()
+		{
+			self::drop();
+			self::database_create();
+			self::database_init();
+
+			out("Rolling migrations ..");
+			out("");
+
+			self::migrate(false);
+		}
+
+
+		/* Reset database to default state
+		 * @return void
+		 */
+		public static function reset()
+		{
+			self::rebuild();
+			out();
+			self::seed();
+		}
+
+
+		/* Create database and fill it with initial data
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::database_create();
+			self::database_init();
+
+			out();
+			self::migrate(false);
+			out();
+
+			self::seed();
+		}
+
+
+		/* Restore database from backup
+		 * @return void
+		 */
+		public static function restore()
+		{
+			$params = CLIOptions::get('params');
+			if (isset($params[0])) {
+				if (file_exists($params[0])) {
+					$name = cfg('database', 'database');
+					vout("Restoring database '".$name."'");
+
+					if (!self::database_exists()) {
+						self::database_create();
+					}
+
+					self::import_sql($params[0]);
+					out("Database restored");
+
+				} else give_up("File not found!");
+			} else {
+
+				$backups = array();
+				$files   = array();
+
+				$d = opendir(ROOT."/var/backups");
+				while ($f = readdir($d)) {
+					if (strpos($f, ".") !== 0 && strpos($f, ".sql")) {
+						$name = explode('_', $f);
+						$backups[] = $name[0];
+						$files[] = $f;
+					}
+				}
+
+				rsort($backups);
+				rsort($files);
+
+				if (any($backups)) {
+					out("Found these backups:");
+					out_flist($backups, true, 2);
+					out('');
+
+					$key = CLIOptions::get('force') ? 0:read("Pick one [1-".count($backups)."]: ", false);
+
+					if (array_key_exists($key, $backups)) {
+
+						self::drop();
+						self::database_create();
+
+						out("Restoring to: ".$backups[$key]);
+						self::import_sql(ROOT."/var/backups/".$files[$f]);
+						out("Database restored");
+
+					} else give_up("Invalid option.");
+				} else give_up("Did not find any backups");
+			}
+		}
+
+
+		/* Seed initial data to DB
+		 * @return void
+		 */
+		public static function seed()
+		{
+			$files = array(
+				ROOT."/etc/database/initial-data.core.json",
+				ROOT."/etc/database/initial-data.json"
+			);
+
+			foreach ($files as $file) {
+				if (file_exists($file)) {
+					if ($data = json_decode(file_get_contents($file), true)) {
+
+						foreach ($data as $table => $tdata) {
+							$add_dates = self::table_column_exists($table, 'created_at');
+							out("Filling table '".$table."': ", false);
+							foreach ($tdata as $trow) {
+								Core\System\Query::simple_insert($table, $trow, $add_dates);
+							}
+							out("ok");
+						}
+
+					} else {
+						give_up("Cannot read file contents: '".$file."'. Check if it's not empty or corrupted.");
+					}
+				}
+			}
+
+		}
+
+
+		/* Save backup of database into standart path
+		 * @return void
+		 */
+		public static function save()
+		{
+			if (!CLIOptions::get('no-backups')) {
+				$name = cfg('database', 'database');
+				$file = ROOT."/var/backups/".str_replace(" ", "-", format_date(time(), "sql"))."_".$name.".sql";
+				out("Creating backup of '".$name."' in '".$file."'");
+				self::backup($file);
+			}
+		}
+
+
+		/* Does db exist
+		 * @return bool
+		 */
+		private static function database_exists()
+		{
+			$query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '".cfg('database', 'database')."'";
+			$cmd = "echo \"".$query."\" | ".self::assemble_mysql_command("mysql", false);
+			$res = shell_exec($cmd);
+			return !is_null($res);
+		}
+
+
+		/* Does db exist
+		 * @param string $table
+		 * @param string $column
+		 * @return bool
+		 */
+		private static function table_column_exists($table, $column)
+		{
+			$query = "
+			SELECT * FROM COLUMNS
+				WHERE
+					TABLE_NAME = '".$table."'
+					AND COLUMN_NAME ='".$column."'
+					AND TABLE_SCHEMA = '".cfg('database', 'database')."'";
+			$cmd = "echo \"".$query."\" | ".self::assemble_mysql_command("mysql", false). " INFORMATION_SCHEMA";
+			$res = shell_exec($cmd);
+			return !is_null($res);
+		}
+
+
+		/* Create db
+		 * @return void
+		 */
+		private static function database_create()
+		{
+			$name = cfg('database', 'database');
+			out("Creating database '".$name."'");
+			shell_exec("echo \"CREATE DATABASE ".$name."\" | ".self::assemble_mysql_command("mysql", false));
+		}
+
+
+		/* Create basic DB structure for saving migrations if not exists
+		 * @return void
+		 */
+		private static function database_init()
+		{
+			$query = "
+				SELECT COUNT(table_name)
+					FROM information_schema.tables
+					WHERE table_schema = '".cfg('database', 'database')."'
+					AND table_name = '".Core\System\BasicModel::get_table("\Core\System\Migration")."';";
+
+			list($key, $res) = explode("\n", shell_exec("echo \"".$query."\" | ".self::assemble_mysql_command('mysql')));
+			if (trim($res) == 0) {
+				$migs = Core\System\Migration::checkout_folder();
+				$migs[0]->run();
+			}
+		}
+
+
+		/* Put together mysql call using options
+		 * @return string
+		 */
+		private static function assemble_mysql_command($cmd, $db = false)
+		{
+			cfg('database', 'password') && $cmd .= " -p".cfg('database', 'password');
+			cfg('database', 'username') && $cmd .= " -u ".cfg('database', 'username');
+			cfg('database', 'host')     && $cmd .= " -h ".cfg('database', 'host');
+			$db && $cmd .= ' '.cfg('database', 'database');
+
+			return $cmd;
+		}
+
+
+		/* Print migrations to STDOUT
+		 * @param array $mig   Set of migrations
+		 * @param int $padding Left padding of the list
+		 * @return void
+		 */
+		private static function print_migrations(array $mig, $padding = 0)
+		{
+			$pad = str_repeat(' ', $padding);
+			foreach ($mig as $m) {
+					out($pad.'['.format_date($m->date, 'sql-date').'] '.$m->name);
+					vout($pad.'     Status: '.$m->status);
+					vout($pad.'    MD5 sum: '.$m->md5_sum);
+					vout($pad.'       Desc: '.$m->desc);
+					vout('');
+			}
+		}
+
+
+		/* Prepared search statement
+		 * @param string $like String to match with
+		 * @returns array      Set of matches migrations
+		 */
+		private static function find_migrations($like)
+		{
+			vout("Looking for migration described as ".$like." ..");
+			return get_all("Core\System\Migration")->where(array(
+					"`id_database_migration` LIKE '%".$like."%'",
+					"`name` LIKE '%".$like."%'",
+					"`seoname` LIKE '%".$like."%'",
+					"`md5_sum` = '".$like."'",
+				), 't0', true)->fetch();
+		}
+
+
+		/* Run migrations on list
+		 * @param array $mig  Set of migrations
+		 * @return void
+		 */
+		private static function process_migrations(array $mig)
+		{
+			foreach ($mig as $m) {
+				vout("Starting migration ".$m->md5_sum." ..");
+
+				if (CLIOptions::get('skip')) {
+					CLIOptions::set('skip', false);
+					$m->status = 'ok';
+					$m->save();
+				} else {
+					if ($m->status == 'ok' && !CLIOptions::get('force')) {
+						$m->status = 'skipped ('.$m->status.')';
+					} else {
+						$m->run();
+					}
+				}
+
+				CLIOptions::get('verbose') ?
+					self::print_migrations(array($m)):
+					out('  '.$m->md5_sum.': '.$m->status);
+			}
+		}
+
+
+		/* Import SQL file into database
+		 * @param string $file Path to file
+		 * @return void
+		 */
+		private static function import_sql($file)
+		{
+			if (file_exists($file)) {
+				shell_exec(self::assemble_mysql_command("mysql", true). " < ".$file);
+			} else give_up("File not found: ".$file);
+		}
+
+
+		public static function setup()
+		{
+			return;
+			$cfg = array(
+				"host"     => read('Please enter SQL hostname'),
+				"username" => read('Please enter SQL username'),
+				"password" => read('Please enter SQL password', true),
+				"database" => read('Please enter database name'),
+			);
+			// not implemented yet
+			dump($cfg);
+		}
+	}
+
+
+// -- RUNTIME
+
+	require_once ROOT."/etc/init.d/cli.php";
+
+
+

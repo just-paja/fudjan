@@ -1,0 +1,42 @@
+REQUIREMENTS
+------------
+ * Some web server, preferably apache
+ * Some kind of database, preferably MySQL > 5
+ * PHP > 5.3
+   - GD image library or ImageMagick extension
+   - CURL extension
+   - register globals off 
+   - Bash or simillar shell
+   - Iconv
+
+
+INSTALL INSTRUCTIONS
+--------------------
+First, check read and write permissions of the future root folder.
+
+If you're not tough enough, go to http://yacms.scourge.cz/ and download 
+latest installer. Then just follow instructions and click your way trough. 
+Simple installation does not take more than five minutes.
+
+If you feel for it, you may install YaCMS manually. There are steps you need 
+to do:
+
+ 1. Unpack the package archive. You've already done that if you're reading this
+ 2. Create directory 'var' in packages' root and set up writeable 
+    permissions for server, so that YaCMS can write into it
+ 3. Create environment in etc/conf.d
+ 4. Copy config files from etc/default.d/{env}/
+ 5. Config your database access. etc/conf.d/{env}/database.json
+ 6. Run `bin/db init --verbose` from your document root
+ 7. Set writeable permissions in etc/conf.d
+ 8. You should be able now to login at http://{yourserver}/god. Default user 
+    is root:poklop
+ 9. Contribute by your ideas and opinions on http://yacms.scourge.cz
+
+It is possible I'll make a way to do these steps from your shell. Someday.
+
+
+
+FINAL NOTES
+-----------
+Other database drivers are not supported yet.

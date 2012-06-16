@@ -1,0 +1,12 @@
+{
+	"#":{},
+	
+	"mailer":{"#":{
+		},
+		"run-queue":{"#":{
+			"modules":[
+				["core/mailer/run-queue"]
+			]
+		}}
+	}
+}

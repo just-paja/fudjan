@@ -1,0 +1,9 @@
+[
+	{
+		"desc":{},
+		"opts":[
+			["access-godmode", "Přístup do božího módu"],
+			["access-admin", "Přístup do administrace"]
+		]
+	}
+]
