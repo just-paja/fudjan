@@ -230,9 +230,14 @@ namespace System
 			if ($path != ROOT && file_exists($path)) {
 				$f = false;
 
+				// Prevent bad image size
+				if ($bad_size = ($org_w == 0 && $org_h == 0)) {
+					$obj->read_dimensions();
+				}
+
 				$tpth = self::prepare_image_dir(ROOT.$obj->get_thumb_path($w, $h, $crop));
-				$org_w = $obj->width;
-				$org_h = $obj->height;
+				$org_w = intval($obj->width);
+				$org_h = intval($obj->height);
 
 				if (!$w && $h) {
 					$w = round(($org_w * $h) / $org_h);

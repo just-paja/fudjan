@@ -374,7 +374,7 @@ namespace System\Model
 					}
 				}
 
-				$data = $this->get_attr_data();
+				$data = $this->get_data();
 
 				// Unset attrs that did not change to spare DB
 				foreach ($nochange as $attr_name) {
@@ -386,7 +386,7 @@ namespace System\Model
 				if ($this->id) {
 					\System\Query::simple_update($model::$table, $model::$id_col, $this->id, $data);
 				} else {
-					$id = \System\Query::simple_insert($model::$table, $data);
+					$id = \System\Database::simple_insert($model::$table, $data);
 					if ($id) {
 						return $this->update_attrs(array($model::$id_col => $id));
 					} else {

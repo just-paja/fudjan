@@ -1,8 +1,8 @@
 <?
 
-$page = System\Page::fetch_page();
+System\Page::init();
 
-if (!($page instanceof System\Page)) {
+if (!(($page = System\Page::get_current()) instanceof System\Page)) {
 	System\Status::recoverable_error(404);
 }
 

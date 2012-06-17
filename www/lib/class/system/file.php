@@ -2,14 +2,13 @@
 
 namespace System
 {
-	class File extends System\BasicModel
+	class File extends Model\Attr
 	{
 		const DIR = '/var/files';
 		const TMP_DIR = '/var/tmp';
 		const FETCHED_SIGN = '-FETCHED';
-		
+
 		// setup operations directory
-		static protected $id_col = 'id_file';
 		private static $operations = self::TMP_DIR;
 
 		static protected $attrs = array(

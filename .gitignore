@@ -1,3 +1,4 @@
+packages/*
 www/etc/conf.d/*
 www/etc/current/*
 www/var/*

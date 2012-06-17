@@ -14,7 +14,7 @@ define("YACMS_ENV", CLIOptions::get_env());
 
 require_once ROOT."/etc/init.d/core.php";
 
-Core\System\Output::set_format('cli');
+System\Output::set_format('cli');
 
 $cmd = CLIOptions::get('command');
 CLICommands::$cmd();

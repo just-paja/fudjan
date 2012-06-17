@@ -7,15 +7,31 @@ define("NL", "\n");
 // Exceptions
 class InternalException extends Exception
 {
-	private $data = array();
-	private $backtrace = array();
+	protected $data = array();
+	protected $backtrace = array();
 
 	function __construct() {
-		$this->data = func_get_args();
+		$d = func_get_args();
+		
+		if (isset($d[0]) && $d[0] === 'stack') {
+			foreach ($d as $i=>$data) {
+				if ($i != 0) {
+					if (is_array($data)) {
+						foreach ($data as $arg) {
+							$this->data[] = $arg;
+						}
+					} else $this->data[] = $data;
+				}
+			}
+		} else {
+			$this->data = $d;
+		}
+
 		$backtrace = debug_backtrace();
 		$len = count($backtrace);
+		$i = $len >= 4 ? 3:0;
 
-		for ($i=3; $i<$len; $i++) {
+		for ($i; $i<$len; $i++) {
 			$target = &$this->backtrace[];
 			$target = array();
 
@@ -32,13 +48,33 @@ class InternalException extends Exception
 	function get_backtrace() { return $this->backtrace; }
 }
 
+class DatabaseException extends InternalException
+{
+	function __construct()
+	{
+		$d = func_get_args();
+		if (strpos(strtolower($d[0]), 'duplicate') !== false || strpos(strtolower($d[1]), 'duplicate') !== false) {
+			$e = l('Cannot insert data because of duplicate unique key!');
+		} elseif (strpos(strtolower($d[0]), 'syntax') !== false) {
+			$e = l('Cannot run query because of syntax error.');
+		} else {
+			$e = l('Unhandled error');
+		}
+
+		parent::__construct('stack', $e, $d);
+	}
+}
+
 class CacheException extends InternalException {}
-class CatchableException extends InternalException {}
+//class CatchableException extends InternalException {}
+class DevelopmentException extends InternalException {}
+class ArgumentException extends InternalException {}
 class MissingArgumentException extends InternalException {}
 class NestedModelException extends InternalException {}
 class FatalException extends InternalException {}
 class MissingFileException extends InternalException {}
 class ConfigException extends InternalException {}
+class DependencyException extends InternalException {}
 
 
 // Class autoloader

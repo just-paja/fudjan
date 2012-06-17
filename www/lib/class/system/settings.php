@@ -76,7 +76,15 @@ namespace System
 				}
 			}
 
-			self::$conf['own'] = @parse_ini_file(ROOT."/version.ini", true);
+			$cfg = explode("\n", file_get_contents(ROOT."/etc/current/version", true));
+
+			self::$conf['own'] = array(
+				'short_name' => $cfg[0],
+				'name'       => $cfg[1],
+				'version'    => $cfg[2],
+				'branch'     => any($cfg[3]) ? $cfg[3]:'master',
+			);
+
 			ksort(self::$conf);
 			Status::log('Settings', array("reloaded"), false);
 		}
@@ -118,7 +126,7 @@ namespace System
 			}
 
 			$fp = file_put_contents(self::get_cache_filename(), serialize($conf));
-			chmod(self::get_cache_filename(), 0770);
+			@chmod(self::get_cache_filename(), 0770);
 			Status::log('Settings', array("written"), true);
 		}
 

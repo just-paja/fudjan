@@ -5,7 +5,7 @@ namespace System\User
 	class Group extends \System\Model\Basic
 	{
 		static protected $id_col = 'id_user_group';
-		static protected $table = 'user-group';
+		static protected $table = 'user_group';
 		static protected $required = array('name');
 		static protected $attrs = array(
 			"string"   => array('name'),
@@ -13,7 +13,7 @@ namespace System\User
 		);
 
 		static protected $has_many = array(
-			"users"  => array("model" => '\System\User', "join-table" => 'user-group-assignment'),
+			"users"  => array("model" => '\System\User', "join-table" => 'user_group_assignment'),
 			"rights" => array("model" => '\System\User\Perm'),
 		);
 	}

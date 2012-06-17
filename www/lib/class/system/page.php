@@ -4,25 +4,42 @@ namespace System
 {
 	class Page extends Model\Attr
 	{
-
 		const DIR_TEMPLATE_MODULES = "/lib/template/modules";
-		static protected $id_col = "id_page";
-		static protected $required_attrs = array();
-		static protected $attrs = array(
+
+		private static $path = array();
+		private static $input = array();
+		private static $current;
+		protected static $attrs = array(
 			"string" => array('title', 'page', 'seoname', 'template', 'post', 'keywords', 'desc', 'robots', 'copyright', 'author'),
 		);
-
-		static $path = array();
-		static $input = array();
 
 
 		public static function init()
 		{
 			self::parse_path();
+			self::$current = self::fetch_page();
 		}
 
 
-		public static function parse_path()
+		public function __construct(array $dataray)
+		{
+			parent::__construct($dataray);
+
+			if (strpos($this->get_path(), '/cron') === 0) {
+				$this->template = array(null);
+			}
+		}
+
+
+		public function get_current()
+		{
+			return self::$current;
+		}
+
+		/** Parse page path
+		 * @returns void
+		 */
+		private static function parse_path()
 		{
 			self::$path = array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ? strpos($_SERVER['REQUEST_URI'], '?'):strlen($_SERVER['REQUEST_URI']))));
 
@@ -32,11 +49,14 @@ namespace System
 			}
 
 			reset(self::$path) == Output::PREFIX_AJAX && Output::use_ajax(true);
-			return self::$path;
 		}
 
 
-		static function fetch_page($search_path = null, $add_modules = true)
+		/** Fetch page model from the tree
+		 * @param mixed $path
+		 * @param bool  $add_modules Add modules to the flow imediately?
+		 */
+		public static function fetch_page($search_path = null, $add_modules = true)
 		{
 			static $title;
 			$iter = &Settings::get('pages');
@@ -57,15 +77,16 @@ namespace System
 
 					return $page;
 				}
-			} else {
-				Settings::get('dev', 'debug') ?
-					die(_('Chyba konfigurace - nenalezeny žádné stránky.')):
-					Flow::redirect_now(array("url" => '/share/html/no-pages.html'));
 			}
 		}
 
 
-		static function browse_tree(&$tree, array $path)
+		/** Browse page tree and fetch requested path
+		 * @param &array $tree
+		 * @param  array $path
+		 * @returns array
+		 */
+		public static function browse_tree(&$tree, array $path)
 		{
 			$params = array(
 				"found" => false,
@@ -117,7 +138,10 @@ namespace System
 		}
 
 
-		function get_meta()
+		/** Get page metadata
+		 * @returns array
+		 */
+		public function get_meta()
 		{
 			$dataray = array();
 			$meta = Settings::get('output', 'meta_tags');
@@ -128,7 +152,10 @@ namespace System
 		}
 
 
-		function add_modules()
+		/** Add modules from current page into flow
+		 * @returns System\Page
+		 */
+		public function add_modules()
 		{
 			if (!empty($this->opts['modules'])) {
 				foreach((array) $this->opts['modules'] as $id=>$mod){
@@ -136,9 +163,14 @@ namespace System
 					Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
 				}
 			}
+
+			return $this;
 		}
 
 
+		/** Use template modules
+		 * @returns System\Page
+		 */
 		function fill_template()
 		{
 			if (count($this->template) > 0) {
@@ -152,28 +184,40 @@ namespace System
 					}
 				}
 			}
+
+			return $this;
 		}
 
 
-		function update_modules($modules)
+		/** Update and save page modules
+		 * @param array $modules
+		 * @returns bool
+		 */
+		function update_modules(array $modules)
 		{
 			$tree = &Settings::get('pages');
 			$page = &self::browse_tree($tree, $this->page_path);
 			$iter = &$page[0];
 
 			$iter['modules'] = $modules;
-			Settings::save('pages');
-			return true;
+			return Settings::save('pages');
 		}
 
 
+		/** Return page path
+		 * @returns string
+		 */
 		public static function get_path()
 		{
 			return '/'.implode('/', self::$path);
 		}
 
 
-		// inherit page tree parameters
+		/** Inherit page tree ancestors' parameters
+		 * @param  string $name Parameter name
+		 * @param &array  $node
+		 * @param &array  $default
+		 */
 		private static function use_param($name, array &$node, array &$default)
 		{
 			if (isset($node["#"][$name])) {
@@ -184,6 +228,9 @@ namespace System
 		}
 
 
+		/** Is the page readable?
+		 * @returns bool
+		 */
 		public function is_readable()
 		{
 			if (!user()->is_root() && !empty($this->opts['groups'])) {
@@ -192,18 +239,8 @@ namespace System
 				}
 				return false;
 			}
-			
+
 			return true;
-		}
-
-
-		function __construct(array $dataray)
-		{
-			parent::__construct($dataray);
-
-			if (strpos($this->get_path(), '/cron') === 0) {
-				$this->template = array(null);
-			}
 		}
 	}
 }

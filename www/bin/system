@@ -85,7 +85,8 @@
 		public static function info()
 		{
 			$ext_modules = array();
-			$dir = opendir($p = ROOT.Core\System\Module::BASE_DIR);
+			$dir = opendir($p = ROOT.System\Module::BASE_DIR);
+			$dirs = array();
 			while ($file = readdir($dir)) {
 				if (strpos($file, ".") !== 0 && is_dir($p.'/'.$file)) {
 					$dirs[] = $p.'/'.$file.'/';
@@ -98,14 +99,14 @@
 				$dir = opendir($d);
 				while ($file = readdir($dir)) {
 					if (strpos($file, ".") !== 0 && strpos($file, ".php")) {
-						$ext_modules[] = str_replace(ROOT.Core\System\Module::BASE_DIR, '', $d.$file);
+						$ext_modules[] = str_replace(ROOT.System\Module::BASE_DIR, '', $d.$file);
 					}
 				}
 			}
 
 			out_flist(array(
 				"CMS Name" => cfg('own', 'name'),
-				"Version"    => Core\System\Output::introduce(),
+				"Version"    => System\Output::introduce(),
 				"Branch"     => cfg('own', 'branch'),
 			));
 			
@@ -128,7 +129,7 @@
 		 */
 		public static function files()
 		{
-			$files = Core\System\Update::get_file_manifest();
+			$files = System\Update::get_file_manifest();
 			foreach ($files as $file) {
 				out(substr($file['path'], 1));
 			}
@@ -140,7 +141,7 @@
 		 */
 		public static function broken()
 		{
-			$files = Core\System\Update::get_file_manifest();
+			$files = System\Update::get_file_manifest();
 			$mod = $del = 0;
 
 			foreach ($files as $file) {
@@ -179,7 +180,7 @@
 			!isset($params[0]) && $params[0] = 'stable';
 			
 			$branch = $params[0];
-			$updates = Core\System\Update::get_update_list($branch);
+			$updates = System\Update::get_update_list($branch);
 			
 			foreach ($updates['list'] as $up) {
 				out('YaCMS '.$up['version']. ' ('.format_date($up['ctime'], 'sql').')');
@@ -199,7 +200,7 @@
 			!isset($params[0]) && $params[0] = 'stable';
 
 			@list($branch, $version) = explode('/', $params[0], 2);
-			$updates = Core\System\Update::get_update_list($branch);
+			$updates = System\Update::get_update_list($branch);
 			
 			if (!isset($version) || !$version) {
 
@@ -229,10 +230,10 @@
 			
 			if ($ok) {
 				vout("Downloading package ..");
-				Core\System\Update::download($branch, $version);
+				System\Update::download($branch, $version);
 
 				vout("Installing package ..");
-				Core\System\Update::apply($branch, $version);
+				System\Update::apply($branch, $version);
 
 				out("YaCMS was updated to '".$version."'");
 			} else give_up("Requested package not found: '".$version."'");
@@ -241,7 +242,7 @@
 		
 		public static function branches()
 		{
-			$branches = Core\System\Update::get_branches();
+			$branches = System\Update::get_branches();
 			foreach ($branches as $branch => $data) {
 				out("Core '".$branch. "' (".$data['count'].")");
 			}

@@ -21,17 +21,7 @@ namespace System
 
 		public static function assoc($result, $class = NULL)
 		{
-			$items = array();
-
-			if ($result) {
-				while ($data = $result->fetch()) {
-					if ($class) {
-						$place = &$items[];
-						$place = new $class($data->toArray());
-					} else $items[] = $data->toArray();
-				}
-			}
-
+			$items = $class ? $result->fetch_model($class):$result->fetch_assoc($class);
 			return $items;
 		}
 
@@ -277,7 +267,7 @@ namespace System
 				(!empty($this->conds) ? " WHERE ".implode(' AND ', $this->conds):null);
 
 			self::$queries ++;
-			return Query::first_val(\Dibi::query($sql));
+			return Query::first_val(Database::query($sql));
 		}
 
 
@@ -306,7 +296,7 @@ namespace System
 			//dump($sql);
 			self::$queries ++;
 			try {
-				return $get_query ? $sql:\Dibi::query($sql);
+				return $get_query ? $sql:Database::query($sql);
 			} catch (\Exception $e) {
 				Status::fatal_error($e->getMessage(), $sql);
 			}
@@ -329,12 +319,8 @@ namespace System
 				$d = array();
 				foreach ($this->cols as $table) {
 					foreach ($table as $col) {
-						self::escape($row[$col]);
-						if (is_int($row[$col])) {
-							$d[] = $row[$col];
-						} else {
-							$d[] = "'".$row[$col]."'";
-						}
+						Database::escape($row[$col]);
+						$d[] = $row[$col];
 					}
 				}
 				$this->parsed['insert-data'][] = "(".implode(',', $d).")";
@@ -346,7 +332,7 @@ namespace System
 				//dump($sql);
 				self::$queries ++;
 				try {
-					return $get_query ? $sql:\Dibi::query($sql);
+					return $get_query ? $sql:Database::query($sql);
 				} catch (\Exception $e) {
 					Status::fatal_error(array(_('Insert selhal'), $e->getMessage(), $sql));
 				}
@@ -361,7 +347,7 @@ namespace System
 			$this->prepare('delete');
 			self::$queries ++;
 			try {
-				return \Dibi::query($sql =
+				return Database::query($sql =
 					"DELETE FROM ".implode(',', (array) $this->parsed['tables']).
 					"\nWHERE ".implode(' AND ', $this->conds)
 				);
@@ -388,7 +374,7 @@ namespace System
 
 		public static function simple_update($table, $id_col, $id, array $data, $add_times = true)
 		{
-			self::escape($data);
+			Database::escape($data);
 
 			if($add_times){
 				$data['updated_at'] = new \DateTime();
@@ -403,33 +389,9 @@ namespace System
 
 			try {
 				self::$queries ++;
-				return \Dibi::update($table, $data)->where("`".$id_col."` ".$cond, $id)->execute();
+				return Database::update($table, $data)->where("`".$id_col."` ".$cond, $id)->execute();
 			} catch (\Exception $e) {
 				Status::fatal_error($e->getMessage(), $e->getSql());
-			}
-		}
-
-
-		public static function simple_insert($table, array $data, $add_times = true)
-		{
-			self::escape($data);
-
-			if ($add_times) {
-				$data['created_at'] = new \DateTime();
-				$data['updated_at'] = new \DateTime();
-			}
-
-			try {
-				self::$queries ++;
-				\Dibi::insert($table, $data)->execute();
-			} catch (\Exception $e) {
-				Status::fatal_error(array(_('Jednoduchý insert selhal'), $e->getMessage(), $e->getSql()));
-			}
-
-			try {                                                                       // table doesn't have to have autoincrement column
-				return \Dibi::getInsertId();
-			} catch (\Exception $e) {
-				return true;
 			}
 		}
 
@@ -445,28 +407,6 @@ namespace System
 		public static function count_all()
 		{
 			return self::$queries;
-		}
-
-
-		private static function escape(&$value)
-		{
-			if (is_array($value)) {
-				array_walk($value, array('self', 'escape'));
-			 } else {
-
-				if (is_object($value)) {
-					switch (get_class($value)) {
-						case '\DateTime':
-							$value = format_date($value, 'sql');
-							break;
-						case 'Core\Image':
-							$value = $value->to_json();
-							break;
-					}
-				}
-
-				return $value;
-			}
 		}
 
 

@@ -2,10 +2,10 @@
 
 // BasicModel & ExtModel aliases
 function get_all($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\Model\Ext::get_all($model, $conds, $opts, $joins); }
-function get_first($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\ExtModel::get_first($model, $conds, $opts, $joins); }
+function get_first($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\Model\Ext::get_first($model, $conds, $opts, $joins); }
 function get_tree($model, array $conds = array(), array $opts = array()) { return System\NestedModel::get_tree($model, $conds, $opts); }
 function count_all($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\BasicModel::count_all($model, $conds, $opts, $joins); }
-function find($model, $ids = array(), $force_array = false) { return System\ExtModel::find($model, $ids, $force_array); }
+function find($model, $ids = array(), $force_array = false) { return System\Model\Ext::find($model, $ids, $force_array); }
 function create($model, array $dataray) { $item = new $model($dataray); return $item->save(); }
 function quick_get_all($model) { return System\BasicModel::get_all($model, quick_conds($model)); }
 function quick_conds($model) { return System\BasicModel::get_quick_conds($model); }
@@ -36,6 +36,7 @@ function html_attrs($tag, $attrs){ return System\Template::html_attrs($tag, $att
 function content_for($place, $content, $overwrite = false) { return System\Output::content_for($place, $content, $overwrite); }
 function content_from($place) { return System\Output::content_from($place); }
 function slot($name = System\Template::DEFAULT_SLOT) { return System\Output::slot($name); }
+function yield() { return System\Output::yield(); }
 function title() { return System\Output::get_title(true); }
 function path() { return System\Page::get_path(); }
 function get_css_color($color) { return System\Template::get_css_color($color); }

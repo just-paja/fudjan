@@ -17,35 +17,13 @@
 			"last_name":"Administrator"
 		}
 	],
-	"user-group":[
+	"user_group":[
 		{ "id_user_group":1, "name":"GodLike" },
 		{ "id_user_group":2, "name":"Administrátoři" },
 		{ "id_user_group":3, "name":"Uživatelé" }
 	],
-	"user-group-assignment":[
+	"user_group_assignment":[
 		{ "id_user":1, "id_user_group":1 },
 		{ "id_user":1, "id_user_group":2 }
-	],
-	"user-perms":[
-		{ "id_user_group":1, "id_author":1, "type":"action", "trigger":"access-godmode" },
-		{ "id_user_group":1, "id_author":1, "type":"action", "trigger":"access-admin" },
-		{ "id_user_group":2, "id_author":1, "type":"action", "trigger":"access-admin" },
-		{ "id_author":1, "type":"module", "trigger":"core/user/login", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/user/logout", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/universal/browse", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/universal/message", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/universal/error", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/universal/wizzard", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/setup/index", "public":true },
-		{ "id_author":1, "type":"module", "trigger":"core/menu/show", "public":true }
-	],
-	"noticeboard":[
-		{ "id_noticeboard":1, "id_author":1, "name":"Noticeboard", "desc":"", "visible":true }
-	],
-	"noticeboard-color":[
-		{ "id_noticeboard_color":1, "id_author":1, "name":"Orange", "red":255, "green":125, "blue":0, "alpha":1 }
-	],
-	"noticeboard-item":[
-		{ "id_noticeboard_item":1, "id_noticeboard":1, "id_author":1, "id_noticeboard_color":1, "name":"First notice", "text":"This is your first notice after clean install", "visible":true }
 	]
 }

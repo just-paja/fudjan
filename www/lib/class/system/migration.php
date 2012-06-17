@@ -7,7 +7,7 @@ namespace System
 
 		const BASEDIR = '/etc/database/migrations.d';
 		static protected $id_col = 'id_database_migration';
-		static protected $table = 'database-migration';
+		static protected $table = 'database_migration';
 		static protected $required_attrs = array();
 		static protected $attrs = array(
 			"string" => array('seoname','name','desc','md5_sum','status'),
@@ -17,7 +17,7 @@ namespace System
 		static function get_new()
 		{
 			try {
-				$old_items = get_all("\Core\System\Migration")->fetch();
+				$old_items = get_all("System\Migration")->fetch();
 			} catch (Exception $e) {
 				$old_items = array();
 			}
@@ -32,7 +32,7 @@ namespace System
 			if (any($items)) {
 				$sums = collect(array('attr', 'md5_sum'), $items, true);
 				try {
-					$old = get_all("\Core\System\Migration", array("t0.md5_sum IN ('".implode("','", $sums)."')"))->fetch();
+					$old = get_all("\System\Migration", array("t0.md5_sum IN ('".implode("','", $sums)."')"))->fetch();
 				} catch (Exception $e) 	{
 					$old = array();
 				}
@@ -66,7 +66,7 @@ namespace System
 				if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\-[a-zA-Z\_\-]*\.php$/", $file)) {
 					$fname = explode('-', $file);
 					$date = new \Datetime(intval($fname[0]).'-'.intval($fname[1]).'-'.intval($fname[2]));
-					$name = \Core\File::remove_postfix($fname[3]);
+					$name = \System\File::remove_postfix($fname[3]);
 
 					if (!in_array(format_time("sql-date", $date).'-'.$name, $old)) {
 						$temp = &$items[];
@@ -130,7 +130,7 @@ namespace System
 		private function sql($query)
 		{
 			try {
-				return \dibi::query($query);
+				return Database::query($query);
 			} catch (Exception $e) {
 				$this->status = 'failed';
 				$this->errors[] = $e->getMessage();
