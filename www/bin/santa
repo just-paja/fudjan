@@ -302,7 +302,47 @@
 	
 		public static function install()
 		{
-			
+			$params = YacmsCLIOptions::get('params');
+			if (any($params)) {
+				$packages = array();
+				foreach ($params as $pkg_name) {
+					if (($pkg = System\Package::from_name($pkg_name)) instanceof System\Package) {
+						$packages[] = $pkg;
+					} else {
+						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
+						break;
+					}
+				}
+
+				out(l('Following packages will be installed: '));
+
+				foreach ($packages as $pkg) {
+					list($branch, $ver) = explode('/', $pkg->latest_version());
+					$pkg->version = $ver;
+					$pkg->branch = $branch;
+					out('  '.$pkg->name.'-'.$ver.($branch == 'stable' ? '':System\Cli::term_color(' ('.$branch.')', 'gray')));
+				}
+
+				out();
+				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
+					out(l('Installing packages ..'));
+					$total = count($packages);
+
+					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '');
+					foreach ($packages as $key=>$pkg) {
+						$pkg->download($pkg->selected[0], $pkg->selected[1]);
+						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '');
+					}
+					
+					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '');
+					foreach ($packages as $key=>$pkg) {
+						$pkg->check_files();
+						$pkg->install();
+						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '');
+					}
+				}
+
+			} else out(l('Please input package name or use --help'));
 		}
 
 

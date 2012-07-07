@@ -63,6 +63,34 @@ namespace System
 		}
 
 
+		/** Create package using only its' name
+		 * @param string $name
+		 */
+		public static function from_name($name)
+		{
+			self::load_tree();
+			$category = '';
+
+			if (strpos($name, '/') > 0) {
+				list($category, $name) = explode('/', $name, 2);
+			}
+
+			foreach (self::$tree as $branch) {
+				if ($category && any($branch[$name])) {
+					return new self($branch[$name]);
+				} else {
+					foreach ($branch as $category) {
+						if (any($category[$name])) {
+							return new self($category[$name]);
+						}
+					}
+				}
+			}
+
+			return false;
+		}
+
+
 		/** Get list of all installed packages
 		 * @return array
 		 */
@@ -131,8 +159,13 @@ namespace System
 				}
 			}
 		}
-		
-		
+
+
+		/** Compare two versions
+		 * @param string $a
+		 * @param string $b
+		 * @return bool|int 0 if equal
+		 */
 		public static function greater_version_than($a, $b)
 		{
 			$a = array_map('intval', explode('.', $a));
@@ -183,10 +216,32 @@ namespace System
 		 */
 		public static function get_branch_list()
 		{
-			empty(self::$tree) && self::load_tree();
+			self::load_tree();
 			return array_keys(self::$tree);
 		}
 
+
+		public static function exists($name)
+		{
+			self::load_tree();
+			$category = '';
+
+			if (strpos($name, '/') > 0) {
+				list($category, $name) = explode('/', $name, 2);
+			}
+
+			foreach (self::$tree as $branch) {
+				if ($category && any($branch[$name])) {
+					return true;
+				} else {
+					foreach ($branch as $category) {
+						if (any($category[$name])) {
+							return true;
+						}
+					}
+				}
+			}
+		}
 
 		/** Get path to temporary directory of package
 		 * @return string
@@ -211,12 +266,11 @@ namespace System
 		 */
 		public function get_package_name()
 		{
-			return $this->name.'-'.$this->version.'-'.$this->branch;
+			return str_replace('/', '_', $this->name).'-'.$this->version.'-'.$this->branch;
 		}
 
 
-		/**
-		 * Get file name of a package
+		/** Get file name of a package
 		 * @return string
 		 */
 		public function get_file_name()
@@ -254,8 +308,8 @@ namespace System
 		public function download()
 		{
 			if (!$this->downloaded) {
-				$f = ROOT.DIR_TMP.'/'.$this->get_file_name();
-				$cont = \Core\Request::get('http://'.self::UPDATE_URL.'/'.$branch.'/yacms-core-'.$version.'.tar.bz2');
+				$f = ROOT.self::DIR_TMP.'/'.$this->get_file_name();
+				$cont = \System\Request::get('http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2');
 
 				if ($cont) {
 					$this->downloaded = file_put_contents($f, $cont);
@@ -272,11 +326,9 @@ namespace System
 		public function extract()
 		{
 			if (!$this->extracted) {
-				$f = ROOT.self::DIR_TMP.'/'.$this->get_file_name();
-				if (file_exists($f)) {
-					$ar = \Core\Archive::from('bz2', $f, true)->extract($this->get_tmp_dir());
-					$this->extracted = true;
-				}
+				$this->download();
+				$ar = \System\Archive::from('bz2', ROOT.self::DIR_TMP.'/'.$this->get_file_name(), true)->extract($this->get_tmp_dir());
+				$this->extracted = true;
 			}
 
 			return $this->extracted;
@@ -323,7 +375,7 @@ namespace System
 				foreach (self::$tree as $bname => $branch) {
 					foreach ($branch as $cname => $category) {
 						foreach ($category as $pkg) {
-							if ($cname.'/'.$pkg['name'] == $this->name) {
+							if ($pkg['name'] == $this->name) {
 								$this->add_available($bname, $pkg['versions']);
 							}
 						}
@@ -335,14 +387,18 @@ namespace System
 		}
 
 
+		/** Add version to list of available
+		 * @param string branch
+		 * @param string version
+		 */
 		public function add_available($branch, $versions)
 		{
 			foreach ($versions as $ver) {
 				$this->available[] = $branch.'/'.$ver['version'];
 			}
 		}
-		
-		
+
+
 		/** Is there any update for this package
 		 * @return bool
 		 */
@@ -358,6 +414,49 @@ namespace System
 			}
 
 			return false;
+		}
+	
+	
+		public function install()
+		{
+			
+		}
+		
+		
+		public function check_files()
+		{
+			$installed = self::get_all_installed();
+			$my_files = $this->get_file_manifest();
+			$blocks = array();
+							var_dump($my_files);
+
+			foreach ($installed as $pkg) {
+				if ($pkg->name != $this->name) {
+					$current_files = $pkg->get_file_manifest();
+					foreach ($my_files as $mf) {
+						foreach ($current_files as $cf) {
+							var_dump($mf);
+							var_dump($cf);
+						}
+					}
+				}
+			}
+		}
+
+		
+		public function latest_version()
+		{
+			$versions = $this->get_available();
+			$latest = '';
+
+			foreach ($versions as $version) {
+				list($branch, $ver) = explode('/', $version);
+				if (self::greater_version_than($version, $latest)) {
+					$latest = $version;
+				}
+			}
+
+			return $latest;
 		}
 	}
 }
