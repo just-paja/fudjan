@@ -1,0 +1,340 @@
+#!/usr/bin/php
+<?
+
+
+// -- BASICS
+
+	define("ROOT", realpath(__DIR__.'/..'));
+	define("NAME", basename($_SERVER['SCRIPT_NAME']));
+
+	require_once ROOT."/lib/include/core.cli.php";
+
+
+// -- CLASSES
+
+	// Options container
+	abstract class CLIOptions extends YacmsCLIOptions
+	{
+		/* Override for console options parent
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::$opts = array(
+				"env"   => array(
+					"value" => false,
+					"short" => 'e',
+					"desc"  => 'Use this environment',
+				),
+				"force"   => array(
+					"value" => false,
+					"short" => 'f',
+					"desc"  => 'Force action',
+				),
+				"help"   => array(
+					"value" => false,
+					"short" => 'h',
+					"desc"  => 'Show this help',
+				),
+				"verbose" => array(
+					"value" => false,
+					"short" => 'v',
+					"desc"  => 'Talkative mode',
+				),
+				"command" => array(
+					"value" => null
+				),
+				"params"  => array(
+					"value" => array()
+				),
+			);
+
+			self::$commands = array(
+				"branches"  => 'List all ya-package branches',
+				"broken"    => 'List all ya-files that have been changed since install',
+				"files"     => array(
+					'single' => "List all installed files",
+					'prefix' => "List all installed files with prefix",
+				),
+				"install"   => array(
+					'packages' => "Install packages"
+				),
+				"installed" => 'Get list of installed ya-packages',
+				"browse"      => 'Get list of all available packages',
+				"updates"   => array(
+					'single' => "Get list of available stable versions",
+					'branch' => "Get list of available versions from this branch",
+				),
+				"update"    => ' Force reload package list',
+				"upgrade"    => array(
+					'single'  => "Update to the latest version",
+					'branch'  => "Select package from this branch",
+					'version' => "Update to this version. Format: branch/version or branch/latest",
+				),
+			);
+
+			self::$info = array(
+				"name" => NAME,
+				"head" =>
+					'Santa package manager'.CR.
+					'Internal package manager for YaWF system'.CR,
+
+				"foot" => '',
+			);
+		}
+	}
+
+
+	abstract class CLICommands extends YacmsCLICommands
+	{
+		private static $branch_colors = array(
+			'stable'   => 'light_green',
+			'unstable' => 'yellow',
+			'testing'  => 'light_red',
+		);
+
+
+		/** Get list of all installed ya-packages
+		 * @return void
+		 */
+		public static function installed()
+		{
+			$packages = System\Package::get_all_installed();
+			self::print_packages($packages);
+			out(sprintf(l('Installed %s packages.'), count($packages)));
+		}
+
+
+		public static function browse()
+		{
+			$branches = System\Package::get_tree();
+			$packages = array();
+			foreach ($branches as $bname => $branch) {
+				foreach ($branch as $cname => $category) {
+					foreach ($category as $pkg) {
+						if (!isset($packages[$pkg['name']])) {
+							$packages[$pkg['name']] = new System\Package(array(
+								"name" => $cname.'/'.$pkg['name'],
+								"desc" => $pkg['desc'],
+								"homepage" => isset($pkg['homepage']) ? $pkg['homepage']:'',
+								"available" => array(),
+							));
+						}
+
+						$packages[$pkg['name']]->add_available($bname, $pkg['versions']);
+					}
+				}
+			}
+
+			self::print_packages($packages);
+		}
+
+
+		/** Print list of packages
+		 * @return void
+		 */
+		private static function print_packages(array $packages)
+		{
+			foreach($packages as $pkg) {
+				$available = $pkg->get_available();
+
+				foreach ($available as &$ver) {
+					list($branch, $version) = explode('/', $ver);
+					
+					if ($branch == 'testing') {
+						$gray = true;
+					}
+
+					if ($pkg->installed && $branch != System\Cli::term_remove_color('testing')) {
+						$status = System\Package::greater_version_than(System\Cli::term_remove_color($version), $pkg->version);
+						$color = 'normal';
+
+						if ($status === true) $color = 'light_green';
+						if ($status === false) $color = 'red';
+
+						$version = System\Cli::term_color($version, $color);
+					}
+
+					$ver = $branch.'/'.$version;
+
+					if ($gray) {
+						$ver = System\Cli::term_color($ver, 'gray');
+					}
+				}
+
+				unset($ver);
+				$status = '';
+
+				if ($pkg->installed) {
+					$status = System\Cli::term_color('I', 'light_green');
+				} else {
+					$status = System\Cli::term_color('-', 'green');
+				}
+
+				out('['.$status.'] '.$pkg->name);
+				out_flist(array(
+					'Description'        => $pkg->desc,
+					'Installed version'  => $pkg->installed ? $pkg->branch.'/'.$pkg->version:'',
+					'Available versions' => empty($available) ? 'none':implode(', ', $available),
+					'Homepage'           => $pkg->homepage,
+				), true, 4, false, 'green', true);
+				out();
+			}
+		}
+
+		/** Generate .gitignore and print it into STDOUT
+		 * @return void
+		 */
+		public static function files()
+		{
+			$params = CLIOptions::get('params');
+			$files = System\Package::get_all_installed_files();
+			$prefix = isset($params[0]) ? $params[0]:'';
+
+			foreach ($files as $file) {
+				out($prefix.substr($file['path'], strlen($prefix) == 0));
+			}
+		}
+
+
+		/** Generate .gitignore and print it into STDOUT
+		 * @return void
+		 */
+		public static function broken()
+		{
+			$files = \System\Package::get_all_installed_files();
+			$mod = $del = 0;
+
+			foreach ($files as $file) {
+				//out(ROOT.$file['path']);
+				if (file_exists(ROOT.$file['path'])) {
+					$sum = md5(file_get_contents(ROOT.$file['path']));
+					if ($sum != $file['checksum']) {
+						out("modified: ".$file['path']);
+						$mod ++;
+					}
+				} else {
+					out("deleted: ".$file['path']);
+					$del ++;
+				}
+			}
+
+			if ($mod || $del) {
+				vout();
+				if ($mod && $del) {
+					vout("Total of ".$mod." modified and ".$del." deleted files");
+				} elseif ($mod) {
+					vout("Total of ".$mod." modified files");
+				} else {
+					vout("Total of ".$del." deleted files");
+				}
+			}
+		}
+
+
+		/** Connect to mothership and check for new code
+		 * @return array Set of updates
+		 */
+		public static function updates()
+		{
+			$params = CLIOptions::get('params');
+			$branch = isset($params[0]) ? $params[0]:null;
+			$updates = System\Update::get_update_list($branch);
+
+			if (any($updates)) {
+				out(sprintf(l('Updates available: %s'), count($updates)));
+
+				self::print_packages($updates);
+			} else {
+				vout($branch ? l('No updates found in branch "'.$branch.'"'):l('No updates found'));
+			}
+		}
+
+
+		/** Update the system
+		 * @return array Set of updates
+		 */
+		public static function upgrade()
+		{
+			$params = CLIOptions::get('params');
+			!isset($params[0]) && $params[0] = 'stable';
+
+			@list($branch, $version) = explode('/', $params[0], 2);
+			$updates = System\Update::get_update_list($branch);
+
+			if (!isset($version) || !$version) {
+
+				out("0: Latest");
+				foreach ($updates['list'] as $key => $up) {
+					out($key+1 . ': YaCMS '.$up['version']. ' ('.format_date($up['ctime'], 'sql').')');
+				}
+
+				out();
+				$str = read("Pick your new version [0-".(count($updates['list']))."]: ");
+				($str == '' || $str < 0 || $str > count($updates)) && give_up("Invalid choice");
+
+				$version = $str == 0 ? $updates['latest']:$updates[$str]['version'];
+				vout();
+			}
+
+			if ($version == 'latest') {
+				$version = $updates['latest'];
+			}
+
+			foreach ($updates['list'] as $up) {
+				if ($up['version'] == $version) {
+					$ok = true;
+					break;
+				}
+			}
+
+			if ($ok) {
+				vout("Downloading package ..");
+				System\Update::download($branch, $version);
+
+				vout("Installing package ..");
+				System\Update::apply($branch, $version);
+
+				out("YaCMS was updated to '".$version."'");
+			} else give_up("Requested package not found: '".$version."'");
+		}
+
+	
+		public static function install()
+		{
+			
+		}
+
+
+		/** Get list of update channels
+		 * @return void
+		 */
+		public static function branches()
+		{
+			$branches = System\Package::get_branch_list();
+			vout(l('Available branches'));
+			foreach ($branches as $branch) {
+				out($branch);
+			}
+		}
+
+
+		/** Force reload package tree
+		 * @return void
+		 */
+		public static function update()
+		{
+			vout(l('Refreshing package tree and metadata ..'));
+			System\Package::reload_tree();
+
+			vout();
+			self::updates();
+		}
+	}
+
+
+
+
+// -- RUNTIME
+
+	require_once ROOT."/etc/init.d/cli.php";

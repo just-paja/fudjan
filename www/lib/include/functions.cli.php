@@ -38,10 +38,10 @@ function sep($return = false) {
 }
 
 
-/* Print a set of paired keys and values
+/** Print a set of paired keys and values
  * @return void
  */
-function out_flist(array $list, $semicolon = true, $margin = 0, $return = false) {
+function out_flist(array $list, $semicolon = true, $margin = 0, $return = false, $key_color = 'normal', $purge = false) {
 	$str = '';
 	$maxlen = 0;
 
@@ -52,13 +52,15 @@ function out_flist(array $list, $semicolon = true, $margin = 0, $return = false)
 	$maxlen ++;
 
 	foreach ($list as $key => $value) {
-		$str .= out(str_repeat(" ", $margin).$key.($semicolon ? ": ":" "), false, true);
+		if (!$purge || ($purge && $value != '' && $value !== null)) {
+			$str .= out(str_repeat(" ", $margin).\System\Cli::term_color($key.($semicolon ? ": ":" "), $key_color), false, true);
 
-		for ($padding = strlen($key); $padding < $maxlen; $padding++) {
-			$str .= out(" ", false, true);
+			for ($padding = strlen($key); $padding < $maxlen; $padding++) {
+				$str .= out(" ", false, true);
+			}
+
+			$str .= out($value, true, true);
 		}
-
-		$str .= out($value, true, true);
 	}
 
 	if ($return) return $str; else echo $str;

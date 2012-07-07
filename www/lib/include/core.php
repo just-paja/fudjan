@@ -48,6 +48,7 @@ class InternalException extends Exception
 	function get_backtrace() { return $this->backtrace; }
 }
 
+
 class DatabaseException extends InternalException
 {
 	function __construct()

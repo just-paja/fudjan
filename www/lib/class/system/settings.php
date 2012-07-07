@@ -76,13 +76,21 @@ namespace System
 				}
 			}
 
-			$cfg = explode("\n", file_get_contents(ROOT."/etc/current/version", true));
+			$version_path = ROOT."/etc/current/version";
+			if (!file_exists($version_path)) {
+				if (!copy(ROOT."/etc/current/core/yawf/version", $version_path)) {
+					throw new InternalException(l('Couldn\'t find version file!'));
+				}
+			}
+
+			$cfg = explode("\n", file_get_contents($version_path, true));
 
 			self::$conf['own'] = array(
 				'short_name' => $cfg[0],
 				'name'       => $cfg[1],
 				'version'    => $cfg[2],
-				'branch'     => any($cfg[3]) ? $cfg[3]:'master',
+				'package'    => $cfg[3],
+				'branch'     => any($cfg[4]) ? $cfg[4]:'master',
 			);
 
 			ksort(self::$conf);
