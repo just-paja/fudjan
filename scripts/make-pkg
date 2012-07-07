@@ -1,0 +1,172 @@
+#!/usr/bin/php
+<?
+
+function strip_code($dir)
+{
+	static $used;
+	if ($used == null) $used = array();
+
+	$od = opendir($dir);
+	$code = '';
+
+	while ($file = readdir($od)) {
+		if (strpos($file, '.') !== 0) {
+			if (is_dir($dir.'/'.$file)) {
+				strip_code($dir.'/'.$file);
+			} else {
+				if (!in_array($dir.'/'.$file, $used)) {
+					$used[] = $dir.'/'.$file;
+					$code .= str_replace(array('<?php', '<?', "\t", "\n"), '', php_strip_whitespace($dir.'/'.$file));
+				}
+			}
+		}
+	}
+
+	return $code;
+}
+
+
+function read_dir($dir, &$files, &$directories)
+{
+	$od = opendir($dir);
+	while ($f = readdir($od)) {
+		if ($f != '.' && $f != '..') {
+			$fp = $dir.'/'.$f;
+			if (is_dir($fp)) {
+				read_dir($fp, $files, $directories);
+				$directories[] = $fp;
+			} else {
+				$files[] = $fp;
+			}
+		}
+	}
+	closedir($od);
+}
+
+
+define('ROOT', realpath(__DIR__.'/..'));
+define('CONSOLE_WIDTH', 30);
+
+require_once ROOT.'/www/lib/include/constants.cli.php';
+require_once ROOT.'/www/lib/include/functions.php';
+require_once ROOT.'/www/lib/include/functions.cli.php';
+require_once ROOT.'/www/lib/class/system/cli.php';
+
+
+define('PACKAGE_DIR', ROOT.'/packages');
+define('PACKAGE_NAME', 'yawf');
+define('PACKAGE_CATEGORY', 'core');
+define('PACKAGE_VERSION', exec(ROOT.'/scripts/get-version.sh'));
+define('PACKAGE_BRANCH', 'testing');
+
+define('PROJECT_NAME', 'YaWF');
+define('PROJECT_DESC', 'Yet Another Web Framework');
+
+define('WORKING_FILE', PACKAGE_DIR.'/'.PACKAGE_NAME.'-'.PACKAGE_VERSION);
+define('WORKING_DIR', PACKAGE_DIR.'/temp');
+define('WORKING_DIR_DATA', PACKAGE_DIR.'/temp/data');
+define('WORKING_DIR_META', PACKAGE_DIR.'/temp/meta');
+define('WORKING_DIR_CLASSES', WORKING_DIR_DATA.'/lib/class/system');
+define('WORKING_TEMP_FILE', WORKING_DIR.'/tmp.tar');
+
+define('WORKING_FILE_VERSION', WORKING_DIR_META.'/version');
+define('WORKING_FILE_CHECKSUM', WORKING_DIR_META.'/checksum');
+define('WORKING_FILE_SYSTEM_CLASSES', WORKING_DIR_DATA.'/lib/include/system.php');
+
+
+// Prepare workspace
+@unlink(WORKING_FILE.'.tar.bz2');
+exec('rm -R '.WORKING_DIR);
+@mkdir(WORKING_DIR, 0770, true);
+@mkdir(WORKING_DIR_DATA, 0770, true);
+@mkdir(WORKING_DIR_META, 0770, true);
+
+
+out('Compiling package .. ');
+
+// Prepare data and meta
+$msg = 'Preparing data';
+show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
+exec('cd "'.ROOT.'/www"; git archive --format tar master > '.WORKING_TEMP_FILE);
+
+show_progress_cli(50, 100, CONSOLE_WIDTH, '', $msg);
+exec('
+	cd '.WORKING_DIR_DATA.'; 
+	tar -xf '.WORKING_TEMP_FILE.';
+	git log > '.WORKING_DIR_META.'/changelog;
+	echo '.PROJECT_NAME.'    > '.WORKING_FILE_VERSION.';
+	echo '.PROJECT_DESC.'    >> '.WORKING_FILE_VERSION.';
+	echo '.PACKAGE_VERSION.' >> '.WORKING_FILE_VERSION.';
+	echo '.PACKAGE_CATEGORY.'/'.PACKAGE_NAME.' >> '.WORKING_FILE_VERSION.';
+	rm '.WORKING_TEMP_FILE.';
+');
+show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
+
+
+// Optimize system classes code
+$msg = 'Compiling system classes';
+show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
+
+$code_classes  = '<?';
+$code_classes .= strip_code(WORKING_DIR_CLASSES.'/model');
+$code_classes .= strip_code(WORKING_DIR_CLASSES);
+
+file_put_contents(WORKING_FILE_SYSTEM_CLASSES, $code_classes);
+exec('rm -R '.WORKING_DIR_CLASSES);
+show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
+
+// Create files checksum
+show_progress_cli(1, 1000, CONSOLE_WIDTH, '', $msg);
+$files = array_filter(explode("\n", shell_exec('cd www; git ls-files')));
+$total = count($files);
+$banned_files = array(
+	'install.php',
+	'meta/checksum',
+	'meta/changelog',
+	'meta/version',
+);
+
+$msg = 'Calculating package checksums';
+
+foreach ($files as $key=>$file) {
+	if (!in_array($file, $banned_files) && strpos($file, 'lib/class/system') === false) {
+		exec('cd www; md5sum '.$file.' >> '.WORKING_FILE_CHECKSUM);
+	}
+	show_progress_cli($key+1, $total, CONSOLE_WIDTH, '', $msg);
+}
+exec('cd '.WORKING_DIR_DATA.'; md5sum '.str_replace(WORKING_DIR_DATA.'/', '', WORKING_FILE_SYSTEM_CLASSES).' >> '.WORKING_FILE_CHECKSUM);
+
+
+// Pack it all together
+$msg = 'Creating package archive';
+show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
+exec('cd '.WORKING_DIR.'; tar -c `ls` > '.WORKING_FILE.'.tar');
+show_progress_cli(50, 100, CONSOLE_WIDTH, '', $msg);
+exec('cd '.WORKING_DIR.'; bzip2 '.WORKING_FILE.'.tar');
+show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
+
+
+// Clean temp files
+$msg = 'Cleaning workspace';
+show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
+$files = array();
+$dirs = array();
+read_dir(WORKING_DIR, $files, $dirs);
+$total = count($files) + count($dirs);
+$x = 1;
+foreach ($files as $f) {
+	unlink($f);
+	show_progress_cli($x++, $total, CONSOLE_WIDTH, '', $msg);
+}
+
+foreach ($dirs as $f) {
+	rmdir($f); 
+	show_progress_cli($x++, $total, CONSOLE_WIDTH, '', $msg);
+}
+
+
+// Write response
+out();
+out('Package was created in "'.WORKING_FILE.'.tar.bz2"');
+
+copy(WORKING_FILE.'.tar.bz2', ROOT.'/../yacms.scourge.local/www/packages/tree/'.PACKAGE_BRANCH.'/'.PACKAGE_CATEGORY.'/'.PACKAGE_NAME.'-'.PACKAGE_VERSION.'.tar.bz2');

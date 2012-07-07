@@ -94,32 +94,30 @@ function is_yes($str) {
 }
 
 
-function show_progress_cli($done, $total, $size=30, $done_msg = "Finished in %d seconds") {
+function show_progress_cli($done, $total, $size=30, $done_msg = "Finished in %d seconds", $static_msg = '') {
 
 	static $start_time;
 
 	// if we go over our bound, just ignore it
-	if($done > $total) return;
+	if ($done > $total) return;
+	if (empty($start_time)) $start_time = time();
 
-	if(empty($start_time)) $start_time=time();
 	$now = time();
-
 	$perc=(double)($done/$total);
-
 	$bar=floor($perc*$size);
 
-	$status_bar="\r[";
+	$status_bar="\r  [";
 	$status_bar.=str_repeat("=", $bar);
-	if($bar<$size){
-		$status_bar.=">";
-		$status_bar.=str_repeat(" ", $size-$bar);
+
+	if ($bar < $size) {
+		$status_bar .= ">";
+		$status_bar .= str_repeat(" ", $size - $bar);
 	} else {
 		$status_bar.="=";
 	}
 
-	$disp=number_format($perc*100, 0);
-
-	$status_bar.="] $disp%";
+	$disp = number_format($perc*100, 0);
+	$status_bar .= "] $disp%";
 
 	$rate = $done > 0 ? ($now-$start_time)/$done:0;
 	$left = $total - $done;
@@ -127,10 +125,10 @@ function show_progress_cli($done, $total, $size=30, $done_msg = "Finished in %d 
 
 	$elapsed = $now - $start_time;
 
-	$status_bar.= " remaining: ".number_format($eta)."s";
+	$status_bar.= ": ".$static_msg;
+	//$status_bar.= " remaining: ".number_format($eta)."s";
 
-	echo "$status_bar  ";
-
+	echo $status_bar;
 	flush();
 
 	// when done, send a newline
