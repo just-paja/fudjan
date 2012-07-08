@@ -244,7 +244,7 @@
 		{
 			$params = CLIOptions::get('params');
 			$branch = isset($params[0]) ? $params[0]:null;
-			$updates = System\Update::get_update_list($branch);
+			$updates = System\Package::get_update_list($branch);
 
 			if (any($updates)) {
 				out(sprintf(l('Updates available: %s'), count($updates)));
@@ -262,8 +262,10 @@
 		public static function upgrade()
 		{
 			$params = YacmsCLIOptions::get('params');
+			$latest = YacmsCLIOptions::get('force');
+
 			if (any($params)) {
-				if ($latest = YacmsCLIOptions::get('force')) {
+				if ($latest) {
 					out('Warning: selecting newest versions including testing branch. You should consider staying on one package branch, preferrably stable!');
 					out();
 				}
@@ -280,7 +282,7 @@
 					}
 				}
 			} else {
-				$updates = System\Update::get_update_list();
+				$updates = System\Package::get_update_list(!$latest);
 			}
 
 			if (any($updates)) {

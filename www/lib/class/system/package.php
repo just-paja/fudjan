@@ -316,7 +316,7 @@ namespace System
 				
 				if ($data->ok()) {
 					$this->downloaded = file_put_contents($f, $cont);
-				} else throw new \InternalException(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
+				} else throw new \InternalException(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
 			}
 
 			return $this->downloaded;
@@ -515,5 +515,25 @@ namespace System
 
 			return $latest;
 		}
+
+
+		/** Get list of available updates
+		 * @param  bool  $keep_branch Should updates keep branch that is installed?
+		 * @return array
+		 */
+		public static function get_update_list($branch = null)
+		{
+			$old = \System\Package::get_all_installed();
+			$up = array();
+
+			foreach ($old as $pkg) {
+				if ($pkg->is_available_for_update(is_null($branch))) {
+					$up[] = $pkg;
+				}
+			}
+
+			return $up;
+		}
+
 	}
 }

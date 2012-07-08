@@ -17,20 +17,5 @@ namespace System
 				return false;
 			}
 		}
-
-
-		public static function get_update_list($branch = null)
-		{
-			$old = \System\Package::get_all_installed();
-			$up = array();
-
-			foreach ($old as $pkg) {
-				if ($pkg->is_available_for_update(is_null($branch))) {
-					$up[] = $pkg;
-				}
-			}
-
-			return $up;
-		}
 	}
 }
