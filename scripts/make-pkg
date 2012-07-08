@@ -202,7 +202,7 @@ define('WORKING_FILE_SYSTEM_CLASSES', WORKING_DIR_DATA.'/lib/include/system.php'
 
 // Prepare workspace
 @unlink(WORKING_FILE.'.tar.bz2');
-exec('rm -R '.WORKING_DIR);
+@exec('rm -Rf '.WORKING_DIR);
 @mkdir(WORKING_DIR, 0770, true);
 @mkdir(WORKING_DIR_DATA, 0770, true);
 @mkdir(WORKING_DIR_META, 0770, true);
