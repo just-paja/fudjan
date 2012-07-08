@@ -14,7 +14,7 @@ if (php_sapi_name() == 'cli') {
 	$_SERVER['REQUEST_URI'] = $last == 'index.php' ? '/':$last;
 }
 
-@include ROOT."/lib/include/system.php";
+@include_once ROOT."/lib/include/system.php";
 
 if (!defined('YAWF_PACKED')) {
 	require_once ROOT."/lib/include/functions.php";
