@@ -67,19 +67,21 @@ namespace System
 			$e = explode('.', $name);
 			unset($e[0]);
 			$suffix = implode('.', $e);
-			$content = Request::get($url);
+			$data = \System\Offcom\Request::get($url);
 
-			if (!$dir) {
-				$dir = ROOT.self::TMP_DIR;
-			}
+			if ($data->ok()) {
+				if (!$dir) {
+					$dir = ROOT.self::TMP_DIR;
+				}
 
-			$magic = strtoupper(gen_random_string(10));
-			$tmp_name = self::access_dir($dir).'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
-			!!(file_put_contents($tmp_name, $content, LOCK_EX)) ?
-				message("success", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' byl úspěšně uložen'), $name), true):
-				message("error", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' se nepovedlo uložit'), $name));
+				$magic = strtoupper(gen_random_string(10));
+				$tmp_name = self::access_dir($dir).'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
+				!!(file_put_contents($tmp_name, $content, LOCK_EX)) ?
+					message("success", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' byl úspěšně uložen'), $name), true):
+					message("error", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' se nepovedlo uložit'), $name));
 
-			return new self(array("filename" => $name, "dirpath" => dirname($dir), "suffix" => $suffix, "tmp_name" => $tmp_name));
+				return new self(array("filename" => $name, "dirpath" => dirname($dir), "suffix" => $suffix, "tmp_name" => $tmp_name));
+			} else throw new \InternalException(l('Couldn\'t fetch file'), sprintf(l('HTTP error %s '), $data->status));
 		}
 
 
@@ -87,8 +89,8 @@ namespace System
 		{
 			return $this->__get('tmp_name');
 		}
-		
-		
+
+
 		function move($where, $use_tmp = false)
 		{
 			$op = $use_tmp ? $this->__get('tmp_name'):$this->__get('dirpath').'/'.$this->__get('filename');
@@ -101,14 +103,14 @@ namespace System
 			}
 			return $this;
 		}
-		
-		
+
+
 		function save($where)
 		{
 			return $this->move($where, true);
 		}
-		
-		
+
+
 		static function remove_postfix($name, $all = false)
 		{
 			$temp = explode('.', $name);

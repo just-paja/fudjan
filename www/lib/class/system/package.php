@@ -9,7 +9,7 @@ namespace System
 		const DIR_TMP_TREE = '/var/tmp/santa';
 		const PKG_FORMAT = 'tar.bz2';
 		const CACHE_MAX = 2592000;
-		const URL_SOURCE = 'yacms.scourge.local/packages';
+		const URL_SOURCE = 'yaweb.local/packages';
 
 		static private $tree = array();
 		static private $meta = array();
@@ -148,14 +148,17 @@ namespace System
 						self::$tree = self::load_tree();
 					}
 				} else {
-					$tmp = json_decode(Request::get('http://'.self::URL_SOURCE.'/list.json.php'), true);
-					self::$tree = $tmp['tree'];
-					self::check_tree_dir();
-					file_put_contents(ROOT.self::DIR_TMP_TREE.'/tree.json', json_encode(self::$tree));
-					file_put_contents(
-						ROOT.self::DIR_TMP_TREE.'/meta.json',
-						Request::get('http://'.self::URL_SOURCE.'/meta.json.php')
-					);
+					$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/list.json.php');
+					if ($data->ok()) {
+						$tmp = json_decode($data->content, true);
+						self::$tree = $tmp['tree'];
+						self::check_tree_dir();
+						file_put_contents(ROOT.self::DIR_TMP_TREE.'/tree.json', json_encode(self::$tree));
+						file_put_contents(
+							ROOT.self::DIR_TMP_TREE.'/meta.json',
+							\System\Offcom\Request::get('http://'.self::URL_SOURCE.'/meta.json.php')->content
+						);
+					} else throw new \InternalException(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
 				}
 			}
 		}
@@ -309,11 +312,11 @@ namespace System
 		{
 			if (!$this->downloaded) {
 				$f = ROOT.self::DIR_TMP.'/'.$this->get_file_name();
-				$cont = \System\Request::get('http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2');
-
-				if ($cont) {
+				$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2');
+				
+				if ($data->ok()) {
 					$this->downloaded = file_put_contents($f, $cont);
-				}
+				} else throw new \InternalException(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
 			}
 
 			return $this->downloaded;
