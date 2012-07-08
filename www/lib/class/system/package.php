@@ -27,7 +27,7 @@ namespace System
 			$dir_tmp = $this->get_tmp_dir();
 			$dir_meta = $this->get_meta_dir();
 
-			$this->downloaded = file_exists(self::DIR_TMP.'/'.$this->get_file_name());
+			$this->downloaded = file_exists($this->get_file_path());
 			$this->extracted = is_dir($dir_tmp) && file_exists($dir_tmp.'/checksum');
 
 			if ($this->installed = is_dir($dir_meta) && file_exists($dir_meta.'/checksum')) {
@@ -280,6 +280,12 @@ namespace System
 		{
 			return $this->get_package_name().'.'.self::PKG_FORMAT;
 		}
+		
+		
+		public function get_file_path()
+		{
+			return ROOT.self::DIR_TMP.'/'.$this->get_file_name();
+		}
 
 
 		/** Check package integrity. Browses all files and checks file md5 checksums
@@ -311,11 +317,11 @@ namespace System
 		public function download()
 		{
 			if (!$this->downloaded) {
-				$f = ROOT.self::DIR_TMP.'/'.$this->get_file_name();
-				$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2');
+				$url = 'http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2';
+				$data = \System\Offcom\Request::get($url);
 				
 				if ($data->ok()) {
-					$this->downloaded = file_put_contents($f, $cont);
+					$this->downloaded = file_put_contents($this->get_file_path(), $data->content);
 				} else throw new \InternalException(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
 			}
 
@@ -330,7 +336,7 @@ namespace System
 		{
 			if (!$this->extracted) {
 				$this->download();
-				$ar = \System\Archive::from('bz2', ROOT.self::DIR_TMP.'/'.$this->get_file_name(), true)->extract($this->get_tmp_dir());
+				$ar = \System\Archive::from('bz2', $this->get_file_path(), true)->extract($this->get_tmp_dir());
 				$this->extracted = true;
 			}
 
