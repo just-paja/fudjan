@@ -149,20 +149,20 @@
 						$gray = true;
 					}
 
-					if ($pkg->installed && $branch != System\Console::term_remove_color('testing')) {
-						$status = System\Package::greater_version_than(System\Console::term_remove_color($version), $pkg->version);
+					if ($pkg->installed && $branch != System\Cli::term_remove_color('testing')) {
+						$status = System\Package::greater_version_than(System\Cli::term_remove_color($version), $pkg->version);
 						$color = 'normal';
 
 						if ($status === true) $color = 'light_green';
 						if ($status === false) $color = 'red';
 
-						$version = System\Console::term_color($version, $color);
+						$version = System\Cli::term_color($version, $color);
 					}
 
 					$ver = $branch.'/'.$version;
 
 					if ($gray) {
-						$ver = System\Console::term_color($ver, 'gray');
+						$ver = System\Cli::term_color($ver, 'gray');
 					}
 				}
 
@@ -170,9 +170,9 @@
 				$status = '';
 
 				if ($pkg->installed) {
-					$status = System\Console::term_color('I', 'light_green');
+					$status = System\Cli::term_color('I', 'light_green');
 				} else {
-					$status = System\Console::term_color('-', 'green');
+					$status = System\Cli::term_color('-', 'green');
 				}
 
 				out('['.$status.'] '.$pkg->name);
@@ -288,11 +288,11 @@
 			if (any($updates)) {
 				out(l('Following packages will be upgraded:'));
 				foreach ($updates as $pkg) {
-					$old_branch = (System\Console::term_color($pkg->branch.'/'.$pkg->version, self::$branch_colors[$pkg->branch]));
+					$old_branch = (System\Cli::term_color($pkg->branch.'/'.$pkg->version, self::$branch_colors[$pkg->branch]));
 					list($newb, $newv) = explode('/', $new = $pkg->latest_version());
 					$newbc = self::$branch_colors[$newb];
-					$new_branch = (System\Console::term_color($new, $newbc));
-					out(' ['.System\Console::term_color('U', $newbc).'] '.$pkg->name.' ('.$old_branch.' -> '.$new_branch.')');
+					$new_branch = (System\Cli::term_color($new, $newbc));
+					out(' ['.System\Cli::term_color('U', $newbc).'] '.$pkg->name.' ('.$old_branch.' -> '.$new_branch.')');
 					out();
 					
 					$pkg->branch = $newb;
@@ -330,7 +330,7 @@
 					list($branch, $ver) = explode('/', $pkg->latest_version());
 					$pkg->version = $ver;
 					$pkg->branch = $branch;
-					out('  '.$pkg->name.'-'.$ver.($branch == 'stable' ? '':System\Console::term_color(' ('.$branch.')', 'gray')));
+					out('  '.$pkg->name.'-'.$ver.($branch == 'stable' ? '':System\Cli::term_color(' ('.$branch.')', 'gray')));
 				}
 
 				out();
