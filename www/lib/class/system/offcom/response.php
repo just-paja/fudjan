@@ -8,8 +8,8 @@ namespace System\Offcom
 			"string" => array('content', 'headers'),
 			"int" => array('status'),
 		);
-		
-		
+
+
 		public function ok()
 		{
 			return $this->status >= 200 && $this->status <= 300;

@@ -15,12 +15,12 @@ namespace System\Offcom
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 				curl_setopt($ch, CURLOPT_USERAGENT, \System\Output::introduce());
 				curl_setopt($ch, CURLOPT_HEADER, 1); 
-				$content = str_replace("\r", '', curl_exec($ch));
-				$content = explode("\n\n", $content, 2);
+				$content = curl_exec($ch);
+				$content = explode("\r\n\r\n", $content, 2);
 
 				$dataray = array(
 					"headers"  => $content[0],
-					"content" => trim($content[1]),
+					"content" => $content[1],
 					"status"  => curl_getinfo($ch, CURLINFO_HTTP_CODE),
 				);
 
