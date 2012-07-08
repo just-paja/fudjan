@@ -1,5 +1,6 @@
 <?
 
+echo "\n";
 echo l('Fatal error has occurred')."\n";
 echo '-------------------------'."\n";
 
