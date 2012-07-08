@@ -135,15 +135,6 @@ function compress_php_src($src) {
 }
 
 
-function strip_code($files)
-{
-	$code = '';
-
-
-
-	return $code;
-}
-
 
 function read_dir($dir, array &$files, array &$directories, array &$used = array())
 {
@@ -152,10 +143,9 @@ function read_dir($dir, array &$files, array &$directories, array &$used = array
 		if ($f != '.' && $f != '..') {
 			$fp = $dir.'/'.$f;
 			if (is_dir($fp)) {
-				read_dir($fp, $files, $directories);
+				read_dir($fp, $files, $directories, $used);
 				if (!in_array($fp, $used)) {
 					$directories[] = $fp;
-					$used[] = $fp;
 				}
 			} else {
 				if (!in_array($fp, $used)) {
@@ -244,6 +234,7 @@ $used = array();
 
 read_dir(WORKING_DIR_CLASSES.'/model', $minified, $dirs, $used);
 read_dir(WORKING_DIR_CLASSES, $minified, $dirs, $used);
+
 $minified[]  = 'namespace{';
 $minified[] .= 'define(\'YAWF_PACKED\', true);';
 $minified[]  = WORKING_DIR_DATA.'/lib/include/core.php';
