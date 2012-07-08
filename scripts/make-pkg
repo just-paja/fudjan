@@ -237,17 +237,19 @@ show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
 $msg = 'Compiling system code';
 show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
 
-$code  = '<? ';
-$code .= 'define(\'YAWF_PACKED\', true);';
+$code  = '<?';
 $minified = array();
 $dirs = array();
 $used = array();
 
 read_dir(WORKING_DIR_CLASSES.'/model', $minified, $dirs, $used);
 read_dir(WORKING_DIR_CLASSES, $minified, $dirs, $used);
-$minified[] = WORKING_DIR_DATA.'/lib/include/core.php';
-$minified[] = WORKING_DIR_DATA.'/lib/include/functions.php';
-$minified[] = WORKING_DIR_DATA.'/lib/include/aliases.php';
+$minified[]  = 'namespace{';
+$minified[] .= 'define(\'YAWF_PACKED\', true);';
+$minified[]  = WORKING_DIR_DATA.'/lib/include/core.php';
+$minified[]  = WORKING_DIR_DATA.'/lib/include/functions.php';
+$minified[]  = WORKING_DIR_DATA.'/lib/include/aliases.php';
+$minified[]  = '}';
 
 $total = count($minified);
 
