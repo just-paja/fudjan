@@ -7,6 +7,7 @@
 	define("ROOT", realpath(__DIR__.'/..'));
 	define("NAME", basename($_SERVER['SCRIPT_NAME']));
 
+	require_once ROOT."/lib/include/core.php";
 	require_once ROOT."/lib/include/core.cli.php";
 
 
@@ -60,16 +61,16 @@
 					'packages' => "Install packages"
 				),
 				"installed" => 'Get list of installed ya-packages',
-				"browse"      => 'Get list of all available packages',
+				"browse"    => 'Get list of all available packages',
 				"updates"   => array(
 					'single' => "Get list of available stable versions",
 					'branch' => "Get list of available versions from this branch",
 				),
 				"update"    => ' Force reload package list',
-				"upgrade"    => array(
-					'single'  => "Update to the latest version",
-					'branch'  => "Select package from this branch",
-					'version' => "Update to this version. Format: branch/version or branch/latest",
+				"upgrade"   => array(
+					'single'   => "Upgrade all packages to the latest version",
+					'packages' => "Upgrade packages",
+//					'version'  => "Update to this version. Format: branch/version or branch/latest",
 				),
 			);
 
@@ -79,7 +80,7 @@
 					'Santa package manager'.CR.
 					'Internal package manager for YaWF system'.CR,
 
-				"foot" => '',
+				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch',
 			);
 		}
 	}
@@ -105,6 +106,9 @@
 		}
 
 
+		/** Get list of all available packages
+		 * @return void
+		 */
 		public static function browse()
 		{
 			$branches = System\Package::get_tree();
@@ -182,6 +186,7 @@
 			}
 		}
 
+
 		/** Generate .gitignore and print it into STDOUT
 		 * @return void
 		 */
@@ -256,50 +261,50 @@
 		 */
 		public static function upgrade()
 		{
-			$params = CLIOptions::get('params');
-			!isset($params[0]) && $params[0] = 'stable';
-
-			@list($branch, $version) = explode('/', $params[0], 2);
-			$updates = System\Update::get_update_list($branch);
-
-			if (!isset($version) || !$version) {
-
-				out("0: Latest");
-				foreach ($updates['list'] as $key => $up) {
-					out($key+1 . ': YaCMS '.$up['version']. ' ('.format_date($up['ctime'], 'sql').')');
+			$params = YacmsCLIOptions::get('params');
+			if (any($params)) {
+				if ($latest = YacmsCLIOptions::get('force')) {
+					out('Warning: selecting newest versions including testing branch. You should consider staying on one package branch, preferrably stable!');
+					out();
 				}
 
-				out();
-				$str = read("Pick your new version [0-".(count($updates['list']))."]: ");
-				($str == '' || $str < 0 || $str > count($updates)) && give_up("Invalid choice");
-
-				$version = $str == 0 ? $updates['latest']:$updates[$str]['version'];
-				vout();
-			}
-
-			if ($version == 'latest') {
-				$version = $updates['latest'];
-			}
-
-			foreach ($updates['list'] as $up) {
-				if ($up['version'] == $version) {
-					$ok = true;
-					break;
+				$updates = array();
+				foreach ($params as $pkg_name) {
+					if (($pkg = System\Package::from_name($pkg_name)) instanceof System\Package) {
+						if ($pkg->is_available_for_update(!$latest)) {
+							$updates[] = $pkg;
+						}
+					} else {
+						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
+						exit(1);
+					}
 				}
+			} else {
+				$updates = System\Update::get_update_list();
 			}
 
-			if ($ok) {
-				vout("Downloading package ..");
-				System\Update::download($branch, $version);
+			if (any($updates)) {
+				out(l('Following packages will be upgraded:'));
+				foreach ($updates as $pkg) {
+					$old_branch = (System\Cli::term_color($pkg->branch.'/'.$pkg->version, self::$branch_colors[$pkg->branch]));
+					list($newb, $newv) = explode('/', $new = $pkg->latest_version());
+					$newbc = self::$branch_colors[$newb];
+					$new_branch = (System\Cli::term_color($new, $newbc));
+					out(' ['.System\Cli::term_color('U', $newbc).'] '.$pkg->name.' ('.$old_branch.' -> '.$new_branch.')');
+					out();
 
-				vout("Installing package ..");
-				System\Update::apply($branch, $version);
+					if ($proceed = is_yes(read('Do you wish to proceed? '))) {
+						self::hard_install($updates);
+					}
+				}
+			} else out(l('There are no upgrades for selected packages.'));
 
-				out("YaCMS was updated to '".$version."'");
-			} else give_up("Requested package not found: '".$version."'");
 		}
 
 
+		/** Install a set of packages
+		 * @return void
+		 */
 		public static function install()
 		{
 			$params = YacmsCLIOptions::get('params');
@@ -325,40 +330,7 @@
 
 				out();
 				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
-					out(l('Installing packages ..'));
-					$total = count($packages);
-
-					$msg = 'Downloading packages';
-					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					foreach ($packages as $key=>$pkg) {
-						$pkg->download($pkg->selected[0], $pkg->selected[1]);
-						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					}
-
-					$msg = 'Checking for file conflicts';
-					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					foreach ($packages as $key=>$pkg) {
-						$result = $pkg->check_files();
-
-						if (any($result)) {
-							out_flist(array(
-								"Path"    => $result['path'],
-								"Package" => $result['package'],
-								"Old"     => $result['old'],
-								"New"     => $result['new'],
-							));
-							exit(1);
-						}
-
-						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					}
-
-					$msg = 'Installing packages';
-					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					foreach ($packages as $key=>$pkg) {
-						$pkg->install();
-						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-					}
+					self::hard_install($packages);
 				}
 
 			} else out(l('Please input package name or use --help'));
@@ -388,6 +360,80 @@
 
 			vout();
 			self::updates();
+		}
+
+
+		/** Install a set of packages
+		 */
+		private static function hard_install(array $packages)
+		{
+			out(l('Installing packages ..'));
+			$total = count($packages);
+
+			$msg = 'Downloading packages';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$pkg->download($pkg->selected[0], $pkg->selected[1]);
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}
+
+			$msg = 'Checking for file conflicts';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$result = $pkg->check_files();
+
+				if (any($result)) {
+					out_flist(array(
+						"Path"    => $result['path'],
+						"Package" => $result['package'],
+						"Old"     => $result['old'],
+						"New"     => $result['new'],
+					));
+					exit(1);
+				}
+
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}
+
+			$msg = 'Installing packages';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$pkg->install();
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}					out(l('Installing packages ..'));
+			$total = count($packages);
+
+			$msg = 'Downloading packages';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$pkg->download($pkg->selected[0], $pkg->selected[1]);
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}
+
+			$msg = 'Checking for file conflicts';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$result = $pkg->check_files();
+
+				if (any($result)) {
+					out_flist(array(
+						"Path"    => $result['path'],
+						"Package" => $result['package'],
+						"Old"     => $result['old'],
+						"New"     => $result['new'],
+					));
+					exit(1);
+				}
+
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}
+
+			$msg = 'Installing packages';
+			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			foreach ($packages as $key=>$pkg) {
+				$pkg->install();
+				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			}
 		}
 	}
 
