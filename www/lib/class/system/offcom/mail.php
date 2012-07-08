@@ -1,8 +1,8 @@
 <?
 
-namespace Core\Offcom
+namespace System\Offcom
 {
-	class Mail extends \Core\System\Model\Offcom
+	class Mail
 	{
 		private static $errors = array();
 		

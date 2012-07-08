@@ -1,8 +1,8 @@
 <?
 
-namespace Core\System\User\Contact
+namespace System\User\Contact
 {
-	class Type extends \Core\System\Model\Basic
+	class Type extends \System\Model\Basic
 	{
 		static protected $id_col = 'id_user_contact_type';
 		static protected $table = 'user_contact_type';
