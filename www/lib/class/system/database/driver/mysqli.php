@@ -1,4 +1,4 @@
-<?php
+<?
 
 namespace System\Database\Driver
 {
@@ -28,7 +28,7 @@ namespace System\Database\Driver
 		/**
 		 * Connects to a database.
 		 * @return void
-		 * @throws DibiException
+		 * @throws DatabaseException
 		 */
 		public function connect(array &$config)
 		{
@@ -231,22 +231,6 @@ namespace System\Database\Driver
 		}
 
 
-		/** Decodes data from result set.
-		 * @param  string    value
-		 * @param  string    type (dibi::BINARY)
-		 * @return string    decoded value
-		 * @throws ArgumentException
-		 */
-		public function unescape($value, $type)
-		{
-			if ($type === dibi::BINARY) {
-				return $value;
-			}
-
-			throw new ArgumentException('Unsupported type.');
-		}
-
-
 		/** Automatically frees the resources allocated for this result set.
 		 * @return void
 		 */
@@ -292,7 +276,7 @@ namespace System\Database\Driver
 		/** Moves cursor position without fetching row.
 		 * @param  int      the 0-based cursor pos to seek to
 		 * @return boolean  TRUE on success, FALSE if unable to seek to specified record
-		 * @throws DibiException
+		 * @throws DatabaseException
 		 */
 		public function seek($row)
 		{
