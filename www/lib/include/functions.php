@@ -307,7 +307,7 @@ function read_dir_contents($dir, array &$files, array &$directories, array &$use
 		if ($f != '.' && $f != '..') {
 			$fp = $dir.'/'.$f;
 			if (is_dir($fp)) {
-				read_dir_contents($fp, $files, $directories);
+				read_dir_contents($fp, $files, $directories, $used);
 				if (!in_array($fp, $used)) {
 					$directories[] = $fp;
 					$used[] = $fp;
