@@ -2,7 +2,7 @@
 
 namespace System
 {
-	abstract class Cli
+	abstract class Console
 	{
 		private static $term_colors = array(
 			'gray'   => "[1;30m",
@@ -30,6 +30,7 @@ namespace System
 		 * @param string $text
 		 * @param string $color
 		 * @param bool   $back
+		 * @return string
 		 */
 		public static function term_color($text, $color = "NORMAL")
 		{
@@ -39,7 +40,12 @@ namespace System
 
 			return chr(27).$out.$text.chr(27)."[0m";
 		}
-		
+
+
+		/** Remove all colors from text
+		 * @param string $text
+		 * @return string
+		 */
 		public static function term_remove_color($text)
 		{
 			$text = preg_replace('/'.chr(27).'\[[0-9];[0-9]*\m?/', '', $text);
