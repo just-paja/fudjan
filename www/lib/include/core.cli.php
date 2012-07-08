@@ -1,8 +1,6 @@
 <?
 
 
-require_once ROOT.'/lib/class/system/cli.php';
-
 // Container for commands and options
 abstract class YacmsCLIOptions
 {
