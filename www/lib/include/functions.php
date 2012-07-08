@@ -291,3 +291,34 @@ function cflc($str, $case = System\Template::CASE_UPPER)
 	}
 	return $str;
 }
+
+
+/** Reads contents of directory
+ * @param string $dir
+ * @param &array $files
+ * @param &array $directories
+ * @param &array $used
+ * @return void
+ */
+function read_dir_contents($dir, array &$files, array &$directories, array &$used = array())
+{
+	$od = opendir($dir);
+	while ($f = readdir($od)) {
+		if ($f != '.' && $f != '..') {
+			$fp = $dir.'/'.$f;
+			if (is_dir($fp)) {
+				read_dir($fp, $files, $directories);
+				if (!in_array($fp, $used)) {
+					$directories[] = $fp;
+					$used[] = $fp;
+				}
+			} else {
+				if (!in_array($fp, $used)) {
+					$files[] = $fp;
+					$used[] = $fp;
+				}
+			}
+		}
+	}
+	closedir($od);
+}
