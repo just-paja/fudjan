@@ -184,6 +184,7 @@ define('PACKAGE_CATEGORY', 'core');
 define('PACKAGE_VERSION', exec(ROOT.'/scripts/get-version.sh'));
 define('PACKAGE_BRANCH', 'testing');
 
+define('PROJECT_DIR', ROOT.'/www');
 define('PROJECT_NAME', 'YaWF');
 define('PROJECT_DESC', 'Yet Another Web Framework');
 
@@ -273,7 +274,7 @@ exec('rm -R '.WORKING_DIR_CLASSES);
 // Create files checksum
 $msg = 'Calculating package checksums';
 show_progress_cli(1, 1000, CONSOLE_WIDTH, '', $msg);
-$files = array_filter(explode("\n", shell_exec('cd www; git ls-files')));
+$files = array_filter(explode("\n", shell_exec('cd '.PROJECT_DIR.'; git ls-files')));
 $total = count($files);
 $banned_files = array(
 	'.htaccess',
