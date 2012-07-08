@@ -1,32 +1,151 @@
 #!/usr/bin/php
 <?
 
-function strip_code($dir)
-{
-	static $used;
-	if ($used == null) $used = array();
+/** Compress PHP code
+ * @param string $src URL or code
+ * @returns string
+ */
+function compress_php_src($src) {
+	// Whitespaces left and right from this signs can be ignored
+	static $IW = array(
+		T_CONCAT_EQUAL,			// .=
+		T_DOUBLE_ARROW,			// =>
+		T_BOOLEAN_AND,			 // &&
+		T_BOOLEAN_OR,			  // ||
+		T_IS_EQUAL,				// ==
+		T_IS_NOT_EQUAL,			// != or <>
+		T_IS_SMALLER_OR_EQUAL,	 // <=
+		T_IS_GREATER_OR_EQUAL,	 // >=
+		T_INC,					 // ++
+		T_DEC,					 // --
+		T_PLUS_EQUAL,			  // +=
+		T_MINUS_EQUAL,			 // -=
+		T_MUL_EQUAL,				// *=
+		T_DIV_EQUAL,				// /=
+		T_IS_IDENTICAL,			// ===
+		T_IS_NOT_IDENTICAL,		// !==
+		T_DOUBLE_COLON,			// ::
+		T_PAAMAYIM_NEKUDOTAYIM,	// ::
+		T_OBJECT_OPERATOR,		 // ->
+		T_DOLLAR_OPEN_CURLY_BRACES, // ${
+		T_AND_EQUAL,				// &=
+		T_MOD_EQUAL,				// %=
+		T_XOR_EQUAL,				// ^=
+		T_OR_EQUAL,				// |=
+		T_SL,					  // <<
+		T_SR,					  // >>
+		T_SL_EQUAL,				// <<=
+		T_SR_EQUAL,				// >>=
+	);
 
-	$od = opendir($dir);
-	$code = '';
-
-	while ($file = readdir($od)) {
-		if (strpos($file, '.') !== 0) {
-			if (is_dir($dir.'/'.$file)) {
-				strip_code($dir.'/'.$file);
-			} else {
-				if (!in_array($dir.'/'.$file, $used)) {
-					$used[] = $dir.'/'.$file;
-					$code .= str_replace(array('<?php', '<?', "\t", "\n"), '', php_strip_whitespace($dir.'/'.$file));
-				}
-			}
+	if(is_file($src)) {
+		if(!$src = file_get_contents($src)) {
+			return false;
 		}
 	}
+
+	$tokens = token_get_all($src);
+	$new = "";
+	$c = sizeof($tokens);
+	$iw = false; // ignore whitespace
+	$ih = false; // in HEREDOC
+	$ls = "";	// last sign
+	$ot = null;  // open tag
+
+	for($i = 0; $i < $c; $i++) {
+		$token = $tokens[$i];
+		if(is_array($token)) {
+			list($tn, $ts) = $token; // tokens: number, string, line
+			$tname = token_name($tn);
+			if($tn == T_INLINE_HTML) {
+				$new .= $ts;
+				$iw = false;
+			} else {
+				if($tn == T_OPEN_TAG) {
+					if(strpos($ts, " ") || strpos($ts, "\n") || strpos($ts, "\t") || strpos($ts, "\r")) {
+						$ts = rtrim($ts);
+					}
+					$ts .= " ";
+					$new .= $ts;
+					$ot = T_OPEN_TAG;
+					$iw = true;
+				} elseif ($tn == T_OPEN_TAG_WITH_ECHO) {
+					$new .= $ts;
+					$ot = T_OPEN_TAG_WITH_ECHO;
+					$iw = true;
+				} elseif($tn == T_CLOSE_TAG) {
+					if($ot == T_OPEN_TAG_WITH_ECHO) {
+						$new = rtrim($new, "; ");
+					} else {
+						$ts = " ".$ts;
+					}
+					$new .= $ts;
+					$ot = null;
+					$iw = false;
+				} elseif(in_array($tn, $IW)) {
+					$new .= $ts;
+					$iw = true;
+				} elseif($tn == T_CONSTANT_ENCAPSED_STRING
+						|| $tn == T_ENCAPSED_AND_WHITESPACE)
+				{
+					if($ts[0] == '"') {
+						$ts = addcslashes($ts, "\n\t\r");
+					}
+					$new .= $ts;
+					$iw = true;
+				} elseif($tn == T_WHITESPACE) {
+					$nt = @$tokens[$i+1];
+					if(!$iw && (!is_string($nt) || $nt == '$') && !in_array($nt[0], $IW)) {
+						$new .= " ";
+					}
+					$iw = false;
+				} elseif($tn == T_START_HEREDOC) {
+					$new .= "<<<S\n";
+					$iw = false;
+					$ih = true; // in HEREDOC
+				} elseif($tn == T_END_HEREDOC) {
+					$new .= "S;";
+					$iw = true;
+					$ih = false; // in HEREDOC
+					for($j = $i+1; $j < $c; $j++) {
+						if(is_string($tokens[$j]) && $tokens[$j] == ";") {
+							$i = $j;
+							break;
+						} else if($tokens[$j][0] == T_CLOSE_TAG) {
+							break;
+						}
+					}
+				} elseif($tn == T_COMMENT || $tn == T_DOC_COMMENT) {
+					$iw = true;
+				} else {
+					$new .= $ts;
+					$iw = false;
+				}
+			}
+			$ls = "";
+		} else {
+			if(($token != ";" && $token != ":") || $ls != $token) {
+				$new .= $token;
+				$ls = $token;
+			}
+			$iw = true;
+		}
+	}
+	return $new;
+}
+
+
+function strip_code($files)
+{
+	$code = '';
+
+
 
 	return $code;
 }
 
 
-function read_dir($dir, &$files, &$directories)
+function read_dir($dir, array &$files, array &$directories, array &$used = array())
 {
 	$od = opendir($dir);
 	while ($f = readdir($od)) {
@@ -34,9 +153,15 @@ function read_dir($dir, &$files, &$directories)
 			$fp = $dir.'/'.$f;
 			if (is_dir($fp)) {
 				read_dir($fp, $files, $directories);
-				$directories[] = $fp;
+				if (!in_array($fp, $used)) {
+					$directories[] = $fp;
+					$used[] = $fp;
+				}
 			} else {
-				$files[] = $fp;
+				if (!in_array($fp, $used)) {
+					$files[] = $fp;
+					$used[] = $fp;
+				}
 			}
 		}
 	}
@@ -94,26 +219,56 @@ exec('
 	cd '.WORKING_DIR_DATA.'; 
 	tar -xf '.WORKING_TEMP_FILE.';
 	git log > '.WORKING_DIR_META.'/changelog;
-	echo '.PROJECT_NAME.'    > '.WORKING_FILE_VERSION.';
-	echo '.PROJECT_DESC.'    >> '.WORKING_FILE_VERSION.';
+	echo '.PROJECT_NAME.'	> '.WORKING_FILE_VERSION.';
+	echo '.PROJECT_DESC.'	>> '.WORKING_FILE_VERSION.';
 	echo '.PACKAGE_VERSION.' >> '.WORKING_FILE_VERSION.';
 	echo '.PACKAGE_CATEGORY.'/'.PACKAGE_NAME.' >> '.WORKING_FILE_VERSION.';
 	rm '.WORKING_TEMP_FILE.';
+	mkdir '.WORKING_DIR_DATA.'/share;
+	mkdir '.WORKING_DIR_DATA.'/var;
+	chmod 777 '.WORKING_DIR_DATA.'/var;
 ');
 show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
 
 
-// Optimize system classes code
-$msg = 'Compiling system classes';
+
+// Optimize system code
+$msg = 'Compiling system code';
 show_progress_cli(0, 100, CONSOLE_WIDTH, '', $msg);
 
-$code_classes  = '<?';
-$code_classes .= strip_code(WORKING_DIR_CLASSES.'/model');
-$code_classes .= strip_code(WORKING_DIR_CLASSES);
+$code  = '<? ';
+$code .= 'define(\'YAWF_PACKED\', true);';
+$minified = array();
+$dirs = array();
+$used = array();
 
-file_put_contents(WORKING_FILE_SYSTEM_CLASSES, $code_classes);
+read_dir(WORKING_DIR_CLASSES.'/model', $minified, $dirs, $used);
+read_dir(WORKING_DIR_CLASSES, $minified, $dirs, $used);
+$minified[] = WORKING_DIR_DATA.'/lib/include/core.php';
+$minified[] = WORKING_DIR_DATA.'/lib/include/functions.php';
+$minified[] = WORKING_DIR_DATA.'/lib/include/aliases.php';
+
+$total = count($minified);
+
+foreach($minified as $key=>$file) {
+	$code .= str_replace(array('<?php', '<?', "\t", "\n"), '', compress_php_src($file));
+	show_progress_cli($key+1, $total, CONSOLE_WIDTH, '', $msg);
+}
+
+file_put_contents(WORKING_FILE_SYSTEM_CLASSES, $code);
+
+
+
+// Delete optimized files
+$msg = 'Deleting minified files';
+show_progress_cli(0, $total, CONSOLE_WIDTH, '', $msg);
+foreach ($minified as $key=>$file) {
+	@unlink($file);
+	show_progress_cli($key+1, $total, CONSOLE_WIDTH, '', $msg);
+}
 exec('rm -R '.WORKING_DIR_CLASSES);
-show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
+
+
 
 // Create files checksum
 $msg = 'Calculating package checksums';
@@ -121,21 +276,25 @@ show_progress_cli(1, 1000, CONSOLE_WIDTH, '', $msg);
 $files = array_filter(explode("\n", shell_exec('cd www; git ls-files')));
 $total = count($files);
 $banned_files = array(
+	'.htaccess',
 	'install.php',
 	'meta/checksum',
 	'meta/changelog',
 	'meta/version',
 );
 
+foreach ($minified as $file) {
+	$banned_files[] = str_replace(WORKING_DIR_DATA.'/', '', $file);
+}
 
 foreach ($files as $key=>$file) {
 	if (!in_array($file, $banned_files) && strpos($file, 'lib/class/system') === false) {
-		exec('cd www; md5sum '.$file.' >> '.WORKING_FILE_CHECKSUM);
+		exec('cd '.WORKING_DIR_DATA.'; md5sum '.$file.' >> '.WORKING_FILE_CHECKSUM);
 	}
 	show_progress_cli($key+1, $total, CONSOLE_WIDTH, '', $msg);
 }
-exec('cd '.WORKING_DIR_DATA.'; md5sum '.str_replace(WORKING_DIR_DATA.'/', '', WORKING_FILE_SYSTEM_CLASSES).' >> '.WORKING_FILE_CHECKSUM);
 
+exec('cd '.WORKING_DIR_DATA.'; md5sum '.str_replace(WORKING_DIR_DATA.'/', '', WORKING_FILE_SYSTEM_CLASSES).' >> '.WORKING_FILE_CHECKSUM);
 
 // Pack it all together
 $msg = 'Creating package archive';
@@ -163,6 +322,8 @@ foreach ($dirs as $f) {
 	rmdir($f); 
 	show_progress_cli($x++, $total, CONSOLE_WIDTH, '', $msg);
 }
+
+rmdir(WORKING_DIR);
 
 
 // Write response
