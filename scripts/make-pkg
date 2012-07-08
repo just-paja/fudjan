@@ -116,6 +116,7 @@ exec('rm -R '.WORKING_DIR_CLASSES);
 show_progress_cli(100, 100, CONSOLE_WIDTH, '', $msg);
 
 // Create files checksum
+$msg = 'Calculating package checksums';
 show_progress_cli(1, 1000, CONSOLE_WIDTH, '', $msg);
 $files = array_filter(explode("\n", shell_exec('cd www; git ls-files')));
 $total = count($files);
@@ -126,7 +127,6 @@ $banned_files = array(
 	'meta/version',
 );
 
-$msg = 'Calculating package checksums';
 
 foreach ($files as $key=>$file) {
 	if (!in_array($file, $banned_files) && strpos($file, 'lib/class/system') === false) {

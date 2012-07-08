@@ -415,35 +415,89 @@ namespace System
 
 			return false;
 		}
-	
-	
+
+
+		/** Install package
+		 */
 		public function install()
 		{
-			
-		}
-		
-		
-		public function check_files()
-		{
-			$installed = self::get_all_installed();
-			$my_files = $this->get_file_manifest();
-			$blocks = array();
-							var_dump($my_files);
+			$this->extract();
+			$bad = array();
+			$tdir = $this->get_tmp_dir();
+			self::install_recursive($tdir.'/data', $tdir.'/data', $bad);
 
-			foreach ($installed as $pkg) {
-				if ($pkg->name != $this->name) {
-					$current_files = $pkg->get_file_manifest();
-					foreach ($my_files as $mf) {
-						foreach ($current_files as $cf) {
-							var_dump($mf);
-							var_dump($cf);
+			@mkdir(ROOT.self::DIR_META.'/'.$this->name, 0777, true);
+			rename($tdir.'/meta/checksum',  ROOT.self::DIR_META.'/'.$this->name.'/checksum');
+			rename($tdir.'/meta/changelog', ROOT.self::DIR_META.'/'.$this->name.'/changelog');
+			rename($tdir.'/meta/version',   ROOT.self::DIR_META.'/'.$this->name.'/version');
+
+			if ($this->name == 'core/yawf') {
+				copy(ROOT.self::DIR_META.'/'.$this->name.'/version', ROOT.self::DIR_META.'/version');
+			}
+
+			return !!(empty($bad)) ?
+				message("success", sprintf(l('Install %s'), $this->name), l('Installation was successful')):
+				$bad;
+		}
+
+
+		/** Browse all dirs and copy files into install dir
+		 * @return void
+		 */
+		private static function install_recursive($dir, $root, &$bad)
+		{
+			$dp = opendir($dir);
+			while ($f = readdir($dp)) {
+				if (!in_array($f, array('.', '..'))) {
+					if (is_dir($dir.'/'.$f)) {
+						if (!is_dir($newdir = str_replace($root, ROOT, $dir).'/'.$f)) {
+							mkdir($newdir, 0777, true);
+						}
+						self::install_recursive($dir.'/'.$f, $root, $bad);
+					} else {
+						if (!copy($dir.'/'.$f, $nf = str_replace($root, ROOT, $dir).'/'.$f)) {
+							$bad[] = str_replace(ROOT, NULL, $nf);
 						}
 					}
 				}
 			}
 		}
 
-		
+
+		/** Check if package files don't conflict any other
+		 * @return array Conflict
+		 */
+		public function check_files()
+		{
+			$installed = self::get_all_installed();
+			$my_files = $this->get_file_manifest();
+			$blocks = array();
+
+			foreach ($installed as $pkg) {
+				if ($pkg->name != $this->name) {
+					$current_files = $pkg->get_file_manifest();
+					foreach ($my_files as $mf) {
+						foreach ($current_files as $cf) {
+							if ($mf['path'] == $cf['path']) {
+								$blocks[] = array(
+									"path" => $mf['path'],
+									"old"  => $cf['checksum'],
+									"new"  => $cf['checksum'],
+									"package" => $pkg->name.'-'.$pkg->version,
+								);
+							}
+						}
+					}
+				}
+			}
+
+			return $blocks;
+		}
+
+
+		/** Get latest version of package
+		 * @return string
+		 */
 		public function latest_version()
 		{
 			$versions = $this->get_available();

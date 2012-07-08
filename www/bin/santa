@@ -140,7 +140,7 @@
 
 				foreach ($available as &$ver) {
 					list($branch, $version) = explode('/', $ver);
-					
+
 					if ($branch == 'testing') {
 						$gray = true;
 					}
@@ -299,7 +299,7 @@
 			} else give_up("Requested package not found: '".$version."'");
 		}
 
-	
+
 		public static function install()
 		{
 			$params = YacmsCLIOptions::get('params');
@@ -328,17 +328,36 @@
 					out(l('Installing packages ..'));
 					$total = count($packages);
 
-					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '');
+					$msg = 'Downloading packages';
+					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 					foreach ($packages as $key=>$pkg) {
 						$pkg->download($pkg->selected[0], $pkg->selected[1]);
-						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '');
+						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 					}
-					
-					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '');
+
+					$msg = 'Checking for file conflicts';
+					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 					foreach ($packages as $key=>$pkg) {
-						$pkg->check_files();
+						$result = $pkg->check_files();
+
+						if (any($result)) {
+							out_flist(array(
+								"Path"    => $result['path'],
+								"Package" => $result['package'],
+								"Old"     => $result['old'],
+								"New"     => $result['new'],
+							));
+							exit(1);
+						}
+
+						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+					}
+
+					$msg = 'Installing packages';
+					show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+					foreach ($packages as $key=>$pkg) {
 						$pkg->install();
-						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '');
+						show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 					}
 				}
 
