@@ -7,9 +7,6 @@ RewriteRule ^(bin|etc|(lib(?!/common))|(var/(backups|cache|log))) ./index.php [Q
 # Catch icons
 RewriteRule ^share/icons/(([a-zA-Z0-9\-\_]*)/)?([0-9]{1,4})/([a-zA-Z0-9\-]*)/([a-zA-Z0-9\-_]*) lib/common/icon.php?theme=$2&size=$3&catg=$4&name=$5 [L]
 
-# GodMode
-RewriteRule ^god/?([\+\#\%\,\.\-a-zA-Z0-9\/\!\:éěÉĚřŘťŤžŽúÚůŮüÜíÍóÓáÁšŠďĎýÝčČňŇäÄĺĹľĽŕŔöÖ]*)?$ /index.php?force_setup=1&path=god/$1 [L,QSA]
-
 # Pass request to YaCMS
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
