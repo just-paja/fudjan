@@ -330,4 +330,4 @@ rmdir(WORKING_DIR);
 out();
 out('Package was created in "'.WORKING_FILE.'.tar.bz2"');
 
-copy(WORKING_FILE.'.tar.bz2', ROOT.'/../yacms.scourge.local/www/packages/tree/'.PACKAGE_BRANCH.'/'.PACKAGE_CATEGORY.'/'.PACKAGE_NAME.'-'.PACKAGE_VERSION.'.tar.bz2');
+copy(WORKING_FILE.'.tar.bz2', ROOT.'/../site/www/packages/tree/'.PACKAGE_BRANCH.'/'.PACKAGE_CATEGORY.'/'.PACKAGE_NAME.'-'.PACKAGE_VERSION.'.tar.bz2');
