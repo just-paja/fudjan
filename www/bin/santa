@@ -438,13 +438,17 @@
 
 			foreach ($files as $file) {
 				unlink($file);
-				show_progress_cli($x++, 100, YacmsCLIOptions::get_con_width(), '', $msg);
+				show_progress_cli($x++, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 			}
 
 			foreach ($dirs as $file) {
 				rmdir($file);
-				show_progress_cli($x++, 100, YacmsCLIOptions::get_con_width(), '', $msg);
+				show_progress_cli($x++, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 			}
+
+			show_progress_cli($total, $total, YacmsCLIOptions::get_con_width(), '', $msg);
+			out();
+			out('Done.');
 		}
 	}
 
