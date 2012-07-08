@@ -140,12 +140,12 @@ namespace System
 		 */
 		private static function load_tree($force = false)
 		{
-			if (empty(self::$tree)) {
-				if (file_exists($tp = ROOT.'/'.self::DIR_TMP_TREE.'/tree.json') && filectime($tp) > self::CACHE_MAX) {
+			if (empty(self::$tree) || $force) {
+				if (!$force && file_exists($tp = ROOT.'/'.self::DIR_TMP_TREE.'/tree.json') && filectime($tp) > self::CACHE_MAX) {
 					self::$tree = json_decode(file_get_contents($tp), true);
 					if (empty(self::$tree)) {
 						unlink($tp);
-						self::$tree = self::load_tree();
+						self::load_tree();
 					}
 				} else {
 					$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/list.json.php');
