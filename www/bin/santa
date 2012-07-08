@@ -79,7 +79,7 @@
 					'Santa package manager'.CR.
 					'Internal package manager for YaWF system'.CR,
 
-				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch',
+				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch'.CR,
 			);
 		}
 	}
