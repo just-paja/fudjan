@@ -6,8 +6,6 @@ define("DIR_LOCALES",  'lib/locales');
 define("DIR_TEMPLATE", 'lib/template');
 
 ob_implicit_flush(false);
-$Microtime = microtime(true);
-
 
 if (php_sapi_name() == 'cli') {
 	$last = end($argv);
@@ -31,6 +29,7 @@ if (!defined("YAWF_ERROR_HANDLERS")) {
 }
 
 
+System\Flow::init();
 System\Settings::init();
 System\Cache::init();
 System\Locales::init();

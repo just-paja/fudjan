@@ -17,11 +17,21 @@ namespace System
 
 		private static $queue = array();
 		private static $redirect = array();
+		private static $start_time = 0.0;
 
 
 		public static function enqueue(Module &$module)
 		{
 			self::$queue[] = $module;
+		}
+
+
+		/** Class init
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::$start_time = microtime(true);
 		}
 
 
@@ -79,6 +89,12 @@ namespace System
 		private static function save_referer()
 		{
 			if(!!Status::$save_referer) $_SESSION['yacms-referer'] = $_SERVER['REQUEST_URI'];
+		}
+		
+		
+		public static function get_exec_time()
+		{
+			return microtime(true) - self::$start_time;
 		}
 	}
 }
