@@ -301,6 +301,8 @@
 				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
 					self::hard_install($updates);
 				}
+
+				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
 			} else out(l('There are no upgrades for selected packages.'));
 
 		}
@@ -336,6 +338,8 @@
 				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
 					self::hard_install($packages);
 				}
+
+				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
 
 			} else out(l('Please input package name or use --help'));
 		}
