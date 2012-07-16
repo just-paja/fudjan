@@ -30,9 +30,9 @@ namespace System
 			}
 
 			self::$input = array_merge_recursive((array) $_GET, (array) $_POST, (array) $_FILES);
+			self::$input['path'] = $_SERVER['REQUEST_URI'];
 			self::fix_input(self::$input);
 			unset($_GET, $_POST);
-			Status::log("Input", array(count(self::$input). ' input vars'), true);
 		}
 
 
