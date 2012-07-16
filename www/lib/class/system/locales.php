@@ -156,7 +156,7 @@ namespace System
 		 */
 		private static function load_messages($lang)
 		{
-			($d = !isset(self::$messages[$lang])) && \System\Json::read_json_dist(
+			($d = !isset(self::$messages[$lang])) && \System\Json::read_dist(
 				ROOT.self::DIR.'/'.self::get_lang().self::DIR_MESSAGES,
 				self::$messages[self::get_lang()]
 			);

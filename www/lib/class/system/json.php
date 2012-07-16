@@ -9,7 +9,7 @@ namespace System
 		 * @param &array $temp     Variable to write in
 		 * @return array
 		 */
-		public static function read_json_dist($dir_dist, &$temp = array(), $assoc_keys = false)
+		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false)
 		{
 			!$assoc_keys && ($temp = array());
 			$dir = opendir($dir_dist);
