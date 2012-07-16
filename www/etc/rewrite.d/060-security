@@ -1,0 +1,2 @@
+# Deny access to sensitive dirs
+RewriteRule ^(bin|etc|(lib(?!/common))|(var/(backups|cache|log))) ./index.php [QSA]
