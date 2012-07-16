@@ -28,7 +28,7 @@ out();
 sep();
 out("System error!");
 out();
-$errors = Core\System\Status::format_errors($desc);
+$errors = System\Status::format_errors($desc);
 foreach ($errors as $e) {
 	out("  ".$e);
 }
