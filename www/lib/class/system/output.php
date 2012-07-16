@@ -211,7 +211,7 @@ namespace System
 
 				if (Settings::get('dev', 'debug') && !Output::$ajax) {
 					$log = Status::unlog();
-					Output::add_template(array("name" => 'core/universal/status-dump', "locals" => array("log" => $log)), SETUP ? "status-dump":Template::DEFAULT_SLOT);
+					Output::add_template(array("name" => 'core/universal/status-dump', "locals" => array("log" => $log)), Template::DEFAULT_SLOT);
 				}
 
 				$name = array_shift(self::$template);
