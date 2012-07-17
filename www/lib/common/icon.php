@@ -17,17 +17,17 @@ header("Expires: ".gmdate('D, d M Y G:i:s T', time()+7*86400));
 header("Age: 0");
 
 $path = '';
-$theme = Core\System\Input::get('theme');
-$theme = $theme ? $theme:Core\System\Template::get_icon_theme();
-$size = Core\System\Input::get('size');
-$catg = Core\System\Input::get('catg');
-$name = Core\System\Input::get('name');
+$theme = System\Input::get('theme');
+$theme = $theme ? $theme:System\Template::get_icon_theme();
+$size = System\Input::get('size');
+$catg = System\Input::get('catg');
+$name = System\Input::get('name');
 
-file_exists($path = ROOT.Core\System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/'.$name.'.png') ||
-file_exists($path = ROOT.Core\System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/default.png') ||
-file_exists($path = ROOT.Core\System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/default.png') ||
-file_exists($path = ROOT.Core\System\Template::DIR_ICONS.'/'.Core\System\Template::DEFAULT_ICON_THEME.'/'.$size.'/'.$catg.'/default.png') ||
-file_exists($path = ROOT.Core\System\Template::DIR_ICONS.'/'.Core\System\Template::DEFAULT_ICON_THEME.'/'.$size.'/default.png') ||
+file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/'.$name.'.png') ||
+file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/default.png') ||
+file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/default.png') ||
+file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.System\Template::DEFAULT_ICON_THEME.'/'.$size.'/'.$catg.'/default.png') ||
+file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.System\Template::DEFAULT_ICON_THEME.'/'.$size.'/default.png') ||
 ($path = '');
 
 if ($path) {
