@@ -55,7 +55,7 @@ namespace System
 
 				if ($return_affected = (isset($data[0]) && is_array($data[0]))) {
 
-
+					// more rows per one query
 
 				} else {
 					$sql .= "SET ";
@@ -70,14 +70,54 @@ namespace System
 
 				try {
 					$res = $db->query($sql);
-				} catch (Exception $e) {
-					var_dump($sql);
+				} catch (\Exception $e) {
 					throw new DatabaseException(l('Could not insert data, query is below.'), $sql);
 				}
 
 				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
 			} else throw new DatabaseException('Not connected to database "'.$db_name.'"');
+		}
+
+
+		/** Perform a quick update
+		 * @param string $table
+		 * @param string $id_col
+		 * @param array  $data
+		 * @param bool   $add_times
+		 */
+		public static function simple_update($table, $id_col, $id, array $data, $add_times = true, $db_name = null)
+		{
+			if (($db = self::get_db($db_name)) !== null) {
+				if ($add_times) {
+					$data['updated_at'] = new \DateTime();
+				}
+
+				$sql_data = array();
+				$conds = array();
+
+				if (is_array($id)) {
+					$cond = "IN(".implode(',', array_map('intval', $id)).")";
+				} else {
+					$cond = "= ".$id;
+				}
+				
+				foreach ($data as $col=>$data) {
+					$sql_data[] = "`".$col."` = ".self::escape($data);
+				}
+				
+				$sql = "UPDATE `".$table."` SET ".implode(',', $sql_data)." WHERE `".$id_col."` ".$cond;
+				self::$queries ++;
+				$result = '';
+
+				try {
+					$result = $db->query($sql);
+				} catch (\Exception $e) {
+					throw new \DatabaseException(l('Could not update data, query is below.'), $sql);
+				}
+
+				return $result;
+			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
 		}
 
 

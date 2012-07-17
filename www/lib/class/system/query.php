@@ -332,37 +332,6 @@ namespace System
 		}
 
 
-		public static function simple_update($table, $id_col, $id, array $data, $add_times = true)
-		{
-			Database::escape($data);
-
-			if($add_times){
-				$data['updated_at'] = new \DateTime();
-			}
-
-			if (is_array($id)) {
-				$cond = "IN(%s)";
-				$id = implode(',', array_map('intval', $id));
-			} else {
-				$cond = "= ";
-			}
-
-			try {
-				self::$queries ++;
-				return Database::update($table, $data)->where("`".$id_col."` ".$cond, $id)->execute();
-			} catch (\Exception $e) {
-				Status::fatal_error($e->getMessage(), $e->getSql());
-			}
-		}
-
-
-		public static function simple_delete($table, array $conds)
-		{
-			$helper = new self(array("table" => $table));
-			$helper->where($conds, false);
-			return $helper->delete();
-		}
-
 
 		public static function count_all()
 		{
@@ -418,7 +387,7 @@ namespace System
 		public function quick()
 		{
 			return isset($this->assoc_with_model) ?
-				$this->where(BasicModel::get_quick_conds($this->assoc_with_model)):
+				$this->where(\System\Model\Basic::get_quick_conds($this->assoc_with_model)):
 				$this;
 		}
 	}

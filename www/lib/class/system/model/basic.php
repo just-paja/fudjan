@@ -384,7 +384,7 @@ namespace System\Model
 				self::prepare_data($model, $data);
 
 				if ($this->id) {
-					\System\Query::simple_update($model::$table, $model::$id_col, $this->id, $data);
+					\System\Database::simple_update($model::$table, $model::$id_col, $this->id, $data);
 				} else {
 					$id = \System\Database::simple_insert($model::$table, $data);
 					if ($id) {
