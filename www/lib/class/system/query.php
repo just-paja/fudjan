@@ -19,40 +19,6 @@ namespace System
 		private $return_first = false;
 
 
-		public static function assoc($result, $class = NULL)
-		{
-			$items = $class ? $result->fetch_model($class):$result->fetch_assoc($class);
-			return $items;
-		}
-
-
-		public static function assoc_by_key($result, $key_name)
-		{
-			$items = array();
-			if ($result){
-				while($data = $result->fetch()){
-					$data = $data->toArray();
-					$items[$data[$key_name]] = $data;
-					unset($items[$data[$key_name]][$key_name]);
-				}
-			}
-			return $items;
-		}
-
-
-		public static function assoc_first($result, $class = NULL)
-		{
-			$result = self::assoc($result, $class);
-			return reset($result);
-		}
-
-
-		public static function first_val(\DibiResult $result)
-		{
-			return $result ? $temp = $result->fetchSingle():false;
-		}
-
-
 		public function __construct(array $opts = array())
 		{
 			def($opts['opts'], array());
@@ -70,13 +36,6 @@ namespace System
 		public function assoc_with($model)
 		{
 			$this->assoc_with_model = $model;
-			return $this;
-		}
-
-
-		public function assoc_with_no_model()
-		{
-			$this->assoc_with_model = NULL;
 			return $this;
 		}
 
@@ -129,6 +88,7 @@ namespace System
 		public function reset_cols()
 		{
 			$this->cols = array();
+			return $this;
 		}
 
 
@@ -410,10 +370,16 @@ namespace System
 		}
 
 
-		public function fetch()
+		public function fetch($key = null, $value = null)
 		{
 			if (any($this->opts['falsify-return-value'])) return $this->false_return_value;
-			return $this->return_first ? self::assoc_first($this->select(), $this->assoc_with_model):self::assoc($this->select(), $this->assoc_with_model);
+
+			$result = $this->select();
+			$data = $this->assoc_with_model ?
+				$result->fetch_model($class, $key):
+				$result->fetch_assoc($key, $value);
+
+			return $this->return_first ? reset($data):$data;
 		}
 
 
@@ -422,8 +388,8 @@ namespace System
 			$this->return_first = true;
 			return $this->fetch();
 		}
-		
-		
+
+
 		public function paginate($per_page = 20, $page_offset = 0)
 		{
 			$this->add_opts(array("per-page" => intval($per_page), "page-offset" => intval($per_page)*intval($page_offset)));

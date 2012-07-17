@@ -27,13 +27,20 @@ namespace System\Database
 		}
 
 
-		public function fetch_assoc()
+		public function fetch_assoc($key = null, $value = null)
 		{
 			$result = array();
 
 			if ($this->res !== null) {
 				while ($data = $this->res->fetch_assoc()) {
-					$result[] = $data;
+					$d = is_null($value) ? $data:$data[$value];
+
+					if (is_null($key)) {
+						$result[] = $d;
+					} else {
+						$result[$data[$key]] = $d;
+					}
+
 					if ($this->first) break;
 				}
 			}
@@ -44,14 +51,18 @@ namespace System\Database
 		}
 
 
-		public function fetch_model($model)
+		public function fetch_model($model, $key = null)
 		{
 			if (!is_string($model)) throw new ArgumentException('Model name must be a string', $model);
 			$result = array();
 
 			if ($this->res !== null) {
 				while ($data = $this->res->fetch_assoc()) {
-					$result[] = new $model($data);
+					if (is_null($key)) {
+						$result[] = new $model($data);
+					} else {
+						$result[$data[$key]] = new $model($data);
+					}	
 					if ($this->first) break;
 				}
 			}
