@@ -53,7 +53,7 @@ namespace System
 			if(!$this->get('method')) $this->attrs['method'] = 'post';
 
 			$this->prefix = $this->get('id').'-';
-			if(!$this->get('action')) $this->set('action', System\Page::get_path());
+			if(!$this->get('action')) $this->set('action', \System\Page::get_path());
 
 			if (any($dataray['hidden']) && is_array($dataray['hidden'])) {
 				foreach($hidden as $k=>$v){
@@ -61,7 +61,7 @@ namespace System
 				}
 			}
 
-			$input = System\Input::get_by_prefix($this->prefix);
+			$input = \System\Input::get_by_prefix($this->prefix);
 			$this->submited = !!def($input['submited'], false);
 			$this->raw_data = $this->is_submited() ? $input:(array)$dataray['default'];
 			$this->compile_data();
@@ -465,7 +465,7 @@ namespace System
 				$opts = array();
 				foreach ($object['options'] as $key=>$obj) {
 					if (is_object($obj)) {
-						if ($obj instanceof \Core\System\BasicModel) {
+						if ($obj instanceof \System\Model\Basic) {
 							$opts[is_callable(array($obj, 'get_name')) ? $obj->get_name():$obj->name] = $obj->id;
 						} else {
 							throw new \Exception("Cannot handle object of class '".get_class($obj)."' in form select");
@@ -709,7 +709,7 @@ namespace System
 
 			return $obj instanceof Module ?
 				$obj->template(self::get_default_template(), (array) $locals + array("f" => $this)):
-				System\Template::partial(self::get_default_template(), array("f" => $this));
+				\System\Template::partial(self::get_default_template(), array("f" => $this));
 		}
 
 
@@ -813,7 +813,7 @@ namespace System
 				$locals += array("f" => &$this);
 				($lambda instanceof \Closure) ? $lambda($locals):include(ROOT."lib/exec/".$lambda.'.php');
 				if(!$locals['no-refresh']){
-					redirect("/".System\Input::get('path'));
+					redirect("/".\System\Input::get('path'));
 				}
 			}
 		}
@@ -821,7 +821,7 @@ namespace System
 
 		public function add_extmodel_attrs($obj,  $use_tabber = true, $new_tabber = true)
 		{
-			$groups = System\ExtModel::get_model_attr_groups($obj);
+			$groups = \System\Model\Ext::get_model_attr_groups($obj);
 
 			foreach ($groups as $group) {
 
@@ -856,12 +856,12 @@ namespace System
 							break;
 
 						case 'tag-single':
-							$tags = get_tree("\Core\Tag", array("id_parent" => $attr->id_tag_root, $attr->max_tag_depth ? "node.depth < ".$attr->max_tag_depth:null))->fetch();
+							$tags = get_tree("\Tag", array("id_parent" => $attr->id_tag_root, $attr->max_tag_depth ? "node.depth < ".$attr->max_tag_depth:null))->fetch();
 							$this->input($attr->seoname, array("type" => 'radio', "label" => $attr->name, "required" => $attr->required, "options" => $tags));
 							break;
 
 						case 'tag-multi':
-							$tags = get_tree("\Core\Tag", array("id_parent" => $attr->id_tag_root))->fetch();
+							$tags = get_tree("\Tag", array("id_parent" => $attr->id_tag_root))->fetch();
 							$this->input($attr->seoname, array("type" => 'checkbox', "label" => $attr->name, "required" => $attr->required, "options" => $tags));
 							break;
 
