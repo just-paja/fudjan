@@ -715,7 +715,7 @@ namespace System
 
 		public static function get_default_template()
 		{
-			return 'core/form/plain';
+			return 'system/form';
 		}
 
 
