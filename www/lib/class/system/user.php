@@ -17,7 +17,7 @@ namespace System
 		);
 
 		static protected $has_many = array(
-			"groups" => array("model" => '\System\User\Group', "join-table" => 'user-group-assignment'),
+			"groups" => array("model" => '\System\User\Group', "join-table" => 'user_group_assignment'),
 			"contacts" => array("model" => '\System\User\Contact')
 		);
 
@@ -32,7 +32,7 @@ namespace System
 			if (self::$current_user instanceof self) {
 				return self::$current_user;
 			} elseif (any($_SESSION['yacms-user-id'])) {
-				self::$current_user = find("\Core\User", $_SESSION['yacms-user-id']);
+				self::$current_user = find("\System\User", $_SESSION['yacms-user-id']);
 			}
 
 			if (!(self::$current_user instanceof self)) {
@@ -121,10 +121,10 @@ namespace System
 			$del = array_diff($actual, $groups);
 			$add = array_diff($groups, $actual);
 
-			any($del) && Query::simple_delete("user-group-assignment", array("id_user_group IN (".implode(',', array_map('intval', $del)).")"));
+			any($del) && Query::simple_delete("user_group_assignment", array("id_user_group IN (".implode(',', array_map('intval', $del)).")"));
 
 			foreach ($add as $gid) {
-				Query::simple_insert("user-group-assignment", array("id_user" => $this->id, "id_user_group" => $gid), false);
+				Query::simple_insert("user_group_assignment", array("id_user" => $this->id, "id_user_group" => $gid), false);
 			}
 		}
 
