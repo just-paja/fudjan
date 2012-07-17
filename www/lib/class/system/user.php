@@ -22,7 +22,7 @@ namespace System
 		);
 
 		static private $current_user;
-		private $rights = array();
+		private $rights;
 
 		/** Get current active user
 		 * @returns System\User
@@ -134,21 +134,20 @@ namespace System
 		 */
 		public function get_rights()
 		{
-			if (!$this->fetched_rights) {
+			if (is_null($this->rights)) {
 				$conds = array("public" => true);
 				$ids = collect_ids($this->groups->fetch());
 
-				if ($ids) {
+				if (any($ids)) {
 					$conds[] = "id_user_group IN (".implode(',', $ids).")";
 				}
 
-				$helper = get_all("\System\User\Perm", array(), array());
-				$helper->where($conds, "t0", true);
-				$helper->reset_cols();
-				$helper->add_cols(array("trigger", "type", "id_user_perm"), "t0");
-
-				$this->rights = Query::assoc_by_key($helper->select(), "trigger");
-				$this->fetched_rights = true;
+				$this->rights = get_all("\System\User\Perm")
+					->where($conds, "t0", true)
+					->reset_cols()
+					->add_cols(array("trigger", "type", "id_user_perm"), "t0")
+					->assoc_with('')
+					->fetch('trigger', 'id_user_perm');
 			}
 
 			return $this->rights;
