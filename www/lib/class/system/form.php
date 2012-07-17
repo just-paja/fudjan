@@ -53,7 +53,7 @@ namespace System
 			if(!$this->get('method')) $this->attrs['method'] = 'post';
 
 			$this->prefix = $this->get('id').'-';
-			if(!$this->get('action')) $this->set('action', \System\Page::get_path());
+			if(!$this->get('action')) $this->set('action', \System\Input::get('path'));
 
 			if (any($dataray['hidden']) && is_array($dataray['hidden'])) {
 				foreach($hidden as $k=>$v){
