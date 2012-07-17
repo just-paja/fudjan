@@ -117,7 +117,7 @@
 					foreach ($category as $pkg) {
 						if (!isset($packages[$pkg['name']])) {
 							$packages[$pkg['name']] = new System\Package(array(
-								"name" => $cname.'/'.$pkg['name'],
+								"name" => $pkg['name'],
 								"desc" => $pkg['desc'],
 								"homepage" => isset($pkg['homepage']) ? $pkg['homepage']:'',
 								"available" => array(),
