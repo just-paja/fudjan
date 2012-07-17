@@ -72,7 +72,7 @@ namespace System
 		 */
 		public static function login(self $user, $password)
 		{
-			return $user->password == self::hash_passwd($password) ?
+			return $user->password == hash_passwd($password) ?
 				self::create_session($user):
 				false;
 		}
@@ -246,16 +246,6 @@ namespace System
 			$flags = array();
 			$flags[] = self::logged_in() ? 'user':'guest';
 			return implode(' ', $flags);
-		}
-
-
-		/** Generate hash of a password
-		 * @param string $str
-		 * @returns string
-		 */
-		public static function hash_passwd($str)
-		{
-			return sha1(md5('PERFECT_STRING_PREFIX'.$str.'PERFECT_STRING_POSTFIX'.crc32($str)));
 		}
 
 

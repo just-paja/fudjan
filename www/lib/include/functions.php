@@ -322,3 +322,13 @@ function read_dir_contents($dir, array &$files, array &$directories, array &$use
 	}
 	closedir($od);
 }
+
+
+/** Generate hash of a password
+ * @param string $str
+ * @returns string
+ */
+function hash_passwd($str)
+{
+	return sha1(md5('PERFECT_STRING_PREFIX'.$str.'PERFECT_STRING_POSTFIX'.crc32($str)));
+}

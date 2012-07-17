@@ -224,7 +224,7 @@ namespace System
 
 			$tag = ($level > 6) ? 'strong':'h'.$level;
 			$attrs = array(
-				"id" => \Core\Utils::gen_seoname($label)
+				"id" => \System\Model\Basic::gen_seoname($label)
 			);
 			return self::tag($tag, $label, $attrs);
 		}

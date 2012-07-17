@@ -214,7 +214,7 @@ namespace System\Model
 			} else {
 
 				if ($attr == 'author' && isset($model::$attrs['int']) && in_array('id_author', $model::$attrs['int'])) {
-					$model::$belongs_to['author'] = array("model" => '\Core\User', "local-key" => 'id_author');
+					$model::$belongs_to['author'] = array("model" => '\System\User', "local-key" => 'id_author');
 					return self::__get($attr);
 				}
 
@@ -307,7 +307,7 @@ namespace System\Model
 		 */
 		public function get_seoname()
 		{
-			return $this->id ? \Core\Utils::gen_seoname($this->name).'-'.$this->id:null;
+			return $this->id ? self::gen_seoname($this->name).'-'.$this->id:null;
 		}
 
 
@@ -348,7 +348,7 @@ namespace System\Model
 						$old_attr = $attr.'_old';
 
 						if (any($this->__get($old_attr)) && $this->$attr != $this->$old_attr) {
-							$this->$attr = \Core\Utils::hash_passwd($this->$attr);
+							$this->$attr = hash_passwd($this->$attr);
 						}
 					}
 				}
