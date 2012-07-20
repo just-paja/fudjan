@@ -9,9 +9,9 @@ define('DIR_MODULES', ROOT."/share/styles/modules");
 header("Content-Type: text/css");
 
 
-$modules = empty($_GET['modules']) ? array():explode(';', base64_decode($_GET['modules']));
+$mod_str = System\Input::get('modules');
+$modules = empty($mod_str) ? array():explode(':', $mod_str);
 $files = array();
-
 
 if (is_dir(DIR_ESSENTIALS)) {
 	$dir = opendir(DIR_ESSENTIALS);

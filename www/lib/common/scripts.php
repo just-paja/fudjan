@@ -9,7 +9,8 @@ define('DIR_MODULES', ROOT."/share/scripts/modules");
 header("Content-Type: text/javascript");
 
 
-$modules = empty($_GET['modules']) ? array():explode(';', base64_decode($_GET['modules'], true));
+$mod_str = System\Input::get('modules');
+$modules = empty($mod_str) ? array():explode(':', $mod_str);
 $files = array();
 
 

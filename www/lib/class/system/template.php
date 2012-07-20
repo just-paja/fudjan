@@ -144,13 +144,13 @@ namespace System
 
 		public static function scripts_out()
 		{
-			Output::content_for("head", '<script type="text/javascript" src="/share/scripts/'.base64_encode(implode(';', Output::get_content_from("scripts"))).'"></script>');
+			Output::content_for("head", '<script type="text/javascript" src="/share/scripts/'.implode(':', Output::get_content_from("scripts")).'"></script>');
 		}
 
 
 		public static function styles_out()
 		{
-			Output::content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.base64_encode(implode(';', Output::get_content_from("styles"))).'" />');
+			Output::content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.implode(':', Output::get_content_from("styles")).'" />');
 		}
 
 
