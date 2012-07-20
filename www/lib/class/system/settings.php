@@ -76,11 +76,10 @@ namespace System
 				}
 			}
 
-			$version_path = ROOT."/etc/current/version";
+			$version_path = ROOT."/etc/current/core/yawf/version";
+
 			if (!file_exists($version_path)) {
-				if (!copy(ROOT."/etc/current/core/yawf/version", $version_path)) {
-					throw new InternalException(l('Couldn\'t find version file!'));
-				}
+				throw new InternalException(l('Couldn\'t find version file!'));
 			}
 
 			$cfg = explode("\n", file_get_contents($version_path, true));
