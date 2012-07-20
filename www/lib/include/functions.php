@@ -300,7 +300,7 @@ function cflc($str, $case = System\Template::CASE_UPPER)
  * @param &array $used
  * @return void
  */
-function read_dir_contents($dir, array &$files, array &$directories, array &$used = array())
+function read_dir_contents($dir, array &$files = array(), array &$directories = array(), array &$used = array())
 {
 	$od = opendir($dir);
 	while ($f = readdir($od)) {
