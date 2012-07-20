@@ -1,2 +1,5 @@
 # Catch icons
 RewriteRule ^share/icons/(([a-zA-Z0-9\-\_]*)/)?([0-9]{1,4})/([a-zA-Z0-9\-]*)/([a-zA-Z0-9\-_]*) lib/common/icon.php?theme=$2&size=$3&catg=$4&name=$5 [L]
+
+# Catch other resources
+RewriteRule ^share/([a-zA-Z]+)/([0-9a-zA-Z;\-\_]*)/ lib/common/$1.php?modules=$2 [L]

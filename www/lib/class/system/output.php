@@ -64,8 +64,8 @@ namespace System
 				self::$lang = Settings::get('locales', 'default_lang');
 			}
 		}
-		
-		
+
+
 		static function get_lang()
 		{
 			return self::$lang;
@@ -227,14 +227,14 @@ namespace System
 
 			self::send_headers();
 			Template::head_out();
-			
+
 			foreach (self::$content['output'] as $row) {
 				echo $row;
 			}
 		}
 
 
-		static function send_headers()
+		public static function send_headers()
 		{
 			$format = Settings::get('output', 'format', self::$format);
 			header("Content-Type: $format;charset=utf-8");
@@ -263,10 +263,11 @@ namespace System
 			return self::$content[$place];
 		}
 
+
 		public static function content_from($place)
 		{
 			self::$content['output'][] = ob_get_contents();
-			
+
 			ob_end_clean();
 			self::$content['output'][] = &self::$content[$place];
 			ob_start();
