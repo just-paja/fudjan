@@ -54,7 +54,7 @@ class DatabaseException extends InternalException
 	function __construct()
 	{
 		$d = func_get_args();
-		if (strpos(strtolower($d[0]), 'duplicate') !== false || strpos(strtolower($d[1]), 'duplicate') !== false) {
+		if (strpos(strtolower($d[0]), 'duplicate') !== false || (isset($d[1]) && strpos(strtolower($d[1]), 'duplicate') !== false)) {
 			$e = l('Cannot insert data because of duplicate unique key!');
 		} elseif (strpos(strtolower($d[0]), 'syntax') !== false) {
 			$e = l('Cannot run query because of syntax error.');

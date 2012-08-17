@@ -53,7 +53,9 @@ function out_flist(array $list, $semicolon = true, $margin = 0, $return = false,
 
 	foreach ($list as $key => $value) {
 		if (!$purge || ($purge && $value != '' && $value !== null)) {
-			$str .= out(str_repeat(" ", $margin).\System\Cli::term_color($key.($semicolon ? ": ":" "), $key_color), false, true);
+			$output = $key.($semicolon ? ": ":" ");
+			$output = class_exists("System\Cli") ? \System\Cli::term_color($output, $key_color):$output;
+			$str .= out(str_repeat(" ", $margin).$output, false, true);
 
 			for ($padding = strlen($key); $padding < $maxlen; $padding++) {
 				$str .= out(" ", false, true);

@@ -31,7 +31,7 @@ namespace System
 		}
 
 
-		public function get_current()
+		public static function get_current()
 		{
 			return self::$current;
 		}

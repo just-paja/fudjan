@@ -187,7 +187,7 @@ abstract class YacmsCLIOptions
 	/* Display usage
 	 * @return void
 	 */
-	public function usage()
+	public static function usage()
 	{
 		$cmd_list = array();
 		$opt_list = array();

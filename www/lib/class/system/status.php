@@ -74,7 +74,11 @@ namespace System
 			php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
 			foreach ((array) $msg as $line) {
 				if (!is_null($line)) {
-					$report .= "> ".$line.NL;
+					if (is_array($line)) {
+						
+					} else {
+						$report .= "> ".$line.NL;
+					}
 				}
 			}
 

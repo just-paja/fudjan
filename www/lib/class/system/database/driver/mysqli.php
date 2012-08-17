@@ -62,7 +62,7 @@ namespace System\Database\Driver
 			}
 
 			if (!is_object($this->connection)) {
-				throw new \DatabaseException('Could not connect to database "'.$config['database'].'" for following reasons.', mysqli_error(), mysqli_errno());
+				throw new \DatabaseException('Could not connect to database "'.$config['database'].'" for following reasons.');
 			}
 
 			if (isset($config['charset'])) {
