@@ -8,6 +8,8 @@
 	define("NAME", basename($_SERVER['SCRIPT_NAME']));
 
 	require_once ROOT."/etc/init.d/pre-cli.php";
+	require_once ROOT."/lib/include/core.php";
+	require_once ROOT."/lib/include/functions.php";
 	require_once ROOT."/lib/include/core.cli.php";
 
 
@@ -139,4 +141,4 @@
 
 // -- RUNTIME
 
-	require_once ROOT."/etc/init.d/cli.php";
+	System\Init::cli();
