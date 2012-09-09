@@ -58,11 +58,11 @@ namespace Template
 				$o .= $attrs['content'];
 			}
 
-			if (($c && !isset($attrs['close'])) || (isset($attrs['close']) && $attrs['close'])) {
+			if ((($c && !isset($attrs['close'])) || (isset($attrs['close']) && $attrs['close'])) && !in_array($name, self::$noclose_tags)) {
 				$o .= '</'.$name.'>';
 			}
 
-			if ((!isset($attrs['output']) || $attrs['output']) && !in_array(self::$noclose_tags, $name))
+			if (!isset($attrs['output']) || $attrs['output'])
 				echo $o;
 
 			return $o;

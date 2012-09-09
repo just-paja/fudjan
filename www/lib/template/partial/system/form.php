@@ -34,7 +34,7 @@ $f->get('desc') &&
 	));
 
 
-echo Tag::form($f->get());
+Tag::form($f->get());
 
 $hidden = &$f->get_hidden();
 if(!empty($hidden)){
@@ -106,7 +106,7 @@ foreach($objects as $obj) {
 
 
 		case 'tab-start': {
-			echo Tag::div($obj);
+			Tag::div($obj);
 			break;
 		}
 
@@ -139,7 +139,7 @@ foreach($objects as $obj) {
 				<? } ?>
 				<?
 					if ($obj['type'] == 'radio' || $multi_checkbox) {
-						echo Tag::ul($obj);
+						Tag::ul($obj);
 							$i = 0;
 							foreach ($obj['options'] as $label=>$val) {
 								$i++;
@@ -155,8 +155,8 @@ foreach($objects as $obj) {
 						?>
 						<span class="form-input">
 							<?
-							$obj['close'] =  true;
-							echo Tag::input($obj);
+							$obj['close'] = true;
+							Tag::input($obj);
 
 							if (strpos($obj['type'], 'date') !== false) {
 								calendar_script($f, $obj, strpos($obj['type'], 'time'));
@@ -252,7 +252,7 @@ foreach($objects as $obj) {
 				<li class="form-li-<?=++$li?> select<?=$obj['required'] ? ' required':null?><?=(isset($obj['eclass']) && $obj['eclass'] ? ' '.$obj['eclass']:null)?>">
 					<label class="label-left" for="<?=$obj['id']?>"><?=$obj['label']?>:</label>
 					<?
-					echo Tag::select($obj);
+					Tag::select($obj);
 						foreach($obj['options'] as $opt=>$val){
 								if(is_array($val)){ ?>
 									<optgroup label="<?=$opt?>">
@@ -331,7 +331,7 @@ foreach($objects as $obj) {
 				"close"   => true
 			));
 			
-			echo Tag::button($obj);
+			Tag::button($obj);
 			break;
 		}
 
@@ -348,7 +348,7 @@ foreach($objects as $obj) {
 					<label class="label-left"><?=$obj['label']?></label>
 				<? }
 
-				echo Tag::select($obj);
+				Tag::select($obj);
 					foreach ($f->get_switch_opts($obj['switch-id']) as $k=>$label) {
 						echo '<option value="'.$k.'">'.$label.'</option>';
 					}
