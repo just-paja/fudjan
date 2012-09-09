@@ -17,6 +17,7 @@ namespace Template
 			'button' => array("type"),
 			'div' => array(),
 			'ul' => array(),
+			'html' => array('xmlns'),
 		);
 
 		private static $bool_attrs = array(
@@ -35,7 +36,18 @@ namespace Template
 		public static function __callStatic($name, $args)
 		{
 			$attrs = &$args[0];
-			$o = '<'.$name.self::html_attrs($name, $attrs).'>';
+			self::tag($name, (array) $attrs);
+		}
+
+
+		/** Output or return tag with or without content
+		 * @param string $name  Tag name
+		 * @param array  $attrs Tag attributes
+		 * @return string
+		 */
+		public static function tag($name, array $attrs = array())
+		{
+			$o = '<'.$name.self::html_attrs($name, (array) $attrs).'>';
 
 			if (isset($attrs['content'])) {
 				$o .= $attrs['content'];
@@ -44,7 +56,7 @@ namespace Template
 			if (isset($attrs['close']) && $attrs['close']) {
 				$o .= '</'.$name.'>';
 			}
-			
+
 			if (isset($attrs['output']) && $attrs['output'])
 				echo $o;
 
@@ -52,6 +64,11 @@ namespace Template
 		}
 
 
+		/** Output or return closing tag
+		 * @param string $name   Tag name
+		 * @param bool   $output Output the tag if true
+		 * @return string
+		 */
 		public static function close($name, $output = false)
 		{
 			$o = '</'.$name.'>';
@@ -63,7 +80,10 @@ namespace Template
 		}
 
 
-		public static function get_tag_class($tag)
+		/** Get attribute class of a tag
+		 * @param string $tag Tag name
+		 */
+		private static function get_tag_class($tag)
 		{
 			foreach (self::$html_schema as $cname=>$objects) {
 				if (in_array($tag, $objects)) {
@@ -74,7 +94,11 @@ namespace Template
 		}
 
 
-		public static function html_attrs($tag, $attrs)
+		/** Print html attributes into string
+		 * @param string $tag   Tag name
+		 * @param array  $attrs Set of attributes
+		 */
+		public static function html_attrs($tag, array $attrs = array())
 		{
 			$real_attrs = array();
 
@@ -85,11 +109,27 @@ namespace Template
 			}
 
 			foreach ($attrs as $name=>$attr) {
-				if (!is_null($attr) && !is_array($attr) && strlen($attr) && (!isset(self::$html_attrs[$tag]) || self::$html_attrs[$tag] == '*' || in_array($name, self::$html_attrs['*']) || in_array($name, self::$html_attrs[$tag]) || in_array($name, self::get_tag_class($tag)))) {
+				$is_valid = !is_null($attr) && !is_array($attr) && strlen($attr);
+				$available_for_tag = isset(self::$html_attrs[$tag]) && (self::$html_attrs[$tag] == '*' || in_array($name, self::$html_attrs['*']) || in_array($name, self::$html_attrs[$tag]));
+				$available_for_tag_class = in_array($name, self::get_tag_class($tag));
+
+				if ($is_valid && ($available_for_tag || $available_for_tag_class)) {
 					$real_attrs[] = $name.'="'.$attr.'"';
 				}
 			}
-			return (strlen($real_attrs) ? ' ':'').implode(' ', $real_attrs);
+
+			return (count($real_attrs) ? ' ':'').implode(' ', $real_attrs);
+		}
+
+
+		/** Output a doctype
+		 * @return string
+		 */
+		public static function doctype()
+		{
+			$o = '<!DOCTYPE html>';
+			echo $o;
+			return $o;
 		}
 	}
 }
