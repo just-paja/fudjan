@@ -6,33 +6,36 @@ if (!defined("EDITOR_HAS_TEMPLATE_HEADER")) {
 	define('EDITOR_HAS_TEMPLATE_HEADER', true);
 
 	function form_error($msg){ return '<span class="form-error">'.$msg.'</span>'; }
-
-
-	function calendar_script(&$f, &$obj, $add_time = false) {
-		/* TODO: Create datepicker for non-html5 browsers
-		if($f->dialogs_enabled && !!JS_JSCAL_ENABLED){
-			$f->form_js[] = 'if(Browser.Engine.name != "presto"){';
-			$f->form_js[] = 'Calendar.setup({';
-			$f->form_js[] = 'button     : "'.$obj['id'].'", inputField : "'.$obj['id'].'", eventName  : "focus",';
-			$f->form_js[] = 'ifFormat   : "%Y-%m-%d'.($add_time?' %H:%M:%S':'').'", showsTime  : '.($add_time?'true':'false').',';
-			$f->form_js[] = 'firstDay   : 1, weekNumbers: false });';
-			$f->form_js[] = '}';
-		}*/
-	}
 }
 
 $sub_li = $li = 0;
-?>
 
-<div class="plain-form" id="<?=$f->get('id')?>-container">
+Tag::div(array(
+	"class"  => 'plain-form',
+	"id"     => $f->get('id').'-container',
+	"output" => true,
+));
 
-<? if(!empty($object['anchor'])){ ?><a name="<?=$object['anchor']?>"></a><? } ?>
-<? if($f->get('heading')){ echo section_heading($f->get('heading')); } ?>
-<? if($f->get('desc')){ echo '<p>'.$f->get('desc').'</p>'; } ?>
+!empty($object['anchor']) &&
+	Tag::a(array(
+		"name" => $object['anchor'],
+		"close" => true,
+		"output" => true,
+	));
+
+if ($f->get('heading')) 
+	echo section_heading($f->get('heading'));
+
+$f->get('desc') &&
+	Tag::p(array(
+		"content" => $f->get('desc'),
+		"close"   => true,
+		"output"  => true,
+	));
 
 
-<form<?=html_attrs('form', $f->get())?>>
-<?
+echo Tag::form($f->get());
+
 $hidden = &$f->get_hidden();
 if(!empty($hidden)){
 	?>
@@ -61,16 +64,29 @@ foreach($objects as $obj) {
 	}
 
 
-	switch($obj['kind']){
+	switch($obj['kind']) {
 
 		case 'inputs-start': {
-			echo '<fieldset><ul class="inputs">';
+			Tag::fieldset(array(
+				"output"  => true,
+				"close"   => true,
+				"content" => Tag::ul(array(
+					"class" => 'inputs',
+				))
+			));
 			break;
 		}
 
 
 		case 'inputs-end': {
-			echo '<li style="clear:both;width:0px;height:0px;float:none;display:block"></li></ul></fieldset>';
+			Tag::li(array(
+				"style"  => 'clear:both;width:0px;height:0px;float:none;display:block',
+				"close"  => true,
+				"output" => true,
+			));
+
+			Tag::close('ul');
+			Tag::close('fieldset');
 			break;
 		}
 
@@ -89,15 +105,15 @@ foreach($objects as $obj) {
 		}
 
 
-		case 'tab-start':{
-			echo '<div'.html_attrs('div', $obj).'>';
+		case 'tab-start': {
+			echo Tag::div($obj);
 			break;
 		}
 
 
 		case 'tabs-group-end':
 		case 'tab-end': {
-			echo '</div>';
+			Tag::close('div');
 			break;
 		}
 
@@ -123,9 +139,7 @@ foreach($objects as $obj) {
 				<? } ?>
 				<?
 					if ($obj['type'] == 'radio' || $multi_checkbox) {
-						?>
-						<ul<?=html_attrs('ul', $obj)?>>
-							<?
+						echo Tag::ul($obj);
 							$i = 0;
 							foreach ($obj['options'] as $label=>$val) {
 								$i++;
@@ -140,8 +154,10 @@ foreach($objects as $obj) {
 					} else {
 						?>
 						<span class="form-input">
-							<input<?=html_attrs('input', $obj)?> />
-							<? if (strpos($obj['type'], 'date') !== false) {
+							<?
+							echo Tag::input($obj);
+							
+							if (strpos($obj['type'], 'date') !== false) {
 								calendar_script($f, $obj, strpos($obj['type'], 'time'));
 							} ?>
 						</span>
@@ -212,10 +228,11 @@ foreach($objects as $obj) {
 		case 'textarea': {
 			$attrs = $obj;
 			unset($attrs['value']);
+			$attrs['content'] = $obj['value'];
 			?>
 				<li class="form-li-<?=++$li?> textarea<?=$obj['required'] ? ' required':null?><?=($obj['eclass'] ? ' ':null).$obj['eclass']?>">
 					<label><?=$obj['label']?>:</label>
-					<span class="form-input"><textarea<?=html_attrs('textarea', $attrs)?>><?=$obj['value']?></textarea></span>
+					<span class="form-input"><?= Template::textarea($attrs) ?></span>
 				</li>
 			<?
 			break;
@@ -233,8 +250,9 @@ foreach($objects as $obj) {
 			?>
 				<li class="form-li-<?=++$li?> select<?=$obj['required'] ? ' required':null?><?=(isset($obj['eclass']) && $obj['eclass'] ? ' '.$obj['eclass']:null)?>">
 					<label class="label-left" for="<?=$obj['id']?>"><?=$obj['label']?>:</label>
-					<select<?=html_attrs('select', $obj)?>>
-						<? foreach($obj['options'] as $opt=>$val){
+					<?
+					echo Tag::select($obj);
+						foreach($obj['options'] as $opt=>$val){
 								if(is_array($val)){ ?>
 									<optgroup label="<?=$opt?>">
 										<? foreach($val as $l=>$v){ ?>
@@ -306,7 +324,13 @@ foreach($objects as $obj) {
 
 
 		case 'button': {
-			echo '<button'.html_attrs('button', $obj).'><span>'.$obj['label'].'</span></button>';
+			$obj['close'] = true;
+			$obj['content'] = Tag::span(array(
+				"content" => $obj['label'],
+				"close"   => true
+			));
+			
+			echo Tag::button($obj);
 			break;
 		}
 
@@ -321,9 +345,9 @@ foreach($objects as $obj) {
 			?><li class="form-li-<?=++$li?> formel-switch <?=$obj['name']?>">
 				<? if ($obj['label']) { ?>
 					<label class="label-left"><?=$obj['label']?></label>
-				<? } ?>
-				<select<?=html_attrs('select', $obj)?>>
-					<?
+				<? }
+
+				echo Tag::select($obj);
 					foreach ($f->get_switch_opts($obj['switch-id']) as $k=>$label) {
 						echo '<option value="'.$k.'">'.$label.'</option>';
 					}
@@ -337,12 +361,11 @@ foreach($objects as $obj) {
 
 if(!empty($f->footnote)){?>
 	<p><?=implode('<br />', (array) $f->footnote)?></p>
-<?}?>
+<?}
 
-</form>
-</div>
+	Tag::close('form');
+Tag::close('div');
 
-<?
 	if(!empty($f->form_js)){
 		?>
 		<script type="text/javascript">
@@ -360,4 +383,3 @@ if(!empty($f->footnote)){?>
 		</script>
 	<?
 	}
-?>
