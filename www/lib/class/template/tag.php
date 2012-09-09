@@ -15,9 +15,14 @@ namespace Template
 			'input' => array("type", "min", "max", "maxlength", "step", "required", "size", "disabled", "checked", "results", "placeholder"),
 			'select' => array("size", "multiple", "required"),
 			'button' => array("type"),
-			'div' => array(),
-			'ul' => array(),
 			'html' => array('xmlns'),
+		);
+		
+		
+		private static $noclose_tags = array(
+			'input',
+			'img',
+			'meta'
 		);
 
 		private static $bool_attrs = array(
@@ -36,7 +41,7 @@ namespace Template
 		public static function __callStatic($name, $args)
 		{
 			$attrs = &$args[0];
-			self::tag($name, (array) $attrs);
+			return self::tag($name, (array) $attrs);
 		}
 
 
@@ -57,7 +62,7 @@ namespace Template
 				$o .= '</'.$name.'>';
 			}
 
-			if (isset($attrs['output']) && $attrs['output'])
+			if (isset($attrs['output']) && $attrs['output'] && !in_array(self::$noclose_tags, $name))
 				echo $o;
 
 			return $o;

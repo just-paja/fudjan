@@ -32,7 +32,7 @@ function icon($icon, $size=32, array $attrs = array()){ return System\Template::
 function format_time($datetime, $format){ return System\Template::format_time($datetime, $format); }
 function heading($label, $save_level = true, $level = NULL){ return System\Template::heading($label, $save_level, $level); }
 function section_heading($label, $level = NULL){ return System\Template::section_heading($label, $level); }
-function html_attrs($tag, $attrs){ return System\Template::html_attrs($tag, $attrs); }
+function html_attrs($tag, $attrs){ return Template\Tag::html_attrs($tag, $attrs); }
 function content_for($place, $content, $overwrite = false) { return System\Output::content_for($place, $content, $overwrite); }
 function content_from($place) { return System\Output::content_from($place); }
 function slot($name = System\Template::DEFAULT_SLOT) { return System\Output::slot($name); }
