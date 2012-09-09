@@ -3,6 +3,7 @@
 define('ROOT', realpath(__DIR__.'/../../'));
 require_once ROOT."/etc/init.d/core.php";
 
+System\Init::basic();
 
 define('DIR_ESSENTIALS', ROOT."/share/scripts/essential");
 define('DIR_MODULES', ROOT."/share/scripts/modules");

@@ -3,6 +3,7 @@
 define('ROOT', realpath(__DIR__.'/../../'));
 require_once ROOT."/etc/init.d/core.php";
 
+System\Init::basic();
 
 define('DIR_ESSENTIALS', ROOT."/share/styles/essential");
 define('DIR_MODULES', ROOT."/share/styles/modules");
@@ -21,7 +22,6 @@ if (is_dir(DIR_ESSENTIALS)) {
 		}
 	}
 }
-
 
 if (is_dir(DIR_MODULES)) {
 	foreach ($modules as $module) {
