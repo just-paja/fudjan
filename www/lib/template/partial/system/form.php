@@ -205,6 +205,13 @@ Tag::div(array(
 							}
 						}
 
+						if (isset($obj['info'])) {
+							Tag::span(array(
+								"class"   => 'input-info',
+								"content" => $obj['info'],
+							));
+						}
+
 						if (is_array($obj['errors'])) {
 							foreach ($obj['errors'] as $e) {
 								echo form_error($e);
@@ -241,6 +248,12 @@ Tag::div(array(
 								"class"   => 'form-input',
 								"content" => Tag::textarea($attrs),
 							)),
+							isset($obj['info']) ?
+								Tag::span(array(
+									"class"   => 'input-info',
+									"content" => $obj['info'],
+									"output"  => false,
+								)):'',
 						)
 					));
 					break;
@@ -303,6 +316,13 @@ Tag::div(array(
 									"close"  => true,
 									"output" => false,
 								)),
+							));
+						}
+
+						if (isset($obj['info'])) {
+							Tag::span(array(
+								"class"   => 'input-info',
+								"content" => $obj['info'],
 							));
 						}
 
