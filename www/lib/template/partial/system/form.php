@@ -68,11 +68,12 @@ foreach($objects as $obj) {
 
 		case 'inputs-start': {
 			Tag::fieldset(array(
-				"output"  => true,
-				"close"   => true,
+				"close"   => false,
+				"class"   => 'inputs',
 				"content" => Tag::ul(array(
 					"class" => 'inputs',
-				))
+					"output" => false,
+				)),
 			));
 			break;
 		}
@@ -82,7 +83,6 @@ foreach($objects as $obj) {
 			Tag::li(array(
 				"style"  => 'clear:both;width:0px;height:0px;float:none;display:block',
 				"close"  => true,
-				"output" => true,
 			));
 
 			Tag::close('ul');
@@ -155,8 +155,9 @@ foreach($objects as $obj) {
 						?>
 						<span class="form-input">
 							<?
+							$obj['close'] =  true;
 							echo Tag::input($obj);
-							
+
 							if (strpos($obj['type'], 'date') !== false) {
 								calendar_script($f, $obj, strpos($obj['type'], 'time'));
 							} ?>
