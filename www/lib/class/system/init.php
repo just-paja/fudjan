@@ -6,14 +6,23 @@ namespace System
 	{
 		public static function full()
 		{
+			self::bind_error_handlers();
 			Flow::init();
 			Settings::init();
 			Locales::init();
-			self::bind_error_handlers();
 			Cache::init();
 			Database::init();
 			Input::init();
 			Output::init();
+		}
+
+		
+		public static function basic()
+		{
+			self::bind_error_handlers();
+			Flow::init();
+			Settings::init();
+			Locales::init();
 		}
 
 
@@ -54,14 +63,9 @@ namespace System
 		{
 			set_exception_handler(array("System\Status", "catch_exception"));
 
-			if (Settings::get('dev', 'debug')) {
-				ini_set('display_errors', true);
-				ini_set('html_errors',    true);
-			} else {
-				ini_set('log_errors',     true);
-				ini_set('display_errors', false);
-				ini_set('html_errors',    false);
-			}
+			ini_set('log_errors',     true);
+			ini_set('display_errors', false);
+			ini_set('html_errors',    false);
 		}
 
 	}

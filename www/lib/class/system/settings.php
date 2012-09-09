@@ -4,11 +4,13 @@ namespace System
 {
 	class Settings
 	{
-		const CACHE_FILE = "/var/cache/settings";
-		const CONF_DIR = "/etc/conf.d";
-		const STATIC_CONF_DIR = "/etc/default/conf.d";
-		const CONF_FILE_REGEXP = "/^[a-z].*\.json$/i";
-		const DIR_ROUTES_STATIC = "/etc/default/routes.d";
+		const CACHE_FILE        = '/var/cache/settings';
+		const DIR_CONF_ALL      = '/etc';
+		const DIR_CONF_DIST     = '/etc/conf.d';
+		const DIR_CONF_STATIC   = '/etc/default/conf.d';
+		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
+		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
+
 
 		// Data
 		static $conf = array();
@@ -40,7 +42,7 @@ namespace System
 		public static function reload()
 		{
 			self::set_env();
-			$dir = @opendir($p = ROOT.self::CONF_DIR.'/'.self::$env);
+			$dir = @opendir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
 			if (!is_resource($dir)) {
 				if (!@mkdir($p)) {
 					throw new \InternalException(l('Couldn\'t save your configuration. Please check your file system permissions to directory "'.$p.'/".'));
@@ -57,7 +59,7 @@ namespace System
 				}
 			}
 
-			if (!file_exists($p = ROOT.self::CONF_DIR.'/pages.json') && @!file_put_contents($p, '{}')) {
+			if (!file_exists($p = ROOT.self::DIR_CONF_DIST.'/pages.json') && @!file_put_contents($p, '{}')) {
 				throw new \InternalException(l('Couldn\'t create pages file. Please check your file system permissions on file "'.$p.'/".'));
 			}
 
@@ -102,7 +104,7 @@ namespace System
 			$p = ROOT.self::STATIC_CONF_DIR;
 			$dir = opendir($p);
 			while($file = readdir($dir)){
-				if(is_file($np = ROOT.self::CONF_DIR.'/'.self::$env.'/'.$file)) {
+				if(is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
 					unlink($np);
 				}
 				if (is_file($p.'/'.$file)) {
@@ -207,10 +209,10 @@ namespace System
 			is_null($env) && ($env = self::$env);
 
 			$action = file_put_contents(
-				ROOT.self::CONF_DIR.'/'.$env.'/'.$module.".json",
+				ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json",
 				Output::json_humanize(json_encode(self::get($module)))
 			);
-			Status::log('sys_notice', array("New config saved: ".self::CONF_DIR.'/'.$module.".json"), $action);
+			Status::log('sys_notice', array("New config saved: ".self::DIR_CONF_DIST.'/'.$module.".json"), $action);
 			self::reload();
 			return $action;
 		}
@@ -233,7 +235,7 @@ namespace System
 			if (is_null($env)) {
 				if (defined("YACMS_ENV")) {
 					self::$env = YACMS_ENV;
-				} elseif (file_exists($ef = ROOT.self::CONF_DIR.'/env')) {
+				} elseif (file_exists($ef = ROOT.self::DIR_CONF_DIST.'/env')) {
 						self::$env = trim(file_get_contents($ef));
 				}
 			} else {
@@ -251,8 +253,13 @@ namespace System
 		 */
 		public static function env_exists($env)
 		{
-			return is_dir(ROOT.self::CONF_DIR.'/'.$env);
+			return is_dir(ROOT.self::DIR_CONF_DIST.'/'.$env);
 		}
 
+
+		public static function is_this_first_run()
+		{
+			return !file_exists($p = ROOT.self::DIR_CONF_ALL.'/install.lock');
+		}
 	}
 }

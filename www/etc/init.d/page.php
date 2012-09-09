@@ -1,6 +1,15 @@
 <?
 
-System\Init::full();
+System\Init::basic();
+
+if (System\Settings::is_this_first_run()) {
+	
+}
+
+System\Cache::init();
+System\Database::init();
+System\Input::init();
+System\Output::init();
 System\Page::init();
 
 if (!(($page = System\Page::get_current()) instanceof System\Page)) {
