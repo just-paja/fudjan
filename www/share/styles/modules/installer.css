@@ -2,27 +2,64 @@ html,
 body
 {
 	background-color:#ccc;
-	font-family:"Droid Sans", Arial, _sans;
-	font-size:100%;
+	font-family:"Dejavu Sans", sans-serif;
+	font-size:14px;
 }
 
 body {
 	padding:25px;
 }
 
+form {
+	font-size:14px;
+}
+
 #container,
 footer
 {
-	width:500px;
+	width:750px;
 	margin:0 auto;
 }
 
 #container {
 	border:1px solid #666;
 	background:#fff;
-	padding:15px;
+	padding:25px;
 }
 
 footer {
 	padding:5px;
+}
+
+.plain-form label {
+	width:145px;
+}
+
+.plain-form .input-info {
+	padding:3px 5px 5px 15px;
+	color:#333;
+	width:250px;
+	display:inline-block;
+	vertical-align:top;
+}
+
+.plain-form .formel-text label {
+	display:block;
+	width:auto;
+	font-size:150%;
+	margin-bottom:20px;
+	font-weight:normal;
+}
+
+.plain-form fieldset {
+	border:none;
+}
+
+.plain-form .select-input {
+	vertical-align:top;
+}
+
+.plain-form .select-input, .plain-form .form-input {
+	vertical-align:top;
+	width:255px;
 }
