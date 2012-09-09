@@ -5,6 +5,8 @@ System\Init::basic();
 if (System\Settings::is_this_first_run()) {
 
 	System\Setup::init();
+	System\Output::init();
+	System\Output::set_format('html');
 	System\Output::send_headers();
 	System\Output::out();
 
@@ -12,7 +14,6 @@ if (System\Settings::is_this_first_run()) {
 
 	System\Cache::init();
 	System\Database::init();
-	System\Input::init();
 	System\Output::init();
 	System\Page::init();
 
