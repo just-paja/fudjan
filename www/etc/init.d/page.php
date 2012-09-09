@@ -5,7 +5,7 @@ System\Init::basic();
 if (System\Settings::is_this_first_run()) {
 
 	System\Setup::init();
-	System\Setup::run();
+	System\Output::send_headers();
 	System\Output::out();
 
 } else {

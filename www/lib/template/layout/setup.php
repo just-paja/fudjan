@@ -23,6 +23,7 @@ echo Tag::body();
 	));
 
 		yield();
+		System\Setup::run();
 		slot();
 
 	Tag::close('section', true);
