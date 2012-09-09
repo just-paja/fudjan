@@ -1,5 +1,6 @@
 <?
 
+System\Init::full();
 System\Page::init();
 
 if (!(($page = System\Page::get_current()) instanceof System\Page)) {

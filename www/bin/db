@@ -7,8 +7,9 @@
 	define("NAME", basename($_SERVER['SCRIPT_NAME']));
 
 	require_once ROOT."/etc/init.d/pre-cli.php";
+	require_once ROOT."/lib/include/core.php";
+	require_once ROOT."/lib/include/functions.php";
 	require_once ROOT."/lib/include/core.cli.php";
-
 
 // -- CLASSES
 
@@ -374,30 +375,17 @@
 		 */
 		public static function seed()
 		{
-			$files = array(
-				ROOT."/etc/database/initial-data.core.json",
-				ROOT."/etc/database/initial-data.json"
-			);
+			$data = System\Json::read_dist(ROOT.System\Database::DIR_INITIAL_DATA);
 
-			foreach ($files as $file) {
-				if (file_exists($file)) {
-					if ($data = json_decode(file_get_contents($file), true)) {
+			foreach ($data as $set=>$data_set) {
+				foreach ($data_set as $table => $tdata) {
+					$add_dates = self::table_column_exists($table, 'created_at');
+					out("Using data set '".$set."': ", false);
 
-						foreach ($data as $table => $tdata) {
-							$add_dates = self::table_column_exists($table, 'created_at');
-							out("Filling table '".$table."': ", false);
-							foreach ($tdata as $trow) {
-								System\Database::simple_insert($table, $trow, $add_dates);
-							}
-							out("ok");
-						}
-
-					} else {
-						give_up("Cannot read file contents: '".$file."'. Check if it's not empty or corrupted.");
-					}
+					System\Database::simple_insert($table, $tdata, $add_dates);
+					out("ok");
 				}
 			}
-
 		}
 
 
@@ -581,7 +569,4 @@
 
 // -- RUNTIME
 
-	require_once ROOT."/etc/init.d/cli.php";
-
-
-
+	System\Init::cli();

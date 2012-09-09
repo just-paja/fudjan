@@ -2,7 +2,7 @@
 
 namespace System\Offcom
 {
-	class Mail
+	class Mail extends \System\Model\Attr
 	{
 		private static $errors = array();
 		

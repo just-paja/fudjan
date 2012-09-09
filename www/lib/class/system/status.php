@@ -53,7 +53,17 @@ namespace System
 					Status::format_errors($d, $errors);
 				}
 			} elseif (is_object($desc)) {
-				$errors[] = var_export($desc);
+				if ($desc instanceof \InternalException) {
+					foreach ($desc->get_explanation() as $msg) {
+						$errors[] = $msg;
+					}
+
+					foreach ($desc->get_backtrace() as $msg) {
+						$errors[] = implode(':', $msg);
+					}
+				} else {
+					$errors[] = var_export($desc);
+				}
 			} else {
 				$errors[] = $desc;
 			}

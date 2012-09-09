@@ -16,7 +16,11 @@ if (!defined("H_BUG_REPORT")) {
 
 					if (is_array($t)) {
 						if (isset($t['file'])) echo $t['file'].':'.$t['line'];
-						is_array($t['args']) && yacms_show_backtrace($t['args']);
+						if (isset($t['args'])) {
+							is_array($t['args']) && yacms_show_backtrace($t['args']);
+						} else {
+							yacms_show_backtrace($t);
+						}
 					} elseif ($t instanceof Exception) {
 						echo get_class($t).': '.$t->getMessage();
 					} else {
@@ -38,14 +42,14 @@ if (!defined("H_BUG_REPORT")) {
 		<meta name="generator" content="<?=System\Output::introduce()?>" />
 		<meta name="generated-at" content="Sat, 20 Aug 2011 18:52:40 Europe/Prague" />
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<link rel="stylesheet" type="text/css" href="/share/styles/global.css.php" />
+		<link rel="stylesheet" type="text/css" href="/share/styles/global.css.php?" />
 		<title>Systémová chyba!</title>
 	</head>
 	
 	<body class="fatal-error">
 		<section>
-			<h1><?=_('Stala se chyba')?></h1>
-			<p><?=_('Omlouváme se, na webu se vyskytla fatální chyba, kterou nešlo obejít. Pochopitelně v současné době děláme všechno pro to, abychom tuto chybu odstranili.')?></p>
+			<h1><?=l('Stala se chyba')?></h1>
+			<p><?=l('Omlouváme se, na webu se vyskytla fatální chyba, kterou nešlo obejít. Pochopitelně v současné době děláme všechno pro to, abychom tuto chybu odstranili.')?></p>
 			<ul>
 				<?
 					$errors = System\Status::format_errors($desc);
@@ -56,9 +60,6 @@ if (!defined("H_BUG_REPORT")) {
 					}
 				?>
 			</ul>
-			<?
-				yacms_show_backtrace();
-			?>
 		</section>
 	</body>
 </html>

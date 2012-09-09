@@ -1,12 +1,12 @@
 <?
 
-/* TODO
- * Write own database layer and trash dibi
- */
 namespace System
 {
 	abstract class Database
 	{
+		const DIR_INITIAL_DATA = '/etc/database/data.d';
+		const DIR_MIGRATIONS = '/etc/database/migrations.d';
+
 		private static $instances = array();
 		private static $default_instance;
 		private static $queries = 0;
@@ -16,7 +16,13 @@ namespace System
 			$cfg = cfg('database');
 			if (any($cfg['database'])) {
 				self::connect(cfg('database'));
-			} else throw new \ConfigException(l('No database is set. Please run `bin/db --setup` to set up basic config or create config files manually'));
+			} else {
+				if (php_sapi_name() == 'cli') {
+					exec(ROOT.'/bin/db --setup');
+				} else {
+					throw new \ConfigException(l('No database is set. Please run `bin/db --setup` to set up basic config or create config files manually'));
+				}
+			}
 		}
 
 
@@ -39,7 +45,7 @@ namespace System
 				$res = $db->query($query);
 				self::$queries ++;
 				return $res;
-			} else throw new DatabaseException('Not connected to database "'.$db_name.'"');
+			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
 		}
 
 
@@ -71,12 +77,12 @@ namespace System
 				try {
 					$res = $db->query($sql);
 				} catch (\Exception $e) {
-					throw new DatabaseException(l('Could not insert data, query is below.'), $sql);
+					throw new \DatabaseException(l('Could not insert data, query is below.'), $sql);
 				}
 
 				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
-			} else throw new DatabaseException('Not connected to database "'.$db_name.'"');
+			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
 		}
 
 
@@ -124,7 +130,7 @@ namespace System
 		private static function get_default()
 		{
 			if (any(self::$default_instance)) return self::$default_instance;
-			throw new DatabaseException('Not connected to any database');
+			throw new \DatabaseException('Not connected to any database');
 		}
 
 

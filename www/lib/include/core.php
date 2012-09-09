@@ -12,7 +12,7 @@ class InternalException extends Exception
 
 	function __construct() {
 		$d = func_get_args();
-		
+
 		if (isset($d[0]) && $d[0] === 'stack') {
 			foreach ($d as $i=>$data) {
 				if ($i != 0) {
