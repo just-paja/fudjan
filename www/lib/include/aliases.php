@@ -41,6 +41,8 @@ function title() { return System\Output::get_title(true); }
 function path() { return System\Page::get_path(); }
 function get_css_color($color) { return System\Template::get_css_color($color); }
 function get_color_container($color) { return System\Template::get_color_container($color); }
+class Tag extends Template\Tag {}
+
 
 // Miscelanous
 function user() { return System\User::get_active(); }
