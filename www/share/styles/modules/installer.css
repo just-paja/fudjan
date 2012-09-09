@@ -1,0 +1,28 @@
+html,
+body
+{
+	background-color:#ccc;
+	font-family:"Droid Sans", Arial, _sans;
+	font-size:100%;
+}
+
+body {
+	padding:25px;
+}
+
+#container,
+footer
+{
+	width:500px;
+	margin:0 auto;
+}
+
+#container {
+	border:1px solid #666;
+	background:#fff;
+	padding:15px;
+}
+
+footer {
+	padding:5px;
+}
