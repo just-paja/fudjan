@@ -12,7 +12,6 @@ namespace System
 			Locales::init();
 			Cache::init();
 			Database::init();
-			Input::init();
 			Output::init();
 		}
 
@@ -20,6 +19,7 @@ namespace System
 		public static function basic()
 		{
 			self::bind_error_handlers();
+			Input::init();
 			Flow::init();
 			Settings::init();
 			Locales::init();
