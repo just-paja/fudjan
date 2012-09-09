@@ -32,7 +32,7 @@ namespace System
 			!$height && $height = $width;
 			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon.'.png';
 
-			return '<span class="icon isize-'.$size.'" '.self::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
+			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
 		}
 
 
@@ -86,7 +86,7 @@ namespace System
 			$meta = Output::get_content_from("meta");
 			foreach ($meta as $name=>$value) {
 				if ($name && $value) {
-					Output::content_for("head", '<meta'.self::html_attrs('meta', $value).' />');
+					Output::content_for("head", '<meta'.\Tag::html_attrs('meta', $value).' />');
 				}
 			}
 		}
@@ -145,7 +145,7 @@ namespace System
 
 			return (($object['no-tag'] && $path == $url) ?
 					'<span class="link'.($object['class'] ? ' '.$object['class']:NULL).'">':
-					'<a href="'.$url.'"'.self::html_attrs('a', $object).'>'
+					'<a href="'.$url.'"'.\Tag::html_attrs('a', $object).'>'
 				).$label.
 				(($object['no-tag'] && $path == $url) ? '</span>':'</a>');
 		}
@@ -182,7 +182,7 @@ namespace System
 
 		public static function tag($tag, $content = '', array $attrs = array())
 		{
-			return '<'.$tag.' '.self::html_attrs($tag, $attrs).'>'.$content.'</'.$tag.'>';
+			return '<'.$tag.' '.\Tag::html_attrs($tag, $attrs).'>'.$content.'</'.$tag.'>';
 		}
 
 
