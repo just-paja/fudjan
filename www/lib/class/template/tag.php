@@ -17,8 +17,7 @@ namespace Template
 			'button' => array("type"),
 			'html' => array('xmlns'),
 		);
-		
-		
+
 		private static $noclose_tags = array(
 			'input',
 			'img',
@@ -30,9 +29,15 @@ namespace Template
 			'selected',
 			'checked'
 		);
+		
+		private static $attr_separators = array(
+			"content" => '',
+			"style"   => ';',
+			"class"   => ' ',
+		);
 
 		private static $html_schema = array(
-			'#inputs' => array('select', 'input', 'textarea', 'button'),
+			'#inputs' => array('select', 'input', 'textarea', 'button', 'option'),
 			'#source' => array('img', 'iframe', 'script'),
 			'#links' => array('a', 'link'),
 		);
@@ -114,7 +119,13 @@ namespace Template
 			}
 
 			foreach ($attrs as $name=>$attr) {
-				$is_valid = !is_null($attr) && !is_array($attr) && strlen($attr);
+
+				if (is_array($attr)) {
+					$separator = isset(self::$attr_separators[$name]) ? self::$attr_separators[$name]:'';
+					$attr = implode($separator, $attr);
+				}
+
+				$is_valid = !is_null($attr) && strlen($attr);
 				$available_for_tag = isset(self::$html_attrs[$tag]) && (self::$html_attrs[$tag] == '*' || in_array($name, self::$html_attrs[$tag]));
 				$available_for_all_tags = in_array($name, self::$html_attrs['*']);
 				$available_for_tag_class = in_array($name, self::get_tag_class($tag));
