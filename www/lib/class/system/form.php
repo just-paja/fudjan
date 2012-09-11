@@ -117,6 +117,15 @@ namespace System
 			$obj['errors'][] = $msg;
 			return $this->errors++;
 		}
+		
+		
+		public function group_error(array $fields, $msg)
+		{
+			foreach ($fields as $f) {
+				$obj = $this->get_input($f);
+				$this->error($obj, $msg);
+			}
+		}
 
 
 		// Gettery, settery

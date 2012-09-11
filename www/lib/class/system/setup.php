@@ -38,7 +38,7 @@ namespace System
 				"required" => true,
 				"info"     => l('Type of database. You will most usually use MySQL here.'),
 				"options"  => array(
-					"MySQL"      => 'mysql',
+					"MySQL"      => 'mysqli',
 					"PostgreSQL" => 'postgre',
 				),
 			));
@@ -76,7 +76,36 @@ namespace System
 			));
 
 			$f->submit('Next step');
-			$f->out();
+			
+			if ($f->is_completed()) {
+				$d = $f->get_data();
+
+				try {
+					Database::connect(array(
+						"driver"   => $d['database_driver'],
+						"database" => $d['database_name'],
+						"host"     => $d['database_host'],
+						"username" => $d['database_user'],
+						"password" => $d['database_pass'],
+						"lazy"     => false,
+					));
+				} catch (\DatabaseException $e) {}
+				
+				if (Database::is_connected()) {
+					self::save($d);
+				} else {
+					$f->group_error(array('database_name'), 'Could not connect to database');
+					$f->out();
+				}
+			} else {
+				$f->out();
+			}
+		}
+		
+		
+		private static function save(array $data)
+		{
+			var_dump($data);
 		}
 	}
 }
