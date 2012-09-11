@@ -107,11 +107,11 @@ namespace System
 				} else {
 					$cond = "= ".$id;
 				}
-				
+
 				foreach ($data as $col=>$data) {
 					$sql_data[] = "`".$col."` = ".self::escape($data);
 				}
-				
+
 				$sql = "UPDATE `".$table."` SET ".implode(',', $sql_data)." WHERE `".$id_col."` ".$cond;
 				self::$queries ++;
 				$result = '';
@@ -129,14 +129,14 @@ namespace System
 
 		private static function get_default()
 		{
-			if (any(self::$default_instance)) return self::$default_instance;
-			throw new \DatabaseException('Not connected to any database');
+			return empty(self::$default_instance) ? null:self::$default_instance;
 		}
 
 
 		private static function get_db($db_name = null)
 		{
-			return $db_name === null ? self::get_default():@self::$instances[$db_name];
+			return $db_name === null ?
+				self::get_default():(isset(self::$instances[$db_name]) ? self::$instances[$db_name]:null);
 		}
 
 
@@ -165,10 +165,16 @@ namespace System
 				return $value;
 			}
 		}
-		
+
 		public static function get_insert_id($db_name = null)
 		{
 			return self::get_db($db_name)->get_insert_id();
+		}
+
+
+		public static function is_connected($db_name = null)
+		{
+			return self::get_db() !== null;
 		}
 	}
 }
