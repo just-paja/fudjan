@@ -73,7 +73,7 @@ namespace System
 		{
 			$data = array();
 			foreach (self::$input as $k=>&$v) {
-				if (strpos($k, $prefix) === 0) $data[str_replace($prefix, '', $k)] = &$v;
+				if (strpos($k, $prefix) === 0) $data[substr($k, strlen($prefix))] = &$v;
 			}
 
 			return $data;
