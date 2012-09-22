@@ -42,6 +42,10 @@ namespace System\Model
 					$this->$old_attr = $this->$attr;
 				}
 			}
+
+			if (method_exists($this, 'construct')) {
+				$this->construct($dataray);
+			}
 		}
 
 
