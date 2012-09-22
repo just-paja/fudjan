@@ -207,11 +207,14 @@ namespace System
 		public static function save($module, $env = null)
 		{
 			is_null($env) && ($env = self::$env);
-
-			$action = file_put_contents(
+			
+			if (!($action = @file_put_contents(
 				ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json",
-				Output::json_humanize(json_encode(self::get($module)))
-			);
+				\System\Json::json_humanize(json_encode(self::get($module)))
+			))) {
+				throw new \InternalException(sprintf(l('Failed to write settings. Please check your permissions on directory \'%s\''), ROOT.self::DIR_CONF_DIST));
+			}
+
 			Status::log('sys_notice', array("New config saved: ".self::DIR_CONF_DIST.'/'.$module.".json"), $action);
 			self::reload();
 			return $action;
