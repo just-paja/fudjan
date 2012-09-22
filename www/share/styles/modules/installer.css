@@ -31,11 +31,11 @@ footer {
 	padding:5px;
 }
 
-.plain-form label {
+.yaform label {
 	width:145px;
 }
 
-.plain-form .input-info {
+.yaform .input-info {
 	padding:3px 5px 5px 15px;
 	color:#333;
 	width:250px;
@@ -43,7 +43,7 @@ footer {
 	vertical-align:top;
 }
 
-.plain-form .formel-text label {
+.yaform .formel-text label {
 	display:block;
 	width:auto;
 	font-size:150%;
@@ -51,15 +51,15 @@ footer {
 	font-weight:normal;
 }
 
-.plain-form fieldset {
+.yaform fieldset {
 	border:none;
 }
 
-.plain-form .select-input {
+.yaform .select-input {
 	vertical-align:top;
 }
 
-.plain-form .select-input, .plain-form .form-input {
+.yaform .input-container {
 	vertical-align:top;
 	width:255px;
 }
