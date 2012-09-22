@@ -65,7 +65,7 @@ namespace System
 
 			$f->input(array(
 				"name"     => 'database_user',
-				"label"    => l('User name'), 
+				"label"    => l('User name'),
 				"required" => true,
 				"value"    => 'username',
 				"type"     => 'text',
@@ -82,23 +82,24 @@ namespace System
 			));
 
 			$f->submit('Next step');
-			
+
 			if ($f->passed()) {
 				$d = $f->get_data();
+				$db_settings = array(
+					"driver"   => $d['database_driver'],
+					"database" => $d['database_name'],
+					"host"     => $d['database_host'],
+					"username" => $d['database_user'],
+					"password" => $d['database_pass'],
+					"lazy"     => false,
+				);
 
 				try {
-					Database::connect(array(
-						"driver"   => $d['database_driver'],
-						"database" => $d['database_name'],
-						"host"     => $d['database_host'],
-						"username" => $d['database_user'],
-						"password" => $d['database_pass'],
-						"lazy"     => false,
-					));
+					Database::connect($db_settings);
 				} catch (\DatabaseException $e) {}
-				
+
 				if (Database::is_connected()) {
-					self::save($d);
+					self::save($db_settings);
 				} else {
 					$f->report_error('database_name', 'Could not connect to database');
 					$f->out();
@@ -107,11 +108,64 @@ namespace System
 				$f->out();
 			}
 		}
-		
-		
+
+
+		/** Save loaded settings
+		 * @param array $data
+		 */
 		private static function save(array $data)
 		{
-			var_dump($data);
+			foreach (array('driver', 'database', 'host', 'username', 'password', 'lazy') as $key=>$value) {
+				\System\Settings::set(array('database', $data['database'], $key), $value);
+			}
+
+			\System\Settings::set(array('database', 'default'), $data['database']);
+			\System\Settings::save('database');
+
+			self::lock();
+			self::finish();
+		}
+
+
+		/** Lock installer from running again
+		 * @returns void
+		 */
+		protected static function lock()
+		{
+			if (!($action = @file_put_contents(ROOT.\System\Settings::DIR_CONF_ALL.'/install.lock', time()))) {
+				throw new \InternalException(sprintf(
+					l('Failed to lock installer. Please check permissions on your \'%s\' directory and re-run the installer.'),
+					ROOT.\System\Settings::DIR_CONF_ALL
+				));
+			}
+		}
+
+
+		/** Print out "install complete" message and exit
+		 * @returns void
+		 */
+		protected static function finish()
+		{
+			\Tag::h1(array("content" => l('Finished!')));
+			\Tag::div(array(
+				"content" => array(
+					\Tag::p(array(
+						"content" => sprintf(
+							l('Your system should be ready to work. Check out your \'%s\' directory for other settings.'),
+							ROOT.\System\Settings::DIR_CONF_DIST
+						),
+						"output"  => false,
+					)),
+
+					\Tag::p(array(
+						"output"  => false,
+						"content" => sprintf(
+							l('Your next step could be installing modules via \'santa\' located in \'%s\''),
+							ROOT.\System\Package::PATH_BIN
+						),
+					)),
+				)
+			));
 		}
 	}
 }

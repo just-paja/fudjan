@@ -10,6 +10,7 @@ namespace System
 		const PKG_FORMAT = 'tar.bz2';
 		const CACHE_MAX = 2592000;
 		const URL_SOURCE = 'yaweb.local/packages';
+		const PATH_BIN = '/www/bin';
 
 		static private $tree = array();
 		static private $meta = array();
