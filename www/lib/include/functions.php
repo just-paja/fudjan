@@ -67,8 +67,8 @@ function members_to_path(array $members)
  */
 function dump()
 {
-	foreach (func_get_args() as $var) {
-		if (cfg('dev', 'debug') || defined("YACMS_INSTALLER")){
+	if (cfg('dev', 'debug') || defined("YACMS_INSTALLER")) {
+		foreach (func_get_args() as $var) {
 			$trace = debug_backtrace();
 			echo '<div class="debug dump"><b>'.basename($trace[0]['file']).":".$trace[0]['line'].", ".(@$trace[1]['class']).'::'.$trace[1]['function']."()"."</b><pre>";
 				function_exists('var_export') && !is_string($var) ? var_export($var):print_r($var);
@@ -77,6 +77,17 @@ function dump()
 	}
 
 	return func_num_args() > 1 ? func_get_args():$var;
+}
+
+
+function v()
+{
+	foreach (func_get_args() as $var) {
+		$trace = debug_backtrace();
+		echo '<div class="debug dump"><b>'.basename($trace[0]['file']).":".$trace[0]['line'].", ".(@$trace[1]['class']).'::'.$trace[1]['function']."()"."</b><pre>";
+			function_exists('var_export') && !is_string($var) ? var_export($var):print_r($var);
+		echo '</pre></div>';
+	}
 }
 
 
