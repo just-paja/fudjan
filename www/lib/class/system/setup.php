@@ -102,22 +102,27 @@ namespace System
 
 			if ($f->passed()) {
 				$d = $f->get_data();
-				$db_settings = array(
-					"ident"    => $d['database_ident'],
-					"driver"   => $d['database_driver'],
-					"database" => $d['database_name'],
-					"host"     => $d['database_host'],
-					"username" => $d['database_user'],
-					"password" => $d['database_pass'],
-					"lazy"     => false,
+				$settings = array(
+					"database" => array(
+						"ident"    => $d['database_ident'],
+						"driver"   => $d['database_driver'],
+						"database" => $d['database_name'],
+						"host"     => $d['database_host'],
+						"username" => $d['database_user'],
+						"password" => $d['database_pass'],
+						"lazy"     => false,
+					),
+					"seo" => array(
+						"title" => $d['name'],
+					),
 				);
 
 				try {
-					Database::connect($db_settings);
+					Database::connect($settings['database']);
 				} catch (\DatabaseException $e) {}
 
 				if (Database::is_connected()) {
-					self::save($db_settings);
+					self::save($settings);
 				} else {
 					$f->report_error('database_name', 'Could not connect to database');
 					$f->out();
@@ -134,11 +139,14 @@ namespace System
 		private static function save(array $data)
 		{
 			foreach (array('driver', 'database', 'host', 'username', 'password', 'lazy') as $key) {
-				\System\Settings::set(array('database', 'list', $data['ident'], $key), $data[$key]);
+				\System\Settings::set(array('database', 'list', $data['database']['ident'], $key), $data['database'][$key]);
 			}
 
-			\System\Settings::set(array('database', 'default'), $data['ident']);
-			\System\Settings::set(array('database', 'connect'), array($data['ident']));
+			\System\Settings::set(array('database', 'default'), $data['database']['ident']);
+			\System\Settings::set(array('database', 'connect'), array($data['database']['ident']));
+			cfgs(array('default', 'title'), $data['seo']['title']);
+
+			\System\Settings::save('default');
 			\System\Settings::save('database');
 
 			self::lock();
