@@ -1,5 +1,31 @@
-.yaform{font-size:13px}
-.yaform input{font-size:11px;}
+.yaform {
+	font-size:13px;
+}
+
+.yaform input {
+	font-size:11px;
+}
+
+.yaform .input {
+	display:inline-block;
+	vertical-align:top;
+}
+
+.yaform .label,
+.yaform .input,
+.yaform .errors
+{
+	line-height:14px;
+}
+
+.yaform .input {
+	padding:0 5px;
+}
+
+.yaform .input.button {
+	padding:0;
+}
+
 .yaform ul, ul.plain{
 	list-style:none;
 	margin:0;
@@ -104,4 +130,16 @@
 .yaform .form-group label{
 	font-weight:normal;
 	width:112px;
+}
+
+
+.yaform .errors {
+	display:inline-block;
+	padding:0;
+	margin:0;
+}
+
+.yaform .errors li {
+	padding:0;
+	margin:0 10px;
 }

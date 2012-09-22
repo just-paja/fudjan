@@ -40,12 +40,30 @@ namespace System\Form
 				"output"  => false,
 			)):'';
 
-
 			$html_element = $el->kind;
+			$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input', $el->kind), "output" => false));
+			$errors = '';
+			$error_list = $el->get_form()->get_errors($el->name);
+
+			if (!empty($error_list)) {
+				$error_list_attrs = array(
+					"content" => array(),
+					"class"   => 'errors',
+					"output"  => false,
+				);
+				
+				foreach ($error_list as $e) {
+					$error_list_attrs['content'][] = \Tag::li(array("content" => $e, "output"  => false));
+				}
+				
+				$errors = \Tag::ul($error_list_attrs);
+			}
+
 			\Tag::div(array(
 				"content" => array(
 					$label,
-					\Tag::$html_element($data),
+					$input,
+					$errors,
 				),
 			));
 		}
@@ -59,8 +77,6 @@ namespace System\Form
 
 		public static function render_element(\System\Form\Element $el)
 		{
-			//~ var_dump($el);
-			//~ exit;
 			switch (get_class($el)) {
 				case 'System\Form\Container':
 				{

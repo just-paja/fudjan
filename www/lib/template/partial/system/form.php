@@ -13,7 +13,7 @@ Tag::div(array(
 	$f->heading && print(section_heading($f->heading));
 	$f->desc && Tag::p(array("content" => $f->desc));
 
-	Tag::form($f->get_data());
+	Tag::form($f->get_attr_data());
 
 		Tag::fieldset(array(
 			"class" => 'hidden',

@@ -26,8 +26,8 @@ namespace System
 		);
 
 		private $prefix = '';
-
 		protected $counts = array();
+		protected $errors = array();
 
 
 		/** Constructor addon
@@ -159,7 +159,7 @@ namespace System
 		 */
 		public function passed()
 		{
-			return def($this->data_commited['submited'], false) === true;
+			return $this->submited;
 		}
 
 
@@ -288,6 +288,48 @@ namespace System
 		public function get_objects()
 		{
 			return $this->objects;
+		}
+
+
+		public function report_error($input_name, $msg)
+		{
+			if (!isset($this->errors[$input_name])) {
+				$this->errors[$input_name] = array();
+			}
+			
+			$this->errors[$input_name][] = $msg;
+		}
+		
+		
+		public function get_attr_data()
+		{
+			return parent::get_data();
+		}
+
+
+		public function get_data()
+		{
+			if ($this->submited) {
+				$data = $this->data_commited;
+			} else {
+				$data = &$this->data_default;
+			}
+
+			return $data;
+		}
+		
+		
+		public function get_errors($name = '')
+		{
+			if ($name) {
+				if (isset($this->errors[$name])) {
+					$error_list = &$this->errors[$name];
+				} else $error_list = array();
+			} else {
+				$error_list = &$this->errors;
+			}
+
+			return $error_list;
 		}
 	}
 }
