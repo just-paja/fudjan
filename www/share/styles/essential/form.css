@@ -1,98 +1,98 @@
-.plain-form{font-size:13px}
-.plain-form input{font-size:11px;}
-.plain-form ul, ul.plain{
+.yaform{font-size:13px}
+.yaform input{font-size:11px;}
+.yaform ul, ul.plain{
 	list-style:none;
 	margin:0;
 	padding:0;
 }
-.plain-form ul li ul{padding:5px 0 0}
-.plain-form ul li{margin:5px 0}
-.plain-form ul li ul li{margin-left:15px}
-.plain-form ul li ul li label{width:300px;}
-.plain-form ul li label.label-left{ margin-right:7px; }
-.plain-form .input-checkbox, .plain-form .input-radio{margin-right:7px}
-.plain-form .input-text, .plain-form .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
+.yaform ul li ul{padding:5px 0 0}
+.yaform ul li{margin:5px 0}
+.yaform ul li ul li{margin-left:15px}
+.yaform ul li ul li label{width:300px;}
+.yaform ul li label.label-left{ margin-right:7px; }
+.yaform .input-checkbox, .yaform .input-radio{margin-right:7px}
+.yaform .input-text, .yaform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
 	width:250px;
 }
-.plain-form .textarea .form-input {
+.yaform .textarea .form-input {
 	vertical-align:bottom;
 	margin-left:7px;
 	width:500px;
 	display:inline-block;
 }
-.plain-form .select-input {
+.yaform .select-input {
 	vertical-align:bottom;
 	margin-left:0px;
 }
-.plain-form label{cursor:pointer; width:125px; display:inline-block; vertical-align:top; }
-.plain-form input.input-checkbox{ margin-left:135px; }
-.plain-form ul li ul.choice-group li{display:inline-block;width:200px}
-.plain-form ul li ul.choice-group li label{width:auto;}
-.plain-form ul li legend, .plain-form ul li label{font-weight:bold}
-.plain-form ul li .input-group label{font-weight:normal; text-align:left}
-.plain-form ul li .list{display:inline-block;border:1px solid #eaeaea}
-.plain-form ul li .list a{display:block; padding:4px}
-.plain-form ul li .list a:hover{ background:#f9f9f9 }
-.plain-form .inputs{margin:0 0 10px}
-.plain-form .buttons{margin:15px 0 0}
-.plain-form button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
-/*.plain-form ul li.required .form-input{ border-right:14px solid #fff0f0; padding-right:5px; }*/
-.plain-form ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
-.plain-form ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
-/*.plain-form ul li.required-satisfied .form-input{ border-right-color:#E1FFE1; }*/
+.yaform label{cursor:pointer; width:125px; display:inline-block; vertical-align:top; }
+.yaform input.input-checkbox{ margin-left:135px; }
+.yaform ul li ul.choice-group li{display:inline-block;width:200px}
+.yaform ul li ul.choice-group li label{width:auto;}
+.yaform ul li legend, .yaform ul li label{font-weight:bold}
+.yaform ul li .input-group label{font-weight:normal; text-align:left}
+.yaform ul li .list{display:inline-block;border:1px solid #eaeaea}
+.yaform ul li .list a{display:block; padding:4px}
+.yaform ul li .list a:hover{ background:#f9f9f9 }
+.yaform .inputs{margin:0 0 10px}
+.yaform .buttons{margin:15px 0 0}
+.yaform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
+/*.yaform ul li.required .form-input{ border-right:14px solid #fff0f0; padding-right:5px; }*/
+.yaform ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
+.yaform ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
+/*.yaform ul li.required-satisfied .form-input{ border-right-color:#E1FFE1; }*/
 
-.plain-form .image-uploader,
-.plain-form .image-uploader ul,
-.plain-form .image-uploader li
+.yaform .image-uploader,
+.yaform .image-uploader ul,
+.yaform .image-uploader li
 { margin:0; padding:0; }
 
-.plain-form .image-uploader .thumb,
-.plain-form .image-uploader .controls { display:inline-block; vertical-align:top; margin-bottom:5px; }
-.plain-form .image-uploader .thumb { border:1px solid #ccc; margin-right:10px }
-.plain-form .image-uploader .controls label { margin-bottom:2px }
+.yaform .image-uploader .thumb,
+.yaform .image-uploader .controls { display:inline-block; vertical-align:top; margin-bottom:5px; }
+.yaform .image-uploader .thumb { border:1px solid #ccc; margin-right:10px }
+.yaform .image-uploader .controls label { margin-bottom:2px }
 
-.plain-form .image-uploader .fup-cont, .plain-form .input-list-container {
+.yaform .image-uploader .fup-cont, .yaform .input-list-container {
 	border:1px solid #e0e0e0;
 	padding-left:15px;
 	margin:0 0 0 4px;
 	padding:10px 15px;
 	display:inline-block;
 }
-.plain-form .image-uploader .label-left { vertical-align:top }
-.plain-form .image-uploader .fup-cont label { width:125px }
+.yaform .image-uploader .label-left { vertical-align:top }
+.yaform .image-uploader .fup-cont label { width:125px }
 
-.plain-form .input-list-container {
+.yaform .input-list-container {
 	display:inline-block;
 	vertical-align:top;
 	padding:5px 10px;
 	margin:0 0 2px 7px;
 }
-.plain-form .input-list-container a.list-link-add { position:relative; left:-2px }
-.plain-form li.input-list-editor {
+.yaform .input-list-container a.list-link-add { position:relative; left:-2px }
+.yaform li.input-list-editor {
 	width:0;
 	height:0;
 	overflow:visible;
 }
-.plain-form .ilve { display:none; }
-.plain-form .input-list-content { padding:0 }
-.plain-form .input-list-content .key { font-weight:bold; }
-.plain-form .hide-keys .input-list-content .key { display:none }
+.yaform .ilve { display:none; }
+.yaform .input-list-content { padding:0 }
+.yaform .input-list-content .key { font-weight:bold; }
+.yaform .hide-keys .input-list-content .key { display:none }
 .hide-keys .key { display:none }
 
 
-.plain-form .form-tip{
+.yaform .form-tip{
 	display:inline-block;
 	margin:0 10px;
 }
-.plain-form .form-subli label{ font-weight:normal }
-.plain-form ul.form-group-switch>:first-child { display:none }
-.plain-form .label-multi-checkbox{width:100%}
-.plain-form .label-right{width:auto}
+.yaform .form-subli label{ font-weight:normal }
+.yaform ul.form-group-switch>:first-child { display:none }
+.yaform .label-multi-checkbox{width:100%}
+.yaform .label-right{width:auto}
 
-.plain-form .formel-text label{
+.yaform .formel-text label{
 	cursor:auto;
 }
-.plain-form .formel-text p{
+.yaform .formel-text p{
 	display:inline-block;
 	margin:0 0 0 12px;
 	padding:5px 0;
@@ -101,7 +101,7 @@
 .form-group{
 	border:1px solid #efefef;
 }
-.plain-form .form-group label{
+.yaform .form-group label{
 	font-weight:normal;
 	width:112px;
 }
