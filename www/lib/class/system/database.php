@@ -13,45 +13,52 @@ namespace System
 
 		public static function init()
 		{
-			$cfg = cfg('database');
-			if (any($cfg['database'])) {
-				self::connect(cfg('database'));
+			$db_list = cfg('database', 'connect');
+
+			if (any($db_list)) {
+				foreach ($db_list as $db_ident) {
+					$cfg = cfg('database', 'list', $db_ident);
+					self::connect($cfg, $db_ident);
+				}
 			} else {
 				if (php_sapi_name() == 'cli') {
 					exec(ROOT.'/bin/db --setup');
 				} else {
-					throw new \ConfigException(l('No database is set. Please run `bin/db --setup` to set up basic config or create config files manually'));
+					throw new \ConfigException(l('No database is set. Please rerun installer or run `bin/db --setup` to set up basic config or create config files manually'));
 				}
 			}
 		}
 
 
-		public static function connect(array $cfg)
+		public static function connect(array $cfg, $ident = '')
 		{
+			!$ident && $ident = $cfg['database'];
+			$default_ident = cfg('database', 'default');
+
 			$driver_name = 'System\\Database\\Driver\\'.ucfirst($cfg['driver']);
-			$driver = &self::$instances[$cfg['database']];
+			$driver = &self::$instances[$ident];
 			$driver = new $driver_name();
 			$driver->connect($cfg);
 
-			if (count(self::$instances) == 1) {
-				self::$default_instance = &self::$instances[$cfg['database']];
+			if ((any($default_ident) && $ident == $default_ident) || count(self::$instances) === 1) {
+				self::$default_instance = &self::$instances[$ident];
 			}
 		}
 
 
-		public static function query($query, $db_name = null)
+		public static function query($query, $db_ident = null)
 		{
-			if (($db = self::get_db($db_name)) !== null) {
+			if (($db = self::get_db($db_ident)) !== null) {
 				$res = $db->query($query);
 				self::$queries ++;
 				return $res;
-			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
+			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
 		}
 
 
-		public static function simple_insert($table, array $data, $add_times = true, $db_name = null)
+		public static function simple_insert($table, array $data, $add_times = true, $db_ident = null)
 		{
-			if (($db = self::get_db($db_name)) !== null) {
+			if (($db = self::get_db($db_ident)) !== null) {
 				if ($add_times) {
 					$data['created_at'] = new \DateTime();
 					$data['updated_at'] = new \DateTime();
@@ -82,7 +89,7 @@ namespace System
 
 				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
-			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
+			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
 		}
 
 
@@ -92,9 +99,9 @@ namespace System
 		 * @param array  $data
 		 * @param bool   $add_times
 		 */
-		public static function simple_update($table, $id_col, $id, array $data, $add_times = true, $db_name = null)
+		public static function simple_update($table, $id_col, $id, array $data, $add_times = true, $db_ident = null)
 		{
-			if (($db = self::get_db($db_name)) !== null) {
+			if (($db = self::get_db($db_ident)) !== null) {
 				if ($add_times) {
 					$data['updated_at'] = new \DateTime();
 				}
@@ -123,7 +130,7 @@ namespace System
 				}
 
 				return $result;
-			} else throw new \DatabaseException('Not connected to database "'.$db_name.'"');
+			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
 		}
 
 
@@ -133,10 +140,10 @@ namespace System
 		}
 
 
-		private static function get_db($db_name = null)
+		private static function get_db($db_ident = null)
 		{
-			return $db_name === null ?
-				self::get_default():(isset(self::$instances[$db_name]) ? self::$instances[$db_name]:null);
+			return $db_ident === null ?
+				self::get_default():(isset(self::$instances[$db_ident]) ? self::$instances[$db_ident]:null);
 		}
 
 
@@ -166,15 +173,16 @@ namespace System
 			}
 		}
 
-		public static function get_insert_id($db_name = null)
+
+		public static function get_insert_id($db_ident = null)
 		{
-			return self::get_db($db_name)->get_insert_id();
+			return self::get_db($db_ident)->get_insert_id();
 		}
 
 
-		public static function is_connected($db_name = null)
+		public static function is_connected($db_ident = null)
 		{
-			return self::get_db() !== null;
+			return self::get_db($db_ident) !== null;
 		}
 	}
 }
