@@ -174,10 +174,10 @@ namespace System
 				if (isset($iter[$arg])) {
 					$iter = &$iter[$arg];
 				} else {
-					$iter[$arg] = null;
-					$iter = &$iter[$arg];
+					throw new \InternalException(sprintf(l('There is no config on path \'%s\''), implode('/', $args)));
 				}
 			}
+
 			return $iter;
 		}
 
