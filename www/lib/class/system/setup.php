@@ -33,6 +33,16 @@ namespace System
 			$f->group_end();
 
 			$f->label('Database information');
+
+			$f->input(array(
+				"name"     => 'database_ident',
+				"label"    => l('Identificator'),
+				"required" => true,
+				"value"    => 'yawf',
+				"type"     => 'text',
+				"info"     => l('System identificator for this database'),
+			));
+
 			$f->input(array(
 				"type"     => 'select',
 				"name"     => 'database_driver',
@@ -80,12 +90,20 @@ namespace System
 				"type"     => 'text',
 				"info"     => l('Password used to access database'),
 			));
+			
+			$f->input(array(
+				"name"     => 'database_lazy',
+				"label"    => l('Lazy connect'),
+				"type"     => 'checkbox',
+				"info"     => l('The database driver will not connect until query is sent'),
+			));
 
 			$f->submit('Next step');
 
 			if ($f->passed()) {
 				$d = $f->get_data();
 				$db_settings = array(
+					"ident"    => $d['database_ident'],
 					"driver"   => $d['database_driver'],
 					"database" => $d['database_name'],
 					"host"     => $d['database_host'],
@@ -115,11 +133,11 @@ namespace System
 		 */
 		private static function save(array $data)
 		{
-			foreach (array('driver', 'database', 'host', 'username', 'password', 'lazy') as $key=>$value) {
-				\System\Settings::set(array('database', $data['database'], $key), $value);
+			foreach (array('driver', 'database', 'host', 'username', 'password', 'lazy') as $key) {
+				\System\Settings::set(array('database', 'list', $data['ident'], $key), $data[$key]);
 			}
 
-			\System\Settings::set(array('database', 'default'), $data['database']);
+			\System\Settings::set(array('database', 'default'), $data['ident']);
 			\System\Settings::save('database');
 
 			self::lock();
