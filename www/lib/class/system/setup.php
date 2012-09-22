@@ -100,7 +100,7 @@ namespace System
 				if (Database::is_connected()) {
 					self::save($d);
 				} else {
-					$f->group_error(array('database_name'), 'Could not connect to database');
+					$f->report_error('database_name', 'Could not connect to database');
 					$f->out();
 				}
 			} else {
