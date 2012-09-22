@@ -6,7 +6,7 @@
 	font-size:11px;
 }
 
-.yaform .input {
+.yaform .input-container {
 	display:inline-block;
 	vertical-align:top;
 }
@@ -62,10 +62,8 @@
 .yaform .inputs{margin:0 0 10px}
 .yaform .buttons{margin:15px 0 0}
 .yaform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
-/*.yaform ul li.required .form-input{ border-right:14px solid #fff0f0; padding-right:5px; }*/
 .yaform ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
 .yaform ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
-/*.yaform ul li.required-satisfied .form-input{ border-right-color:#E1FFE1; }*/
 
 .yaform .image-uploader,
 .yaform .image-uploader ul,
@@ -142,4 +140,16 @@
 .yaform .errors li {
 	padding:0;
 	margin:0 10px;
+}
+
+.yaform .input-label-right {
+	font-weight:normal;
+}
+
+.yaform .input-left {
+	padding-left:138px;
+}
+
+.yaform .input-left .input-container {
+	width:auto;
 }

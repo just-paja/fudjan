@@ -3,7 +3,7 @@
 $sub_li = $li = 0;
 
 Tag::div(array(
-	"class"  => 'plain-form',
+	"class"  => 'yaform-container',
 	"id"     => $f->id.'-container',
 	"output" => true,
 ));

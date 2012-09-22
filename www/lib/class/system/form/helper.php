@@ -8,11 +8,19 @@ namespace System\Form
 		{
 			return '<span class="form-error">'.$msg.'</span>';
 		}
+		
+		
+		private static function is_label_on_right($el)
+		{
+			return $el->type == 'checkbox' && empty($el->options);
+		}
 
 
 		public static function render_input(\System\Form\Input $el)
 		{
 			$el->content = $el->is_value_content() ? $el->value:$el->content;
+			$label_on_right = self::is_label_on_right($el);
+
 			$data = $el->get_data();
 			$data['output'] = false;
 			$data['close']  = true;
@@ -35,13 +43,14 @@ namespace System\Form
 			}
 
 			$label = $el->has_label() ? \Tag::label(array(
-				"content" => $el->label.':',
+				"class"   => array('input-label', 'input-label-'.($label_on_right ? 'right':'left')),
+				"content" => $el->label.($label_on_right ? '':':'),
 				"for"     => $el->id,
 				"output"  => false,
 			)):'';
 
 			$html_element = $el->kind;
-			$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input', $el->kind), "output" => false));
+			$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
 			$errors = '';
 			$error_list = $el->get_form()->get_errors($el->name);
 
@@ -59,13 +68,8 @@ namespace System\Form
 				$errors = \Tag::ul($error_list_attrs);
 			}
 
-			\Tag::div(array(
-				"content" => array(
-					$label,
-					$input,
-					$errors,
-				),
-			));
+			$label_and_input = $label_on_right ? $input.$label:$label.$input;
+			echo $label_and_input.$errors;
 		}
 
 
@@ -85,7 +89,7 @@ namespace System\Form
 							\Tag::fieldset();
 								\Tag::ul($el->get_data());
 									foreach ($el->get_elements() as $name=>$object) {
-										\Tag::li(array());
+										\Tag::li(array("class" => self::get_object_class($object)));
 										self::render_element($object);
 										\Tag::close('li');
 									}
@@ -106,6 +110,24 @@ namespace System\Form
 					break;
 				}
 			}
+		}
+		
+		
+		public static function get_object_class(\System\Form\Element $el)
+		{
+			$base_class = 'element';
+			$class = array();
+			
+			if ($el instanceof \System\Form\Input) {
+				$base_class = $el->kind;
+				$class[] = 'input-'.$el->id;
+				$class[] = 'input-'.(self::is_label_on_right($el) ? 'left':'right');
+			} elseif ($el instanceof \System\Form\Label) {
+				$base_class = 'label';
+			}
+
+			$class[] = 'form-'.$base_class;
+			return $class;
 		}
 	}
 }
