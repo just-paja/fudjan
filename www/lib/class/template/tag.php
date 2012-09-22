@@ -2,7 +2,7 @@
 
 namespace Template
 {
-	class Tag
+	abstract class Tag
 	{
 		private static $html_attrs = array(
 			'*' => array("class", "id", "onclick", "onfocus", "title"),
@@ -14,6 +14,7 @@ namespace Template
 			'textarea' => array("required", "rows", "cols", "!value"),
 			'input' => array("type", "min", "max", "maxlength", "step", "required", "size", "disabled", "checked", "results", "placeholder"),
 			'select' => array("size", "multiple", "required"),
+			'option' => array("selected", "value"),
 			'button' => array("type"),
 			'html' => array('xmlns'),
 		);
