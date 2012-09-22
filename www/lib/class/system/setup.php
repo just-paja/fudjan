@@ -30,10 +30,12 @@ namespace System
 
 			$f->label('Basic site information');
 			$f->input_text('name', 'Site name', true);
-			$f->inputs_end();
+			$f->group_end();
 
 			$f->label('Database information');
-			$f->select('database_driver', array(
+			$f->input(array(
+				"type"     => 'select',
+				"name"     => 'database_driver',
 				"label"    => l('Database driver'),
 				"required" => true,
 				"info"     => l('Type of database. You will most usually use MySQL here.'),
@@ -43,7 +45,8 @@ namespace System
 				),
 			));
 
-			$f->input('database_host', array(
+			$f->input(array(
+				"name"     => 'database_host',
 				"label"    => l('Host name'),
 				"required" => true,
 				"value"    => 'localhost',
@@ -51,7 +54,8 @@ namespace System
 				"info"     => l('Public hostname or IP address of machine where your database will be located'),
 			));
 
-			$f->input('database_name', array(
+			$f->input(array(
+				"name"     => 'database_name',
 				"label"    => l('Database name'),
 				"required" => true,
 				"value"    => 'yawf',
@@ -59,7 +63,8 @@ namespace System
 				"info"     => l('How will you name your database'),
 			));
 
-			$f->input('database_user', array(
+			$f->input(array(
+				"name"     => 'database_user',
 				"label"    => l('User name'), 
 				"required" => true,
 				"value"    => 'username',
@@ -67,8 +72,9 @@ namespace System
 				"info"     => l('User name used to access database'),
 			));
 
-			$f->input('database_pass', array(
-				"label" => l('Password'),
+			$f->input(array(
+				"name"     => 'database_pass',
+				"label"    => l('Password'),
 				"required" => true,
 				"value"    => 'password',
 				"type"     => 'text',
@@ -77,7 +83,7 @@ namespace System
 
 			$f->submit('Next step');
 			
-			if ($f->is_completed()) {
+			if ($f->passed()) {
 				$d = $f->get_data();
 
 				try {
