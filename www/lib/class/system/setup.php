@@ -138,6 +138,7 @@ namespace System
 			}
 
 			\System\Settings::set(array('database', 'default'), $data['ident']);
+			\System\Settings::set(array('database', 'connect'), array($data['ident']));
 			\System\Settings::save('database');
 
 			self::lock();
