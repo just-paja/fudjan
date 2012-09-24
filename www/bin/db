@@ -111,47 +111,55 @@
 		public static function info()
 		{
 			vout("Querying data ..");
+			\System\Init::full();
 
-			$size = System\Database::query("
-				SELECT
-						sum(data_length + index_length) 'size',
-						sum( data_free ) 'free'
-					FROM information_schema.TABLES
-					WHERE table_schema = '".cfg('database', 'database')."'
-					GROUP BY table_schema;
-			")->fetch();
+			$db_list = cfg('database', 'list');
+			foreach ($db_list as $db_ident => $db_cfg) {
 
-			$mlast_date = new DateTime('0000-00-00');
-			$mcount = 0;
+				$size = System\Database::query("
+					SELECT
+							sum(data_length + index_length) 'size',
+							sum( data_free ) 'free'
+						FROM information_schema.TABLES
+						WHERE table_schema = '".$db_cfg['database']."'
+						GROUP BY table_schema;
+				")->fetch();
 
-			try {
-				$mig = System\Migration::get_new();
-				$mcount = count($mig);
-				$mlast = get_first("\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
-				$mlast_date = $mlast->updated_at;
-				$stat = "Ok";
-			} catch (Exception $e) {
-				$stat = "Migrating database is necessary.";
+				$mlast_date = new DateTime('0000-00-00');
+				$mcount = 0;
+
+				try {
+					$mig = System\Migration::get_new();
+					$mcount = count($mig);
+					$mlast = get_first("\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
+					$mlast_date = $mlast->updated_at;
+					$stat = "Ok";
+				} catch (Exception $e) {
+					$stat = "Migrating database is necessary.";
+				}
+
+				vout("");
+				vout("YaCMS database info");
+
+				out('Database '.$db_ident);
+				sep();
+
+				out_flist(array(
+					"Driver"         => $db_cfg['driver'],
+					"Host name"      => $db_cfg['host'],
+					"Database name"  => $db_cfg['database'],
+					"User"           => $db_cfg['username'],
+					"Used charset"   => $db_cfg['charset'],
+					"Lazy driver"    => $db_cfg['lazy'] ? 'yes':'no',
+					"Size"           => System\Template::convert_value('information', $size['size']),
+					"Free space"     => System\Template::convert_value('information', $size['free']),
+					"Structure"      => $stat,
+					"Last migrated"  => format_date($mlast_date, 'sql'),
+					"New migrations" => $mcount,
+				));
+				vout("");
+				vout($mcount > 0 ? "We recommend running migrations":"All fine here");
 			}
-
-			vout("");
-			vout("YaCMS database info");
-
-			out_flist(array(
-				"Driver"         => cfg('database', 'driver'),
-				"Host name"      => cfg('database', 'host'),
-				"Database name"  => cfg('database', 'database'),
-				"User"           => cfg('database', 'username'),
-				"Used charset"   => cfg('database', 'charset'),
-				"Lazy driver"    => cfg('database', 'lazy') ? 'yes':'no',
-				"Size"           => System\Template::convert_value('information', $size['size']),
-				"Free space"     => System\Template::convert_value('information', $size['free']),
-				"Structure"      => $stat,
-				"Last migrated"  => format_date($mlast_date, 'sql'),
-				"New migrations" => $mcount,
-			));
-			vout("");
-			vout($mcount > 0 ? "We recommend running migrations":"All fine here");
 		}
 
 
@@ -166,12 +174,7 @@
 				$file = $params[0];
 			}
 
-			$cmd = "mysqldump";
-			cfg('database', 'password') && $cmd .= " -p".cfg('database', 'password');
-			cfg('database', 'username') && $cmd .= " -u ".cfg('database', 'username');
-			cfg('database', 'host') && $cmd .= " -h ".cfg('database', 'host');
-
-			$cmd .= " ".cfg('database', 'database');
+			$cmd = self::assemble_mysql_command("mysqldump", true);
 
 			if (!is_null($file)) {
 				shell_exec("mkdir -m775 -p ".dirname($file));
@@ -209,6 +212,8 @@
 		 */
 		public static function migrate($backup = true)
 		{
+			\System\Init::full();
+
 			$params = CLIOptions::get('params');
 			if (empty($params)) {
 
@@ -247,6 +252,7 @@
 		 */
 		public static function drop()
 		{
+			\System\Init::full();
 			if (self::database_exists()) {
 
 				if (!CLIOptions::get('force')) {
@@ -256,15 +262,18 @@
 
 
 				if (CLIOptions::get('force') || is_yes($str)) {
-					$name = cfg('database', 'database');
+					$db_ident = cfg('database', 'default');
+					$db_name = cfg('database', 'list', $db_ident, 'database');
 
 					self::save();
-					out("Dropping database '".$name."'");
-					$cmd = "echo \"DROP DATABASE \`".$name."\`\" | ".self::assemble_mysql_command('mysql');
+					out("Dropping database '".$db_name."'");
+					$cmd = "echo \"DROP DATABASE \`".$db_name."\`\" | ".self::assemble_mysql_command('mysql');
 					passthru($cmd);
 
 					vout("She's dead, Jim.");
 				}
+			} else {
+				vout('Database \'s already gone.');
 			}
 		}
 
@@ -317,11 +326,14 @@
 		 */
 		public static function restore()
 		{
+			\System\Init::basic();
 			$params = CLIOptions::get('params');
+
 			if (isset($params[0])) {
 				if (file_exists($params[0])) {
-					$name = cfg('database', 'database');
-					vout("Restoring database '".$name."'");
+					$db_ident = cfg('database', 'default');
+					$db_name = cfg('database', 'list', $db_ident, 'database');
+					vout("Restoring database '".$db_name."'");
 
 					if (!self::database_exists()) {
 						self::database_create();
@@ -375,12 +387,13 @@
 		 */
 		public static function seed()
 		{
+			\System\Init::full();
 			$data = System\Json::read_dist(ROOT.System\Database::DIR_INITIAL_DATA);
 
-			foreach ($data as $set=>$data_set) {
-				foreach ($data_set as $table => $tdata) {
+			foreach ($data as $table => $data_set) {
+				foreach ($data_set as $key => $tdata) {
 					$add_dates = self::table_column_exists($table, 'created_at');
-					out("Using data set '".$set."': ", false);
+					out("Using data set '".$table."': ", false);
 
 					System\Database::simple_insert($table, $tdata, $add_dates);
 					out("ok");
@@ -395,9 +408,11 @@
 		public static function save()
 		{
 			if (!CLIOptions::get('no-backups')) {
-				$name = cfg('database', 'database');
-				$file = ROOT."/var/backups/".str_replace(" ", "-", format_date(time(), "sql"))."_".$name.".sql";
-				out("Creating backup of '".$name."' in '".$file."'");
+				$db_ident = cfg('database', 'default');
+				$db_name  = cfg('database', 'list', $db_ident, 'database');
+
+				$file = ROOT."/var/backups/".str_replace(" ", "-", format_date(time(), "sql"))."_".$db_name.".sql";
+				out("Creating backup of '".$db_name."' in '".$file."'");
 				self::backup($file);
 			}
 		}
@@ -408,7 +423,10 @@
 		 */
 		private static function database_exists()
 		{
-			$query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '".cfg('database', 'database')."'";
+			$db_ident = cfg('database', 'default');
+			$db_name  = cfg('database', 'list', $db_ident, 'database');
+
+			$query = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '".$db_name."'";
 			$cmd = "echo \"".$query."\" | ".self::assemble_mysql_command("mysql", false);
 			$res = shell_exec($cmd);
 			return !is_null($res);
@@ -439,7 +457,11 @@
 		 */
 		private static function database_create()
 		{
-			$name = cfg('database', 'database');
+			\System\Init::basic();
+
+			$db_ident = cfg('database', 'default');
+			$name     = cfg('database', 'list', $db_ident, 'database');
+
 			out("Creating database '".$name."'");
 			shell_exec("echo \"CREATE DATABASE ".$name."\" | ".self::assemble_mysql_command("mysql", false));
 		}
@@ -450,10 +472,15 @@
 		 */
 		private static function database_init()
 		{
+			\System\Init::full();
+
+			$db_ident = cfg('database', 'default');
+			$db_cfg = cfg('database', 'list', $db_ident);
+
 			$query = "
 				SELECT COUNT(table_name)
 					FROM information_schema.tables
-					WHERE table_schema = '".cfg('database', 'database')."'
+					WHERE table_schema = '".$db_cfg['database']."'
 					AND table_name = '".System\Model\Basic::get_table("\System\Migration")."';";
 
 			list($key, $res) = explode("\n", shell_exec("echo \"".$query."\" | ".self::assemble_mysql_command('mysql')));
@@ -469,10 +496,13 @@
 		 */
 		private static function assemble_mysql_command($cmd, $db = false)
 		{
-			cfg('database', 'password') && $cmd .= " -p".cfg('database', 'password');
-			cfg('database', 'username') && $cmd .= " -u ".cfg('database', 'username');
-			cfg('database', 'host')     && $cmd .= " -h ".cfg('database', 'host');
-			$db && $cmd .= ' '.cfg('database', 'database');
+			$db_ident = cfg('database', 'default');
+			$db_cfg = cfg('database', 'list', $db_ident);
+
+			$db_cfg['password'] && $cmd .= " -p".$db_cfg['password'];
+			$db_cfg['username'] && $cmd .= " -u ".$db_cfg['username'];
+			$db_cfg['host']     && $cmd .= " -h ".$db_cfg['host'];
+			$db && $cmd .= ' '.$db_cfg['database'];
 
 			return $cmd;
 		}

@@ -90,7 +90,7 @@ namespace System
 				"type"     => 'text',
 				"info"     => l('Password used to access database'),
 			));
-			
+
 			$f->input(array(
 				"name"     => 'database_lazy',
 				"label"    => l('Lazy connect'),
@@ -137,6 +137,8 @@ namespace System
 				\System\Settings::set(array('database', 'list', $data['ident'], $key), $data[$key]);
 			}
 
+			\System\Settings::set(array('database', 'list', $data['ident'], 'charset'), 'utf8');
+			\System\Settings::set(array('database', 'list', $data['ident'], 'is_yawf_home'), true);
 			\System\Settings::set(array('database', 'default'), $data['ident']);
 			\System\Settings::set(array('database', 'connect'), array($data['ident']));
 			\System\Settings::save('database');
