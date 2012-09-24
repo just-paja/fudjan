@@ -139,13 +139,13 @@ namespace System
 		private static function save(array $data)
 		{
 			foreach (array('driver', 'database', 'host', 'username', 'password', 'lazy') as $key) {
-				\System\Settings::set(array('database', 'list', $data['database']['ident'], $key), $data['database'][$key]);
+				cfgs(array('database', 'list', $data['database']['ident'], $key), $data['database'][$key]);
 			}
 
-			\System\Settings::set(array('database', 'list', $data['ident'], 'charset'), 'utf8');
-			\System\Settings::set(array('database', 'list', $data['ident'], 'is_yawf_home'), true);
-			\System\Settings::set(array('database', 'default'), $data['database']['ident']);
-			\System\Settings::set(array('database', 'connect'), array($data['database']['ident']));
+			cfgs(array('database', 'list', $data['ident'], 'charset'), 'utf8');
+			cfgs(array('database', 'list', $data['ident'], 'is_yawf_home'), true);
+			cfgs(array('database', 'default'), $data['database']['ident']);
+			cfgs(array('database', 'connect'), array($data['database']['ident']));
 			cfgs(array('default', 'title'), $data['seo']['title']);
 
 			\System\Settings::save('default');
