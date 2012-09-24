@@ -28,6 +28,9 @@ namespace System
 					break;
 				}
 			}
+			
+			if (!isset($_GET)) $_GET = array();
+			if (!isset($_POST)) $_POST = array();
 
 			self::$input = array_merge_recursive((array) $_GET, (array) $_POST, (array) $_FILES);
 			self::$input['path'] = $_SERVER['REQUEST_URI'];
