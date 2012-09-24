@@ -76,6 +76,7 @@
 		 */
 		public static function info()
 		{
+			\System\Init::full();
 			$ext_modules = array();
 			$dir = opendir($p = ROOT.System\Module::BASE_DIR);
 			$dirs = array();
@@ -120,6 +121,7 @@
 		 */
 		public static function htaccess()
 		{
+			\System\Init::full();
 			vout(l('Updating .htaccess rules'));
 			$dir = ROOT.'/etc/rewrite.d';
 			$od = opendir($dir);
