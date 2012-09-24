@@ -326,11 +326,14 @@
 		 */
 		public static function restore()
 		{
+			\System\Init::basic();
 			$params = CLIOptions::get('params');
+
 			if (isset($params[0])) {
 				if (file_exists($params[0])) {
-					$name = cfg('database', 'database');
-					vout("Restoring database '".$name."'");
+					$db_ident = cfg('database', 'default');
+					$db_name = cfg('database', 'list', $db_ident, 'database');
+					vout("Restoring database '".$db_name."'");
 
 					if (!self::database_exists()) {
 						self::database_create();
