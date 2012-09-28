@@ -9,7 +9,7 @@ namespace System\Offcom
 		 */
 		public static function get($url)
 		{
-			if(function_exists('curl_init')) {
+			if (function_exists('curl_init')) {
 				$ch = curl_init(); 
 				curl_setopt($ch, CURLOPT_URL, $url); 
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
@@ -27,7 +27,7 @@ namespace System\Offcom
 				curl_close($ch);
 				return new Response($dataray);
 
-			} else throw new InternalException(l('Please allow CURL extension'));
+			} else throw new \InternalException(l('Please allow CURL extension'));
 		}
 
 
