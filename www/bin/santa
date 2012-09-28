@@ -8,6 +8,8 @@
 	define("NAME", basename($_SERVER['SCRIPT_NAME']));
 
 	require_once ROOT."/etc/init.d/pre-cli.php";
+	require_once ROOT."/lib/include/core.php";
+	require_once ROOT."/lib/include/functions.php";
 	require_once ROOT."/lib/include/core.cli.php";
 
 // -- CLASSES
@@ -99,6 +101,7 @@
 		 */
 		public static function installed()
 		{
+			System\Init::basic();
 			$packages = System\Package::get_all_installed();
 			self::print_packages($packages);
 			out(sprintf(l('Installed %s packages.'), count($packages)));
@@ -110,8 +113,10 @@
 		 */
 		public static function browse()
 		{
+			System\Init::basic();
 			$branches = System\Package::get_tree();
 			$packages = array();
+			
 			foreach ($branches as $bname => $branch) {
 				foreach ($branch as $cname => $category) {
 					foreach ($category as $pkg) {
@@ -206,6 +211,7 @@
 		 */
 		public static function broken()
 		{
+			System\Init::Basic();
 			$files = \System\Package::get_all_installed_files();
 			$mod = $del = 0;
 
@@ -241,6 +247,7 @@
 		 */
 		public static function updates()
 		{
+			System\Init::Full();
 			$params = CLIOptions::get('params');
 			$branch = isset($params[0]) ? $params[0]:null;
 			$updates = System\Package::get_update_list($branch);
@@ -260,6 +267,7 @@
 		 */
 		public static function upgrade()
 		{
+			System\Init::Full();
 			$params = YacmsCLIOptions::get('params');
 			$latest = YacmsCLIOptions::get('force');
 
@@ -313,6 +321,7 @@
 		 */
 		public static function install()
 		{
+			System\Init::Full();
 			$params = YacmsCLIOptions::get('params');
 			if (any($params)) {
 				$packages = array();
@@ -350,6 +359,7 @@
 		 */
 		public static function branches()
 		{
+			System\Init::Basic();
 			$branches = System\Package::get_branch_list();
 			vout(l('Available branches'));
 			foreach ($branches as $branch) {
@@ -457,7 +467,6 @@
 
 
 
-
 // -- RUNTIME
 
-	require_once ROOT."/etc/init.d/cli.php";
+	System\Init::cli();
