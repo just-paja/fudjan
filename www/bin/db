@@ -439,12 +439,15 @@
 		 */
 		private static function table_column_exists($table, $column)
 		{
+			$db_ident = cfg('database', 'default');
+			$name     = cfg('database', 'list', $db_ident, 'database');
+
 			$query = "
 			SELECT * FROM COLUMNS
 				WHERE
 					TABLE_NAME = '".$table."'
 					AND COLUMN_NAME ='".$column."'
-					AND TABLE_SCHEMA = '".cfg('database', 'database')."'";
+					AND TABLE_SCHEMA = '".$name."'";
 			$cmd = "echo \"".$query."\" | ".self::assemble_mysql_command("mysql", false). " INFORMATION_SCHEMA";
 			$res = shell_exec($cmd);
 			return !is_null($res);
