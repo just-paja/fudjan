@@ -5,6 +5,7 @@ namespace System
 	class Form extends \System\Model\Attr
 	{
 		const SEPARATOR_ID = '_';
+		const SEPARATOR_INPUT_METHOD = 'input_';
 		const TEMPLATE_DEFAULT = 'system/form';
 
 		protected static $attrs = array(
@@ -44,6 +45,31 @@ namespace System
 			$this->take_data_from_input();
 
 			$this->hidden('submited', true);
+		}
+		
+		
+		/** Alias to create simple input type
+		 * @param string $name Name of called method
+		 * @param array  $args Arguments to the function
+		 */
+		public function __call($name, $args)
+		{
+			if (strpos($name, self::SEPARATOR_INPUT_METHOD) === 0) {
+				$type = substr($name, strlen(self::SEPARATOR_INPUT_METHOD)-1);
+
+				if (!isset($args[0])) {
+					throw new \ArgumentException(sprintf(l('You must enter input name as first argument for System\\Form::%s method'), $name));
+				}
+
+				$this->input(array(
+					"type"     => $type,
+					"name"     => $args[0],
+					"label"    => def($args[1], ''),
+					"required" => def($args[2], false),
+					"info"     => def($args[3], ''),
+				));
+
+			} else throw new \WtfException(sprintf(l('There is no form method "%s".'), $name));
 		}
 
 
@@ -209,21 +235,6 @@ namespace System
 			$this->check_rendering_group('inputs');
 			$attrs['form'] = &$this;
 			return $this->rendering['group']->add_element(new Form\Label(array("content" => $text, "input" => $for)));
-		}
-
-
-		/** Add common text field
-		 * @param string $name
-		 * @param string $label [''],
-		 * @param bool   $required [false]
-		 */
-		public function input_text($name, $label = '', $required = false)
-		{
-			return $this->input(array(
-				"name"     => $name,
-				"label"    => $label,
-				"required" => !!$required,
-			));
 		}
 
 
