@@ -46,8 +46,7 @@ namespace System
 
 		public static function run()
 		{
-			reset(self::$queue);
-			while(!empty(self::$queue)){
+			while (!empty(self::$queue)) {
 				$mod = array_shift(self::$queue);
 				$retval = $mod->make();
 				Status::log('Modules', array($mod->get_path() ), !!$retval, !!$retval);
