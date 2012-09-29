@@ -2,7 +2,7 @@
 
 namespace System\Form
 {
-	class Helper
+	abstract class Helper
 	{
 		public static function error($msg)
 		{
@@ -51,6 +51,16 @@ namespace System\Form
 
 			$html_element = $el->kind;
 			$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
+			$info = '';
+
+			if ($el->info) {
+				$info = \Tag::span(array(
+					"class"   => 'input-info',
+					"content" => $el->info,
+					"output"  => false,
+				));
+			}
+
 			$errors = '';
 			$error_list = $el->get_form()->get_errors($el->name);
 
@@ -69,7 +79,7 @@ namespace System\Form
 			}
 
 			$label_and_input = $label_on_right ? $input.$label:$label.$input;
-			echo $label_and_input.$errors;
+			echo $label_and_input.$info.$errors;
 		}
 
 

@@ -5,7 +5,7 @@ namespace System\Form
 	class Input extends \System\Form\Element
 	{
 		protected static $attrs = array(
-			"string" => array('name', 'type', 'id', 'label', 'kind', 'content'),
+			"string" => array('name', 'type', 'id', 'label', 'kind', 'content', 'info'),
 			"int"    => array('maxlen'),
 			"float"  => array(),
 			"bool"   => array('required', 'checked'),
