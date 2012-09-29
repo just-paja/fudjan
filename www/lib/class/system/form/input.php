@@ -43,7 +43,7 @@ namespace System\Form
 			!$this->type && self::get_default_type();
 			!$this->kind && self::get_default_kind();
 			$this->kind = in_array($this->type, self::$kinds) ? $this->type:self::get_default_kind();
-			!$this->id && $this->id = $this->name;
+			!$this->id && $this->id = 'field_'.$this->name;
 
 			$this->type == 'submit' && $this->kind = 'button';
 
