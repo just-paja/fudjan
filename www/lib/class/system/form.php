@@ -257,12 +257,12 @@ namespace System
 		 * @param array         $locals Extra local data
 		 * @returns mixed
 		 */
-		public function out(System\Module $obj = NULL, array $locals = array())
+		public function out(\System\Module $obj = NULL, array $locals = array())
 		{
 			$this->group_end();
 			//~ $this->tab_group_end();
 
-			return $obj instanceof Module ?
+			return $obj instanceof \System\Module ?
 				$obj->template(self::get_default_template(), (array) $locals + array("f" => $this)):
 				\System\Template::partial(self::get_default_template(), array("f" => $this));
 		}

@@ -102,13 +102,13 @@ namespace System
 
 		public function template($name, $locals = array())
 		{
-			if ($name instanceof \Core\Form)
+			if ($name instanceof \System\Form)
 			{
 				$f = $name;
 				$f->check_group_end();
 				$f->check_tab_group_end();
 				$f->check_inputs_end();
-				$name = \Core\Form::get_default_template();
+				$name = \System\Form::get_default_template();
 				$locals += array("f" => $f);
 			}
 
@@ -177,7 +177,7 @@ namespace System
 					if ($include_perms) {
 						$mod['perms'] = collect(
 							array('attr', 'id_user_group'),
-							get_all("\Core\User\Perm", array(
+							get_all("\System\User\Perm", array(
 								"type" => 'module',
 								"trigger" => $category.'/'.$mod_name,
 								array("public" => true, "id_user_group != 0")
@@ -206,10 +206,10 @@ namespace System
 				list($cond, $val) = explode(',', $cond_str, 2);
 				switch ($cond) {
 					case 'logged-in':
-						$result = $result && \Core\User::logged_in();
+						$result = $result && \System\User::logged_in();
 						break;
 					case 'logged-out':
-						$result = $result && !\Core\User::logged_in();
+						$result = $result && !\System\User::logged_in();
 						break;
 				}
 			}
