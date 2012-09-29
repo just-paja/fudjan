@@ -55,7 +55,7 @@ namespace System
 		public function __call($name, $args)
 		{
 			if (strpos($name, self::SEPARATOR_INPUT_METHOD) === 0) {
-				$type = substr($name, strlen(self::SEPARATOR_INPUT_METHOD)-1);
+				$type = substr($name, strlen(self::SEPARATOR_INPUT_METHOD));
 
 				if (!isset($args[0])) {
 					throw new \ArgumentException(sprintf(l('You must enter input name as first argument for System\\Form::%s method'), $name));
