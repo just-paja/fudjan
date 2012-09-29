@@ -54,7 +54,7 @@ namespace System
 			$path = ROOT.self::BASE_DIR.$this->path.'.php';
 
 			if (file_exists($path)) {
-				if (user()->is_root() == 'root' || user()->has_right_to(substr($this->path, 1))) {
+				if (user()->is_root() || user()->has_right_to('*') || user()->has_right_to(substr($this->path, 1))) {
 					if (is_readable($path)) {
 						if (!is_array($this->locals)) $this->locals = array($this->locals);
 						$locals = &$this->locals;

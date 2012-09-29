@@ -25,5 +25,8 @@
 	"user_group_assignment":[
 		{ "id_user":1, "id_user_group":1 },
 		{ "id_user":1, "id_user_group":2 }
+	],
+	"user_perm":[
+		{ "type":"module", "trigger":"*", "id_user_group":1, "id_author":1, "public":1 }
 	]
 }
