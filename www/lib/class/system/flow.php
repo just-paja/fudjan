@@ -96,5 +96,11 @@ namespace System
 		{
 			return microtime(true) - self::$start_time;
 		}
+		
+		
+		public static function get_queue()
+		{
+			return self::$queue;
+		}
 	}
 }
