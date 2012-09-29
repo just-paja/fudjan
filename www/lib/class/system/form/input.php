@@ -34,6 +34,7 @@ namespace System\Form
 			'hidden',
 			'button',
 			'submit',
+			'password',
 		);
 
 
