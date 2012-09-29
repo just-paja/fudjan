@@ -4,8 +4,6 @@ namespace System\Offcom
 {
 	class Mail extends \System\Model\Attr
 	{
-		private static $errors = array();
-		
 		public static function create(array $rcpt, array $headers, $msg)
 		{
 			$new_headers = array(
