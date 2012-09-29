@@ -45,6 +45,7 @@ namespace System
 			$this->take_data_from_input();
 
 			$this->hidden('submited', true);
+			$this->data_default['submited'] = false;
 		}
 		
 		
