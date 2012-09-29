@@ -174,7 +174,7 @@ namespace System
 				if (isset($iter[$arg])) {
 					$iter = &$iter[$arg];
 				} else {
-					throw new \InternalException(sprintf(l('There is no config on path \'%s\''), implode('/', $args)));
+					throw new \InternalException(sprintf('There is no config on path \'%s\'', implode('/', $args)));
 				}
 			}
 
