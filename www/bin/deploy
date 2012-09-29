@@ -1,15 +1,13 @@
 #!/usr/bin/php
 <?
 
-
 // -- BASICS
 
 	define("ROOT", realpath(__DIR__.'/..'));
 	define("NAME", basename($_SERVER['SCRIPT_NAME']));
 
 	require_once ROOT."/etc/init.d/pre-cli.php";
-	require_once ROOT."/lib/include/core.php";
-	require_once ROOT."/lib/include/functions.php";
+	require_once ROOT."/etc/init.d/core.php";
 	require_once ROOT."/lib/include/core.cli.php";
 
 // -- CLASSES
