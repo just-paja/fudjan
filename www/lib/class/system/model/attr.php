@@ -31,7 +31,7 @@ namespace System\Model
 		 * @param array $dataray Set of data used by object
 		 * @returns BasicModel
 		 */
-		public function __construct($dataray = array())
+		protected function __construct($dataray = array())
 		{
 			$model = get_class($this);
 			$this->update_attrs($dataray);

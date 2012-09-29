@@ -20,7 +20,7 @@ namespace System\Offcom
 		}
 
 
-		private function __construct(array $rcpt, array $headers, $msg)
+		protected function __construct(array $rcpt, array $headers, $msg)
 		{
 			$this->rcpt    = $rcpt;
 			$this->headers = $headers;
