@@ -76,6 +76,7 @@ class FatalException extends InternalException {}
 class MissingFileException extends InternalException {}
 class ConfigException extends InternalException {}
 class DependencyException extends InternalException {}
+class WtfException extends InternalException {}
 
 
 // Class autoloader
