@@ -4,7 +4,6 @@ namespace System
 {
 	class Module
 	{
-
 		const BASE_DIR = '/lib/module';
 		static private $instances;
 		static private $array_forced_locals = array("conds", "opts");
@@ -32,13 +31,28 @@ namespace System
 		}
 
 
-		public function get_path(){ return $this->path; }
-		public function get_name(){ return _('Modul').' '.$this->path; }
-		public function get_id()  { return $this->id; }
+		public function get_path()
+		{
+			return $this->path;
+		}
+		
+		
+		public function get_name()
+		{ 
+			return _('Modul').' '.$this->path;
+		}
+		
+		
+		public function get_id()
+		{
+			return $this->id;
+		}
+
 
 		public function make()
 		{
 			$path = ROOT.self::BASE_DIR.$this->path.'.php';
+
 			if (file_exists($path)) {
 				if (user()->is_root() == 'root' || user()->has_right_to(substr($this->path, 1))) {
 					if (is_readable($path)) {
