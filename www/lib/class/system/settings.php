@@ -44,9 +44,7 @@ namespace System
 			self::set_env();
 			$dir = @opendir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
 			if (!is_resource($dir)) {
-				if (!@mkdir($p)) {
-					throw new \InternalException(l('Couldn\'t save your configuration. Please check your file system permissions to directory "'.$p.'/".'));
-				}
+				\System\Directory::create($p);
 				self::reset();
 				$dir = @opendir($p);
 			}
@@ -101,7 +99,7 @@ namespace System
 
 		public static function reset()
 		{
-			$p = ROOT.self::STATIC_CONF_DIR;
+			$p = ROOT.self::DIR_CONF_STATIC;
 			$dir = opendir($p);
 			while($file = readdir($dir)){
 				if(is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
@@ -131,7 +129,7 @@ namespace System
 			}
 
 			if (!is_dir(dirname(self::get_cache_filename()))) {
-				mkdir(dirname(self::get_cache_filename()), 0770, true);
+				\System\Directory::create(dirname(self::get_cache_filename()), 0770);
 			}
 
 			$fp = file_put_contents(self::get_cache_filename(), serialize($conf));
@@ -207,7 +205,7 @@ namespace System
 		public static function save($module, $env = null)
 		{
 			is_null($env) && ($env = self::$env);
-			
+
 			if (!($action = @file_put_contents(
 				ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json",
 				\System\Json::json_humanize(json_encode(self::get($module)))

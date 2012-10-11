@@ -74,9 +74,7 @@ namespace System
 		public static function report($type, $msg)
 		{
 			if (!isset(self::$log_files[$type]) || !is_resource(self::$log_files[$type])) {
-				if (!is_dir(ROOT.self::DIR_LOGS)) {
-					mkdir(ROOT.self::DIR_LOGS);
-				}
+				\System\Directory::check(ROOT.self::DIR_LOGS);
 				self::$log_files[$type] = fopen(ROOT.self::DIR_LOGS.'/'.$type.'.log', 'a+');
 			}
 
@@ -85,7 +83,7 @@ namespace System
 			foreach ((array) $msg as $line) {
 				if (!is_null($line)) {
 					if (is_array($line)) {
-						
+
 					} else {
 						$report .= "> ".$line.NL;
 					}
