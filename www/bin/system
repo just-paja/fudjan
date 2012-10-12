@@ -99,7 +99,7 @@
 				"Version"    => System\Output::introduce(),
 				"Branch"     => cfg('own', 'branch'),
 			));
-			
+
 			if (CLIOptions::get('verbose')) {
 				out();
 				out("External modules: ", false);
@@ -118,7 +118,7 @@
 		 */
 		public static function htaccess()
 		{
-			\System\Init::full();
+			\System\Init::basic();
 			vout(l('Updating .htaccess rules'));
 			$dir = ROOT.'/etc/rewrite.d';
 			$od = opendir($dir);
