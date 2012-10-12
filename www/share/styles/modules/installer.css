@@ -1,17 +1,23 @@
 html,
 body
 {
-	background-color:#ccc;
-	font-family:"Dejavu Sans", sans-serif;
-	font-size:14px;
+	background-color:#000;
+	font-family:"Droid Sans", "Arial", "Dejavu Sans", sans-serif;
+	font-size:15px;
 }
 
 body {
 	padding:25px;
+	color:#efefef;
 }
 
 form {
 	font-size:14px;
+}
+
+h1 {
+	margin:0 0 15px;
+	font-weight:normal;
 }
 
 #container,
@@ -22,32 +28,77 @@ footer
 }
 
 #container {
-	border:1px solid #666;
-	background:#fff;
-	padding:25px;
+	border:1px solid #633B00;
+	box-shadow:0 0 50px #4C0057;
+	background:#333;
+	padding:30px;
 }
 
 footer {
 	padding:5px;
 }
 
+.yaform {
+	border-top:1px solid #985B00;
+	padding-top:15px;
+}
+
+.yaform fieldset {
+	padding:0;
+	padding-top:5px;
+
+}
+
 .yaform label {
-	width:145px;
+	width:155px;
+}
+
+.yaform ul li label {
+	font-weight:normal;
+}
+
+.yaform .input-left {
+	padding-left:148px;
+}
+
+.yaform .input-left .input-container {
+	padding:3px 5px 0 0;
+}
+
+.yaform .input-left label {
+	width:167px;
+	padding-top:4px;
 }
 
 .yaform .input-info {
-	padding:3px 5px 5px 15px;
-	color:#333;
-	width:250px;
+	padding:3px 5px 5px 20px;
+	color:#999;
+	width:340px;
 	display:inline-block;
 	vertical-align:top;
 }
 
-.yaform .formel-text label {
+.yaform .inputs .input-right input {
+	width:180px;
+	background:#efefef;
+	border:1px solid #4C0057;
+	padding:3px 5px;
+	border-radius:3px;
+	font-size:12px;
+	color:#666;
+}
+
+.yaform .inputs .input-right input:hover,
+.yaform .inputs .input-right input:focus
+{
+	color:#000
+}
+
+.yaform .form-label label {
 	display:block;
-	width:auto;
-	font-size:150%;
-	margin-bottom:20px;
+	width:300px;
+	font-size:140%;
+	margin-bottom:15px;
 	font-weight:normal;
 }
 
@@ -61,5 +112,30 @@ footer {
 
 .yaform .input-container {
 	vertical-align:top;
-	width:255px;
+	width:185px;
+}
+
+.yaform .errors, .yaform .errors li {
+	margin:0;
+	padding:0;
+	color:#f00;
+}
+
+.yaform .errors {
+	margin:0 0 10px;
+}
+
+
+footer {
+	color:#666;
+}
+
+.yaform button {
+	margin-top:20px;
+	border:1px solid #633B00;
+	border-radius:3px;
+	background:#777;
+	padding:5px 20px;
+	font-size:125%;
+	color:#fff;
 }
