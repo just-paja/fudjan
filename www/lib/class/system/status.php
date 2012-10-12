@@ -78,17 +78,10 @@ namespace System
 				self::$log_files[$type] = fopen(ROOT.self::DIR_LOGS.'/'.$type.'.log', 'a+');
 			}
 
-			$report = date('[Y-m-d H:i:s]');
+			$report = @date('[Y-m-d H:i:s]');
 			php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
-			foreach ((array) $msg as $line) {
-				if (!is_null($line)) {
-					if (is_array($line)) {
+			self::append_msg_info($msg, $report);
 
-					} else {
-						$report .= "> ".$line.NL;
-					}
-				}
-			}
 
 			if (php_sapi_name() == 'cli') {
 				$report .= "> Run from console".NL;
@@ -97,6 +90,24 @@ namespace System
 			}
 			$report .= NL;
 			fwrite(self::$log_files[$type], $report);
+		}
+
+
+		private static function append_msg_info($msg, &$report)
+		{
+			foreach ((array) $msg as $line) {
+				if ($line) {
+					if (is_array($line)) {
+						if (isset($line[0])) {
+							self::append_msg_info($line, $report);
+						} else {
+							$report .= "> ".json_encode($line).NL;
+						}
+					} else {
+						$report .= "> ".$line.NL;
+					}
+				}
+			}
 		}
 
 
