@@ -17,6 +17,7 @@ namespace Template
 			'option' => array("selected", "value"),
 			'button' => array("type"),
 			'html' => array('xmlns'),
+			'label' => array('for'),
 		);
 
 		private static $noclose_tags = array(
@@ -30,7 +31,7 @@ namespace Template
 			'selected',
 			'checked'
 		);
-		
+
 		private static $attr_separators = array(
 			"content" => '',
 			"style"   => ';',
