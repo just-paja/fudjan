@@ -1,41 +1,5 @@
 <?
 
-if (!defined("H_BUG_REPORT")) {
-	define("H_BUG_REPORT", true);
-
-	function yacms_show_backtrace($trace = null)
-	{
-		if (is_null($trace)) {
-			$trace = debug_backtrace();
-		}
-
-		if (any($trace)) {
-			echo '<ul>';
-				foreach ($trace as $t) {
-					echo '<li>';
-
-					if (is_array($t)) {
-						if (isset($t['file'])) echo $t['file'].':'.$t['line'];
-						if (isset($t['args'])) {
-							is_array($t['args']) && yacms_show_backtrace($t['args']);
-						} else {
-							yacms_show_backtrace($t);
-						}
-					} elseif ($t instanceof Exception) {
-						echo get_class($t).': '.$t->getMessage();
-					} else {
-						echo '<pre>';
-						var_export($t);
-						echo '</pre>';
-					}
-
-					echo '</li>';
-				}
-			echo '</ul>';
-		}
-	}
-}
-
 try {
 	$generator = System\Output::introduce();
 } catch(Exception $e) { $generator = 'pwf'; }
