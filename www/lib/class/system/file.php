@@ -7,6 +7,7 @@ namespace System
 		const DIR = '/var/files';
 		const TMP_DIR = '/var/tmp';
 		const FETCHED_SIGN = '-FETCHED';
+		const MOD_DEFAULT = 0664;
 
 		// setup operations directory
 		private static $operations = self::TMP_DIR;
@@ -20,7 +21,7 @@ namespace System
 
 		private $content;
 
-		static function clear_tmp()
+		public static function clear_tmp()
 		{
 			self::remove_directory(ROOT.self::TMP_DIR);
 			mkdir(ROOT.self::TMP_DIR, 0777, true);
@@ -28,7 +29,7 @@ namespace System
 		}
 
 
-		static function remove_directory($dir)
+		public static function remove_directory($dir)
 		{
 			if(strpos('..', $dir) === false){
 				if(strpos($dir, ROOT.self::$operations) !== 0) $dir = ROOT.self::$operations.$dir;
@@ -47,7 +48,7 @@ namespace System
 		}
 
 
-		static function access_dir($dir)
+		public static function access_dir($dir)
 		{
 			if(strpos($dir, ROOT.'/var') !== false){
 				$path = array_filter(explode('/', $dir));
@@ -85,13 +86,13 @@ namespace System
 		}
 
 
-		function get_tmp_url()
+		public function get_tmp_url()
 		{
 			return $this->__get('tmp_name');
 		}
 
 
-		function move($where, $use_tmp = false)
+		public function move($where, $use_tmp = false)
 		{
 			$op = $use_tmp ? $this->__get('tmp_name'):$this->__get('dirpath').'/'.$this->__get('filename');
 			$np = (dirname($where) == $where) ? dirname($where).'/'.$this->filename:$where;
@@ -105,13 +106,13 @@ namespace System
 		}
 
 
-		function save($where)
+		public function save($where)
 		{
 			return $this->move($where, true);
 		}
 
 
-		static function remove_postfix($name, $all = false)
+		public static function remove_postfix($name, $all = false)
 		{
 			$temp = explode('.', $name);
 			if (count($temp) > 1) {
@@ -119,6 +120,14 @@ namespace System
 				return $all ? reset($temp):implode('.', $temp);
 			}
 			return $name;
+		}
+
+
+		public static function save_content($filepath, $content, $mode = self::MOD_DEFAULT)
+		{
+			if (Directory::check(dirname($filepath)) && ($action = file_put_contents($filepath, $content))) {
+				$action = chmod($filepath, $mode);
+			} else throw new \InternalException(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $filepath, $mode));
 		}
 	}
 }
