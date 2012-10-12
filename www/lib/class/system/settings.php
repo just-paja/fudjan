@@ -11,6 +11,9 @@ namespace System
 		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
 		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
 
+		/** Indicates that there are no pages set */
+		private static $no_pages = false;
+
 		private static $version_default = array(
 			'pwf',
 			'Purple Web Framework',
@@ -51,10 +54,11 @@ namespace System
 		{
 			self::set_env();
 			$dir = @opendir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
+
 			if (!is_resource($dir)) {
 				\System\Directory::create($p);
 				self::reset();
-				$dir = @opendir($p);
+				$dir = opendir($p);
 			}
 
 			while ($file = readdir($dir)) {
@@ -65,12 +69,13 @@ namespace System
 				}
 			}
 
-			if (!file_exists($p = ROOT.self::DIR_CONF_DIST.'/pages.json') && @!file_put_contents($p, '{}')) {
+			if (!file_exists($p = ROOT.self::DIR_CONF_DIST.'/pages.json') && !\System\File::save_content($p, '{}')) {
 				throw new \InternalException(l('Couldn\'t create pages file. Please check your file system permissions on file "'.$p.'/".'));
 			}
 
 			if ($content = @file_get_contents($p)) {
 				self::$conf['pages'] = json_decode($content, true);
+				self::$no_pages = empty(self::$conf['pages']);
 			} else {
 				throw new \InternalException('Couldn\'t find any pages. Please check JSON integrity of file "'.$p.'"');
 			}
@@ -92,8 +97,6 @@ namespace System
 				\System\File::save_content($version_path, implode("\n", $cfg = self::$version_default));
 			}
 
-
-
 			self::$conf['own'] = array(
 				'short_name' => $cfg[0],
 				'name'       => $cfg[1],
@@ -101,7 +104,6 @@ namespace System
 				'package'    => $cfg[3],
 				'branch'     => any($cfg[4]) ? $cfg[4]:'master',
 			);
-
 
 			ksort(self::$conf);
 			Status::log('Settings', array("reloaded"), false);
@@ -117,8 +119,10 @@ namespace System
 				if (is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
 					unlink($np);
 				}
+
 				if (is_file($p.'/'.$file)) {
 					copy($p.'/'.$file, $np);
+					chmod($np, 0664);
 				}
 			}
 		}
@@ -179,6 +183,7 @@ namespace System
 
 			$i = 0;
 			$iter = &self::$conf;
+
 			foreach ($args as $arg) {
 				$i++;
 				if (isset($iter[$arg])) {
@@ -199,10 +204,12 @@ namespace System
 		public static function set(array $path, $val)
 		{
 			$iter = &self::$conf;
+
 			foreach ($path as $arg) {
 				if (!isset($iter[$arg])) {
 					$iter[$arg] = array();
 				}
+
 				$iter = &$iter[$arg];
 			}
 
@@ -217,11 +224,10 @@ namespace System
 		public static function save($module, $env = null)
 		{
 			is_null($env) && ($env = self::$env);
+			$path = ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json";
+			$data = \System\Json::json_humanize(json_encode(self::get($module)));
 
-			if (!($action = @file_put_contents(
-				ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json",
-				\System\Json::json_humanize(json_encode(self::get($module)))
-			))) {
+			if (!($action = \System\File::save_content($path, $data))) {
 				throw new \InternalException(sprintf(l('Failed to write settings. Please check your permissions on directory \'%s\''), ROOT.self::DIR_CONF_DIST));
 			}
 
@@ -270,9 +276,21 @@ namespace System
 		}
 
 
+		/** Has site developer locked the installer?
+		 * @return bool
+		 */
 		public static function is_this_first_run()
 		{
 			return !file_exists($p = ROOT.self::DIR_CONF_ALL.'/install.lock');
+		}
+
+
+		/** Has site developer defined any pages?
+		 * @return bool
+		 */
+		public static function is_page_tree_ready()
+		{
+			return !self::$no_pages;
 		}
 	}
 }
