@@ -117,15 +117,17 @@ namespace System
 
 			if ($f->passed()) {
 				$d = $f->get_data();
+
 				$settings = array(
 					"database" => array(
-						"ident"    => $d['database_ident'],
-						"driver"   => $d['database_driver'],
-						"database" => $d['database_name'],
-						"host"     => $d['database_host'],
-						"username" => $d['database_user'],
-						"password" => $d['database_pass'],
-						"lazy"     => false,
+						"ident"      => $d['database_ident'],
+						"driver"     => $d['database_driver'],
+						"database"   => $d['database_name'],
+						"host"       => $d['database_host'],
+						"username"   => $d['database_user'],
+						"password"   => $d['database_pass'],
+						"lazy"       => $d['database_lazy'],
+						"persistent" => $d['database_persistent'],
 					),
 					"seo" => array(
 						"title" => $d['name'],
