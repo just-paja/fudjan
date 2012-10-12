@@ -80,7 +80,7 @@ namespace System
 			if (is_array($objects) && is_array(reset($objects))) {
 				foreach($objects as $obj){ $this->add_cols($obj, $table); }
 			} else $this->add_objects($objects, $this->cols[$table]);
-			
+
 			return $this;
 		}
 
@@ -234,7 +234,7 @@ namespace System
 		public function select($get_query = false)
 		{
 			if (any($this->opts['falsify-return-value'])) return $this->false_return_value;
-			
+
 			$this->prepare();
 			$sql = "SELECT ".(any($this->opts['distinct']) ? " DISTINCT ":'').implode(',', $this->parsed['cols']).
 				"\n FROM ".implode(',', (array) $this->parsed['tables']).(!empty($this->joins) ? " ".implode(" ", $this->joins):NULL).
@@ -255,11 +255,7 @@ namespace System
 
 			//dump($sql);
 			self::$queries ++;
-			try {
-				return $get_query ? $sql:Database::query($sql);
-			} catch (\Exception $e) {
-				Status::fatal_error($e->getMessage(), $sql);
-			}
+			return $get_query ? $sql:Database::query($sql);
 		}
 
 
@@ -294,7 +290,7 @@ namespace System
 				try {
 					return $get_query ? $sql:Database::query($sql);
 				} catch (\Exception $e) {
-					Status::fatal_error(array(_('Insert selhal'), $e->getMessage(), $sql));
+					throw new \DatabaseException('Database insert has failed.', $e->getMessage(), $sql);
 				}
 			} else {
 				return false;
@@ -312,7 +308,7 @@ namespace System
 					"\nWHERE ".implode(' AND ', $this->conds)
 				);
 			} catch (\Exception $e) {
-				Status::fatal_error(array(_('Mazání z databáze selhalo'), $e->getMessage(), $sql));
+				throw new \DatabaseException('Database deletion has failed', $e->getMessage(), $sql);
 			}
 		}
 
@@ -372,8 +368,8 @@ namespace System
 			$this->false_return_value = $retval;
 			return $this;
 		}
-		
-		
+
+
 		public function cancel_ignore()
 		{
 			unset($this->opts['falsify-return-value']);
