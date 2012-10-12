@@ -184,7 +184,15 @@ namespace System
 
 		public static function is_connected($db_ident = null)
 		{
-			return self::get_db($db_ident) !== null;
+			$instance = self::get_db($db_ident);
+			return $instance !== null && $instance->is_connected();
+		}
+
+
+		public static function is_ready($db_ident = null)
+		{
+			$instance = self::get_db($db_ident);
+			return $instance !== null && $instance->is_ready();
 		}
 	}
 }

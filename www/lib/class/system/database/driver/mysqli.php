@@ -18,6 +18,7 @@ namespace System\Database\Driver
 		private $buffered;
 
 		private $config = array();
+		private $db_selected = false;
 
 
 
@@ -63,12 +64,10 @@ namespace System\Database\Driver
 					@mysqli_connect($host, $config['username'], $config['password']):
 					@mysqli_pconnect($host, $config['username'], $config['password']);
 
-				if (!$this->connection->select_db($config['database'])) {
-					throw new \DatabaseException('Could select database "'.$config['database'].'". Does it exist?');
-				}
+				$this->select_db($config['database']);
 			}
 
-			if (!is_object($this->connection)) {
+			if (!$this->is_connected()) {
 				throw new \DatabaseException('Could not connect to database "'.$config['database'].'" for following reasons.');
 			}
 
@@ -88,6 +87,14 @@ namespace System\Database\Driver
 
 			$this->query("SET time_zone='" . date('P') . "'");
 			$this->buffered = empty($config['unbuffered']);
+		}
+
+
+		private function select_db($name)
+		{
+			if ($this->connection->select_db($name)) {
+				$this->db_selected = true;
+			} else throw new \DatabaseException('Could select database "'.$config['database'].'". Does it exist?');
 		}
 
 
@@ -219,7 +226,7 @@ namespace System\Database\Driver
 
 		public function escape_string($value)
 		{
-			if (is_object($this->connection))
+			if ($this->is_connected())
 				return $this->connection->real_escape_string($value);
 
 			throw new \DatabaseException('Lost connection to server.');
@@ -328,7 +335,27 @@ namespace System\Database\Driver
 
 		public function create_database()
 		{
-			$this->query("CREATE DATABASE '".$this->config['database']."'");
+			if ($this->is_connected()) {
+				$this->query("CREATE DATABASE ".$this->config['database']);
+			} else throw new Exception(sprintf("Not connected to any server. Cannot create database %s", $this->config['database']));
+		}
+
+
+		public function is_connected()
+		{
+			return is_object($this->connection);
+		}
+
+
+		public function has_database()
+		{
+			return $this->db_selected;
+		}
+
+
+		public function is_ready()
+		{
+			return $this->is_connected() && $this->has_database();
 		}
 	}
 }
