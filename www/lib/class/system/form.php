@@ -27,6 +27,7 @@ namespace System
 		);
 
 		private $prefix = '';
+		protected $checkboxes = array();
 		protected $counts = array();
 		protected $errors = array();
 
@@ -47,8 +48,8 @@ namespace System
 			$this->hidden('submited', true);
 			$this->data_default['submited'] = false;
 		}
-		
-		
+
+
 		/** Alias to create simple input type
 		 * @param string $name Name of called method
 		 * @param array  $args Arguments to the function
@@ -223,6 +224,15 @@ namespace System
 			$attrs['form '] = &$this;
 			$attrs['value'] = $this->get_input_value($attrs);
 
+			if ($attrs['type'] == 'checkbox') {
+				$this->checkboxes[] = $attrs['name'];
+
+				// Preset value to checkbox since checkboxes are not sending any value if not checked
+				if (!isset($this->data_commited[$attrs['name']])) {
+					$this->data_commited[$attrs['name']] = null;
+				}
+			}
+
 			return $this->rendering['group']->add_element(new \System\Form\Input($attrs));
 		}
 
@@ -308,11 +318,11 @@ namespace System
 			if (!isset($this->errors[$input_name])) {
 				$this->errors[$input_name] = array();
 			}
-			
+
 			$this->errors[$input_name][] = $msg;
 		}
-		
-		
+
+
 		public function get_attr_data()
 		{
 			return parent::get_data();
@@ -329,8 +339,8 @@ namespace System
 
 			return $data;
 		}
-		
-		
+
+
 		public function get_errors($name = '')
 		{
 			if ($name) {
