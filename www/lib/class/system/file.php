@@ -128,6 +128,8 @@ namespace System
 			if (Directory::check(dirname($filepath)) && ($action = file_put_contents($filepath, $content))) {
 				$action = chmod($filepath, $mode);
 			} else throw new \InternalException(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $filepath, $mode));
+
+			return $action;
 		}
 	}
 }
