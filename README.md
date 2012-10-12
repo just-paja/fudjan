@@ -7,7 +7,7 @@ Sadly, I didn't have time to create any usable docs, just some inlined javadoc s
 
 ## Installation
 
-1. Unpack the friendly package
+1. [Download](http://github.com/just-paja/pwf/downloads) and unpack the friendly package
 2. Ensure, that the following directories and all files included are writable for web server
 	- etc
 	- var
