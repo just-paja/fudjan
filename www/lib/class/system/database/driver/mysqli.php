@@ -17,6 +17,8 @@ namespace System\Database\Driver
 		/** @var bool  Is buffered (seekable and countable)? */
 		private $buffered;
 
+		private $config = array();
+
 
 
 		public function __construct()
@@ -25,13 +27,14 @@ namespace System\Database\Driver
 		}
 
 
-		/**
-		 * Connects to a database.
+		/** Connects to a database.
 		 * @return void
 		 * @throws DatabaseException
 		 */
 		public function connect(array &$config)
 		{
+			$this->config = $config;
+
 			if (isset($config['resource'])) {
 				$this->connection = $config['resource'];
 
@@ -57,8 +60,12 @@ namespace System\Database\Driver
 					$host = ':' . $config['socket'];
 
 				$this->connection = empty($config['persistent']) ?
-					@mysqli_connect($host, $config['username'], $config['password'], $config['database']):
-					@mysqli_pconnect($host, $config['username'], $config['password'], $config['database']);
+					@mysqli_connect($host, $config['username'], $config['password']):
+					@mysqli_pconnect($host, $config['username'], $config['password']);
+
+				if (!$this->connection->select_db($config['database'])) {
+					throw new \DatabaseException('Could select database "'.$config['database'].'". Does it exist?');
+				}
 			}
 
 			if (!is_object($this->connection)) {
@@ -99,7 +106,7 @@ namespace System\Database\Driver
 		 */
 		public function query($sql)
 		{
-			$res = $this->connection->query($sql); 
+			$res = $this->connection->query($sql);
 			if ($this->connection->errno) {
 				throw new \DatabaseException(mysqli_error($this->connection), mysqli_errno($this->connection), $sql);
 			}
@@ -209,7 +216,7 @@ namespace System\Database\Driver
 				default: throw new ArgumentException('Unsupported type.');
 			}
 		}
-		
+
 		public function escape_string($value)
 		{
 			if (is_object($this->connection))
@@ -316,6 +323,12 @@ namespace System\Database\Driver
 				);
 			}
 			return $columns;
+		}
+
+
+		public function create_database()
+		{
+			$this->query("CREATE DATABASE '".$this->config['database']."'");
 		}
 	}
 }
