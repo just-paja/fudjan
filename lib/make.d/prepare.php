@@ -1,6 +1,6 @@
 <?
 
-$path = PackageInfo::get('path');
+$path = Compiler::get('path');
 
 exec('
 	umask 002 '.$path['dir-data'].';
@@ -8,3 +8,7 @@ exec('
 	mkdir '.$path['dir-data'].'/var;
 	chmod 777 '.$path['dir-data'].'/var;
 ');
+
+$result =
+	is_dir($path['dir-data'].'/share') &&
+	is_dir($path['dir-data'].'/var');
