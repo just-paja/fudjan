@@ -11,15 +11,23 @@ namespace System
 		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
 		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
 
+		private static $version_default = array(
+			'pwf',
+			'Purple Web Framework',
+			'unknown version',
+			'pwf',
+			'master',
+		);
+
 
 		// Data
-		static $conf = array();
+		private static $conf = array();
 
 		// Environment
-		static $env = 'dev';
+		private static $env = 'dev';
 
 		// Internal modules and settings that will not be accessible from configurator
-		static $noconf = array(
+		private static $noconf = array(
 			'own',
 			'datatype_schema',
 			'pages',
@@ -78,11 +86,13 @@ namespace System
 
 			$version_path = ROOT."/etc/current/core/yawf/version";
 
-			if (!file_exists($version_path)) {
-				throw new \InternalException(l('Couldn\'t find version file!'));
+			if (file_exists($version_path)) {
+				$cfg = explode("\n", file_get_contents($version_path, true));
+			} else {
+				\System\File::save_content($version_path, implode("\n", $cfg = self::$version_default));
 			}
 
-			$cfg = explode("\n", file_get_contents($version_path, true));
+
 
 			self::$conf['own'] = array(
 				'short_name' => $cfg[0],
@@ -91,6 +101,7 @@ namespace System
 				'package'    => $cfg[3],
 				'branch'     => any($cfg[4]) ? $cfg[4]:'master',
 			);
+
 
 			ksort(self::$conf);
 			Status::log('Settings', array("reloaded"), false);
@@ -101,8 +112,9 @@ namespace System
 		{
 			$p = ROOT.self::DIR_CONF_STATIC;
 			$dir = opendir($p);
-			while($file = readdir($dir)){
-				if(is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
+
+			while ($file = readdir($dir)) {
+				if (is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
 					unlink($np);
 				}
 				if (is_file($p.'/'.$file)) {
