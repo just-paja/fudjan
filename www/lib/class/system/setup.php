@@ -22,11 +22,17 @@ namespace System
 		}
 
 
+		public static function set_step($step_name)
+		{
+			return self::$step = $step_name;
+		}
+
+
 		public static function name()
 		{
 			$f = new \System\Form(array(
-				"heading" => 'YaWF setup',
-				"desc"    => 'This setup helps to fill basic configuration needed to run YaWF. Fill in the required information and press next step.',
+				"heading" => 'Purple Web Framework setup',
+				"desc"    => 'This is your first run of pwf. Setup helps to fill basic configuration needed to run PWF. Fill in the required information and press save. You can edit settings in directory /etc/conf.d/{environment}. Default environment is "dev".',
 			));
 
 			$f->label('Basic site information');
@@ -39,7 +45,7 @@ namespace System
 				"name"     => 'database_ident',
 				"label"    => l('Identificator'),
 				"required" => true,
-				"value"    => 'yawf',
+				"value"    => 'pwf',
 				"type"     => 'text',
 				"info"     => l('System identificator for this database'),
 			));
@@ -51,7 +57,7 @@ namespace System
 				"required" => true,
 				"info"     => l('Type of database. You will most usually use MySQL here.'),
 				"options"  => array(
-					"MySQL"      => 'mysqli',
+					"MySQLi"      => 'mysqli',
 					"PostgreSQL" => 'postgre',
 				),
 			));
@@ -69,7 +75,7 @@ namespace System
 				"name"     => 'database_name',
 				"label"    => l('Database name'),
 				"required" => true,
-				"value"    => 'yawf',
+				"value"    => 'pwf',
 				"type"     => 'text',
 				"info"     => l('How will you name your database'),
 			));
@@ -95,11 +101,19 @@ namespace System
 			$f->input(array(
 				"name"     => 'database_lazy',
 				"label"    => l('Lazy connect'),
+				"checked"  => true,
 				"type"     => 'checkbox',
-				"info"     => l('The database driver will not connect until query is sent'),
+				"info"     => l('The database driver will not connect until a query is sent'),
 			));
 
-			$f->submit('Next step');
+			$f->input(array(
+				"name"     => 'database_persistent',
+				"label"    => l('Persistent connection'),
+				"type"     => 'checkbox',
+				"info"     => l('The database driver will open a persistent connection'),
+			));
+
+			$f->submit('Save configuration');
 
 			if ($f->passed()) {
 				$d = $f->get_data();
@@ -120,6 +134,13 @@ namespace System
 
 				try {
 					Database::connect($settings['database']);
+				} catch (\DatabaseException $e) {}
+
+				try {
+					$instance = Database::get_db($d['database_ident']);
+					$instance->create_database();
+					Database::connect($settings['database']);
+
 				} catch (\DatabaseException $e) {}
 
 				if (Database::is_connected()) {
@@ -143,17 +164,28 @@ namespace System
 				cfgs(array('database', 'list', $data['database']['ident'], $key), $data['database'][$key]);
 			}
 
-			cfgs(array('database', 'list', $data['ident'], 'charset'), 'utf8');
-			cfgs(array('database', 'list', $data['ident'], 'is_yawf_home'), true);
+			cfgs(array('database', 'list', $data['database']['ident'], 'charset'), 'utf8');
+			cfgs(array('database', 'list', $data['database']['ident'], 'is_yawf_home'), true);
 			cfgs(array('database', 'default'), $data['database']['ident']);
 			cfgs(array('database', 'connect'), array($data['database']['ident']));
 			cfgs(array('default', 'title'), $data['seo']['title']);
 
-			\System\Settings::save('default');
 			\System\Settings::save('database');
+			\System\Settings::save('default');
 
 			self::lock();
 			self::finish();
+		}
+
+
+		/** There are no pages in page tree. Inform the user.
+		 * @returns void
+		 */
+		private static function no_pages()
+		{
+			echo '<h1>'.l('There are no routes').'</h1>';
+			echo '<p>'.l('Setup has detected that there are no pages. Please define some pages using godmode utility or manually in file "/etc/conf.d/pages.json".').'</p>';
+			echo '<p>'.l('It is recommended to checkout santa package manager first to download some addons. Also - did you create database yet?').'</p>';
 		}
 
 
