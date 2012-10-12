@@ -13,12 +13,5 @@
 		"database":{"type":"string"},
 		"charset":{"type":"string"},
 		"lazy":{"type":"bool"}
-	},
-	"host":"localhost",
-	"username":"",
-	"password":"",
-	"database":"",
-	"driver":"mysql",
-	"charset":"utf8",
-	"lazy":true
+	}
 }
