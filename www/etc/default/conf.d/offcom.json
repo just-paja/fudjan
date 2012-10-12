@@ -1,17 +1,4 @@
 {
-	"datatype_schema":{
-		"#name":"Nastavení hlavního maileru",
-		"#desc":"Hlavní mailer zasílá systémové zprávy (např. při registraci nebo ztrátě uživatelského hesla)",
-		"helpdesk":{"type":"string"},
-		"robot":{"type":"string"},
-		"robot-name":{"type":"string"},
-		"reply-to-default":{"type":"string"},
-		"from-default":{"type":"string"},
-		"sms-from-default":{"type":"string"},
-		"disable":{"type":"bool"},
-		"enable-email":{"type":"bool"},
-		"enable-sms":{"type":"bool"}
-	},
 	"helpdesk":"just.paja@seznam.cz",
 	"robot-name":"Robot Novalighting",
 	"reply-to-default":"info@novalighting.cz",

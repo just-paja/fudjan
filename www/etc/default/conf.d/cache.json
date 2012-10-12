@@ -1,16 +1,4 @@
 {
-	"datatype_schema":{
-		"memory-cache-enabled":{
-			"type":"bool"
-		},
-		"memory-cache-driver":{
-			"type":"enum",
-			"options":[
-				"runtime"
-			]
-		}
-	},
-
 	"memory-cache-enabled":false,
 	"memory-cache-driver":"runtime"
 }

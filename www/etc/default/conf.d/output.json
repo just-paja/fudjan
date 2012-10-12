@@ -1,10 +1,4 @@
 {
-	"datatype_schema":{
-		"format":{"type":"list"},
-		"format_default":{"type":"choice", "values_from":"output/format", "values_from_keys":true},
-		"meta_tags":{"type":"list"}
-	},
-
 	"format":{
 		"html":"text/html",
 		"xhtml":"application/xhtml+xml",

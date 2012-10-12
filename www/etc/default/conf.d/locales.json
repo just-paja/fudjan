@@ -1,19 +1,4 @@
 {
-	"datatype_schema":{
-		"langs":{
-			"type":"list"
-		},
-		"default_lang":{
-			"type":"choice",
-			"values_from":"locales\/langs"
-		},
-		"ugly_chars":{
-			"type":"list"
-		},
-		"nice_chars":{
-			"type":"list"
-		}
-	},
 	"langs":{
 		"cs":"\u010cesky",
 		"en":"English"

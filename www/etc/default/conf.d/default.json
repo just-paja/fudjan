@@ -1,10 +1,4 @@
 {
-	"datatype_schema":{
-		"title":{"type":"string"},
-		"title_separator":{"type":"string"},
-		"update_server":{"type":"string"}
-	},
-
 	"title":"YaWF",
 	"title_separator":" :: ",
 	"update_server":"http:\/\/yacms-updates.local"

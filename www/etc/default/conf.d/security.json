@@ -1,10 +1,4 @@
 {
-	"datatype_schema":{
-		"pass_shield":{"type":"string"},
-		"lockdown":{"type":"bool"},
-		"live":{"type":"bool"}
-	},
-
 	"pass_shield":"r934jt-l49dsgf",
 	"lockdown":false,
 	"live":true

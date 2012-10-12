@@ -1,17 +1,5 @@
 {
-	"datatype_schema":{
-		"driver":{
-			"type":"enum",
-			"options":[
-				"mysqli", "mysql", "mssql", "mssql2005", "firebird",
-				"postgre","sqlite","sqlite3","oracle","odbc"
-			]
-		},
-		"host":{"type":"string"},
-		"username":{"type":"string"},
-		"password":{"type":"password"},
-		"database":{"type":"string"},
-		"charset":{"type":"string"},
-		"lazy":{"type":"bool"}
-	}
+	"connect":[],
+	"default":"",
+	"list":{}
 }
