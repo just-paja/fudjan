@@ -138,20 +138,19 @@ namespace System
 					Database::connect($settings['database'], $settings['database']['ident']);
 				} catch (\DatabaseException $e) {}
 
-				if (!Database::is_connected($settings['database']['ident'])) {
+				if (!Database::is_ready($settings['database']['ident'])) {
 					try {
 						$instance = Database::get_db($d['database_ident']);
 						$instance->create_database();
-						Database::connect($settings['database']);
-
-					} catch (\DatabaseException $e) {
+						Database::connect($settings['database'], $settings['database']['ident']);
+					} catch (\Exception $e) {
 						v($e);exit;
 					}
 				}
 
 				if (Database::is_ready($settings['database']['ident'])) {
 					self::save($settings);
-					exec("bin/db init");
+					$output = shell_exec("bin/db init");
 				} else {
 					$f->report_error('database_name', 'Could not connect to database');
 					$f->out();
