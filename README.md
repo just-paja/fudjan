@@ -13,8 +13,7 @@ Sadly, I didn't have time to create any usable docs, just some inlined javadoc s
 	- var
 3. Setup vhost or path and call the right url in browser
 4. You should see pwf setup which will help you configure basic settings
-5. Run 'bin/db init'
-6. Now you're ready to go .. you know .. when I finish the docs.
+5. Now you're ready to go .. you know .. when I finish the docs.
 
 
 ## Why purple?
