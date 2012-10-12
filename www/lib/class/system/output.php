@@ -114,7 +114,7 @@ namespace System
 		}
 
 
-		static function slot($name = TEMPLATE::DEFAULT_SLOT)
+		static function slot($name = \System\Template::DEFAULT_SLOT)
 		{
 			if (Settings::get('dev', 'debug')) {
 				echo '<!--Slot: "'.$name.'"-->';
