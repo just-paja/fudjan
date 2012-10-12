@@ -33,7 +33,9 @@ namespace System
 		public static function connect(array $cfg, $ident = '')
 		{
 			!$ident && $ident = $cfg['database'];
-			$default_ident = cfg('database', 'default');
+			try {
+				$default_ident = cfg('database', 'default');
+			} catch (\Exception $e) { $default_ident = $ident; }
 
 			$driver_name = 'System\\Database\\Driver\\'.ucfirst($cfg['driver']);
 			$driver = &self::$instances[$ident];
@@ -140,7 +142,7 @@ namespace System
 		}
 
 
-		private static function get_db($db_ident = null)
+		public static function get_db($db_ident = null)
 		{
 			return $db_ident === null ?
 				self::get_default():(isset(self::$instances[$db_ident]) ? self::$instances[$db_ident]:null);
