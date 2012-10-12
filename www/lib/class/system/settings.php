@@ -158,6 +158,12 @@ namespace System
 		}
 
 
+		public static function purge_cache()
+		{
+			@unlink(self::get_cache_filename());
+		}
+
+
 		/** Check cache file
 		 * @return bool
 		 */
@@ -236,6 +242,7 @@ namespace System
 			}
 
 			Status::log('sys_notice', array("New config saved: ".self::DIR_CONF_DIST.'/'.$module.".json"), $action);
+			self::purge_cache();
 			self::reload();
 			return $action;
 		}
