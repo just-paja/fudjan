@@ -45,7 +45,11 @@ namespace System
 				self::load_cache();
 			} else {
 				self::reload();
-				self::cache();
+
+				// Don't cache settings if there are no pages. Site is probabbly in development
+				if (!self::$no_pages) {
+					self::cache();
+				}
 			}
 		}
 
