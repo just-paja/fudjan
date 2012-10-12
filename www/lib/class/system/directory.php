@@ -14,9 +14,26 @@ namespace System
 		 */
 		public static function create($pathname, $mode = self::MOD_DEFAULT)
 		{
-			if (!($action = @mkdir($pathname, $mode, true))) {
-				throw new \InternalException(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, $mode));
+			if (strpos($pathname, '/')) {
+				$pathname = explode('/', $pathname);
 			}
+
+			if (is_array($pathname)) {
+				$current_dir = '';
+
+				foreach ($pathname as $dir) {
+					$current_dir .= '/'.$dir;
+
+					if (!is_dir($current_dir)) {
+						$action = self::create($current_dir, $mode);
+					}
+				}
+			} else {
+				if (!($action = @mkdir($pathname, $mode, true))) {
+					throw new \InternalException(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, $mode));
+				}
+			}
+
 
 			return $action;
 		}
