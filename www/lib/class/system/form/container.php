@@ -9,7 +9,8 @@ namespace System\Form
 		const TYPE_TABS         = 'tabs';
 
 		protected static $attrs = array(
-			"string" => array('id', 'class', 'title', 'name', 'label', 'type'),
+			"string" => array('id', 'title', 'name', 'label', 'type'),
+			"array"  => array('class'),
 		);
 
 		protected static $types = array(
@@ -38,6 +39,12 @@ namespace System\Form
 				throw new \MissingArgumentException('You must set form container type');
 			}
 
+			if (!$this->class) {
+				$this->class = array();
+			}
+
+			$this->class = array_merge($this->class, array('inputs'));
+
 			!$this->name && $this->generate_name();
 			!$this->id   && $this->id = $this->name;
 		}
@@ -57,7 +64,7 @@ namespace System\Form
 				$this->type,
 				get_class($el)
 			));
-			
+
 			return $el;
 		}
 
@@ -78,8 +85,8 @@ namespace System\Form
 		{
 			$this->name = implode(\System\Form::SEPARATOR_ID, array('container', $this->form->get_count($this->type)));
 		}
-		
-		
+
+
 		public function get_elements()
 		{
 			return $this->elements;
