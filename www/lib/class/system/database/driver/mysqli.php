@@ -90,11 +90,14 @@ namespace System\Database\Driver
 		}
 
 
+		/** Select database
+		 * @param string $name
+		 */
 		private function select_db($name)
 		{
 			if ($this->connection->select_db($name)) {
 				$this->db_selected = true;
-			} else throw new \DatabaseException('Could select database "'.$config['database'].'". Does it exist?');
+			} else throw new \DatabaseException('Could select database "'.$name.'". Does it exist?');
 		}
 
 
