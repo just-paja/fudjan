@@ -15,6 +15,7 @@ namespace Compiler
 			$this->msg = $msg;
 			$this->data = $data;
 			$this->lambda = $lambda;
+			$this->console_width = \System\Cli::get_width();
 		}
 
 

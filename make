@@ -2,7 +2,6 @@
 <?
 
 define('ROOT', realpath(__DIR__));
-define('CONSOLE_WIDTH', 30);
 
 require_once ROOT.'/www/lib/include/constants.cli.php';
 require_once ROOT.'/www/lib/include/functions.php';
@@ -15,6 +14,7 @@ require_once ROOT.'/lib/class/pwf.php';
 
 out('Preparing workspace ..');
 
+System\Cli::init();
 $meta = Pwf::read_meta_info(ROOT);
 Compiler::provide_meta($meta);
 Compiler::prepare_workspace();
