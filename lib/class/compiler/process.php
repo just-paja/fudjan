@@ -36,7 +36,7 @@ namespace Compiler
 
 		public function progress($progress, $max)
 		{
-			show_progress_cli($progress, $max, $this->console_width, '', $this->msg);
+			show_progress_cli($progress, $max, $this->console_width-45, '', $this->msg);
 		}
 	}
 }
