@@ -15,7 +15,8 @@ require_once ROOT.'/lib/class/pwf.php';
 out('Preparing workspace ..');
 
 System\Cli::init();
-$meta = Pwf::read_meta_info(ROOT);
+$branch = Pwf::get_branch(ROOT);
+$meta = Pwf::read_meta_info(ROOT, $branch);
 Compiler::provide_meta($meta);
 Compiler::prepare_workspace();
 

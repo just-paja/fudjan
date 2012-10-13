@@ -25,4 +25,10 @@ abstract class Pwf
 
 		return $mver.".".$subver.".".$microver;
 	}
+
+
+	public static function get_branch($path)
+	{
+		return exec("git status | grep branch | head -1 | cut -d \" \" -f 4");
+	}
 }
