@@ -3,8 +3,8 @@
 $path = Compiler::get('path');
 $version = Compiler::get('version');
 $info = Compiler::get('info');
-$version_dir = $path['dir-data'].'/etc/current/core/yawf';
-$version_file = $path['dir-data'].'/etc/current/core/yawf/version';
+$version_dir = $path['dir-data'].'/etc/current/core/pwf';
+$version_file = $path['dir-data'].'/etc/current/core/pwf/version';
 $path['output-uf'] = 'pwf-ready-'.$version;
 
 exec('

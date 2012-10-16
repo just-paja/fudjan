@@ -9,6 +9,7 @@ namespace System
 		const DIR_CONF_DIST     = '/etc/conf.d';
 		const DIR_CONF_STATIC   = '/etc/default/conf.d';
 		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
+		const FILE_VERSION      = '/etc/current/core/pwf/version';
 		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
 
 		/** Indicates that there are no pages set */
@@ -93,7 +94,7 @@ namespace System
 				}
 			}
 
-			$version_path = ROOT."/etc/current/core/yawf/version";
+			$version_path = ROOT.self::FILE_VERSION;
 
 			if (file_exists($version_path)) {
 				$cfg = explode("\n", file_get_contents($version_path, true));
