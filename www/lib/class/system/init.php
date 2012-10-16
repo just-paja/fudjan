@@ -7,6 +7,7 @@ namespace System
 		public static function full()
 		{
 			self::bind_error_handlers();
+			Input::init();
 			Flow::init();
 			Settings::init();
 			Locales::init();
@@ -15,7 +16,7 @@ namespace System
 			Output::init();
 		}
 
-		
+
 		public static function basic()
 		{
 			self::bind_error_handlers();
