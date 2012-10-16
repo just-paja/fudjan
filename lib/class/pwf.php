@@ -29,6 +29,6 @@ abstract class Pwf
 
 	public static function get_branch($path)
 	{
-		return exec("git status | grep branch | head -1 | cut -d \" \" -f 4");
+		return exec("cd ".$path."; git status | grep branch | head -1 | cut -d \" \" -f 4");
 	}
 }
