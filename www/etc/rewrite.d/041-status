@@ -1,0 +1,2 @@
+# Catch status page
+RewriteRule ^status\/?$ lib/common/status.php [L]
