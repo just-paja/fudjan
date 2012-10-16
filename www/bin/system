@@ -120,18 +120,7 @@
 		{
 			\System\Init::basic();
 			vout(l('Updating .htaccess rules'));
-			$dir = ROOT.'/etc/rewrite.d';
-			$od = opendir($dir);
-			$files = array();
-
-			while ($file = readdir($od)) {
-				if (strpos($file, '.') !== 0) {
-					$files[$file] = file_get_contents($dir.'/'.$file);
-				}
-			}
-
-			ksort($files);
-			file_put_contents(ROOT.'/.htaccess', implode("\n", $files));
+			file_put_contents(ROOT.'/.htaccess', System\Router::generate_htaccess());
 		}
 	}
 
