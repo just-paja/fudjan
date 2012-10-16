@@ -1,0 +1,16 @@
+{
+	"available_branches":"Available branches",
+	"bad_params":"Please input package name or use --help",
+	"failed_to_download":"Failed to download package %s",
+	"failed_to_extract":"Failed to extract package %s",
+	"installing":"Installing packages ..",
+	"packages_installed_count":"Installed %s packages",
+	"packages_to_be_installed":"Following packages will be installed:",
+	"packages_to_be_upgraded":"Following packages will be upgraded:",
+	"package_nonexistent":"Package %s does not exist",
+	"refreshing_tree":"Refreshing package tree and metadata ..",
+	"updates_available_count":"Updates available: %s",
+	"updates_found_none":"No updates found",
+	"updates_found_none_in_branch":"No updates found in branch %s",
+	"upgrades_none":"There are no upgrades for selected packages."
+}

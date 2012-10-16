@@ -8,7 +8,8 @@ namespace System
 		const DIR = '/etc/locales';
 		const DIR_MESSAGES = '/messages.d';
 		const DIR_MODULES = '/modules.d';
-		static $sysmsgs = array();
+		const ENCODING = 'UTF-8';
+
 		private static $lang;
 		private static $messages = array();
 
@@ -16,9 +17,23 @@ namespace System
 		public static function init()
 		{
 			mb_language('uni');
-			mb_internal_encoding('UTF-8');
-			setlocale(LC_ALL, 'cs_CZ.UTF-8');
-			date_default_timezone_set('Europe/Prague');
+			mb_internal_encoding(self::ENCODING);
+			date_default_timezone_set(cfg('locales', 'timezone'));
+			self::set_locale();
+		}
+
+
+		private static function set_locale()
+		{
+			$lang = self::get_lang();
+			$lang_parts = explode('_', $lang);
+
+			if (isset($lang_parts[1])) {
+				$lang_parts[1] = strtoupper($lang_parts[1]);
+			}
+
+			$lang = implode('_', $lang_parts);
+			setlocale(LC_ALL, self::get_lang().'.'.self::ENCODING);
 		}
 
 
@@ -61,8 +76,9 @@ namespace System
 		}
 
 
-
-
+		/** Get language and locale settings shortcut
+		 * @return string
+		 */
 		static function get_lang()
 		{
 			if (self::$lang) {
@@ -72,7 +88,7 @@ namespace System
 					(Input::get('lang')):
 					(isset($_SESSION['lang']) ?
 						$_SESSION['lang']:
-						Settings::get("locales", 'default_lang'))
+						cfg("locales", 'default_lang'))
 				);
 			}
 		}
@@ -81,13 +97,14 @@ namespace System
 		static function set_lang($lang)
 		{
 			$_SESSION['lang'] = self::$lang = $lang;
-			
+
 			if (file_exists($f = ROOT.self::DIR.'/'.self::$lang.'/core.json')) {
 				self::$messages[self::$lang]['all'] = json_decode(file_get_contents($f), true);
 			}
-			
+
 			return self::$lang;
 		}
+
 
 
 		static function init_sysmsgs()
@@ -102,16 +119,11 @@ namespace System
 		}
 
 
-		static function sysmsg($msg)
-		{
-			if(is_array($msg)){
-				return array_map(array(self, 'sysmsg'), $msg);
-			}else{
-				return self::$sysmsgs[$msg];
-			}
-		}
-
-
+		/** Translate date by locale standards
+		 * @param string $date
+		 * @param bool $hard
+		 * @return string
+		 */
 		public static function translate_date($date, $hard = false)
 		{
 			static $find, $replace_std, $replace_hard;
@@ -152,6 +164,7 @@ namespace System
 
 
 		/** Load all messages by language
+		 * @param string $lang
 		 * @return void
 		 */
 		private static function load_messages($lang)
@@ -163,7 +176,7 @@ namespace System
 		}
 
 
-		/** calculate binary length of UTF-8 string
+		/** Calculate binary length of UTF-8 string
 		 * @param string $str
 		 * @returns int
 		 */
@@ -207,6 +220,5 @@ namespace System
 
 			return $d;
 		}
-
 	}
 }
