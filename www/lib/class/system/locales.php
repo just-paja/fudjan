@@ -4,7 +4,6 @@ namespace System
 {
 	class Locales
 	{
-
 		const DIR = '/etc/locales';
 		const DIR_MESSAGES = '/messages.d';
 		const DIR_MODULES = '/modules.d';
