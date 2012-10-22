@@ -18,7 +18,7 @@ abstract class Pwf
 
 	public static function get_version($directory, $ref = self::REF_DEFAULT)
 	{
-		$ver = exec("cd ".$directory."; git rev-list ".$ref." | sort | wc -l");
+		$ver = exec("cd ".$directory."; git log --pretty=\'%b\' ".$ref." | sort | uniq | wc -l");
 		$subver = floor($ver/100);
 		$microver = floor($ver - $subver * 100);
 		$mver = 0;
