@@ -4,7 +4,6 @@ namespace System
 {
 	class Output
 	{
-
 		const PAGE_DIR = "/lib/template";
 		const TEMPLATE_DIR = "/lib/template/layout";
 		const DEFAULT_TEMPLATE = "default";
@@ -27,11 +26,19 @@ namespace System
 			"output" => array()
 		);
 
+
+		/** Class init
+		 * @returns void
+		 */
 		public static function init()
 		{
 			self::set_title(cfg('default', 'title'));
 		}
 
+
+		/** Set output title
+		 * @returns void
+		 */
 		static function set_title()
 		{
 			foreach(func_get_args() as $title){
@@ -40,6 +47,10 @@ namespace System
 		}
 
 
+		/** Get title
+		 * @param bool $last
+		 * @returns string
+		 */
 		static function get_title($last = false)
 		{
 			return $last ?
@@ -48,6 +59,10 @@ namespace System
 		}
 
 
+		/** Set layout template
+		 * @param string $temp
+		 * @returns void
+		 */
 		static function set_template($temp)
 		{
 			self::$template = (array) $temp;
@@ -72,6 +87,9 @@ namespace System
 		}
 
 
+		/** Set output format
+		 * @param string $format
+		 */
 		static function set_format($format)
 		{
 			if ($format == 'cli') {
@@ -87,6 +105,9 @@ namespace System
 		}
 
 
+		/** Set output options
+		 * @param array $opts
+		 */
 		static function set_opts(array $opts)
 		{
 			if (isset($opts['template'])) self::set_template($opts['template']);
@@ -96,6 +117,10 @@ namespace System
 		}
 
 
+		/** Get output format
+		 * @param bool $mime Get mime-type
+		 * @returns string
+		 */
 		static function get_format($mime = false)
 		{
 			php_sapi_name() == 'cli' && self::set_format('txt');
@@ -103,6 +128,11 @@ namespace System
 		}
 
 
+		/** Add template into queue
+		 * @param array $template
+		 * @param string $slot
+		 * @returns void
+		 */
 		static function add_template($template, $slot)
 		{
 			if (!isset(self::$templates[$slot])) {
@@ -114,6 +144,10 @@ namespace System
 		}
 
 
+		/** Output templates in a slot
+		 * @param string $name
+		 * @returns void
+		 */
 		static function slot($name = \System\Template::DEFAULT_SLOT)
 		{
 			if (Settings::get('dev', 'debug')) {
@@ -132,12 +166,18 @@ namespace System
 		}
 
 
+		/** Introduce pwf name and version
+		 * @returns string
+		 */
 		static function introduce()
 		{
 			return Settings::get('own', 'short_name')." ".Settings::get('own', 'version');
 		}
 
 
+		/** Use ajax api
+		 * @param bool $really
+		 */
 		static function use_ajax($really = true)
 		{
 			self::$ajax = $really;
@@ -145,6 +185,11 @@ namespace System
 		}
 
 
+		/** Get template full path
+		 * @param string $type
+		 * @param string $name
+		 * @param bool $force
+		 */
 		static function get_template($type = 'layout', $name = null, $force = false)
 		{
 			$base = ROOT;
@@ -182,6 +227,9 @@ namespace System
 		}
 
 
+		/** Include all remaining templates in queue
+		 * @returns void
+		 */
 		public static function yield()
 		{
 			foreach (self::$template as $name) {
@@ -194,6 +242,9 @@ namespace System
 		}
 
 
+		/** Initiate output
+		 * @returns void
+		 */
 		public static function out()
 		{
 			if (any(self::$objects)) {
@@ -234,6 +285,9 @@ namespace System
 		}
 
 
+		/** Send HTTP headers
+		 * @returns void
+		 */
 		public static function send_headers()
 		{
 			$format = Settings::get('output', 'format', self::$format);
@@ -246,6 +300,11 @@ namespace System
 		}
 
 
+		/** Add content into specific place
+		 * @param string $place
+		 * @param array|string $content
+		 * @param bool $overwrite
+		 */
 		public static function content_for($place, $content, $overwrite = false)
 		{
 			if (!isset(self::$content[$place]) || $overwrite) {
@@ -258,12 +317,19 @@ namespace System
 		}
 
 
+		/** Get content from location
+		 * @param string $place
+		 * @returns string
+		 */
 		public static function &get_content_from($place)
 		{
 			return self::$content[$place];
 		}
 
 
+		/** Get content from a location and add it to general output
+		 * @param string $place
+		 */
 		public static function content_from($place)
 		{
 			self::$content['output'][] = ob_get_contents();
