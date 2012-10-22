@@ -231,6 +231,12 @@ namespace System
 		}
 
 
+		public static function first_val(array $result)
+		{
+			return reset($result);
+		}
+
+
 		public function select($get_query = false)
 		{
 			if (any($this->opts['falsify-return-value'])) return $this->false_return_value;
