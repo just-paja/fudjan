@@ -68,7 +68,7 @@ namespace System
 			$base = ROOT.self::PARTIALS_DIR.'/';
 			$f = '';
 
-			file_exists($f = $base.self::get_filename($name, Output::get_format(), Output::get_lang())) ||
+			file_exists($f = $base.self::get_filename($name, Output::get_format(), \System\Locales::get_lang())) ||
 			file_exists($f = $base.self::get_filename($name, Output::get_format())) ||
 			file_exists($f = $base.self::get_filename($name)) ||
 			$f = '';

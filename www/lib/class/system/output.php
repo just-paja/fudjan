@@ -10,7 +10,7 @@ namespace System
 		const DEFAULT_OUT = "html";
 		const PREFIX_AJAX = "ajax-api";
 
-		private static $format, $lang;
+		private static $format;
 		private static $template = array();
 		private static $title = array();
 		private static $objects = array();
@@ -69,24 +69,6 @@ namespace System
 		}
 
 
-		static function set_lang($lang)
-		{
-			if (Settings::get('locales', 'langs', $lang)) {
-				Status::log("Locales", array(Settings::get('locales', 'langs', $lang)), true);
-				self::$lang = $lang;
-			} else {
-				Status::log("Locales", array(Settings::get('locales', 'lang', Settings::get('locales', 'default_lang'))."(default)"), true);
-				self::$lang = Settings::get('locales', 'default_lang');
-			}
-		}
-
-
-		static function get_lang()
-		{
-			return self::$lang;
-		}
-
-
 		/** Set output format
 		 * @param string $format
 		 */
@@ -113,7 +95,6 @@ namespace System
 			if (isset($opts['template'])) self::set_template($opts['template']);
 			if (isset($opts['format']))   self::set_format($opts['format']);
 			if (isset($opts['title']))    self::set_title($opts['title']);
-			if (isset($opts['lang']))     self::set_lang($opts['lang']);
 		}
 
 
@@ -201,7 +182,7 @@ namespace System
 				case 'partial': $base .= self::PAGE_DIR.'/partial/'; break;
 			}
 
-			file_exists($temp = $base.Template::get_filename($name, self::$format, self::$lang)) ||
+			file_exists($temp = $base.Template::get_filename($name, self::$format, \System\Locales::get_lang())) ||
 			file_exists($temp = $base.Template::get_filename($name, self::$format)) ||
 			file_exists($temp = $base.Template::get_filename($name)) ||
 			$temp = '';
