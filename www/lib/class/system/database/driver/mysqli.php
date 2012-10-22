@@ -125,6 +125,13 @@ namespace System\Database\Driver
 		}
 
 
+		public function count($sql)
+		{
+			$result = $this->query($sql);
+			return $result->fetch_field();
+		}
+
+
 		/** Retrieves information about the most recently executed query.
 		 * @return array
 		 */

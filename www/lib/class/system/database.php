@@ -58,6 +58,16 @@ namespace System
 		}
 
 
+		public static function count($query, $db_ident = null)
+		{
+			if (($db = self::get_db($db_ident)) !== null) {
+				$res = $db->count($query);
+				self::$queries ++;
+				return $res;
+			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
+		}
+
+
 		public static function simple_insert($table, array $data, $add_times = true, $db_ident = null)
 		{
 			if (($db = self::get_db($db_ident)) !== null) {

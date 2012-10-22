@@ -227,7 +227,7 @@ namespace System
 				(!empty($this->conds) ? " WHERE ".implode(' AND ', $this->conds):null);
 
 			self::$queries ++;
-			return Query::first_val(Database::query($sql));
+			return Database::count($sql);
 		}
 
 
