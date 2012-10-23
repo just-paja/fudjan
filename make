@@ -79,7 +79,7 @@ Compiler::process('checksum', 'Calculating package checksums', array(), function
 Compiler::process('archive', 'Creating package archive', array(), function($make, $data) {
 	$path = Compiler::get('path');
 	$make->progress(0, 100);
-	exec('cd '.$path['dir-temp'].'; tar -c `ls` > '.$path['output-temp']);
+	exec('cd '.$path['dir-temp'].'/temp; tar -c `ls` > '.$path['output-temp']);
 	$make->progress(50, 100);
 	exec('cd '.$path['dir-temp'].'; bzip2 '.$path['output-temp']);
 	$make->progress(100, 100);

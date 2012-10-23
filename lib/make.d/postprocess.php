@@ -13,8 +13,8 @@ exec('
 	echo "'.$info['project-name'].'" >> '.$version_file.';
 	echo "'.$version.'" >> '.$version_file.';
 	cd '.$path['dir-temp'].'/temp; cp -R data '.$path['dir-temp'].'/'.$path['output-uf'].';
+	cp '.$path['dir-meta'].'/* "'.$path['dir-temp'].'/'.$path['output-uf'].'/etc/current/core/pwf/";
 ');
-
 
 // Pack it all together
 Compiler::process('postprocess.user-friendly-package', 'Creating user ready package', $path, function($make, $path) {
