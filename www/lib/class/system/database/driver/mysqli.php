@@ -128,7 +128,7 @@ namespace System\Database\Driver
 		public function count($sql)
 		{
 			$result = $this->query($sql);
-			return $result->fetch_field();
+			return \System\Query::first_val($result->fetch());
 		}
 
 
