@@ -50,7 +50,6 @@
 			);
 
 			self::$commands = array(
-				"branches"  => 'List all ya-package branches',
 				"broken"    => 'List all ya-files that have been changed since install',
 				"files"     => array(
 					'single' => "List all installed files",
@@ -87,20 +86,13 @@
 
 	abstract class CLICommands extends YacmsCLICommands
 	{
-		private static $branch_colors = array(
-			'stable'   => 'light_green',
-			'unstable' => 'yellow',
-			'testing'  => 'light_red',
-		);
-
-
 		/** Get list of all installed ya-packages
 		 * @return void
 		 */
 		public static function installed()
 		{
 			System\Init::basic();
-			$packages = System\Package::get_all_installed();
+			$packages = Santa\Package::get_all_installed();
 			self::print_packages($packages);
 			out(sprintf(l('Installed %s packages.'), count($packages)));
 		}
@@ -112,23 +104,20 @@
 		public static function browse()
 		{
 			System\Init::basic();
-			$branches = System\Package::get_tree();
+			$categories = Santa\Package::get_tree();
 			$packages = array();
-			
-			foreach ($branches as $bname => $branch) {
-				foreach ($branch as $cname => $category) {
-					foreach ($category as $pkg) {
-						if (!isset($packages[$pkg['name']])) {
-							$packages[$pkg['name']] = new System\Package(array(
-								"name" => $pkg['name'],
-								"desc" => $pkg['desc'],
-								"homepage" => isset($pkg['homepage']) ? $pkg['homepage']:'',
-								"available" => array(),
-							));
-						}
 
-						$packages[$pkg['name']]->add_available($bname, $pkg['versions']);
-					}
+			foreach ($categories as $cname => $category) {
+				foreach ($category as $package_name=>$pkg) {
+					$packages[$package_name] = new Santa\Package(array(
+						"name" => $package_name,
+						"category" => $cname,
+						"desc" => $pkg['project_desc'],
+						"homepage" => isset($pkg['project_homepage']) ? $pkg['project_homepage']:'',
+						"available" => array(),
+					));
+
+					$packages[$package_name]->add_available($pkg['versions']);
 				}
 			}
 
@@ -152,7 +141,7 @@
 					}
 
 					if ($pkg->installed && $branch != System\Cli::term_remove_color('testing')) {
-						$status = System\Package::greater_version_than(System\Cli::term_remove_color($version), $pkg->version);
+						$status = Santa\Package::greater_version_than(System\Cli::term_remove_color($version), $pkg->version);
 						$color = 'normal';
 
 						if ($status === true) $color = 'light_green';
@@ -177,7 +166,7 @@
 					$status = System\Cli::term_color('-', 'green');
 				}
 
-				out('['.$status.'] '.$pkg->name);
+				out('['.$status.'] '.$pkg->get_full_name());
 				out_flist(array(
 					'Description'        => $pkg->desc,
 					'Installed version'  => $pkg->installed ? $pkg->branch.'/'.$pkg->version:'',
@@ -195,7 +184,7 @@
 		public static function files()
 		{
 			$params = CLIOptions::get('params');
-			$files = System\Package::get_all_installed_files();
+			$files = Santa\Package::get_all_installed_files();
 			$prefix = isset($params[0]) ? $params[0]:'';
 
 			foreach ($files as $file) {
@@ -210,7 +199,7 @@
 		public static function broken()
 		{
 			System\Init::Basic();
-			$files = \System\Package::get_all_installed_files();
+			$files = \Santa\Package::get_all_installed_files();
 			$mod = $del = 0;
 
 			foreach ($files as $file) {
@@ -248,7 +237,7 @@
 			System\Init::Full();
 			$params = CLIOptions::get('params');
 			$branch = isset($params[0]) ? $params[0]:null;
-			$updates = System\Package::get_update_list($branch);
+			$updates = Santa\Package::get_update_list($branch);
 
 			if (any($updates)) {
 				out(sprintf(l('Updates available: %s'), count($updates)));
@@ -277,7 +266,7 @@
 
 				$updates = array();
 				foreach ($params as $pkg_name) {
-					if (($pkg = System\Package::from_name($pkg_name)) instanceof System\Package) {
+					if (($pkg = Santa\Package::from_name($pkg_name)) instanceof Santa\Package) {
 						if ($pkg->is_available_for_update(!$latest)) {
 							$updates[] = $pkg;
 						}
@@ -287,19 +276,18 @@
 					}
 				}
 			} else {
-				$updates = System\Package::get_update_list(!$latest);
+				$updates = Santa\Package::get_update_list(!$latest);
 			}
 
 			if (any($updates)) {
 				out(l('Following packages will be upgraded:'));
 				foreach ($updates as $pkg) {
-					$old_branch = (System\Cli::term_color($pkg->branch.'/'.$pkg->version, self::$branch_colors[$pkg->branch]));
+					$old_branch = Santa\Cli::get_branch_color_text($pkg->branch.'/'.$pkg->version, $pkg->branch);
 					list($newb, $newv) = explode('/', $new = $pkg->latest_version());
-					$newbc = self::$branch_colors[$newb];
-					$new_branch = (System\Cli::term_color($new, $newbc));
-					out(' ['.System\Cli::term_color('U', $newbc).'] '.$pkg->name.' ('.$old_branch.' -> '.$new_branch.')');
+					$new_branch = Santa\Cli::get_branch_color_text($new, $newb);
+					out(' ['.Santa\Cli::get_branch_color_text('U', $newb).'] '.$pkg->get_full_name().' ('.$old_branch.' -> '.$new_branch.')');
 					out();
-					
+
 					$pkg->branch = $newb;
 					$pkg->version = $newv;
 				}
@@ -324,7 +312,7 @@
 			if (any($params)) {
 				$packages = array();
 				foreach ($params as $pkg_name) {
-					if (($pkg = System\Package::from_name($pkg_name)) instanceof System\Package) {
+					if (($pkg = Santa\Package::from_name($pkg_name)) instanceof Santa\Package) {
 						$packages[] = $pkg;
 					} else {
 						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
@@ -352,27 +340,14 @@
 		}
 
 
-		/** Get list of update channels
-		 * @return void
-		 */
-		public static function branches()
-		{
-			System\Init::Basic();
-			$branches = System\Package::get_branch_list();
-			vout(l('Available branches'));
-			foreach ($branches as $branch) {
-				out($branch);
-			}
-		}
-
-
 		/** Force reload package tree
 		 * @return void
 		 */
 		public static function update()
 		{
+			System\Init::Basic();
 			vout(l('Refreshing package tree and metadata ..'));
-			System\Package::reload_tree();
+			Santa\Package::reload_tree();
 
 			vout();
 			self::updates();
@@ -383,6 +358,7 @@
 		 */
 		private static function hard_install(array $packages)
 		{
+			System\Init::Basic();
 			out(l('Installing packages ..'));
 			$total = count($packages);
 

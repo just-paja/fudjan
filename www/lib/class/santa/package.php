@@ -1,21 +1,21 @@
 <?
 
-namespace System
+namespace Santa
 {
-	class Package extends Model\Attr
+	class Package extends \System\Model\Attr
 	{
 		const DIR_TMP = '/var/tmp';
 		const DIR_META = '/etc/current';
 		const DIR_TMP_TREE = '/var/tmp/santa';
 		const PKG_FORMAT = 'tar.bz2';
 		const CACHE_MAX = 2592000;
-		const URL_SOURCE = 'yaweb.local/packages';
+		const URL_SOURCE = 'purple_repo/';
 		const PATH_BIN = '/www/bin';
 
 		static private $tree = array();
 		static private $meta = array();
 		static protected $attrs = array(
-			"string"   => array('name', 'name_short', 'desc', 'branch', 'version', 'homepage'),
+			"string"   => array('name', 'category', 'name_short', 'desc', 'branch', 'version', 'homepage'),
 			"bool"     => array('installed', 'downloaded', 'extracted'),
 		);
 
@@ -50,8 +50,11 @@ namespace System
 		public static function from_metadir($path)
 		{
 			if (is_dir($path) && file_exists($path.'/version')) {
+				$category_tmp = explode('/', $path);
+				array_pop($category_tmp);
 				$cfg = explode("\n", file_get_contents($path.'/version', true));
 				$pkg = new self(array(
+					'category'   => array_pop($category_tmp),
 					'name_short' => $cfg[0],
 					'desc'       => $cfg[1],
 					'version'    => $cfg[2],
@@ -149,16 +152,12 @@ namespace System
 						self::load_tree();
 					}
 				} else {
-					$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/list.json.php');
+					$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/package-sync/');
 					if ($data->ok()) {
 						$tmp = json_decode($data->content, true);
 						self::$tree = $tmp['tree'];
 						self::check_tree_dir();
 						file_put_contents(ROOT.self::DIR_TMP_TREE.'/tree.json', json_encode(self::$tree));
-						file_put_contents(
-							ROOT.self::DIR_TMP_TREE.'/meta.json',
-							\System\Offcom\Request::get('http://'.self::URL_SOURCE.'/meta.json.php')->content
-						);
 					} else throw new \InternalException(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
 				}
 			}
@@ -261,7 +260,7 @@ namespace System
 		 */
 		private function get_meta_dir()
 		{
-			return ROOT.self::DIR_META.'/'.$this->name;
+			return ROOT.self::DIR_META.'/'.$this->get_full_name();
 		}
 
 
@@ -270,7 +269,7 @@ namespace System
 		 */
 		public function get_package_name()
 		{
-			return str_replace('/', '_', $this->name).'-'.$this->version.'-'.$this->branch;
+			return str_replace('/', '_', $this->get_full_name()).'-'.$this->version.'-'.$this->branch;
 		}
 
 
@@ -281,8 +280,8 @@ namespace System
 		{
 			return $this->get_package_name().'.'.self::PKG_FORMAT;
 		}
-		
-		
+
+
 		public function get_file_path()
 		{
 			return ROOT.self::DIR_TMP.'/'.$this->get_file_name();
@@ -320,7 +319,7 @@ namespace System
 			if (!$this->downloaded) {
 				$url = 'http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2';
 				$data = \System\Offcom\Request::get($url);
-				
+
 				if ($data->ok()) {
 					$this->downloaded = file_put_contents($this->get_file_path(), $data->content);
 				} else throw new \InternalException(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
@@ -382,12 +381,10 @@ namespace System
 			if (empty($this->available)) {
 				empty(self::$tree) && self::load_tree();
 
-				foreach (self::$tree as $bname => $branch) {
-					foreach ($branch as $cname => $category) {
-						foreach ($category as $pkg) {
-							if ($pkg['name'] == $this->name) {
-								$this->add_available($bname, $pkg['versions']);
-							}
+				foreach (self::$tree as $cname => $category) {
+					foreach ($category as $pkg_name => $pkg) {
+						if ($pkg_name == $this->name) {
+							$this->add_available($pkg['versions']);
 						}
 					}
 				}
@@ -401,10 +398,10 @@ namespace System
 		 * @param string branch
 		 * @param string version
 		 */
-		public function add_available($branch, $versions)
+		public function add_available($versions)
 		{
 			foreach ($versions as $ver) {
-				$this->available[] = $branch.'/'.$ver['version'];
+				$this->available[] = $ver['branch'].'/'.$ver['name'];
 			}
 		}
 
@@ -530,7 +527,7 @@ namespace System
 		 */
 		public static function get_update_list($branch = null)
 		{
-			$old = \System\Package::get_all_installed();
+			$old = self::get_all_installed();
 			$up = array();
 
 			foreach ($old as $pkg) {
@@ -540,6 +537,12 @@ namespace System
 			}
 
 			return $up;
+		}
+
+
+		public function get_full_name()
+		{
+			return $this->category.'/'.$this->name;
 		}
 
 	}
