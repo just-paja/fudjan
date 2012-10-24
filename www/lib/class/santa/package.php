@@ -29,14 +29,15 @@ namespace Santa
 			$dir_meta = $this->get_meta_dir();
 
 			$this->downloaded = file_exists($this->get_file_path());
-			$this->extracted = is_dir($dir_tmp) && file_exists($dir_tmp.'/checksum');
+			$this->extracted = is_dir($dir_tmp) && file_exists($dir_tmp.'/meta/checksum');
 
-			if ($this->installed = is_dir($dir_meta) && file_exists($dir_meta.'/checksum')) {
+			if (is_dir($dir_meta) && file_exists($dir_meta.'/checksum')) {
 				$cfg = explode("\n", file_get_contents($this->get_meta_dir().'/version', true));
 				$this->update_attrs(array(
 					'name_short' => $cfg[0],
 					'desc'       => $cfg[1],
 					'version'    => $cfg[2],
+					'installed'  => $cfg[2] == $this->version,
 					'name'       => $cfg[3],
 					'branch'     => any($cfg[4]) ? $cfg[4]:'stable',
 				));
@@ -269,7 +270,7 @@ namespace Santa
 		 */
 		public function get_package_name()
 		{
-			return str_replace('/', '_', $this->get_full_name()).'-'.$this->version.'-'.$this->branch;
+			return str_replace('/', '_', $this->get_full_name()).'-'.$this->version;
 		}
 
 
@@ -317,11 +318,11 @@ namespace Santa
 		public function download()
 		{
 			if (!$this->downloaded) {
-				$url = 'http://'.self::URL_SOURCE.'/tree/'.$this->branch.'/'.$this->name.'-'.$this->version.'.tar.bz2';
+				$url = 'http://'.self::URL_SOURCE.'var/packages/'.$this->category.'/'.$this->name.'/'.$this->name.'-'.$this->version.'.tar.bz2';
 				$data = \System\Offcom\Request::get($url);
 
 				if ($data->ok()) {
-					$this->downloaded = file_put_contents($this->get_file_path(), $data->content);
+					$this->downloaded = \System\File::save_content($this->get_file_path(), $data->content);
 				} else throw new \InternalException(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
 			}
 

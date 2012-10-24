@@ -407,7 +407,6 @@
 				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 			}
 
-
 			$msg = 'Installing packages';
 			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 			foreach ($packages as $key=>$pkg) {
