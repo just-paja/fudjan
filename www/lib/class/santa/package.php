@@ -31,15 +31,12 @@ namespace Santa
 			$this->downloaded = file_exists($this->get_file_path());
 			$this->extracted = is_dir($dir_tmp) && file_exists($dir_tmp.'/meta/checksum');
 
-			if ($this->is_installed()) {
+			if ($this->installed = $this->is_installed()) {
 				$cfg = explode("\n", file_get_contents($this->get_meta_dir().'/version', true));
+
 				$this->update_attrs(array(
-					'name_short' => $cfg[0],
-					'desc'       => $cfg[1],
-					'version'    => $cfg[2],
-					'installed'  => $cfg[2] == $this->version,
-					'name'       => $cfg[3],
-					'branch'     => any($cfg[4]) ? $cfg[4]:'stable',
+					'version' => $cfg[2],
+					'branch'  => any($cfg[4]) ? $cfg[4]:'stable',
 				));
 			}
 		}
