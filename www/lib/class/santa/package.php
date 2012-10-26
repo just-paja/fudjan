@@ -31,7 +31,7 @@ namespace Santa
 			$this->downloaded = file_exists($this->get_file_path());
 			$this->extracted = is_dir($dir_tmp) && file_exists($dir_tmp.'/meta/checksum');
 
-			if (is_dir($dir_meta) && file_exists($dir_meta.'/checksum')) {
+			if ($this->is_installed()) {
 				$cfg = explode("\n", file_get_contents($this->get_meta_dir().'/version', true));
 				$this->update_attrs(array(
 					'name_short' => $cfg[0],
@@ -42,6 +42,12 @@ namespace Santa
 					'branch'     => any($cfg[4]) ? $cfg[4]:'stable',
 				));
 			}
+		}
+
+
+		public function is_installed()
+		{
+			return is_dir($dir_meta) && file_exists($dir_meta.'/checksum');
 		}
 
 
