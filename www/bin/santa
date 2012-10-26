@@ -346,7 +346,7 @@
 		public static function update()
 		{
 			System\Init::Basic();
-			vout(l('Refreshing package tree and metadata ..'));
+			vout(sprintf(l('Fetching package tree from "%s" ..'), Santa\Package::URL_SOURCE));
 			Santa\Package::reload_tree();
 
 			vout();

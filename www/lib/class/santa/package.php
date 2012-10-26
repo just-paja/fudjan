@@ -9,7 +9,7 @@ namespace Santa
 		const DIR_TMP_TREE = '/var/tmp/santa';
 		const PKG_FORMAT = 'tar.bz2';
 		const CACHE_MAX = 2592000;
-		const URL_SOURCE = 'purple_repo/';
+		const URL_SOURCE = 'pwf.scourge.cz/';
 		const PATH_BIN = '/www/bin';
 
 		static private $tree = array();
