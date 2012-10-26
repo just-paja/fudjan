@@ -79,5 +79,15 @@ namespace System
 		{
 			return self::$height;
 		}
+
+
+		public static function try_shell($cmd, &$output = null, &$exit_status = null)
+		{
+			if (!($banned = preg_match('/(^|[,\ ])exec([,\ ]|$)/', ini_get('disable_functions')))) {
+				exec($cmd, $output, $exit_status);
+			}
+
+			return !$banned;
+		}
 	}
 }

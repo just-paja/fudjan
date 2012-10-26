@@ -8,7 +8,7 @@ namespace System
 
 		public static function init()
 		{
-			exec("bin/system htaccess");
+			\System\Cli::try_shell("bin/system htaccess");
 			Output::set_template('setup');
 		}
 
