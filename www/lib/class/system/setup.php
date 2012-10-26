@@ -229,7 +229,7 @@ namespace System
 						"output"  => false,
 						"content" => sprintf(
 							l('Your next step could be installing modules via \'santa\' located in \'%s\''),
-							ROOT.\System\Package::PATH_BIN
+							ROOT.\Santa\Package::PATH_BIN
 						),
 					)),
 				)
