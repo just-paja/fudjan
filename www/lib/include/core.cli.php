@@ -144,7 +144,7 @@ abstract class YacmsCLIOptions
 								}
 							}
 						} else {
-							
+
 							CLIOptions::set($long, true);
 							unset($argv[$argn]);
 							$argv = array_values($argv);
@@ -167,15 +167,13 @@ abstract class YacmsCLIOptions
 		}
 
 		if (empty(self::$commands) || (isset($argv[1]) && CLIOptions::command_exists($argv[1]))) {
-
 			if (isset($argv[1])) {
 				CLIOptions::command_needs_the_force($argv[1]) && !CLIOptions::get('force') ?
 					give_up("If you know what you are doing, please use --force option.", 0):
 					CLIOptions::set('command', $argv[1]);
-					
+
 			} elseif(empty(self::$commands)) {
 				CLIOptions::set('command', 'run');
-				CLIOptions::set_env($argv[1]);
 			}
 
 			unset($argv[0], $argv[1]);
@@ -207,7 +205,7 @@ abstract class YacmsCLIOptions
 			}
 		}
 
-		echo 
+		echo
 			self::$info['head'].CR.
 
 			"Usage:".CR.

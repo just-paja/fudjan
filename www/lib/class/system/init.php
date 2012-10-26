@@ -49,7 +49,6 @@ namespace System
 
 			\CLIOptions::init();
 			\CLIOptions::parse_options();
-			define("YACMS_ENV", \CLIOptions::get_env());
 
 			require_once ROOT."/etc/init.d/core.php";
 

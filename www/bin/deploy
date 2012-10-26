@@ -42,7 +42,7 @@
 			self::$info = array(
 				"name" => NAME,
 				"head" =>
-					'YaCMS deploy manager'.CR.
+					'PWF deploy manager'.CR.
 					'Script allowing you to upload your local system version on other environments.'.CR.
 					'All necessary informations are read from yacms settings'.CR,
 
@@ -59,7 +59,7 @@
 		{
 			$env == 'run' && give_up("Please enter existing environment or --help for more info");
 
-			Core\System\Settings::env_exists($env) ?
+			System\Settings::env_exists($env) ?
 				self::deploy($env):
 				give_up("Environment does not exist. Try entering better one or --help for more info");
 		}
@@ -72,6 +72,7 @@
 		{
 			$proceed = null;
 			$attempts = 0;
+			\System\Settings::set_env($env);
 
 			do {
 				$cfg = self::read_info($proceed !== NULL);
@@ -86,7 +87,12 @@
 				self::print_info($cfg);
 				echo CR;
 				$proceed = is_yes(read("Do you wish to proceed? (yes/no): "));
-				!$proceed && sep();
+
+				if (!$proceed) {
+					sep();
+					out("Not confirmed, rereading settings.");
+				}
+
 				$attempts ++;
 			} while (!$proceed && $attempts < 3);
 
@@ -125,7 +131,7 @@
 		private static function read_info($reread_cfg = false)
 		{
 			vout("Checking for stored login information");
-			Core\System\Settings::reload();
+			System\Settings::reload();
 			$cfg = array();
 
 			if ($p = cfg('deploy', 'protocol')) {
@@ -217,7 +223,7 @@
 			cfgs(array("deploy", $cfg['protocol'].'_user'), $cfg['user']);
 			cfgs(array("deploy", $cfg['protocol'].'_pass'), $cfg['pass']);
 			cfgs(array("deploy", $cfg['protocol'].'_root'), $cfg['root']);
-			\Core\System\Settings::save("deploy", $env);
+			\System\Settings::save("deploy", $env);
 		}
 
 
@@ -316,24 +322,25 @@
 					vout("Deleting old queue files ..");
 					exec("rm -R ".$dir_spool." &> /dev/null");
 
-					vout("Adding files to FTP queue ..");
-					show_progress_cli(0, $total, CLIOptions::get_con_width(), NULL);
+					$msg = "Adding files to FTP queue";
+					show_progress_cli(0, $total, CLIOptions::get_con_width(), NULL, $msg);
 
 					foreach ($files as $file) {
 						$local = ROOT.$file;
 						$remote = dirname($cfg['root'].substr($file, 1));
 						exec('ncftpput -bb -u "'.$cfg['user'].'" -p"'.$cfg['pass'].'" "'.$cfg['host'].'" "'.$remote.'" "'.$local.'" >& /dev/null');
 
-						show_progress_cli(++$x, $total, CLIOptions::get_con_width(), NULL);
+						show_progress_cli(++$x, $total, CLIOptions::get_con_width(), NULL, $msg);
 					}
 
 					$x = 0;
-					show_progress_cli(0, $total, CLIOptions::get_con_width(), NULL);
+					$msg = "Uploading files";
+					show_progress_cli(0, $total, CLIOptions::get_con_width(), NULL, $msg);
 					$ph = popen("ncftpbatch -D", 'r');
 
 					while (!feof($ph) && $line = fgets($ph)) {
 						if (strpos($line, "Done") === 0) {
-							show_progress_cli(++$x, $total, CLIOptions::get_con_width(), "Uploaded in %d seconds");
+							show_progress_cli(++$x, $total, CLIOptions::get_con_width(), "Uploaded in %d seconds", $msg);
 						}
 					}
 
@@ -356,4 +363,4 @@
 
 // -- RUNTIME
 
-	System\Init::cli();
+System\Init::cli();
