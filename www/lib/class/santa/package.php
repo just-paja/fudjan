@@ -47,6 +47,7 @@ namespace Santa
 
 		public function is_installed()
 		{
+			$dir_meta = $this->get_meta_dir();
 			return is_dir($dir_meta) && file_exists($dir_meta.'/checksum');
 		}
 
