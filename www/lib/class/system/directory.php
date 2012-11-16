@@ -53,5 +53,22 @@ namespace System
 
 			return $action;
 		}
+
+
+		public static function find_all_files($path, &$files = array(), $regexp = null)
+		{
+			$dir = opendir($path);
+			while ($file = readdir($dir)) {
+				if (strpos($file, '.') !== 0) {
+					if (is_dir($p = $path.'/'.$file)) {
+						self::find_all_files($p, $files, $regexp);
+					} elseif ($regexp === null || preg_match($file, $regexp)) {
+						$files[] = $p;
+					}
+				}
+			}
+
+			return $files;
+		}
 	}
 }
