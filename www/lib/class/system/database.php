@@ -204,5 +204,12 @@ namespace System
 			$instance = self::get_db($db_ident);
 			return $instance !== null && $instance->is_ready();
 		}
+
+
+		public static function exists($db_ident)
+		{
+			$dblist = cfg('database', 'list');
+			return isset($dblist[$db_ident]);
+		}
 	}
 }
