@@ -27,6 +27,14 @@ namespace System
 		}
 
 
+		public static function low_level_devel()
+		{
+			if (file_exists(ROOT.'/lib/include/devel.php')) {
+				include ROOT.'/lib/include/devel.php';
+			}
+		}
+
+
 		public static function session()
 		{
 			session_start();
