@@ -19,6 +19,10 @@ if (System\Settings::is_this_first_run()) {
 		System\Output::init();
 		System\Page::init();
 
+		if (cfg('dev', 'debug')) {
+			System\Init::low_level_devel();
+		}
+
 		if (!(($page = System\Page::get_current()) instanceof System\Page)) {
 			System\Status::recoverable_error(404);
 		}
