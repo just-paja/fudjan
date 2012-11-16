@@ -4,9 +4,6 @@ namespace System\User\Setup
 {
 	class Variable extends \System\Model\Basic
 	{
-
-		protected static $table = 'user-setup-var';
-		protected static $id_col = 'id_user_setup_var';
 		protected static $attrs = array(
 			"int"      => array('id_user_setup_category'),
 			"string"   => array('name', 'type'),
@@ -14,11 +11,11 @@ namespace System\User\Setup
 			"datetime" => array('created_at', 'updated_at'),
 			"bool"     => array('use_select', 'use_multi'),
 		);
-		
+
 		protected static $belongs_to = array(
 			"category" => array("model" => '\Core\User\Setup\Category'),
 		);
-		
+
 		private static $allowed_types = array();
 
 
