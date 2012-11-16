@@ -4,8 +4,6 @@ namespace System\User
 {
 	class Contact extends \System\Model\Basic
 	{
-		static protected $id_col = 'id_user_contact';
-		static protected $table = 'user_contact';
 		static protected $required = array('ident');
 		static protected $attrs = array(
 			"int"    => array('id_user', 'id_contact_type'),
@@ -19,8 +17,8 @@ namespace System\User
 		);
 
 		static private $internal_types = array(
-			'email'  => self::TYPE_EMAIL,
-			'mobile' => self::TYPE_MOBILE,
+			'email'  => self::STD_EMAIL,
+			'mobile' => self::STD_MOBILE,
 		);
 
 		const STD_EMAIL   = 1;

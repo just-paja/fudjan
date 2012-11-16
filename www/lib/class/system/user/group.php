@@ -4,8 +4,6 @@ namespace System\User
 {
 	class Group extends \System\Model\Basic
 	{
-		static protected $id_col = 'id_user_group';
-		static protected $table = 'user_group';
 		static protected $required = array('name');
 		static protected $attrs = array(
 			"string"   => array('name'),
