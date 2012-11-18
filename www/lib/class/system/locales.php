@@ -8,6 +8,7 @@ namespace System
 		const DIR_MESSAGES = '/messages.d';
 		const DIR_MODULES = '/modules.d';
 		const ENCODING = 'UTF-8';
+		const LANG_DEFAULT = 'en_US';
 
 		private static $lang;
 		private static $messages = array();
@@ -130,10 +131,10 @@ namespace System
 			if (!isset($find))
 			{
 				$find = array_merge(
-					Locales::get('date:days', 'en'),
-					Locales::get('date:days-short', 'en'),
-					Locales::get('date:months', 'en'),
-					Locales::get('date:months-short', 'en')
+					Locales::get('date:days', self::LANG_DEFAULT),
+					Locales::get('date:days-short', self::LANG_DEFAULT),
+					Locales::get('date:months', self::LANG_DEFAULT),
+					Locales::get('date:months-short', self::LANG_DEFAULT)
 				);
 
 				$replace_std = array_merge(
