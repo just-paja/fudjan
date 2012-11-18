@@ -525,5 +525,28 @@ namespace System\Model
 
 			return $child_classes;
 		}
+
+
+		public static function dbsync_structure($model)
+		{
+			if ($no_table = (\System\Database::query("SHOW TABLES WHERE Tables_in_pwf = '".self::get_table($model)."'")->fetch() != self::get_table($model))) {
+				$query = array("CREATE TABLE `".self::get_table($model)."`");
+				$query[] = '(';
+				$structure = self::get_table_structure($model);
+				$query[] = ')';
+			} else {
+				var_dump('table exists');
+			}
+		}
+
+
+		public static function get_table_structure($model)
+		{
+			$structure = array();
+			foreach (self::get_model_attrs($model) as $attr) {
+				$type = self::get_attr_type($model, $attr);
+				var_dump($attr.':'.$type);
+			}
+		}
 	}
 }
