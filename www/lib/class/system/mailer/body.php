@@ -2,7 +2,7 @@
 
 namespace System\Mailer
 {
-	class Body extends \System\Model\Basic
+	class Body extends \System\Model\Database
 	{
 		static protected $id_col = 'id_mailer_body';
 		static protected $table  = 'mailer-body';

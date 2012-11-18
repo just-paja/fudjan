@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Info extends \System\Model\Basic
+	class Info extends \System\Model\Database
 	{
 		static protected $required = array('content');
 		static protected $attrs = array(

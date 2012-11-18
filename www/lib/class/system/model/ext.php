@@ -2,7 +2,7 @@
 
 namespace System\Model
 {
-	abstract class Ext extends Basic
+	abstract class Ext extends Database
 	{
 
 		static $attr_cache = array();
@@ -84,7 +84,7 @@ namespace System\Model
 
 				$conds = array($col => $ids);
 				$result = self::get_first($model, $conds)->fetch();
-				
+
 				return $force_array ? array($result):$result;
 			}
 		}
@@ -306,7 +306,7 @@ namespace System\Model
 
 			foreach (self::get_model_attrs($this) as $attr) {
 				if ($val = $this->ext[$attr->seoname]) {
-					
+
 					if (is_object($val)) {
 						switch (strtolower(get_class($val))) {
 							case 'core\image':

@@ -2,7 +2,7 @@
 
 namespace System\Mailer
 {
-	class QueueItem extends \System\Model\Basic
+	class QueueItem extends \System\Model\Database
 	{
 
 		static protected $id_col = 'id_mailer_queue_item';

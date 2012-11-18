@@ -2,7 +2,7 @@
 
 namespace System\Attr
 {
-	class Set extends \System\Model\Basic
+	class Set extends \System\Model\Database
 	{
 		static protected $id_col = 'id_attr_set';
 		static protected $table = 'attr-set';

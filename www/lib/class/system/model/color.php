@@ -2,7 +2,7 @@
 
 namespace System\Model
 {
-	abstract class Color extends Basic
+	abstract class Color extends Database
 	{
 		public function get_color()
 		{

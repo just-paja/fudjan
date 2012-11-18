@@ -2,7 +2,7 @@
 
 namespace System\Mailer
 {
-	class Trigger extends \System\Model\Basic
+	class Trigger extends \System\Model\Database
 	{
 		static protected $id_col = 'id_mailer_trigger';
 		static protected $table  = 'mailer_trigger';
@@ -77,7 +77,7 @@ namespace System\Mailer
 						"status" => 'ready'
 					));
 					$q->save();
-					
+
 					if ($immediate) {
 						$q->send();
 					}

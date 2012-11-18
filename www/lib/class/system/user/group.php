@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Group extends \System\Model\Basic
+	class Group extends \System\Model\Database
 	{
 		static protected $required = array('name');
 		static protected $attrs = array(

@@ -2,7 +2,7 @@
 
 namespace System
 {
-	class Migration extends Model\Basic
+	class Migration extends Model\Database
 	{
 
 		const BASEDIR = '/etc/database/migrations.d';
@@ -81,7 +81,7 @@ namespace System
 					}
 				}
 			}
-			
+
 			usort($items, array("self", "sort"));
 			return $items;
 		}
@@ -98,7 +98,7 @@ namespace System
 					return false;
 				}
 			}
-			
+
 			return true;
 		}
 
