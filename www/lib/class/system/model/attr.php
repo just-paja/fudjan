@@ -11,9 +11,11 @@ namespace System\Model
 
 		// List of allowed attribute types
 		protected static $attr_types = array(
-			'int',
-			'float',
 			'bool',
+			'int',
+			'varchar',
+			'text',
+			'float',
 			'datetime',
 			'password',
 			'json',
@@ -59,7 +61,7 @@ namespace System\Model
 				$model = get_class($this);
 				$attr == 'id' && isset($model::$id_col) && $attr = $model::$id_col;
 
-				return $this->attr_exists($attr) ? 
+				return $this->has_attr($attr) ?
 					(isset($this->data[$attr]) ? $this->data[$attr]:null):
 					(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
 			}
@@ -73,11 +75,11 @@ namespace System\Model
 		 * @param mixed  $value
 		 * @returns BasicModel
 		 */
-		public function __set($name, $value)
+		public function __set($attr, $value)
 		{
-			$this->attr_exists($name) ?
-				($this->data[$name] = $value):
-				($this->opts[$name] = $value);
+			if ($this->has_attr($attr)) {
+				$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
+			} else $this->opts[$attr] = $value;
 
 			return $this;
 		}
@@ -129,17 +131,7 @@ namespace System\Model
 		{
 			$model = get_class($this);
 			foreach($update as $attr=>$val){
-				$this->attr_exists($attr) ? $this->data[$attr] = $val:$this->opts[$attr] = $val;
-			}
-
-			foreach (self::$attr_types as $type) {
-				if (isset($model::$attrs[$type])) {
-					self::normalize_datatypes((array) $model::$attrs[$type], $type, $this->data);
-				}
-
-				if (isset(self::$merged_attrs['\\'.$model]) && isset(self::$merged_attrs['\\'.$model][$type])) {
-					self::normalize_datatypes((array) self::$merged_attrs['\\'.$model][$type], $type, $this->opts);
-				}
+				$this->__set($attr, $val);
 			}
 
 			return $this;
@@ -151,20 +143,9 @@ namespace System\Model
 		 * @param string $attr  Name of attribute
 		 * @returns bool
 		 */
-		public static function does_attr_exist($model, $attr)
+		public static function attr_exists($model, $attr)
 		{
-			if (isset($model::$id_col) && $attr == $model::$id_col) return true;
-
-			foreach ($model::$attrs as $type=>$temp) {
-				if (!is_array($temp)) {
-					unset($model::$attrs[$type]);
-					continue;
-				}
-
-				if (in_array($attr, $temp)) return true;
-			}
-
-			return false;
+			return array_key_exists($attr, $model::$attrs);
 		}
 
 
@@ -172,9 +153,9 @@ namespace System\Model
 		 * @param string $attr Name of attribute
 		 * @returns bool
 		 */
-		public function attr_exists($attr)
+		public function has_attr($attr)
 		{
-			return self::does_attr_exist(get_class($this), $attr);
+			return self::attr_exists(get_class($this), $attr);
 		}
 
 
@@ -214,8 +195,6 @@ namespace System\Model
 		}
 
 
-
-
 		/** Get type of attribute
 		 * @param string $model Name of model class
 		 * @param string $attr  Name of attribute
@@ -233,75 +212,98 @@ namespace System\Model
 		}
 
 
+		protected static function get_attr($model, $attr)
+		{
+			$attr_data = &$model::$attrs[$attr];
+
+			if (in_array($attr_data[0], array('varchar', 'password'))) {
+				if (!isset($attr_data['length'])) $attr_data['length'] = 255;
+			}
+
+			if ($attr_data[0] === 'text') {
+				if (!isset($attr_data['length'])) $attr_data['length'] = 65535;
+			}
+
+			return $attr_data;
+		}
+
+
 		/** Prepare data of a kind to be saved, mostly conversions
 		 * @param array  $keys    Set of attribute names
 		 * @param string $type    Type of data
 		 * @param &array $dataray Object data
 		 */
-		public static function normalize_datatypes(array $keys, $type, &$dataray)
+		public static function convert_attr_val($model, $attr, $val = null)
 		{
-			foreach ($keys as $attr) {
-				switch ($type) {
-					case 'int':
-						$dataray[$attr] = isset($dataray[$attr]) ? intval($dataray[$attr]):0;
-						break;
+			$attr_data = self::get_attr($model, $attr);
 
-					case 'float':
-						$dataray[$attr] = isset($dataray[$attr]) ? floatval($dataray[$attr]):0.0;
-						break;
+			switch ($attr_data[0]) {
+				case 'int':
+					$val = intval($val);
+					break;
 
-					case 'bool':
-						$dataray[$attr] = isset($dataray[$attr]) ? !!$dataray[$attr]:false;
-						break;
+				case 'float':
+					$val = floatval($val);
+					break;
 
-					case 'datetime':
-						if (!isset($dataray[$attr])) {
-							$dataray[$attr] = new \DateTime();
-						}
+				case 'bool':
+					$val = is_null($val) ? false:!!$val;
+					break;
 
-						if (!($dataray[$attr] instanceof \DateTime)) {
-							$dataray[$attr] = new \DateTime($dataray[$attr]);
-						}
-						break;
+				case 'password':
+				case 'text':
+				case 'varchar':
+					$val = mb_substr(strval($val), 0, $attr_data['length']);
+					break;
 
-					case 'image':
-						$val = &$dataray[$attr];
-						if (!($val instanceof \System\Image)) {
+				case 'datetime':
+					if (is_null($val)) {
+						$val = new \DateTime();
+					}
 
-							if (is_array($val) && is_array($val['name'])) {
-								foreach ($val as &$d) {
-									if (is_array($d)) {
-										$d = reset($d);
-									}
+					if (!($val instanceof \DateTime)) {
+						$val = new \DateTime($val);
+					}
+					break;
+
+				case 'image':
+					if (!($val instanceof \System\Image)) {
+
+						if (is_array($val) && is_array($val['name'])) {
+							foreach ($val as &$d) {
+								if (is_array($d)) {
+									$d = reset($d);
 								}
 							}
+						}
 
-							if (any($val) && !is_array($val) || is_array($val) && (empty($val['src']) || (any($val['src']) && $val['src'] != 'actual'))) {
+						if (any($val) && !is_array($val) || is_array($val) && (empty($val['src']) || (any($val['src']) && $val['src'] != 'actual'))) {
 
-								$val = str_replace("\\", "", $val);
-								if (is_array($val)) {
-									$val = new \System\Image($val);
-								} elseif ($j = json_decode($val, true)) {
-									$val = \System\Image::from_json($val);
-								} elseif($val) {
-									$val = \System\Image::from_path($val);
-								} else {
-									$val = \System\Image::from_scratch();
-								}
-
+							$val = str_replace("\\", "", $val);
+							if (is_array($val)) {
+								$val = new \System\Image($val);
+							} elseif ($j = json_decode($val, true)) {
+								$val = \System\Image::from_json($val);
+							} elseif($val) {
+								$val = \System\Image::from_path($val);
 							} else {
 								$val = \System\Image::from_scratch();
 							}
-						}
-						break;
 
-					case 'json':
-						if (any($dataray[$attr]) && is_string($dataray[$attr])) {
-							$dataray[$attr] = array_filter((array) json_decode($dataray[$attr], true));
+						} else {
+							$val = \System\Image::from_scratch();
 						}
-						break;
-				}
+					}
+					break;
+
+				case 'json':
+					if (any($val) && is_string($val)) {
+						$val = array_filter((array) json_decode($val, true));
+					}
+					break;
 			}
+
+			return $val;
 		}
 
 	}

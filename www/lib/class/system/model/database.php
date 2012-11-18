@@ -2,14 +2,18 @@
 
 namespace System\Model
 {
-	abstract class Basic extends Callback
+	abstract class Database extends Callback
 	{
 		// Replace chars
-		private static $bad_chars  = array(' ','_','--');
-		private static $good_chars = array('-','-','-',''); 
+		private static $bad_chars  = array(' ', '_', '--');
+		private static $good_chars = array('-', '-', '-', '');
 
 		private static $strictly_bad_chars = array('-');
 		private static $strictly_good_chars = array('_');
+
+		// Basic
+		static protected $table;
+		static protected $id_col;
 
 		// Relations
 		static protected $belongs_to;
@@ -31,18 +35,33 @@ namespace System\Model
 		{
 			if (isset($model::$table)) {
 				return $model::$table;
-			} else throw new \InternalException(l('Model "'.$model.'" does not have table defined. Use "'.$model.'"::$table to define it'));
+			} else {
+				return $model::$table = implode('_', array_map('strtolower', array_filter(explode('\\', $model))));
+			}
 		}
 
 
-		/* Get name of ID column
+		/** Does attribute of a model exist
+		 * @param string $model
+		 * @param string $attr
+		 * @returns bool True if exists
+		 */
+		public static function attr_exists($model, $attr)
+		{
+			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr);
+		}
+
+
+		/** Get name of ID column
 		 * @returns string
 		 */
 		public static function get_id_col($model)
 		{
-			if (isset($model::$table)) {
+			if (isset($model::$id_col)) {
 				return $model::$id_col;
-			} else throw new \InternalException(l('Model "'.$model.'" does not have id column. Use "'.$model.'"::$id_col to define it'));
+			} else {
+				return $model::$id_col = 'id_'.self::get_table($model);
+			}
 		}
 
 
@@ -57,13 +76,13 @@ namespace System\Model
 		{
 			if (!$model || !class_exists($model)) throw new \FatalException(sprintf(_('Model not found: %s'), var_export($model, true)));
 
-			if (empty($opts['order-by']) && self::does_attr_exist($model, 'order')) {
+			if (empty($opts['order-by']) && self::attr_exists($model, 'order')) {
 				$opts['order-by'] = "`t0`.`order` ASC";
 			}
 
 			$helper = new \System\Query(
 				array(
-					"table" => $model::$table,
+					"table" => self::get_table($model),
 					"cols"  => array_merge($model::$attrs, (array) $model::$id_col),
 					"opts"  => $opts,
 					"conds" => $conds,
@@ -91,7 +110,7 @@ namespace System\Model
 								$attr_def = $jmodel::$attrs;
 							}
 
-							$attrs_to_merge[] = array($jmodel::$table, "USING(".($jmodel::$id_col).")", 'extension_'.$k, $attr_def);
+							$attrs_to_merge[] = array(self::get_table($jmodel), "USING(".($jmodel::$id_col).")", 'extension_'.$k, $attr_def);
 						}
 					}
 
@@ -253,11 +272,11 @@ namespace System\Model
 					$rel_attrs = $model::$has_many[$rel];
 					$helper = get_all($rel_attrs['model'], array(), array());
 
-					if (!empty($rel_attrs['join-table']) || $rel_attrs['join-table'] = $rel_attrs['model']::$table) {
+					if (!empty($rel_attrs['join-table']) || $rel_attrs['join-table'] = self::get_table($rel_attrs['model'])) {
 						$helper->join($rel_attrs['join-table'], "USING(".$rel_attrs['model']::$id_col.")", $join_alias);
 					}
 
-					self::does_attr_exist($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
+					self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
 
 					$helper->where(array("`".$join_alias."`.`".$model::$id_col."` = ". intval($this->id)));
 					$helper->assoc_with($rel_attrs['model']);
@@ -353,7 +372,7 @@ namespace System\Model
 					}
 				}
 
-				if ($this->attr_exists($at = 'id_user_author') || $this->attr_exists($at = 'id_author')) {
+				if ($this->has_attr($at = 'id_user_author') || $this->has_attr($at = 'id_author')) {
 					!$this->$at && ($this->$at = intval(user()->id));
 				}
 
@@ -384,9 +403,9 @@ namespace System\Model
 				self::prepare_data($model, $data);
 
 				if ($this->id) {
-					\System\Database::simple_update($model::$table, $model::$id_col, $this->id, $data);
+					\System\Database::simple_update(self::get_table($model), $model::$id_col, $this->id, $data);
 				} else {
-					$id = \System\Database::simple_insert($model::$table, $data);
+					$id = \System\Database::simple_insert(self::get_table($model), $data);
 					if ($id) {
 						return $this->update_attrs(array($model::$id_col => $id));
 					} else {
@@ -424,7 +443,7 @@ namespace System\Model
 		public function drop()
 		{
 			$model = get_class($this);
-			return \System\Query::simple_delete($model::$table, array($model::$id_col => $this->id));
+			return \System\Query::simple_delete(self::get_table($model), array($model::$id_col => $this->id));
 		}
 
 
@@ -485,9 +504,49 @@ namespace System\Model
 		 * @param string $str
 		 * @returns in ID
 		 */
-		function get_seoid($str)
+		public static function get_seoid($str)
 		{
 			return (int) end(explode('-', $str));
+		}
+
+
+		public static function get_all_children()
+		{
+			$all_classes = get_declared_classes();
+			$child_classes = array();
+			foreach ($all_classes as $class) {
+				if (is_subclass_of('\\'.$class, get_called_class())) {
+					$ref = new \ReflectionClass($class);
+					if (!$ref->isAbstract()) {
+						$child_classes[] = $class;
+					}
+				}
+			}
+
+			return $child_classes;
+		}
+
+
+		public static function dbsync_structure($model)
+		{
+			if ($no_table = (\System\Database::query("SHOW TABLES WHERE Tables_in_pwf = '".self::get_table($model)."'")->fetch() != self::get_table($model))) {
+				$query = array("CREATE TABLE `".self::get_table($model)."`");
+				$query[] = '(';
+				$structure = self::get_table_structure($model);
+				$query[] = ')';
+			} else {
+				var_dump('table exists');
+			}
+		}
+
+
+		public static function get_table_structure($model)
+		{
+			$structure = array();
+			foreach (self::get_model_attrs($model) as $attr) {
+				$type = self::get_attr_type($model, $attr);
+				var_dump($attr.':'.$type);
+			}
 		}
 	}
 }
