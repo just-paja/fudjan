@@ -2,18 +2,20 @@
 
 namespace System
 {
-	class User extends Model\Basic
+	class User extends Model\Database
 	{
-		static protected $id_col = 'id_user';
-		static protected $table = 'user';
 		static protected $required = array('login');
 		static protected $attrs = array(
-			"string"   => array('login', 'nick', 'first_name', 'last_name', 'default_email', 'about'),
-			"pass"     => array('password'),
-			"json"     => array('emails', 'phones', 'instant_messengers', 'sites'),
-			"image"    => array('avatar'),
-			"datetime" => array('created_at','updated_at','last_login'),
-			"bool"     => array('sitecom_email', 'sitecom_sms'),
+			"login"       => array('varchar', "unique" => true),
+			"nick"        => array('varchar'),
+			"first_name"  => array('varchar'),
+			"last_name"   => array('varchar'),
+			"text"        => array('text'),
+			"password"    => array('password'),
+			"avatar"      => array('image'),
+			"last_login"  => array('datetime', "default" => 'NOW()'),
+			"com_email"   => array('bool', "default" => true),
+			"com_sms"     => array('bool', "default" => false),
 		);
 
 		static protected $has_many = array(
