@@ -2,7 +2,7 @@
 
 namespace System\Attr
 {
-	class Group extends \System\Model\Basic
+	class Group extends \System\Model\Database
 	{
 
 		static protected $id_col = 'id_attr_group';

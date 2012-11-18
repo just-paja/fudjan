@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Contact extends \System\Model\Basic
+	class Contact extends \System\Model\Database
 	{
 		static protected $required = array('ident');
 		static protected $attrs = array(

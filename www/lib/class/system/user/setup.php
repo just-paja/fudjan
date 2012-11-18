@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Setup extends \System\Model\Basic
+	class Setup extends \System\Model\Database
 	{
 		protected static $attrs = array(
 			"int"     => array('id_user', 'id_user_setup_var'),

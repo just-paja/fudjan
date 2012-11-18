@@ -2,7 +2,7 @@
 
 namespace System\User\Setup
 {
-	class Category extends \System\Model\Basic
+	class Category extends \System\Model\Database
 	{
 		protected static $attrs = array(
 			"int"      => array('order'),

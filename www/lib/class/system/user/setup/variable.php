@@ -2,7 +2,7 @@
 
 namespace System\User\Setup
 {
-	class Variable extends \System\Model\Basic
+	class Variable extends \System\Model\Database
 	{
 		protected static $attrs = array(
 			"int"      => array('id_user_setup_category'),

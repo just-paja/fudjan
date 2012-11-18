@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Perm extends \System\Model\Basic
+	class Perm extends \System\Model\Database
 	{
 		static protected $attrs = array(
 			"string"   => array('type', 'trigger'),
