@@ -84,6 +84,12 @@
 				"save"     => 'Save database backup into standart path',
 				"setup"    => 'Setup basic information to run database',
 				"seed"     => 'Fill database with initial data if empty',
+				"sync"     => array(
+					"single"    => 'Sync database structure and contents',
+					"structure" => 'Sync database structure',
+					"relations" => 'Sync foreign keys',
+					"data"      => 'Sync database contents',
+				),
 			);
 
 			self::$forced_commands = array("purge");
@@ -595,6 +601,50 @@
 			);
 			// not implemented yet
 			dump($cfg);
+		}
+
+
+		/** Sync database structure and contents
+		 */
+		public static function sync()
+		{
+			$params = CLIOptions::get('params');
+			(empty($params) || in_array('structure', $params)) && self::sync_structure();
+			(empty($params) || in_array('relations', $params)) && self::sync_relations();
+			(empty($params) || in_array('data', $params)) && self::sync_contents();
+		}
+
+
+		public static function sync_structure()
+		{
+			\System\Init::full();
+			\System\Loader::load_all();
+
+			$models = \System\Model\Database::get_all_children();
+			$msg_done = NULL;
+			$msg_work = 'Syncing database structure';
+			$x = 0;
+			$total = count($models);
+
+			show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), $msg_done, $msg_work);
+			foreach ($models as $model) {
+				show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), $msg_done, $model);
+				\Database\Structure::sync_model($model);
+				$x++;
+			}
+			show_progress_cli($total, $total, YacmsCLIOptions::get_con_width(), $msg_done, $msg_work);
+		}
+
+
+		public static function sync_contents()
+		{
+			out('Syncing contents is not implemented yet');
+		}
+
+
+		public static function sync_relations()
+		{
+			out('Syncing contents is not implemented yet');
 		}
 	}
 
