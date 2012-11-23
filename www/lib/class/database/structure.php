@@ -55,7 +55,19 @@ namespace Database
 
 		public static function sync_model($model)
 		{
+			$db = self::get_database();
+			$table = $db->get_table($model::get_table($model));
+			$attrs = \Database\Attr::get_from_model($model);
 
+			foreach ($attrs as $attr) {
+				if (!$table->has_column($attr->name)) {
+					$table->add_attr($attr);
+				}
+
+				$table->get_column($attr->name)->set_cfg($attr->get_data());
+			}
+
+			$table->save();
 		}
 
 

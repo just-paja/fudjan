@@ -4,6 +4,12 @@ namespace Database\Mysqli
 {
 	class Column
 	{
+		private static $complex_types = array(
+			"image"    => array("type" => 'text'),
+			"password" => array("type" => 'varchar'),
+			"bool"     => array("type" => 'tinyint', "length" => 1),
+		);
+
 		private $table;
 		private $name;
 		private $renamed = false;
@@ -96,11 +102,27 @@ namespace Database\Mysqli
 
 		public function set_cfg(array $cfg)
 		{
+			foreach (self::$complex_types as $type=>$db_type) {
+				if ($cfg['type'] == $type) {
+					foreach ($db_type as $key=>$value) {
+						$cfg[$key] = $value;
+					}
+				}
+			}
+
 			foreach ($cfg as $key=>$c)
 			{
 				if (in_array($key, $this->attr_names)) {
 					$this->attrs[$key] = $c;
 				}
+			}
+
+			if ($this->attrs['type'] == 'varchar' && !isset($this->attrs['length'])) {
+				$this->attrs['length'] = 255;
+			}
+
+			if ($this->attrs['type'] == 'text' && !isset($this->attrs['length'])) {
+				$this->attrs['length'] = 65535;
 			}
 		}
 
@@ -146,8 +168,10 @@ namespace Database\Mysqli
 
 				if ($exists || $this->renamed) {
 					$front = 'CHANGE `'.$this->default['name'].'` `'.$this->name.'`';
-				} else {
+				} elseif ($this->table()->exists()) {
 					$front = 'ADD `'.$this->name.'`';
+				} else {
+					$front = '`'.$this->name.'`';
 				}
 
 				$sq = implode(' ', array(

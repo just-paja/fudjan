@@ -6,7 +6,7 @@ namespace System
 	{
 		static protected $required = array('login');
 		static protected $attrs = array(
-			"login"       => array('varchar', "unique" => true),
+			"login"       => array('varchar', "is_unique" => true),
 			"nick"        => array('varchar'),
 			"first_name"  => array('varchar'),
 			"last_name"   => array('varchar'),
