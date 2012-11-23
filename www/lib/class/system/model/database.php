@@ -14,6 +14,8 @@ namespace System\Model
 		// Basic
 		static protected $table;
 		static protected $id_col;
+		static protected $tables_generated = array();
+		static protected $id_cols_generated = array();
 
 		// Relations
 		static protected $belongs_to;
@@ -35,8 +37,10 @@ namespace System\Model
 		{
 			if (isset($model::$table)) {
 				return $model::$table;
+			} elseif (isset(self::$tables_generated[$model])) {
+				return self::$tables_generated[$model];
 			} else {
-				return $model::$table = implode('_', array_map('strtolower', array_filter(explode('\\', $model))));
+				return self::$tables_generated[$model] = implode('_', array_map('strtolower', array_filter(explode('\\', $model))));
 			}
 		}
 
@@ -59,8 +63,10 @@ namespace System\Model
 		{
 			if (isset($model::$id_col)) {
 				return $model::$id_col;
+			} elseif (isset(self::$id_cols_generated[$model])) {
+				return self::$id_cols_generated[$model];
 			} else {
-				return $model::$id_col = 'id_'.self::get_table($model);
+				return self::$id_cols_generated[$model] = 'id_'.self::get_table($model);
 			}
 		}
 
