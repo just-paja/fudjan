@@ -6,6 +6,7 @@ namespace Database\Mysqli
 	{
 		private static $complex_types = array(
 			"image"    => array("type" => 'text'),
+			"json"     => array("type" => 'text'),
 			"password" => array("type" => 'varchar'),
 			"bool"     => array("type" => 'tinyint', "length" => 1),
 		);
@@ -195,8 +196,8 @@ namespace Database\Mysqli
 					any($this->attrs['is_null']) && !isset($this->attrs['default']) ? 'NULL':'NOT NULL',
 					isset($this->attrs['default']) ? 'DEFAULT '.$defval.'':'',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
-					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) ? 'UNIQUE':'',
-					any($this->attrs['is_primary']) && empty($this->attrs['is_primary']) ? 'PRIMARY KEY':'',
+					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) && empty($this->default['is_unique']) ? 'UNIQUE':'',
+					any($this->attrs['is_primary']) && empty($this->default['is_primary']) ? 'PRIMARY KEY':'',
 					any($this->attrs['comment']) ? " COMMENT '".$this->attrs['comment']."'":'',
 				));
 

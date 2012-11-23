@@ -5,9 +5,9 @@ namespace System\User
 	class Setup extends \System\Model\Database
 	{
 		protected static $attrs = array(
-			"int"     => array('id_user', 'id_user_setup_var'),
-			"string"   => array('value'),
-			"datetime" => array('created_at', 'updated_at'),
+			"id_user"           => array('int', "is_unsigned" => true),
+			"id_user_setup_var" => array('int', "is_unsigned" => true),
+			"value"   => array('varchar'),
 		);
 
 

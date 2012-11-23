@@ -6,12 +6,13 @@ namespace System
 	{
 
 		const BASEDIR = '/etc/database/migrations.d';
-		static protected $id_col = 'id_database_migration';
-		static protected $table = 'database_migration';
-		static protected $required_attrs = array();
 		static protected $attrs = array(
-			"string" => array('seoname','name','desc','md5_sum','status'),
-			"datetime" => array('created_at','updated_at','date')
+			"seoname" => array('varchar'),
+			"name"    => array('varchar'),
+			"desc"    => array('varchar'),
+			"md5_sum" => array('varchar'),
+			"status"  => array('varchar'),
+			"date"    => array('datetime'),
 		);
 
 		static function get_new()

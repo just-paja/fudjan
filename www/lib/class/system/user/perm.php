@@ -5,10 +5,11 @@ namespace System\User
 	class Perm extends \System\Model\Database
 	{
 		static protected $attrs = array(
-			"string"   => array('type', 'trigger'),
-			"int"      => array('id_user_group', 'id_author'),
-			"bool"     => array('public'),
-			"datetime" => array('created_at','updated_at'),
+			"type"          => array('varchar'),
+			"trigger"       => array('varchar'),
+			"id_user_group" => array('int', "is_unsigned" => true),
+			"id_author"     => array('int', "is_unsigned" => true),
+			"public"        => array('bool'),
 		);
 
 		static protected $belongs_to = array(
