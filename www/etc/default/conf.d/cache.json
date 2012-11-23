@@ -1,4 +1,6 @@
 {
-	"memory-cache-enabled":false,
-	"memory-cache-driver":"runtime"
+	"memory":{
+		"enabled":false,
+		"driver":"runtime"
+	}
 }
