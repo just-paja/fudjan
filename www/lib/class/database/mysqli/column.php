@@ -19,6 +19,7 @@ namespace Database\Mysqli
 			'length',
 			'is_null',
 			'is_unique',
+			'is_primary',
 			'is_unsigned',
 			'is_autoincrement',
 			'key',
@@ -55,6 +56,7 @@ namespace Database\Mysqli
 					strpos($cfg['Key'], 'UNI') !== false ||
 					strpos($cfg['Key'], 'PRI') !== false
 				);
+				$this->attrs['is_primary']  = strpos($cfg['Key'], 'PRI') !== false;
 				$this->attrs['is_null']     = strtolower($cfg['Null']) === 'Yes';
 				$this->attrs['key']         = $cfg['Key'];
 				$this->attrs['default']     = $cfg['Default'];
@@ -180,7 +182,8 @@ namespace Database\Mysqli
 					any($this->attrs['is_unsigned']) ? 'unsigned':'',
 					any($this->attrs['is_null']) ? 'NULL':'NOT NULL',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
-					any($this->attrs['is_unique']) ? 'UNIQUE':'',
+					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) ? 'UNIQUE':'',
+					any($this->attrs['is_primary']) ? 'PRIMARY KEY':'',
 					any($this->attrs['comment']) ? " COMMENT '".$this->attrs['comment']."'":'',
 				));
 
