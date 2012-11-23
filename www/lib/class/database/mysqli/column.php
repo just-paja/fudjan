@@ -176,14 +176,27 @@ namespace Database\Mysqli
 					$front = '`'.$this->name.'`';
 				}
 
+				if (isset($this->attrs['default'])) {
+					$defval = $this->attrs['default'];
+
+					if (strpos($this->attrs['type'], 'int')) {
+						$defval = intval($defval);
+					}
+
+					if ($defval != 'NOW()' && !is_numeric($defval)) {
+						$defval = "'".$defval."'";
+					}
+				}
+
 				$sq = implode(' ', array(
 					$front,
 					$this->attrs['type'].(any($this->attrs['length']) ? '('.$this->attrs['length'].')':''),
 					any($this->attrs['is_unsigned']) ? 'unsigned':'',
-					any($this->attrs['is_null']) ? 'NULL':'NOT NULL',
+					any($this->attrs['is_null']) && !isset($this->attrs['default']) ? 'NULL':'NOT NULL',
+					isset($this->attrs['default']) ? 'DEFAULT '.$defval.'':'',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
 					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) ? 'UNIQUE':'',
-					any($this->attrs['is_primary']) ? 'PRIMARY KEY':'',
+					any($this->attrs['is_primary']) && empty($this->attrs['is_primary']) ? 'PRIMARY KEY':'',
 					any($this->attrs['comment']) ? " COMMENT '".$this->attrs['comment']."'":'',
 				));
 

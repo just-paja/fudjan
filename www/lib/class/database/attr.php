@@ -16,6 +16,11 @@ namespace Database
 			"is_autoincrement" => array('bool'),
 		);
 
+		protected static $default_cols = array(
+			"created_at" => array('datetime', "default" => 0),
+			"updated_at" => array('datetime', "default" => 0),
+		);
+
 		protected static $allowed_types = array(
 			'bool', 'int', 'float', 'varchar', 'text', 'password', 'image', 'datetime'
 		);
@@ -35,6 +40,11 @@ namespace Database
 			));
 
 			foreach ($attrs as $name => $def) {
+				$attr = self::from_def($name, $def);
+				$result[$name] = $attr;
+			}
+
+			foreach (self::$default_cols as $name => $def) {
 				$attr = self::from_def($name, $def);
 				$result[$name] = $attr;
 			}
