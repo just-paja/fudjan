@@ -4,75 +4,49 @@ namespace System
 {
 	abstract class Cache
 	{
+		const TTL_DEFAULT = 3600;
+
 		static private $driver;
 		static private $enabled;
+		static private $ttl = self::TTL_DEFAULT;
 
 		public static function init()
 		{
-			if (self::$enabled = Settings::get('cache', 'memory-cache-enabled'))
+			if (self::$enabled = cfg('cache', 'memory-cache-enabled'))
 			{
-				$driver = self::$driver = "Core\\System\\Cache\\".ucfirst(Settings::get('cache', 'memory-cache-driver'));
 				try {
-					$driver::setup();
+					self::setup_driver();
 				} catch (\Exception $e) {
-					throw new \CacheException('Unusable type of cache \''.$driver.'\'. Check your app settings');
+					throw new \CacheException('Could not setup cache driver \''.$driver.'\'. Check your app settings', cfg('cache'));
 				}
 			}
 		}
 
 
-		public static function get($path)
+		public static function __callStatic($method, $args)
 		{
 			if (self::$enabled) {
-				$driver = self::$driver;
-				return $driver::get($path);
-			}
+				if (!self::ready()) {
+					self::init();
+				}
 
-			return false;
+				if (method_exists(array(self::get_driver(), $method))) {
+					return self::get_driver()->$method($args);
+				}
+			}
 		}
 
 
-		public static function fetch($path, &$var)
+		private static function setup_driver($name, array $cfg)
 		{
-			if (self::$enabled) {
-				$driver = self::$driver;
-				return $driver::fetch($path, $var);
-			}
-
-			return false;
+			$drv_name = self::get_cfg_driver();
+			self::$driver = new $drv_name();
 		}
 
 
-		public static function set($path, $value)
+		public static function get_cfg_driver()
 		{
-			if (self::$enabled) {
-				$driver = self::$driver;
-				return $driver::set($path, $value);
-			}
-
-			return $value;
-		}
-
-
-		public static function release($path)
-		{
-			if (self::$enabled) {
-				$driver = self::$driver;
-				return $driver::release($path);
-			}
-
-			return null;
-		}
-
-
-		public static function flush()
-		{
-			if (self::$enabled) {
-				$driver = self::$driver;
-				return $driver::flush();
-			}
-
-			return null;
+			return self::$driver = "System\\Cache\\Driver\\".ucfirst(cfg('cache', 'memory-cache-driver'));
 		}
 
 
