@@ -13,7 +13,7 @@ namespace System
 			"text"        => array('text'),
 			"password"    => array('password'),
 			"avatar"      => array('image'),
-			"last_login"  => array('datetime', "default" => 'NOW()'),
+			"last_login"  => array('datetime', "default" => 0),
 			"com_email"   => array('bool', "default" => true),
 			"com_sms"     => array('bool', "default" => false),
 		);
