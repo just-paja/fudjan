@@ -147,7 +147,7 @@ namespace System
 				$this->rights = get_all("\System\User\Perm")
 					->where($conds, "t0", true)
 					->reset_cols()
-					->add_cols(array("trigger", "type", "id_user_perm"), "t0")
+					->add_cols(array("trigger", "type", "id_system_user_perm"), "t0")
 					->assoc_with('')
 					->fetch('trigger', 'id_user_perm');
 			}

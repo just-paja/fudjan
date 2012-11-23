@@ -9,7 +9,7 @@ namespace System\User
 		);
 
 		static protected $has_many = array(
-			"users"  => array("model" => '\System\User', "join-table" => 'user_group_assignment'),
+			"users"  => array("model" => '\System\User'),
 			"rights" => array("model" => '\System\User\Perm'),
 		);
 	}
