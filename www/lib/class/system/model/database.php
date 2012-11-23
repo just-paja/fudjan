@@ -114,7 +114,7 @@ namespace System\Model
 						}
 					}
 
-					\System\Cache::set('basicmodel-merge-attrs-'.$model, $attrs_to_merge);
+					\System\Cache::store('basicmodel-merge-attrs-'.$model, $attrs_to_merge);
 				}
 
 				if (!isset(self::$merged_attrs[$model])) {
