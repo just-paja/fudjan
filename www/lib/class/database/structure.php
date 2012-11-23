@@ -53,7 +53,11 @@ namespace Database
 		}
 
 
-=======
->>>>>>> Database sync
+		public static function sync_model($model)
+		{
+
+		}
+
+
 	}
 }
