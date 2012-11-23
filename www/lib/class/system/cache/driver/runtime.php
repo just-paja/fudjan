@@ -1,51 +1,38 @@
 <?
 
-namespace System\Cache
+namespace System\Cache\Driver
 {
-	abstract class Runtime implements CacheInterface
+	class Runtime implements \System\Cache\Ifce
 	{
-		private static $storage = array();
+		private $storage = array();
 
-
-		public static function setup($ttl = 0, $storage = null, $port = null) {
-			return null;
-		}
-
-
-		public static function fetch($path, &$var)
+		public function store($path, $value, $ttl)
 		{
-			return $var = self::get($path);
+			return $this->storage[$path] = $value;
 		}
 
 
-		public static function get($path)
+		public function fetch($path, &$var)
 		{
-			return isset(self::$storage[members_to_path($path)]) ? self::$storage[members_to_path($path)]:null;
+			return $var = $this->get($path);
 		}
 
 
-		public static function set($path, $value)
+		public function get($path)
 		{
-			return self::$storage[members_to_path($path)] = $value;
+			return isset($this->storage[$path]) ? $this->storage[$path]:null;
 		}
 
 
-		public static function release($path)
+		public function release($path)
 		{
-			unset(self::$storage[members_to_path($path)]);
+			unset($this->storage[$path]);
 		}
 
 
-		public static function flush()
+		public function flush()
 		{
-			self::$storage = array();
+			$this->storage = array();
 		}
-
-
-		public static function set_ttl($ttl) { }
-		public static function get_ttl() { }
-
-		public static function set_storage($host, $port = null) { }
-		public static function get_storage() { }
 	}
 }

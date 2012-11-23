@@ -8,45 +8,58 @@ namespace System
 
 		static private $driver;
 		static private $enabled;
+		static private $ready = false;
 		static private $ttl = self::TTL_DEFAULT;
+
 
 		public static function init()
 		{
-			if (self::$enabled = cfg('cache', 'memory-cache-enabled'))
+			if (self::$enabled = cfg('cache', 'memory', 'enabled'))
 			{
-				try {
-					self::setup_driver();
-				} catch (\Exception $e) {
-					throw new \CacheException('Could not setup cache driver \''.$driver.'\'. Check your app settings', cfg('cache'));
-				}
+				if (class_exists(self::get_cfg_driver())) {
+					self::$ready = self::setup_driver();
+				} else throw new \CacheException('Cache driver does not exist. Check your app settings', cfg('cache', 'memory'));
+			} else {
+				self::$ready = true;
 			}
 		}
 
 
 		public static function __callStatic($method, $args)
 		{
-			if (self::$enabled) {
-				if (!self::ready()) {
-					self::init();
-				}
-
-				if (method_exists(array(self::get_driver(), $method))) {
-					return self::get_driver()->$method($args);
-				}
+			if (self::is_ready()) {
+				if (method_exists(self::get_driver(), $method)) {
+					return self::get_driver()->$method(def($args[0], null), def($args[1], null), def($args[2], null));
+				} else throw new \CacheException(sprintf('Cache driver method does not exist: %s', $method));
 			}
 		}
 
 
-		private static function setup_driver($name, array $cfg)
+		public static function fetch($path, &$var)
+		{
+			if (self::is_ready()) {
+				return self::get_driver()->fetch($path, $var);
+			}
+		}
+
+
+		public static function is_ready()
+		{
+			return self::$ready;
+		}
+
+
+		private static function setup_driver()
 		{
 			$drv_name = self::get_cfg_driver();
 			self::$driver = new $drv_name();
+			return true;
 		}
 
 
 		public static function get_cfg_driver()
 		{
-			return self::$driver = "System\\Cache\\Driver\\".ucfirst(cfg('cache', 'memory-cache-driver'));
+			return self::$driver = "\\System\\Cache\\Driver\\".ucfirst(cfg('cache', 'memory', 'driver'));
 		}
 
 
