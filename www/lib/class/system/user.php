@@ -19,7 +19,7 @@ namespace System
 		);
 
 		static protected $has_many = array(
-			"groups" => array("model" => '\System\User\Group', "join-table" => 'user_group_assignment'),
+			"groups" => array("model" => '\System\User\Group', "is_master" => true),
 			"contacts" => array("model" => '\System\User\Contact')
 		);
 
