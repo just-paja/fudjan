@@ -5,11 +5,12 @@ namespace System\User\Setup
 	class Variable extends \System\Model\Database
 	{
 		protected static $attrs = array(
-			"int"      => array('id_user_setup_category'),
-			"string"   => array('name', 'type'),
-			"json"     => array('options'),
-			"datetime" => array('created_at', 'updated_at'),
-			"bool"     => array('use_select', 'use_multi'),
+			"id_user_setup_category" => array('int', "is_unsigned" => true),
+			"name"       => array('varchar'),
+			"type"       => array('varchar'),
+			"options"    => array('json'),
+			"use_select" => array('bool'),
+			"use_multi"  => array('bool'),
 		);
 
 		protected static $belongs_to = array(

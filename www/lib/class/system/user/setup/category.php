@@ -5,9 +5,8 @@ namespace System\User\Setup
 	class Category extends \System\Model\Database
 	{
 		protected static $attrs = array(
-			"int"      => array('order'),
-			"string"   => array('name'),
-			"datetime" => array('created_at', 'updated_at'),
+			"order" => array('int'),
+			"name"  => array('varchar'),
 		);
 
 

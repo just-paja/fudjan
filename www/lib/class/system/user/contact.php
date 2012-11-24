@@ -4,12 +4,13 @@ namespace System\User
 {
 	class Contact extends \System\Model\Database
 	{
-		static protected $required = array('ident');
 		static protected $attrs = array(
-			"int"    => array('id_user', 'id_contact_type'),
-			"string" => array('name', 'ident'),
-			"bool"   => array('visible', 'deleted'),
-			"datetime" => array('created_at', 'updated_at'),
+			"id_user"         => array('int', "is_unsigned" => true),
+			"id_contact_type" => array('int', "is_unsigned" => true),
+			"name"            => array('varchar'),
+			"ident"           => array('varchar'),
+			"visible"         => array('bool'),
+			"deleted"         => array('bool'),
 		);
 
 		static protected $belongs_to = array(

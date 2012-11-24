@@ -4,6 +4,13 @@ namespace Database\Mysqli
 {
 	class Column
 	{
+		private static $complex_types = array(
+			"image"    => array("type" => 'text'),
+			"json"     => array("type" => 'text'),
+			"password" => array("type" => 'varchar'),
+			"bool"     => array("type" => 'tinyint', "length" => 1),
+		);
+
 		private $table;
 		private $name;
 		private $renamed = false;
@@ -13,6 +20,7 @@ namespace Database\Mysqli
 			'length',
 			'is_null',
 			'is_unique',
+			'is_primary',
 			'is_unsigned',
 			'is_autoincrement',
 			'key',
@@ -49,6 +57,7 @@ namespace Database\Mysqli
 					strpos($cfg['Key'], 'UNI') !== false ||
 					strpos($cfg['Key'], 'PRI') !== false
 				);
+				$this->attrs['is_primary']  = strpos($cfg['Key'], 'PRI') !== false;
 				$this->attrs['is_null']     = strtolower($cfg['Null']) === 'Yes';
 				$this->attrs['key']         = $cfg['Key'];
 				$this->attrs['default']     = $cfg['Default'];
@@ -96,11 +105,27 @@ namespace Database\Mysqli
 
 		public function set_cfg(array $cfg)
 		{
+			foreach (self::$complex_types as $type=>$db_type) {
+				if ($cfg['type'] == $type) {
+					foreach ($db_type as $key=>$value) {
+						$cfg[$key] = $value;
+					}
+				}
+			}
+
 			foreach ($cfg as $key=>$c)
 			{
 				if (in_array($key, $this->attr_names)) {
 					$this->attrs[$key] = $c;
 				}
+			}
+
+			if ($this->attrs['type'] == 'varchar' && !isset($this->attrs['length'])) {
+				$this->attrs['length'] = 255;
+			}
+
+			if ($this->attrs['type'] == 'text' && !isset($this->attrs['length'])) {
+				$this->attrs['length'] = 65535;
 			}
 		}
 
@@ -146,17 +171,33 @@ namespace Database\Mysqli
 
 				if ($exists || $this->renamed) {
 					$front = 'CHANGE `'.$this->default['name'].'` `'.$this->name.'`';
-				} else {
+				} elseif ($this->table()->exists()) {
 					$front = 'ADD `'.$this->name.'`';
+				} else {
+					$front = '`'.$this->name.'`';
+				}
+
+				if (isset($this->attrs['default'])) {
+					$defval = $this->attrs['default'];
+
+					if (strpos($this->attrs['type'], 'int')) {
+						$defval = intval($defval);
+					}
+
+					if ($defval != 'NOW()' && !is_numeric($defval)) {
+						$defval = "'".$defval."'";
+					}
 				}
 
 				$sq = implode(' ', array(
 					$front,
 					$this->attrs['type'].(any($this->attrs['length']) ? '('.$this->attrs['length'].')':''),
 					any($this->attrs['is_unsigned']) ? 'unsigned':'',
-					any($this->attrs['is_null']) ? 'NULL':'NOT NULL',
+					any($this->attrs['is_null']) && !isset($this->attrs['default']) ? 'NULL':'NOT NULL',
+					isset($this->attrs['default']) ? 'DEFAULT '.$defval.'':'',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
-					any($this->attrs['is_unique']) ? 'UNIQUE':'',
+					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) && empty($this->default['is_unique']) ? 'UNIQUE':'',
+					any($this->attrs['is_primary']) && empty($this->default['is_primary']) ? 'PRIMARY KEY':'',
 					any($this->attrs['comment']) ? " COMMENT '".$this->attrs['comment']."'":'',
 				));
 

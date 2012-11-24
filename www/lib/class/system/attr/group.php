@@ -4,16 +4,11 @@ namespace System\Attr
 {
 	class Group extends \System\Model\Database
 	{
-
-		static protected $id_col = 'id_attr_group';
-		static protected $table = 'attr-group';
-		static protected $required_attrs = array('name', 'id_attr_set');
-
 		static protected $attrs = array(
-			"int"      => array('id_attr_set', 'order'),
-			"string"   => array('name'),
-			"bool"     => array('visible'),
-			"datetime" => array('created_at','updated_at')
+			"id_attr_set" => array('int', "is_unsigned" => true),
+			"order"       => array('int', "is_unsigned" => true),
+			"name"        => array('varchar'),
+			"visible"     => array('bool', "default" => false),
 		);
 
 		static protected $belongs_to = array(

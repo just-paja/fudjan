@@ -4,14 +4,17 @@ namespace System\Mailer
 {
 	class Body extends \System\Model\Database
 	{
-		static protected $id_col = 'id_mailer_body';
-		static protected $table  = 'mailer-body';
-		static protected $required_attrs = array('type');
 		static protected $attrs = array(
-			"int"      => array('id_mailer'),
-			"string"   => array('type', 'subject', 'rcpt', 'from', 'reply_to', 'cc', 'bcc', 'template_name'),
-			"bool"     => array('visible'),
-			"datetime" => array('created_at', 'updated_at'),
+			"id_mailer" => array('int', "is_unsigned" => true),
+			"type"      => array('varchar'),
+			"subject"   => array('varchar'),
+			"rcpt"      => array('varchar'),
+			"from"      => array('varchar'),
+			"reply_to"  => array('varchar'),
+			"cc"        => array('varchar'),
+			"bcc"       => array('varchar'),
+			"template_name"  => array('varchar'),
+			"visible"   => array('bool'),
 		);
 
 		static protected $belongs_to = array(

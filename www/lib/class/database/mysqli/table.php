@@ -14,7 +14,10 @@ namespace Database\Mysqli
 		{
 			$this->name = $name;
 			$this->db = $db;
-			$this->load_columns();
+
+			if ($this->exists()) {
+				$this->load_columns();
+			}
 		}
 
 
@@ -48,17 +51,25 @@ namespace Database\Mysqli
 
 		public function get_column($name)
 		{
-			if (isset($this->columns[$name])) {
+			if ($this->has_column($name)) {
 				return $this->columns[$name];
 			} else throw new \DatabaseException(sprintf("Column '%s' does not exist in table '%s'", $name, $this->name));
+		}
+
+
+		public function has_column($name)
+		{
+			return isset($this->columns[$name]);
 		}
 
 
 		public function add_column($name, $cfg)
 		{
 			$col = new Column($this, $name);
+
 			if (!$col->exists()) {
 				$col->set_cfg($cfg);
+				$this->columns[$name] = $col;
 				return $col;
 			} else throw new \DatabaseException(sprintf("Column '%s' already exists in table '%s'", $name, $this->name));
 		}
@@ -87,16 +98,30 @@ namespace Database\Mysqli
 			if ($this->exists()) {
 				$query = "ALTER TABLE `".$this->name."`";
 			} else {
-				$query = "CREATE TABLE `".$this->name."`";
+				$query = "CREATE TABLE `".$this->name."` (";
 			}
 
-			return $query."\n\t".implode(",\n\t", $sq).",\n\tCOMMENT='".$this->comment."'\n;";
+			$query .= "\n\t".implode(",\n\t", $sq);
+
+			if ($this->exists()) {
+				$query .= ",\n\tCOMMENT='".$this->comment."'\n;";
+			} else {
+				$query .= "\n\t) COMMENT='".$this->comment."'\n;";
+			}
+
+			return $query;
 		}
 
 
 		public function save()
 		{
 			return $this->db()->query($this->get_save_query());
+		}
+
+
+		public function add_attr(\Database\Attr $attr)
+		{
+			return $this->add_column($attr->name, $attr->get_data());
 		}
 	}
 }

@@ -195,6 +195,14 @@ namespace System\Model
 		}
 
 
+		/** Gets definition of model attributes
+		 */
+		public static function get_attr_def($model)
+		{
+			return $model::$attrs;
+		}
+
+
 		/** Get type of attribute
 		 * @param string $model Name of model class
 		 * @param string $attr  Name of attribute

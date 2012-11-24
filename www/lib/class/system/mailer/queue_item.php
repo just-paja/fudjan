@@ -5,13 +5,14 @@ namespace System\Mailer
 	class QueueItem extends \System\Model\Database
 	{
 
-		static protected $id_col = 'id_mailer_queue_item';
-		static protected $table  = 'mailer-queue';
-		static protected $required_attrs = array('id_mailer', 'id_mailer_body', 'id_user_invoker', 'headers', 'body');
 		static protected $attrs = array(
-			"int"      => array('id_mailer', 'id_mailer_body', 'id_user_invoker'),
-			"string"   => array('headers', 'body', 'status', 'return_message'),
-			"datetime" => array('created_at', 'updated_at'),
+			"id_mailer"       => array('int', "id_unsigned" => true),
+			"id_mailer_body"  => array('int', "id_unsigned" => true),
+			"id_user_invoker" => array('int', "id_unsigned" => true),
+			"headers"         => array('text'),
+			"body"            => array('text'),
+			"status"          => array('varchar'),
+			"return_message"  => array('varchar'),
 		);
 
 

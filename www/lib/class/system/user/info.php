@@ -4,12 +4,12 @@ namespace System\User
 {
 	class Info extends \System\Model\Database
 	{
-		static protected $required = array('content');
 		static protected $attrs = array(
-			"int"    => array('id_user', 'id_info_type'),
-			"string" => array('content'),
-			"bool"   => array('visible', 'deleted'),
-			"datetime" => array('created_at', 'updated_at'),
+			"id_system_user"      => array('int', "is_unsigned" => true),
+			"id_info_type" => array('int', "is_unsigned" => true),
+			"content"      => array('varchar'),
+			"visible"      => array('bool'),
+			"deleted"      => array('bool'),
 		);
 
 		static protected $belongs_to = array(

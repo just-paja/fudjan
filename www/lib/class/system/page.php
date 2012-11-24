@@ -209,7 +209,7 @@ namespace System
 		 */
 		public static function get_path()
 		{
-			return '/'.implode('/', self::$path).'/';
+			return '/'.implode('/', self::$path).(count(self::$path) > 0 ? '/':'');
 		}
 
 

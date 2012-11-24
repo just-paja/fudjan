@@ -6,14 +6,14 @@ namespace System
 	{
 		static protected $required = array('login');
 		static protected $attrs = array(
-			"login"       => array('varchar', "unique" => true),
+			"login"       => array('varchar', "is_unique" => true),
 			"nick"        => array('varchar'),
 			"first_name"  => array('varchar'),
 			"last_name"   => array('varchar'),
 			"text"        => array('text'),
 			"password"    => array('password'),
 			"avatar"      => array('image'),
-			"last_login"  => array('datetime', "default" => 'NOW()'),
+			"last_login"  => array('datetime', "default" => 0),
 			"com_email"   => array('bool', "default" => true),
 			"com_sms"     => array('bool', "default" => false),
 		);
@@ -147,7 +147,7 @@ namespace System
 				$this->rights = get_all("\System\User\Perm")
 					->where($conds, "t0", true)
 					->reset_cols()
-					->add_cols(array("trigger", "type", "id_user_perm"), "t0")
+					->add_cols(array("trigger", "type", "id_system_user_perm"), "t0")
 					->assoc_with('')
 					->fetch('trigger', 'id_user_perm');
 			}

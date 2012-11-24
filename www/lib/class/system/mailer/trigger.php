@@ -4,14 +4,12 @@ namespace System\Mailer
 {
 	class Trigger extends \System\Model\Database
 	{
-		static protected $id_col = 'id_mailer_trigger';
-		static protected $table  = 'mailer_trigger';
-		static protected $required_attrs = array('name', 'trigger_name');
 		static protected $attrs = array(
-			"int"      => array('used'),
-			"string"   => array('name', 'trigger_name'),
-			"bool"     => array('used', 'deleted'),
-			"datetime" => array('created_at', 'updated_at'),
+			"used"         => array('int'),
+			"name"         => array('varchar'),
+			"trigger_name" => array('varchar'),
+			"used"         => array('bool'),
+			"deleted"      => array('bool'),
 		);
 
 		static protected $belongs_to = array(

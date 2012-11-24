@@ -644,7 +644,7 @@
 
 		public static function sync_relations()
 		{
-			out('Syncing contents is not implemented yet');
+			out('Syncing foreign keys is not implemented yet');
 		}
 	}
 

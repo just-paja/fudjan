@@ -233,6 +233,12 @@ namespace System
 				}
 			}
 
+			if (in_array($attrs['type'], array('checkbox', 'radio'))) {
+				if ($this->submited) {
+					$attrs['checked'] = $this->data_commited[$attrs['name']];
+				}
+			}
+
 			return $this->rendering['group']->add_element(new \System\Form\Input($attrs));
 		}
 
