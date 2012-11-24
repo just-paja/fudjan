@@ -22,10 +22,13 @@ namespace Database
 		);
 
 		protected static $allowed_types = array(
-			'bool', 'int', 'float', 'varchar', 'text', 'password', 'image', 'datetime'
+			'bool', 'int', 'float', 'varchar', 'text', 'password', 'image', 'datetime', 'json',
 		);
 
 
+		/** Get all attributes from model name
+		 * @param string $model
+		 */
 		public static function get_from_model($model)
 		{
 			$result = array();
@@ -53,10 +56,18 @@ namespace Database
 		}
 
 
+		/** Create attr instance from definition
+		 * @param string $name
+		 * @param array  $definition
+		 */
 		public static function from_def($name, array $def)
 		{
 			if (isset($def[0])) {
 				$def['type'] = $def[0];
+			}
+
+			if (!in_array($def['type'], self::$allowed_types)) {
+				throw new \WtfException(sprintf("Unknown attribute type: %s", $def['type']));
 			}
 
 			$def['name'] = $name;
