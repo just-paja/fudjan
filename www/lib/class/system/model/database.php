@@ -531,5 +531,20 @@ namespace System\Model
 
 			return $child_classes;
 		}
+
+
+		public static function get_relation_def($model)
+		{
+			$relations = array();
+
+			if (isset($model::$has_many)) {
+				foreach ($model::$has_many as $rel_name => $rel_def) {
+					$rel_def['type'] = 'has_many';
+					$relations[$rel_name] = $rel_def;
+				}
+			}
+
+			return $relations;
+		}
 	}
 }
