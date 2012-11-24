@@ -11,7 +11,7 @@ namespace System\User\Setup
 
 
 		protected static $has_many = array(
-			"vars" => array("model" => '\Core\User\Setup\Variable')
+			"vars" => array("model" => '\System\User\Setup\Variable')
 		);
 	}
 }

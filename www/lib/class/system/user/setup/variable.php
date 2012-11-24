@@ -14,7 +14,7 @@ namespace System\User\Setup
 		);
 
 		protected static $belongs_to = array(
-			"category" => array("model" => '\Core\User\Setup\Category'),
+			"category" => array("model" => '\System\User\Setup\Category'),
 		);
 
 		private static $allowed_types = array();

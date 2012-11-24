@@ -13,11 +13,11 @@ namespace System\Mailer
 		);
 
 		static protected $belongs_to = array(
-			"mailer" => array("model" => '\Core\Mailer'),
+			"mailer" => array("model" => '\System\Mailer'),
 		);
 
 		static protected $has_many = array(
-			"bodies" => array("model" => '\Core\Mailer\Body'),
+			"bodies" => array("model" => '\System\Mailer\Body'),
 		);
 
 

@@ -12,8 +12,8 @@ namespace System\User
 
 
 		protected static $belongs_to = array(
-			"owner" => array("model" => '\Core\User'),
-			"var"   => array("model" => '\Core\User\Setup\Variable', "cols" => array('name'), "merge-model" => true),
+			"owner" => array("model" => '\System\User'),
+			"var"   => array("model" => '\System\User\Setup\Variable', "cols" => array('name'), "merge-model" => true),
 		);
 
 

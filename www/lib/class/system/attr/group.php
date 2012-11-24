@@ -2,7 +2,7 @@
 
 namespace System\Attr
 {
-	class Group extends \System\Model\Database
+	class Group
 	{
 		static protected $attrs = array(
 			"id_attr_set" => array('int', "is_unsigned" => true),
@@ -12,11 +12,11 @@ namespace System\Attr
 		);
 
 		static protected $belongs_to = array(
-			"set" => array("model" => '\Core\Attr\Set'),
+			"set" => array("model" => '\System\Attr\Set'),
 		);
 
 		static protected $has_many = array(
-			"ext_attrs" => array("model" => '\Core\Attr'),
+			"ext_attrs" => array("model" => '\System\Attr'),
 		);
 
 

@@ -2,7 +2,7 @@
 
 namespace System\Attr
 {
-	class Set extends \System\Model\Database
+	class Set
 	{
 		static protected $attrs = array(
 			"id_attr_set"  => array('int', "is_unsigned" => true),
@@ -13,8 +13,8 @@ namespace System\Attr
 		);
 
 		static protected $has_many = array(
-			"attrs" => array("model" => '\Core\Attr'),
-			"groups" => array("model" => '\Core\Attr\Group'),
+			"attrs" => array("model" => '\System\Attr'),
+			"groups" => array("model" => '\System\Attr\Group'),
 		);
 
 		function count_attrs()

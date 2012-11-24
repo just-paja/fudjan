@@ -18,11 +18,11 @@ namespace System\Mailer
 		);
 
 		static protected $belongs_to = array(
-			"mailer" => array("model" => '\Core\Mailer'),
+			"mailer" => array("model" => '\System\Mailer'),
 		);
 
 		static protected $has_many = array(
-			"queued_items" => array("model" => '\Core\Mailer\QueueItem'),
+			"queued_items" => array("model" => '\System\Mailer\QueueItem'),
 		);
 
 

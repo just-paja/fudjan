@@ -17,8 +17,8 @@ namespace System\Mailer
 
 
 		static protected $belongs_to = array(
-			"mailer" => array("model" => '\Core\Mailer'),
-			"template_body"   => array("model" => '\Core\Mailer\Body', "cols" => array('type'), "merge-model" => true),
+			"mailer" => array("model" => '\System\Mailer'),
+			"template_body"   => array("model" => '\System\Mailer\Body', "cols" => array('type'), "merge-model" => true),
 		);
 
 
