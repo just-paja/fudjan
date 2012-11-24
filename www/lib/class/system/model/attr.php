@@ -220,6 +220,10 @@ namespace System\Model
 		}
 
 
+		/** Get attr definition
+		 * @param string $model
+		 * @param string $attribute
+		 */
 		protected static function get_attr($model, $attr)
 		{
 			$attr_data = &$model::$attrs[$attr];
