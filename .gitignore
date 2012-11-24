@@ -4,3 +4,4 @@ www/etc/current/*
 www/var/*
 www/.htaccess
 www/etc/install.lock
+www/lib/include/devel.php
