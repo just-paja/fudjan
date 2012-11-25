@@ -43,7 +43,7 @@ namespace System
 		protected function construct()
 		{
 			!$this->method && $this->method = 'post';
-			!$this->action && $this->action = \System\Page::get_path();
+			!$this->action && $this->action = \System\Input::get('path');
 			!$this->id     && $this->id = self::get_generic_id();
 			!$this->anchor && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
 
