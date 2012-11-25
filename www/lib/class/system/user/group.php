@@ -9,7 +9,7 @@ namespace System\User
 		);
 
 		static protected $has_many = array(
-			"users"  => array("model" => '\System\User'),
+			"users"  => array("model" => '\System\User', "is_bilinear" => true),
 			"rights" => array("model" => '\System\User\Perm'),
 		);
 	}

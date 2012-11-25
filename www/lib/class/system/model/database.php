@@ -286,13 +286,14 @@ namespace System\Model
 					$rel_attrs = $model::$has_many[$rel];
 					$helper = get_all($rel_attrs['model'], array(), array());
 
-					if (!empty($rel_attrs['join-table']) || $rel_attrs['join-table'] = self::get_table($rel_attrs['model'])) {
-						$helper->join($rel_attrs['join-table'], "USING(".$rel_attrs['model']::$id_col.")", $join_alias);
+					if (any($rel_attrs['is_bilinear'])) {
+						$table_name = self::get_bilinear_table_name($model, $rel_attrs);
+						$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
 					}
 
 					self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
 
-					$helper->where(array("`".$join_alias."`.`".$model::$id_col."` = ". intval($this->id)));
+					$helper->where(array("`".$join_alias."`.`".self::get_id_col($model)."` = ". intval($this->id)));
 					$helper->assoc_with($rel_attrs['model']);
 
 					$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
@@ -301,7 +302,7 @@ namespace System\Model
 				} elseif ($type == 'has-one') {
 
 					$rel_attrs = $model::$has_one[$rel];
-					$idc = $model::$id_col;
+					$idc = self::get_id_col($model);
 					if (any($rel_attrs['foreign-key'])) {
 						$conds = array($rel_attrs['foreign-key'] => $this->id);
 					} else {
@@ -317,8 +318,8 @@ namespace System\Model
 				} elseif ($type == 'belongs-to') {
 
 					$rel_attrs = $model::$belongs_to[$rel];
-					$idl = isset($rel_attrs['local-key']) ? $rel_attrs['local-key']:$rel_attrs["model"]::$id_col;
-					$idc = isset($rel_attrs['foreign-key']) ? $rel_attrs['foreign-key']:$rel_attrs["model"]::$id_col;
+					$idl = isset($rel_attrs['local-key']) ? $rel_attrs['local-key']:self::get_id_col($rel_attrs["model"]);
+					$idc = isset($rel_attrs['foreign-key']) ? $rel_attrs['foreign-key']:self::get_id_col($rel_attrs["model"]);
 					$conds = array($idc => $this->$idl);
 
 					if (any($rel_attrs['conds'])) {
@@ -332,6 +333,23 @@ namespace System\Model
 			}
 
 			return $this->$rel;
+		}
+
+
+
+		public static function get_bilinear_table_name($model, array $rel_attrs)
+		{
+			$name = array();
+
+			if (any($rel_attrs['is_master'])) {
+				$name['master'] = \System\Model\Database::get_table($model);
+				$name['slave']  = \System\Model\Database::get_table($rel_attrs['model']);
+			} else {
+				$name['master'] = \System\Model\Database::get_table($rel_attrs['model']);
+				$name['slave']  = \System\Model\Database::get_table($model);
+			}
+
+			return implode('_has_', $name);
 		}
 
 

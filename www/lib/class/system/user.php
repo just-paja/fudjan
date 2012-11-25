@@ -18,7 +18,7 @@ namespace System
 		);
 
 		static protected $has_many = array(
-			"groups" => array("model" => '\System\User\Group', "is_master" => true),
+			"groups" => array("model" => '\System\User\Group', "is_bilinear" => true, "is_master" => true),
 			"contacts" => array("model" => '\System\User\Contact')
 		);
 
