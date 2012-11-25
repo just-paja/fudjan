@@ -93,12 +93,7 @@ namespace System
 					$sql .= implode(',', $rows);
 				}
 
-				try {
-					$res = $db->query($sql);
-				} catch (\Exception $e) {
-					throw new \DatabaseException(l('Could not insert data, query is below.'), $sql);
-				}
-
+				$res = $db->query($sql);
 				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
 			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
@@ -135,12 +130,7 @@ namespace System
 				self::$queries ++;
 				$result = '';
 
-				try {
-					$result = $db->query($sql);
-				} catch (\Exception $e) {
-					throw new \DatabaseException(l('Could not update data, query is below.'), $sql);
-				}
-
+				throw new \DatabaseException(l('Could not update data, query is below.'), $sql);
 				return $result;
 			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
 		}
