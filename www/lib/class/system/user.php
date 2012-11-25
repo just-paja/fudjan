@@ -113,23 +113,6 @@ namespace System
 		}
 
 
-		/** Update users system groups
-		 * @param array $groups Set of groups (System\User\Group)
-		 */
-		public function assign_groups(array $groups)
-		{
-			$actual = collect_ids($this->groups->fetch());
-			$del = array_diff($actual, $groups);
-			$add = array_diff($groups, $actual);
-
-			any($del) && Query::simple_delete("user_group_assignment", array("id_user_group IN (".implode(',', array_map('intval', $del)).")"));
-
-			foreach ($add as $gid) {
-				Query::simple_insert("user_group_assignment", array("id_user" => $this->id, "id_user_group" => $gid), false);
-			}
-		}
-
-
 		/** Get all users permissions
 		 * @returns array Set of permissions (System\User\Perm)
 		 */
@@ -140,7 +123,7 @@ namespace System
 				$ids = collect_ids($this->groups->fetch());
 
 				if (any($ids)) {
-					$conds[] = "id_user_group IN (".implode(',', $ids).")";
+					$conds[] = "id_system_user_group IN (".implode(',', $ids).")";
 				}
 
 				$this->rights = get_all("\System\User\Perm")
