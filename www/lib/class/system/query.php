@@ -293,11 +293,7 @@ namespace System
 
 				//dump($sql);
 				self::$queries ++;
-				try {
-					return $get_query ? $sql:Database::query($sql);
-				} catch (\Exception $e) {
-					throw new \DatabaseException('Database insert has failed.', $e->getMessage(), $sql);
-				}
+				return $get_query ? $sql:Database::query($sql);
 			} else {
 				return false;
 			}
@@ -308,14 +304,10 @@ namespace System
 		{
 			$this->prepare('delete');
 			self::$queries ++;
-			try {
-				return Database::query($sql =
-					"DELETE FROM ".implode(',', (array) $this->parsed['tables']).
-					"\nWHERE ".implode(' AND ', $this->conds)
-				);
-			} catch (\Exception $e) {
-				throw new \DatabaseException('Database deletion has failed', $e->getMessage(), $sql);
-			}
+			return Database::query($sql =
+				"DELETE FROM ".implode(',', (array) $this->parsed['tables']).
+				"\nWHERE ".implode(' AND ', $this->conds)
+			);
 		}
 
 

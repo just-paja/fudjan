@@ -130,7 +130,7 @@ namespace System
 				self::$queries ++;
 				$result = '';
 
-				throw new \DatabaseException(l('Could not update data, query is below.'), $sql);
+				self::get_db($db_ident)->query($sql);
 				return $result;
 			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
 		}
