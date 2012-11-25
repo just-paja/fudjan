@@ -223,7 +223,7 @@ namespace System\Model
 				return $this;
 			}
 
-			if ($name == 'id' || $name == ($idc = self::get_id_col(get_class($this)))) {
+			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
 				$this->data[$idc] = intval($value);
 			}
 
@@ -247,8 +247,8 @@ namespace System\Model
 					return self::__get($attr);
 				}
 
-				if ($attr == 'id' || $attr == ($idc = self::get_id_col(get_class($this)))) {
-					return $this->data[$idc];
+				if ($attr == 'id' || $attr == self::get_id_col(get_class($this))) {
+					return $this->data[self::get_id_col(get_class($this)];
 				}
 
 				return parent::__get($attr);
