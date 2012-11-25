@@ -223,6 +223,10 @@ namespace System\Model
 				return $this;
 			}
 
+			if ($name == 'id' || $name == ($idc = self::get_id_col(get_class($model)))) {
+				$this->data[$idc] = intval($value);
+			}
+
 			return parent::__set($name, $value);
 		}
 
@@ -241,6 +245,10 @@ namespace System\Model
 				if ($attr == 'author' && isset($model::$attrs['int']) && in_array('id_author', $model::$attrs['int'])) {
 					$model::$belongs_to['author'] = array("model" => '\System\User', "local-key" => 'id_author');
 					return self::__get($attr);
+				}
+
+				if ($name == 'id' || $name == ($idc = self::get_id_col(get_class($model)))) {
+					return $this->data[$idc];
 				}
 
 				return parent::__get($attr);
