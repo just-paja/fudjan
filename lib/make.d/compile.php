@@ -18,7 +18,7 @@ $result = Compiler::process('compile.classes', $msg, array(), function($make, $d
 	$used = $minified = array(
 		WORKING_DIR_CLASSES.'/model/attr.php',
 		WORKING_DIR_CLASSES.'/model/callback.php',
-		WORKING_DIR_CLASSES.'/model/basic.php',
+		WORKING_DIR_CLASSES.'/model/database.php',
 	);
 	$dirs = array();
 
