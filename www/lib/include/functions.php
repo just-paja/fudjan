@@ -38,7 +38,7 @@ function clear_url($url, $mode=null)
 {
 	if(!is_array($url)) $url = explode('/', $url);
 	//$url = array_filter($url);
-//	if(!$mode) array_unshift($url, null); 
+//	if(!$mode) array_unshift($url, null);
 	return implode('/', $url);
 }
 
@@ -120,7 +120,7 @@ function gen_random_string($length = 64)
  *                     Examples
  *                       array('attr', 'id')
  *                       array('this', 'get_seoname')
- * 
+ *
  * @param  array $array      Set of objects or arrays
  * @param  bool  $dont_assoc Return indexed array
  * @return array Set of elements
@@ -235,7 +235,7 @@ function stprintf($str, array $data = array(), $strict = true, $prefix = null)
 
 	$keys = array('\{', '\}');
 	$vals = array('', '');
-	
+
 	foreach($data as $k => $v) {
 		if ($v instanceof DateTime) {
 			$v = format_date($v, 'human');
@@ -264,7 +264,7 @@ function soprintf($str, System\Model\Attr $object, $strict = true, $prefix = nul
 {
 	$data = array_merge($object->get_opts(), $object->get_data());
 
-	if (!$object->attr_exists('seoname')) {
+	if (!$object->has_attr('seoname')) {
 		$data['seoname'] = $object->get_seoname();
 	}
 
