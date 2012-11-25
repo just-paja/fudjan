@@ -116,7 +116,7 @@ namespace System\Model
 								$attr_def = $jmodel::$attrs;
 							}
 
-							$attrs_to_merge[] = array(self::get_table($jmodel), "USING(".($jmodel::$id_col).")", 'extension_'.$k, $attr_def);
+							$attrs_to_merge[] = array(self::get_table($jmodel), "USING(".(self::get_id_col($jmodel)).")", 'extension_'.$k, $attr_def);
 						}
 					}
 
@@ -417,11 +417,11 @@ namespace System\Model
 				self::prepare_data($model, $data);
 
 				if ($this->id) {
-					\System\Database::simple_update(self::get_table($model), $model::$id_col, $this->id, $data);
+					\System\Database::simple_update(self::get_table($model), self::get_id_col($model), $this->id, $data);
 				} else {
 					$id = \System\Database::simple_insert(self::get_table($model), $data);
 					if ($id) {
-						return $this->update_attrs(array($model::$id_col => $id));
+						return $this->update_attrs(array(self::get_id_col($model) => $id));
 					} else {
 						$this->errors[] = 'save-failed';
 					}
@@ -457,7 +457,7 @@ namespace System\Model
 		public function drop()
 		{
 			$model = get_class($this);
-			return \System\Query::simple_delete(self::get_table($model), array($model::$id_col => $this->id));
+			return \System\Query::simple_delete(self::get_table($model), array(self::get_id_col($model) => $this->id));
 		}
 
 
@@ -495,7 +495,7 @@ namespace System\Model
 		{
 			$model = get_class($this);
 			if ($this->id) {
-				$this->update_attrs(get_first($model, array($model::$id_col => $this->id))->assoc_with_no_model()->fetch());
+				$this->update_attrs(get_first($model, array(self::get_id_col($model) => $this->id))->assoc_with_no_model()->fetch());
 			}
 
 			return $this;
