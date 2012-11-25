@@ -6,6 +6,6 @@
 		"json":"application/json",
 		"txt":"text/plain"
 	},
-	"format_default":"xhtml",
+	"format_default":"html",
 	"meta_tags":["description", "keywords", "author", "copyright", "robots"]
 }
