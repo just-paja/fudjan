@@ -247,7 +247,7 @@ namespace System\Model
 					return self::__get($attr);
 				}
 
-				if ($name == 'id' || $name == ($idc = self::get_id_col(get_class($this)))) {
+				if ($attr == 'id' || $attr == ($idc = self::get_id_col(get_class($this)))) {
 					return $this->data[$idc];
 				}
 
