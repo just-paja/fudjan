@@ -26,11 +26,11 @@ namespace System
 		public function __get($attr)
 		{
 			if ($attr == 'width' || $attr == 'height') {
-				!($this->data[$attr]) && $this->read_dimensions();
+				empty($this->data[$attr]) && $this->read_dimensions();
 			}
-			
+
 			if ($attr == 'file_size') {
-				!($this->data['file_size']) && ($this->file_size = filesize($this->get_path(true)));
+				empty($this->data['file_size']) && ($this->file_size = filesize($this->get_path(true)));
 			}
 
 			return parent::__get($attr);
@@ -39,10 +39,11 @@ namespace System
 
 		private function read_dimensions()
 		{
-			$info = self::get_image_size($this->get_path(true));
-			$this->width  = $info[0];
-			$this->height = $info[1];
-			$this->format = $info[2];
+			if (($info = self::get_image_size($this->get_path(true))) !== false && $info[0] !== false) {
+				$this->width  = $info[0];
+				$this->height = $info[1];
+				$this->format = $info[2];
+			}
 		}
 
 
@@ -308,11 +309,11 @@ namespace System
 		{
 			return $this->to_be_deleted;
 		}
-		
-		
+
+
 		public function get_path($with_root = false)
 		{
-			return $with_root ? 
+			return $with_root ?
 				($this->tmp ? $this->file_path:ROOT.$this->file_path):
 				(strpos($this->file_path, ROOT) === 0 ?
 					substr($this->file_path, strlen(ROOT)):
@@ -344,7 +345,7 @@ namespace System
 					}
 				}
 			}
-			
+
 			return $this;
 		}
 	}
