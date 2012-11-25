@@ -68,12 +68,12 @@ namespace System\Model
 			if (is_array($ids) || ($ex = strpos($ids, ','))) {
 
 				$ex && $ids = explode(',', $ids);
-				$conds = array(Basic::get_id_col($model). " IN ('" .implode('\',\'', $ids)."')");
+				$conds = array(Database::get_id_col($model). " IN ('" .implode('\',\'', $ids)."')");
 				return self::get_all($model, $conds)->fetch();
 
 			} else {
 
-				$col = Basic::get_id_col($model);
+				$col = Database::get_id_col($model);
 				if (!is_numeric($ids)) {
 					if (self::model_attr_exists($model, 'seoname')) {
 						$col = 'seoname';
@@ -159,9 +159,9 @@ namespace System\Model
 				if ($set = Cache::get('extmodel-attr-set-'.$model)) {
 					$attrs = get_all("\Core\Attr", array("id_attr_set" => $set->id))->fetch();
 				} else {
-					$helper = Basic::get_all("\Core\Attr\Set", array("`object_class` = '".self::clear_model_name($model)."'"), array());
+					$helper = Database::get_all("\Core\Attr\Set", array("`object_class` = '".self::clear_model_name($model)."'"), array());
 					$helper->join('attr', "USING(id_attr_set)", 'ta');
-					$helper->add_cols(array_merge((array) Basic::get_id_col("\Core\Attr"), Basic::get_model_attrs("\Core\Attr")), 'ta');
+					$helper->add_cols(array_merge((array) Database::get_id_col("\Core\Attr"), Database::get_model_attrs("\Core\Attr")), 'ta');
 					$attrs = $helper->assoc_with("\Core\Attr")->fetch();
 				}
 
@@ -205,7 +205,7 @@ namespace System\Model
 			}
 
 			if (!Cache::fetch('groups-'.$model, $groups) && self::get_model_attr_set($model)) {
-				$groups = Cache::set('groups-'.$model, Basic::get_all("\Core\Attr\Group", array("id_attr_set" => self::get_model_attr_set($model)->id))->fetch());
+				$groups = Cache::set('groups-'.$model, Database::get_all("\Core\Attr\Group", array("id_attr_set" => self::get_model_attr_set($model)->id))->fetch());
 			} else {
 				$groups = array();
 			}
@@ -272,7 +272,7 @@ namespace System\Model
 
 				}
 
-				Basic::fix_datatypes(array($attr->seoname), $attr->type, $this->ext);
+				Database::fix_datatypes(array($attr->seoname), $attr->type, $this->ext);
 				unset($update[$attr->seoname]);
 			}
 

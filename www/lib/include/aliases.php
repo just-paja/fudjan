@@ -4,15 +4,15 @@
 function get_all($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\Model\Ext::get_all($model, $conds, $opts, $joins); }
 function get_first($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\Model\Ext::get_first($model, $conds, $opts, $joins); }
 function get_tree($model, array $conds = array(), array $opts = array()) { return System\NestedModel::get_tree($model, $conds, $opts); }
-function count_all($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\BasicModel::count_all($model, $conds, $opts, $joins); }
+function count_all($model, array $conds = array(), array $opts = array(), array $joins = array()) { return System\Model\Database::count_all($model, $conds, $opts, $joins); }
 function find($model, $ids = array(), $force_array = false) { return System\Model\Ext::find($model, $ids, $force_array); }
 function create($model, array $dataray) { $item = new $model($dataray); return $item->save(); }
-function quick_get_all($model) { return System\BasicModel::get_all($model, quick_conds($model)); }
-function quick_conds($model) { return System\BasicModel::get_quick_conds($model); }
+function quick_get_all($model) { return System\Model\Database::get_all($model, quick_conds($model)); }
+function quick_conds($model) { return System\Model\Database::get_quick_conds($model); }
 
 // Messages
 function message($status, $title, $message=null, $autohide=false, $links = array()) { $msg = new System\Message($status, $title, $message, $autohide, $links, false); return $msg->get_retval(); }
-function t_message($status, $title, $message=null, $autohide=false, $links = array()) { $msg = new System\Message($status, $title, $message, $autohide, $links, false); 
+function t_message($status, $title, $message=null, $autohide=false, $links = array()) { $msg = new System\Message($status, $title, $message, $autohide, $links, false);
 	System\Template::partial("/message", array("message" => $msg));
 	return $msg->get_retval(); }
 

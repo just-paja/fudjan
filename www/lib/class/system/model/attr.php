@@ -174,6 +174,22 @@ namespace System\Model
 		 * @param string $model Name of model class
 		 * @returns array
 		 */
+		public static function get_model_attr_list($model)
+		{
+			$attrs = array();
+
+			foreach ($model::$attrs as $attr=>$def) {
+				$attrs[] = $attr;
+			}
+
+			return $attr;
+		}
+
+
+		/* Get list of model attributes
+		 * @param string $model Name of model class
+		 * @returns array
+		 */
 		public static function get_model_attrs($model)
 		{
 			return self::get_attrs($model::$attrs);

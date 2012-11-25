@@ -52,10 +52,10 @@ namespace System\Mailer
 						$strict = $prefix == 'server';
 
 						foreach ($headers as &$h) {
-							$h = $d instanceof \Core\System\BasicModel ? soprintf($h, $d, $strict, $prefix):stprintf($h, $d, $strict, $prefix);
+							$h = $d instanceof \System\Model\Database ? soprintf($h, $d, $strict, $prefix):stprintf($h, $d, $strict, $prefix);
 						}
 
-						$template = $d instanceof \Core\System\BasicModel ? soprintf($template, $d, $strict, $prefix):stprintf($template, $d, $strict, $prefix);
+						$template = $d instanceof \System\Model\Database ? soprintf($template, $d, $strict, $prefix):stprintf($template, $d, $strict, $prefix);
 					}
 
 					$hs = array();

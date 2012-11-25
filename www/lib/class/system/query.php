@@ -389,7 +389,7 @@ namespace System
 		public function quick()
 		{
 			return isset($this->assoc_with_model) ?
-				$this->where(\System\Model\Basic::get_quick_conds($this->assoc_with_model)):
+				$this->where(\System\Model\Database::get_quick_conds($this->assoc_with_model)):
 				$this;
 		}
 	}

@@ -40,7 +40,7 @@ namespace System
 			!$this->method && $this->method = 'post';
 			!$this->action && $this->action = \System\Page::get_path();
 			!$this->id     && $this->id = self::get_generic_id();
-			!$this->anchor && $this->anchor = \System\Model\Basic::gen_seoname($this->id, true);
+			!$this->anchor && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
 
 			$this->class = array('yaform');
 			$this->take_data_from_input();

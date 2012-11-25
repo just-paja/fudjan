@@ -89,7 +89,7 @@ namespace System\Model
 			$helper = new \System\Query(
 				array(
 					"table" => self::get_table($model),
-					"cols"  => array_merge($model::$attrs, (array) $model::$id_col),
+					"cols"  => self::get_model_attr_list($model),
 					"opts"  => $opts,
 					"conds" => $conds,
 					"model" => $model,
@@ -545,6 +545,25 @@ namespace System\Model
 			}
 
 			return $relations;
+		}
+
+
+		/* Get list of model attributes
+		 * @param string $model Name of model class
+		 * @returns array
+		 */
+		public static function get_model_attr_list($model)
+		{
+			$attrs = array(self::get_id_col($model));
+
+			foreach ($model::$attrs as $attr=>$def) {
+				$attrs[] = $attr;
+			}
+
+			$attrs[] = 'created_at';
+			$attrs[] = 'updated_at';
+
+			return $attrs;
 		}
 	}
 }
