@@ -27,25 +27,35 @@ namespace System
 
 		public static function __callStatic($method, $args)
 		{
-			if (self::is_ready()) {
-				if (method_exists(self::get_driver(), $method)) {
-					return self::get_driver()->$method(def($args[0], null), def($args[1], null), def($args[2], null));
-				} else throw new \CacheException(sprintf('Cache driver method does not exist: %s', $method));
-			}
+			if (self::is_enabled()) {
+				if (self::is_ready()) {
+					if (method_exists(self::get_driver(), $method)) {
+						return self::get_driver()->$method(def($args[0], null), def($args[1], null), def($args[2], null));
+					} else throw new \CacheException(sprintf('Cache driver method does not exist: %s', $method));
+				}
+			} else return null;
 		}
 
 
 		public static function fetch($path, &$var)
 		{
-			if (self::is_ready()) {
-				return self::get_driver()->fetch($path, $var);
-			}
+			if (self::is_enabled()) {
+				if (self::is_ready()) {
+					return self::get_driver()->fetch($path, $var);
+				}
+			} else return $var = null;
 		}
 
 
 		public static function is_ready()
 		{
 			return self::$ready;
+		}
+
+
+		public static function is_enabled()
+		{
+			return self::$enabled;
 		}
 
 
