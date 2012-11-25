@@ -291,6 +291,7 @@
 			self::drop();
 			self::database_create();
 			self::database_init();
+			self::sync();
 
 			out("Rolling migrations ..");
 			out("");
@@ -316,6 +317,7 @@
 		public static function init()
 		{
 			self::database_create();
+			self::sync();
 			self::database_init();
 
 			out();
@@ -484,18 +486,6 @@
 
 			$db_ident = cfg('database', 'default');
 			$db_cfg = cfg('database', 'list', $db_ident);
-
-			$query = "
-				SELECT COUNT(table_name)
-					FROM information_schema.tables
-					WHERE table_schema = '".$db_cfg['database']."'
-					AND table_name = '".System\Model\Basic::get_table("\System\Migration")."';";
-
-			list($key, $res) = explode("\n", shell_exec("echo \"".$query."\" | ".self::assemble_mysql_command('mysql')));
-			if (trim($res) == 0) {
-				$migs = System\Migration::checkout_folder();
-				$migs[0]->run();
-			}
 		}
 
 
@@ -610,7 +600,6 @@
 		{
 			$params = CLIOptions::get('params');
 			(empty($params) || in_array('structure', $params)) && self::sync_structure();
-			(empty($params) || in_array('structure', $params)) && self::sync_relation_tables();
 			(empty($params) || in_array('relations', $params)) && self::sync_relations();
 			(empty($params) || in_array('data', $params)) && self::sync_contents();
 		}
@@ -634,12 +623,6 @@
 				$x++;
 			}
 			show_progress_cli($total, $total, YacmsCLIOptions::get_con_width(), $msg_done, $msg_work);
-		}
-
-
-		public static function sync_relation_tables()
-		{
-			out('Syncing contents is not implemented yet');
 		}
 
 
