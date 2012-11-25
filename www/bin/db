@@ -610,6 +610,7 @@
 		{
 			$params = CLIOptions::get('params');
 			(empty($params) || in_array('structure', $params)) && self::sync_structure();
+			(empty($params) || in_array('structure', $params)) && self::sync_relation_tables();
 			(empty($params) || in_array('relations', $params)) && self::sync_relations();
 			(empty($params) || in_array('data', $params)) && self::sync_contents();
 		}
@@ -636,7 +637,7 @@
 		}
 
 
-		public static function sync_contents()
+		public static function sync_relation_tables()
 		{
 			out('Syncing contents is not implemented yet');
 		}
@@ -645,6 +646,12 @@
 		public static function sync_relations()
 		{
 			out('Syncing foreign keys is not implemented yet');
+		}
+
+
+		public static function sync_contents()
+		{
+			out('Syncing contents is not implemented yet');
 		}
 	}
 
