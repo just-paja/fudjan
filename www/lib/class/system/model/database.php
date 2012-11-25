@@ -224,7 +224,7 @@ namespace System\Model
 			}
 
 			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
-				$this->data[$idc] = intval($value);
+				$this->data[self::get_id_col(get_class($this)] = intval($value);
 			}
 
 			return parent::__set($name, $value);
@@ -248,7 +248,7 @@ namespace System\Model
 				}
 
 				if ($attr == 'id' || $attr == self::get_id_col(get_class($this))) {
-					return $this->data[self::get_id_col(get_class($this)];
+					return $this->data[self::get_id_col(get_class($this))];
 				}
 
 				return parent::__get($attr);
