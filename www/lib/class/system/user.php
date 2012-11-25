@@ -148,7 +148,8 @@ namespace System
 					->reset_cols()
 					->add_cols(array("trigger", "type", "id_system_user_perm"), "t0")
 					->assoc_with('')
-					->fetch('trigger', 'id_user_perm');
+					->fetch('trigger', 'id_system_user_perm');
+
 			}
 
 			return $this->rights;
@@ -182,9 +183,9 @@ namespace System
 		/** Is active user root?
 		 * @returns bool
 		 */
-		public static function is_root()
+		public function is_root()
 		{
-			return self::get_active()->login == 'root';
+			return $this->login == 'root';
 		}
 
 
