@@ -5,16 +5,21 @@ namespace System\Form
 	class Input extends \System\Form\Element
 	{
 		protected static $attrs = array(
-			"string" => array('name', 'type', 'id', 'label', 'kind', 'content', 'info'),
-			"int"    => array('maxlen'),
-			"float"  => array(),
-			"bool"   => array('required', 'checked'),
-			"mixed"  => array('value'),
-			"array"  => array('options'),
+			"name"     => array("varchar"),
+			"type"     => array("varchar"),
+			"label"    => array("varchar"),
+			"kind"     => array("varchar"),
+			"content"  => array("varchar"),
+			"info"     => array("varchar"),
+			"maxlen"   => array('int'),
+			"required" => array('bool'),
+			"checked"  => array('bool'),
+			"value"    => array('mixed'),
+			"options"  => array('array'),
 		);
-		
+
 		protected static $required = array(
-			'name', 'kind', 
+			'name', 'kind',
 		);
 
 		protected static $kinds = array('input', 'textarea', 'select', 'button');
@@ -75,14 +80,14 @@ namespace System\Form
 		{
 			return self::$kinds[0];
 		}
-		
-		
+
+
 		public function is_value_content()
 		{
 			return in_array($this->kind, self::$kinds_content_value);
 		}
-		
-		
+
+
 		public function has_label()
 		{
 			return !in_array($this->kind, self::$kinds_no_label);

@@ -9,9 +9,14 @@ namespace System
 		const TEMPLATE_DEFAULT = 'system/form';
 
 		protected static $attrs = array(
-			"string" => array('method', 'action', 'enctype', 'heading', 'desc', 'anchor'),
-			"bool"   => array('no_prefix'),
-			"array"  => array('class'),
+			"method"  => array('varchar'),
+			"action"  => array('varchar'),
+			"enctype" => array('varchar'),
+			"heading" => array('varchar'),
+			"desc"    => array('varchar'),
+			"anchor"  => array('varchar'),
+			"bool"    => array('no_prefix'),
+			"class"   => array('array'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');

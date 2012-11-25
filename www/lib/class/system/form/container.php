@@ -9,8 +9,12 @@ namespace System\Form
 		const TYPE_TABS         = 'tabs';
 
 		protected static $attrs = array(
-			"string" => array('id', 'title', 'name', 'label', 'type'),
-			"array"  => array('class'),
+			"id"    => array('varchar'),
+			"title" => array('varchar'),
+			"name"  => array('varchar'),
+			"label" => array('varchar'),
+			"type"  => array('varchar'),
+			"class" => array('array'),
 		);
 
 		protected static $types = array(
