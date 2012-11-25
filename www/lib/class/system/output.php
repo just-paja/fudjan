@@ -217,7 +217,7 @@ namespace System
 				if (file_exists($f = self::get_template('layout', $name))) {
 					include($f);
 				} else {
-					throw new \MissingFileException("Template not found: ".$f);
+					throw new \MissingFileException("Template not found: ".$name);
 				}
 			}
 		}
