@@ -248,7 +248,7 @@ namespace System\Model
 				}
 
 				if ($attr == 'id' || $attr == self::get_id_col(get_class($this))) {
-					return $this->data[self::get_id_col(get_class($this))];
+					return def($this->data[self::get_id_col(get_class($this))], 0);
 				}
 
 				return parent::__get($attr);
