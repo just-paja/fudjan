@@ -1,4 +1,4 @@
-yawf_modules.tooltip = function()
+pwf.register = function()
 {
 	this.options = {
 		xOffset: 10,

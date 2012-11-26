@@ -1,4 +1,4 @@
-yawf.register('storage', function()
+pwf.register('storage', function()
 {
 	var p3p_needed = false;
 	var p3p_available = false;
