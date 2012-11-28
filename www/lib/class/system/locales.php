@@ -52,9 +52,9 @@ namespace System
 		}
 
 
-		public static function get_all_messages()
+		public static function get_all_messages($lang = null)
 		{
-			return self::$messages;
+			return self::$messages[is_null($lang) ? self::get_lang():$lang];
 		}
 
 
