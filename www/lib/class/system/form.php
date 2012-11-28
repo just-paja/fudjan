@@ -47,6 +47,10 @@ namespace System
 			!$this->id     && $this->id = self::get_generic_id();
 			!$this->anchor && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
 
+			if (is_array($this->default)) {
+				$this->data_default = $this->default;
+			}
+
 			$this->class = array('yaform');
 			$this->take_data_from_input();
 
@@ -105,6 +109,8 @@ namespace System
 
 			if (isset($attrs['value'])) {
 				$value = $this->data_default[$attrs['name']] = $attrs['value'];
+			} else if (isset($this->data_default[$attrs['name']])) {
+				$value = $this->data_default[$attrs['name']];
 			}
 
 			if ($this->submited && isset($this->data_commited[$attrs['name']])) {
