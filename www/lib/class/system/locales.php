@@ -52,6 +52,12 @@ namespace System
 		}
 
 
+		public static function get_all_messages()
+		{
+			return self::$messages;
+		}
+
+
 		public static function translate($str, $force_lang = NULL)
 		{
 			$lang = $force_lang ? $force_lang:self::get_lang();
