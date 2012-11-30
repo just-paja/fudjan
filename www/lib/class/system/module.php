@@ -35,14 +35,14 @@ namespace System
 		{
 			return $this->path;
 		}
-		
-		
+
+
 		public function get_name()
-		{ 
+		{
 			return _('Modul').' '.$this->path;
 		}
-		
-		
+
+
 		public function get_id()
 		{
 			return $this->id;
@@ -66,7 +66,7 @@ namespace System
 								$propagated = DataBus::get_data($this->parents);
 								$locals = array_merge($locals, $propagated);
 							}
-							
+
 							foreach (self::$array_forced_locals as $var) {
 								if (isset($locals[$var]) && !is_array($locals[$var])) throw new \CatchableException(sprintf(_('Module: `%s`'), $this->path).":\n".sprintf(_('local var `$%s` must be an array'), $var));
 							}
@@ -137,57 +137,26 @@ namespace System
 		}
 
 
-		public static function get_all_categories()
-		{
-			$cats = array(
-				"core"  => array(),
-				"other" => array(),
-			);
-
-			$dir = opendir($p = ROOT.self::BASE_DIR);
-			while ($file = readdir($dir)) {
-				if (strpos($file, ".") !== 0 && is_dir($p.'/'.$file) && $file != 'core') {
-					$cats['other'][] = $file;
-				}
-			}
-
-			$dir = opendir($p = $p.'/core');
-			while ($file = readdir($dir)) {
-				if (strpos($file, ".") !== 0 && is_dir($p.'/'.$file)) {
-					$cats['core'][] = $file;
-				}
-			}
-
-			foreach ($cats as &$part) {
-				sort($part);
-			}
-
-			return $cats;
-		}
-
-
-		public static function get_all($category, $include_perms = false)
+		public static function get_all($with_perms = false)
 		{
 			$mods = array();
-			$dir = opendir($p = ROOT.self::BASE_DIR.'/'.$category);
-			while ($file = readdir($dir)) {
-				if (strpos($file, ".") !== 0 && is_file($p.'/'.$file) && strpos($file, ".php")) {
-					$mod = &$mods[];
-					$mod = array("name" => $mod_name = str_replace('.php', '', $file));
-					if ($include_perms) {
-						$mod['perms'] = collect(
-							array('attr', 'id_user_group'),
-							get_all("\System\User\Perm", array(
-								"type" => 'module',
-								"trigger" => $category.'/'.$mod_name,
-								array("public" => true, "id_user_group != 0")
-							))->fetch()
-						);
-					}
+			$path = ROOT.self::BASE_DIR;
+
+			\System\Directory::find_all_files($path, $mods, '/\.php$/');
+			sort($mods);
+
+			foreach ($mods as &$mod) {
+				$mod = array("path" => preg_replace('/\.php$/', '', substr($mod, strlen($path)+1)));
+
+				if ($with_perms) {
+					$mod['perms'] = get_all("\System\User\Perm", array(
+						"type" => 'module',
+						"trigger" => $mod['path'],
+					))->fetch();
 				}
 			}
 
-			sort($mods);
+			v($mods);
 			return $mods;
 		}
 
