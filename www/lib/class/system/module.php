@@ -156,7 +156,6 @@ namespace System
 				}
 			}
 
-			v($mods);
 			return $mods;
 		}
 
