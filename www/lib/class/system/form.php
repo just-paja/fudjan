@@ -10,6 +10,7 @@ namespace System
 		const LABEL_SUBMIT_DEFAULT = 'send';
 
 		protected static $attrs = array(
+			"id"      => array('varchar'),
 			"method"  => array('varchar'),
 			"action"  => array('varchar'),
 			"enctype" => array('varchar'),
