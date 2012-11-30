@@ -304,10 +304,20 @@ namespace System
 		{
 			$this->prepare('delete');
 			self::$queries ++;
+
 			return Database::query($sql =
 				"DELETE FROM ".implode(',', (array) $this->parsed['tables']).
 				"\nWHERE ".implode(' AND ', $this->conds)
 			);
+		}
+
+
+		public static function simple_delete($from, array $conds)
+		{
+			$helper = new self(array("table" => $from));
+			$helper = $helper->where($conds, $from);
+
+			return $helper->delete();
 		}
 
 
