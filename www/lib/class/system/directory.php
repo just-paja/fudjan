@@ -62,7 +62,7 @@ namespace System
 				if (strpos($file, '.') !== 0) {
 					if (is_dir($p = $path.'/'.$file)) {
 						self::find_all_files($p, $files, $regexp);
-					} elseif ($regexp === null || preg_match($file, $regexp)) {
+					} elseif ($regexp === null || preg_match($regexp, $file)) {
 						$files[] = $p;
 					}
 				}
