@@ -84,7 +84,7 @@ namespace Database
 		{
 			$name = array();
 
-			if ($this->is_master && !$this->bilinear_rel->is_master) {
+			if ($this->is_master) {
 				$name['master'] = \System\Model\Database::get_table($this->parent);
 				$name['slave']  = \System\Model\Database::get_table($this->model);
 			} else {
