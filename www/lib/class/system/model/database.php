@@ -461,9 +461,9 @@ namespace System\Model
 		 */
 		protected static function prepare_data($model, array &$data)
 		{
-			if (any($model::$attrs['json'])) {
-			foreach ($model::$attrs['json'] as $attr) {
-					isset($data[$attr]) && $data[$attr] = json_encode($data[$attr]);
+			foreach ($model::$attrs as $attr) {
+				if ($attr[0] === 'json') {
+					$data[$attr] = json_encode($data[$attr]);
 				}
 			}
 		}
