@@ -24,7 +24,7 @@ namespace System\Form
 		);
 
 		protected static $type_models = array(
-			self::TYPE_INPUTS  => array('System\\Form\\Input', 'System\\Form\\Label'),
+			self::TYPE_INPUTS  => array('System\\Form\\Input', 'System\\Form\\Label', 'System\\Form\\Text'),
 			self::TYPE_BUTTONS => array('System\\Form\\Input'),
 			self::TYPE_TABS    => array(),
 		);

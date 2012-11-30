@@ -7,6 +7,7 @@ namespace System
 		const SEPARATOR_ID = '_';
 		const SEPARATOR_INPUT_METHOD = 'input_';
 		const TEMPLATE_DEFAULT = 'system/form';
+		const LABEL_SUBMIT_DEFAULT = 'send';
 
 		protected static $attrs = array(
 			"method"  => array('varchar'),
@@ -266,6 +267,14 @@ namespace System
 		}
 
 
+		public function text($label, $text)
+		{
+			$this->check_rendering_group('inputs');
+			$attrs['form'] = &$this;
+			return $this->rendering['group']->add_element(new Form\Text(array("name" => crc32($label), "label" => $label, "content" => $text)));
+		}
+
+
 		/** Add common submit button
 		 * @param string $label
 		 */
@@ -369,6 +378,19 @@ namespace System
 			}
 
 			return $error_list;
+		}
+
+
+		public static function create_delete_checker(array $data)
+		{
+			$f = new self($data);
+
+			foreach ($data['info'] as $i=>$text) {
+				$f->text($i, $text);
+			}
+
+			$f->submit(isset($data['submit']) ? $data['submit']:l('delete'));
+			return $f;
 		}
 	}
 }

@@ -8,8 +8,8 @@ namespace System\Form
 		{
 			return '<span class="form-error">'.$msg.'</span>';
 		}
-		
-		
+
+
 		private static function is_label_on_right($el)
 		{
 			return $el->type == 'checkbox' && empty($el->options);
@@ -70,11 +70,11 @@ namespace System\Form
 					"class"   => 'errors',
 					"output"  => false,
 				);
-				
+
 				foreach ($error_list as $e) {
 					$error_list_attrs['content'][] = \Tag::li(array("content" => $e, "output"  => false));
 				}
-				
+
 				$errors = \Tag::ul($error_list_attrs);
 			}
 
@@ -119,21 +119,29 @@ namespace System\Form
 					self::render_label($el);
 					break;
 				}
+				case 'System\Form\Text':
+				{
+					self::render_label(new Label(array("content" => $el->label)));
+					\Tag::div(array("class" => array('input-container'), "content" => $el->content));
+					break;
+				}
 			}
 		}
-		
-		
+
+
 		public static function get_object_class(\System\Form\Element $el)
 		{
 			$base_class = 'element';
 			$class = array();
-			
+
 			if ($el instanceof \System\Form\Input) {
 				$base_class = $el->kind;
 				$class[] = 'input-'.$el->id;
 				$class[] = 'input-'.(self::is_label_on_right($el) ? 'left':'right');
 			} elseif ($el instanceof \System\Form\Label) {
 				$base_class = 'label';
+			} elseif ($el instanceof \System\Form\Text) {
+				$base_class = 'text';
 			}
 
 			$class[] = 'form-'.$base_class;
