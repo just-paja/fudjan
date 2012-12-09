@@ -30,7 +30,7 @@ namespace System
 		{
 			@list($width, $height) = explode('x', $size, 2);
 			!$height && $height = $width;
-			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon.'.png';
+			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
 
 			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
 		}

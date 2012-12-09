@@ -12,12 +12,6 @@ System\Init::basic();
 $exp = new DateTime();
 $exp->setTimezone(new DateTimeZone("Europe/Prague"));
 
-header("Content-Type: image/png");
-header("Pragma: public,max-age=604800");
-header("Cache-Control: public,max-age=604800");
-header("Expires: ".gmdate('D, d M Y G:i:s T', time()+7*86400));
-header("Age: 0");
-
 $path = '';
 $theme = System\Input::get('theme');
 $theme = $theme ? $theme:System\Template::get_icon_theme();
@@ -34,9 +28,18 @@ file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.System\Template::DEFAULT
 
 if ($path) {
 
-	header("HTTP 1.1 200 OK");
-	echo file_get_contents($path);
+	$cont = file_get_contents($path);
+	header("HTTP/1.1 200 OK");
+	header("Content-Type: image/png");
+	header("Content-Length: ".strlen($cont));
+	header("Pragma: public,max-age=604800");
+	header("Cache-Control: public,max-age=604800");
+	header("Expires: ".gmdate('D, d M Y G:i:s T', time()+7*86400));
+	header("Age: 0");
+
+	echo $cont;
 	exit;
 
-} else header("HTTP 1.1 404 Not Found");
+} else header("HTTP/1.1 404 Not Found");
+
 
