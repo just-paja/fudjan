@@ -12,7 +12,7 @@ namespace System\Form
 
 		private static function is_label_on_right($el)
 		{
-			return $el->type == 'checkbox' && empty($el->options);
+			return !$el->multiple && in_array($el->type, array('checkbox', 'radio'));
 		}
 
 
@@ -49,8 +49,44 @@ namespace System\Form
 				"output"  => false,
 			)):'';
 
-			$html_element = $el->kind;
-			$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
+			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
+				$input = array();
+				$opts = array();
+				$iname = $el->type === 'radio' ?
+					$el->get_form()->get_prefix().$el->name:
+					$el->get_form()->get_prefix().$el->name.'[]';
+
+				foreach ($el->options as $id=>$opt) {
+					$opts[] = \Tag::li(array(
+						"output"  => false,
+						"content" => array(
+							\Tag::input(array(
+								"output"  => false,
+								"name"    => $iname,
+								"id"      => $el->get_form()->get_prefix().$el->name.'_'.$id,
+								"value"   => $id,
+								"type"    => $el->type,
+								"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
+							)),
+							\Tag::label(array(
+								"output"  => false,
+								"content" => $opt,
+								"for"     => $el->get_form()->get_prefix().$el->name.'_'.$id,
+							)),
+						)
+					));
+				}
+
+				$input = \Tag::ul(array(
+					"class"   => 'options',
+					"output"  => false,
+					"content" => $opts,
+				));
+			} else {
+				$html_element = $el->kind;
+				$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
+			}
+
 			$info = '';
 
 			if ($el->info) {
