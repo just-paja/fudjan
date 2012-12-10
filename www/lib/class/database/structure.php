@@ -104,7 +104,7 @@ namespace Database
 			$name_b = \System\Model\Database::get_id_col($rel->is_master ? $rel->model:$rel->parent);
 
 			$attrs = array(
-				\Database\Attr::from_def('id_'.$name, array("type" => 'int', "is_unsigned" => true)),
+				\Database\Attr::from_def('id_'.$name, array("type" => 'int', "is_unsigned" => true, "is_autoincrement" => true, "is_primary" => true)),
 				\Database\Attr::from_def($name_a, array("type" => 'int', "is_unsigned" => true)),
 				\Database\Attr::from_def($name_b, array("type" => 'int', "is_unsigned" => true)),
 				\Database\Attr::from_def("created_at", array("type" => 'datetime', "default" => 0)),
