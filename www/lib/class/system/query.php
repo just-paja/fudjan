@@ -98,15 +98,9 @@ namespace System
 		}
 
 
-		public function where(array $conds, $table_alias = null, $or = false)
+		private function resolve_table_alias($table_alias)
 		{
 			$ta = '';
-
-			if ($or) {
-				$temp = array();
-			} else {
-				$temp = &$this->conds;
-			}
 
 			if ($table_alias) {
 				$ta = "`".$table_alias."`.";
@@ -117,6 +111,20 @@ namespace System
 					$ta = "`".$table_alias."`.";
 				}
 			}
+
+			return $ta;
+		}
+
+
+		public function where(array $conds, $table_alias = null, $or = false)
+		{
+			if ($or) {
+				$temp = array();
+			} else {
+				$temp = &$this->conds;
+			}
+
+			$ta = $this->resolve_table_alias($table_alias);
 
 			if (!empty($conds)) {
 				foreach ($conds as $col=>$condition) {
@@ -136,6 +144,17 @@ namespace System
 			}
 
 			if ($or) $this->conds[] = "(".join(" OR ", $temp).")";
+			return $this;
+		}
+
+
+		public function where_in($col, array $conds, $table_alias = null, $or = false)
+		{
+			if (any($conds)) {
+				$ta = $this->resolve_table_alias($table_alias);
+				return $this->where(array($ta."`$col` IN (".implode(',', array_map('intval', $conds)).")"), $ta, $or);
+			}
+
 			return $this;
 		}
 
