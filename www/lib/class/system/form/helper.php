@@ -57,6 +57,15 @@ namespace System\Form
 					$el->get_form()->get_prefix().$el->name.'[]';
 
 				foreach ($el->options as $id=>$opt) {
+					if (is_object($opt)) {
+						if ($opt instanceof \System\Model\Attr) {
+							$id  = $opt->id;
+							$lbl = $opt->name;
+						} else throw new \InternalException('Form options set passed as object must inherit System\Model\Attr');
+					} else {
+						$lbl = $opt;
+					}
+
 					$opts[] = \Tag::li(array(
 						"output"  => false,
 						"content" => array(
@@ -70,7 +79,7 @@ namespace System\Form
 							)),
 							\Tag::label(array(
 								"output"  => false,
-								"content" => $opt,
+								"content" => $lbl,
 								"for"     => $el->get_form()->get_prefix().$el->name.'_'.$id,
 							)),
 						)
