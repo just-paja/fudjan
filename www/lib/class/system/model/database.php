@@ -591,5 +591,61 @@ namespace System\Model
 
 			return $attrs;
 		}
+
+
+		private function relation_save($model, $model_id, $rel_name, array $ids_save, array $ids_delete)
+		{
+			if (isset($model::$has_many[$rel_name])) {
+				$def = $model::$has_many[$rel_name];
+
+				if (isset($def['is_bilinear'])) {
+					$table_name = self::get_bilinear_table_name($model, $def);
+
+					if (any($def['is_master'])) {
+						$id_col = self::get_id_col($model);
+						$foreign_key = self::get_id_col($def['model']);
+					} else {
+						$id_col = self::get_id_col($def['model']);
+						$foreign_key = self::get_id_col($model);
+					}
+
+					$ids_save = array_filter($ids_save);
+					$ids_delete = array_filter($ids_delete);
+
+					if (any($ids_delete)) {
+						$q1 = new \System\Query(array("table" => $table_name));
+						$q1
+							->where(array($id_col => $model_id), $table_name)
+							->where_in($foreign_key, $ids_delete, $table_name)
+							->delete();
+					}
+
+					if (any($ids_save)) {
+						$q2 = new \System\Query(array("table" => $table_name, "cols" => array($id_col, $foreign_key)));
+
+						foreach ($ids_save as $id) {
+							$q2->add_insert_data(array($foreign_key => $id, $id_col => $model_id));
+						}
+
+						$q2->insert();
+					}
+				} else throw new \ArgumentException("Relation must be bilinear!");
+			}
+		}
+
+
+		public function assign_rel($rel_name, array $ids_new)
+		{
+			$model = get_class($this);
+
+			if (isset($model::$has_many[$rel_name])) {
+				$def = $model::$has_many[$rel_name];
+				$items_current = collect_ids($this->$rel_name->fetch());
+				self::relation_save($model, $this->id, $rel_name, array_diff($ids_new, $items_current), array_diff($items_current, $ids_new));
+				$this->$rel_name = get_all($def['model'])->where_in(self::get_id_col($def['model']), $ids_new)->fetch();
+			}
+
+			return $this;
+		}
 	}
 }
