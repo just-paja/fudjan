@@ -20,5 +20,5 @@ var pwf = function()
 		};
 
 		this.ready = init();
-	}();
-};
+	};
+}();
