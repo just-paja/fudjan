@@ -8,9 +8,8 @@ pwf.register('search_tool', function()
 				container = param_container,
 				attrs = param_data,
 				els = {},
-				last_val = null;
-
-		v(param_container);
+				last_val = null,
+				results = {};
 
 			this.create = function()
 			{
@@ -18,33 +17,53 @@ pwf.register('search_tool', function()
 					container.find('span.data').remove();
 					this.el('input',  $('<input type="text" placeholder="" name="search_tool_input">'));
 					this.el('result', $('<ul class="search_tool_result"></ul>'));
-
-					this.el('input')
-						.unbind('keydown.search_tool')
-						.unbind('keyup.search_tool')
-						.bind('keydown.search_tool', {"obj":this}, function(e) {
-							if (e.which === 13) {
-								e.preventDefault();
-							}
-						})
-						.bind('keyup.search_tool', {"obj":this}, function(e) {
-							var val = e.data.obj.el('input').val();
-							if (val.length >= 3 && val !== e.data.obj.get_last_val()) {
-								setTimeout(function(obj, val) {
-									return function() {
-										v([val, obj.el('input').val()]);
-										if (val == obj.el('input').val()) {
-											obj.refresh();
-										}
-									};
-								}(e.data.obj, val), 300);
-							}
-						});
+					this.bind();
 
 					container.append([
 						this.el('input'),
 						this.el('result'),
 					]);
+				}
+			};
+
+
+			this.update = function(el_container)
+			{
+				container = el_container;
+				container.append([this.el('input'), this.el('input')]);
+				this.bind();
+			};
+
+
+			this.bind = function()
+			{
+				this.el('input')
+					.unbind('keydown.search_tool')
+					.unbind('keyup.search_tool')
+					.unbind('change.search_tool')
+					.bind('keydown.search_tool', {"obj":this}, function(e) {
+						if (e.which === 13) {
+							e.preventDefault();
+						}
+					})
+					.bind('keyup.search_tool', {"obj":this}, function(e) { e.data.obj.check_val(); })
+					.bind('change.search_tool', {"obj":this}, function(e) { e.data.obj.check_val(); });
+
+			};
+
+
+			this.check_val = function()
+			{
+				var val = this.el('input').val();
+				if (val.length >= 3 && val !== this.get_last_val()) {
+					setTimeout(function(obj, val) {
+						return function() {
+							if (val == obj.el('input').val()) {
+								last_val = val;
+								obj.refresh();
+							}
+						};
+					}(this, val), 300);
 				}
 			};
 
@@ -57,22 +76,34 @@ pwf.register('search_tool', function()
 
 			this.refresh = function()
 			{
-				var data = attrs;
-				last_val = this.el('input').val();
-				data.value = last_val;
+				var val = this.el('input').val();
 
-				$.ajax({
-					"url":'/api/form_search_query/',
-					"data":data,
-					"dataType":'json',
-					"context":this,
-					"success":function(data) {
-						this.update_list(data);
-					},
-					"error":function(a, b, c) {
-						v([a,b,c]);
-					}
-				});
+				if (typeof results[val] === 'undefined') {
+					var data = attrs;
+					data.value = val;
+					results[val] = [];
+
+					$.ajax({
+						"url":'/api/form_search_query/',
+						"data":data,
+						"dataType":'json',
+						"context":{ "obj":this, "val":val},
+						"success":function(data) {
+							this.obj.save_results(this.val, data);
+							this.obj.update_list(data);
+						},
+						"error":function(a, b, c) {
+							v([a,b,c]);
+						}
+					});
+				} else this.update_list(results[val]);
+			};
+
+
+			this.save_results = function(value, data)
+			{
+				results[value] = data;
+				return this;
 			};
 
 
@@ -152,6 +183,8 @@ pwf.register('search_tool', function()
 		if (typeof instances[data.name] === 'undefined') {
 			instances[data.name] = new search_tool_helper(container, data);
 			instances[data.name].create();
+		} else {
+			instances[data.name].update(container);
 		}
 	};
 });
