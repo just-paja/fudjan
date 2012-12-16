@@ -314,7 +314,9 @@ namespace System\Model
 
 					self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
 
-					$helper->where(array("`".$join_alias."`.`".self::get_id_col($model)."` = ". intval($this->id)));
+					$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
+
+					$helper->where(array("`".$join_alias."`.`".$idc."` = ". intval($this->id)));
 					$helper->assoc_with($rel_attrs['model']);
 
 					$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
@@ -340,7 +342,10 @@ namespace System\Model
 				} elseif ($type == 'belongs-to') {
 
 					$rel_attrs = $model::$belongs_to[$rel];
-					$idc = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:'id_'.$rel;
+					$idc = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:(
+						any($rel_attrs['is_natural']) ? self::get_id_col($model):'id_'.$rel
+					);
+
 					$conds = array($idc => $this->$idc);
 
 					if (any($rel_attrs['conds'])) {

@@ -46,7 +46,7 @@ namespace Database
 
 			foreach ($relations as $rel) {
 				if ($rel->type === 'belongs_to') {
-					$name = 'id_'.$rel->name;
+					$name = $rel->is_natural ? \System\Model\Database::get_id_col($rel->model):('id_'.$rel->name);
 					$result[$name] = self::from_def($name, array(
 						"name"        => $name,
 						"type"        => 'int',

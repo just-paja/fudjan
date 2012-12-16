@@ -5,7 +5,6 @@ namespace System\User
 	class Contact extends \System\Model\Database
 	{
 		static protected $attrs = array(
-			"id_user"         => array('int', "is_unsigned" => true),
 			"id_contact_type" => array('int', "is_unsigned" => true),
 			"name"            => array('varchar'),
 			"ident"           => array('varchar'),
@@ -14,7 +13,7 @@ namespace System\User
 		);
 
 		static protected $belongs_to = array(
-			"user" => array("model" => '\System\User'),
+			"user" => array("model" => '\System\User', "is_natural" => true),
 		);
 
 		static private $internal_types = array(

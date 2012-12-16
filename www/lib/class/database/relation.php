@@ -12,6 +12,7 @@ namespace Database
 			"is_null"     => array('bool'),
 			"is_master"   => array('bool'),
 			"is_bilinear" => array('bool'),
+			"is_natural"  => array('bool'),
 		);
 
 
