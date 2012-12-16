@@ -303,11 +303,12 @@ namespace System\Model
 			if (empty($this->opts[$rel.'-fetched'])) {
 				if ($type == 'has-many') {
 
-					$join_alias = 'jt_'.$rel;
+					$join_alias = 't0';
 					$rel_attrs = $model::$has_many[$rel];
 					$helper = get_all($rel_attrs['model'], array(), array());
 
 					if (any($rel_attrs['is_bilinear'])) {
+						$join_alias = 't_'.$rel;
 						$table_name = self::get_bilinear_table_name($model, $rel_attrs);
 						$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
 					}
@@ -316,7 +317,7 @@ namespace System\Model
 
 					$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
 
-					$helper->where(array("`".$join_alias."`.`".$idc."` = ". intval($this->id)));
+					$helper->where(array($idc => $this->id), $join_alias);
 					$helper->assoc_with($rel_attrs['model']);
 
 					$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
