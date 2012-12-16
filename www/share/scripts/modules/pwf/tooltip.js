@@ -69,5 +69,5 @@ pwf.register = function()
 			$(this).mousemove(function(e) { yawf.tooltip.move(e); });
 		});
 		return true;
-	}
+	};
 }
