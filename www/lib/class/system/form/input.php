@@ -16,13 +16,20 @@ namespace System\Form
 			"checked"  => array('bool'),
 			"value"    => array('mixed'),
 			"options"  => array('array'),
+
+			// Search tool specific
+			"model"    => array("varchar"),
+			"conds"    => array("array"),
+			"display"  => array("array"),
+			"filter"   => array("array"),
+			"has"      => array("array"),
 		);
 
 		protected static $required = array(
 			'name', 'kind',
 		);
 
-		protected static $kinds = array('input', 'textarea', 'select', 'button');
+		protected static $kinds = array('input', 'textarea', 'select', 'button', 'search_tool');
 		protected static $kinds_content_value = array('textarea');
 		protected static $kinds_no_label = array('button');
 		protected static $types = array(

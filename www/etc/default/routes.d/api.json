@@ -1,9 +1,10 @@
 {
 	"#":{},
 
-	"redirect":{"#":{
+	"form_search_query":{"#":{
+		"template":[],
 		"modules":[
-			["core/link/redirect"]
+			["system/form/search_tool_query"]
 		]
 	}}
 

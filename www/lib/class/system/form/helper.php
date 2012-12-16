@@ -27,19 +27,7 @@ namespace System\Form
 			$data['name']   = $el->get_form()->get_prefix().$data['name'];
 
 			if ($el->kind == 'select') {
-				$opts = array();
-
-				foreach ($el->options as $label=>$opt) {
-					$opts[] = \Tag::option(array(
-						"content"  => $label,
-						"value"    => $opt,
-						"close"    => true,
-						"output"   => false,
-						"selected" => $el->value == $opt,
-					));
-				}
-
-				$data['content'] = implode('', $opts);
+				$opts = self::get_select_opts($el);
 			}
 
 			$label = $el->has_label() ? \Tag::label(array(
@@ -50,46 +38,31 @@ namespace System\Form
 			)):'';
 
 			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
-				$input = array();
-				$opts = array();
-				$iname = $el->type === 'radio' ?
-					$el->get_form()->get_prefix().$el->name:
-					$el->get_form()->get_prefix().$el->name.'[]';
+				$input = self::get_multi_input_html($el);
+			} elseif($el->type === 'search_tool') {
+				content_for('scripts', 'pwf/form/search_tool');
+				content_for('styles',  'pwf/form/search_tool');
 
-				foreach ($el->options as $id=>$opt) {
-					if (is_object($opt)) {
-						if ($opt instanceof \System\Model\Attr) {
-							$id  = $opt->id;
-							$lbl = $opt->name;
-						} else throw new \InternalException('Form options set passed as object must inherit System\Model\Attr');
-					} else {
-						$lbl = $opt;
-					}
-
-					$opts[] = \Tag::li(array(
+				$input = \Tag::div(array(
+					"class" => array('input-container'),
+					"output" => false,
+					"content" => \Tag::div(array(
+						"class"   => array('search_tool', 'search_tool_'.$el->name),
 						"output"  => false,
-						"content" => array(
-							\Tag::input(array(
-								"output"  => false,
-								"name"    => $iname,
-								"id"      => $el->get_form()->get_prefix().$el->name.'_'.$id,
-								"value"   => $id,
-								"type"    => $el->type,
-								"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
+						"content" => \Tag::span(array(
+							"class"   => array('data', 'hidden'),
+							"output"  => false,
+							"style"   => 'display:none',
+							"content" => json_encode(array(
+								"name"    => $el->get_form()->get_prefix().$el->name,
+								"model"   => $el->model,
+								"conds"   => $el->conds,
+								"display" => $el->display,
+								"filter"  => $el->filter,
+								"has"     => $el->has,
 							)),
-							\Tag::label(array(
-								"output"  => false,
-								"content" => $lbl,
-								"for"     => $el->get_form()->get_prefix().$el->name.'_'.$id,
-							)),
-						)
-					));
-				}
-
-				$input = \Tag::ul(array(
-					"class"   => 'options',
-					"output"  => false,
-					"content" => $opts,
+						)),
+					)),
 				));
 			} else {
 				$html_element = $el->kind;
@@ -126,6 +99,71 @@ namespace System\Form
 			$label_and_input = $label_on_right ? $input.$label:$label.$input;
 			echo $label_and_input.$info.$errors;
 		}
+
+
+		public static function get_select_opts_html(\System\Form\Input $el)
+		{
+			$opts = array();
+
+			foreach ($el->options as $label=>$opt) {
+				$opts[] = \Tag::option(array(
+					"content"  => $label,
+					"value"    => $opt,
+					"close"    => true,
+					"output"   => false,
+					"selected" => $el->value == $opt,
+				));
+			}
+
+			return implode('', $opts);
+		}
+
+
+		public static function get_multi_input_html(\System\Form\Input $el)
+		{
+			$input = array();
+			$opts = array();
+			$iname = $el->type === 'radio' ?
+				$el->get_form()->get_prefix().$el->name:
+				$el->get_form()->get_prefix().$el->name.'[]';
+
+			foreach ($el->options as $id=>$opt) {
+				if (is_object($opt)) {
+					if ($opt instanceof \System\Model\Attr) {
+						$id  = $opt->id;
+						$lbl = $opt->name;
+					} else throw new \InternalException('Form options set passed as object must inherit System\Model\Attr');
+				} else {
+					$lbl = $opt;
+				}
+
+				$opts[] = \Tag::li(array(
+					"output"  => false,
+					"content" => array(
+						\Tag::input(array(
+							"output"  => false,
+							"name"    => $iname,
+							"id"      => $el->get_form()->get_prefix().$el->name.'_'.$id,
+							"value"   => $id,
+							"type"    => $el->type,
+							"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
+						)),
+						\Tag::label(array(
+							"output"  => false,
+							"content" => $lbl,
+							"for"     => $el->get_form()->get_prefix().$el->name.'_'.$id,
+						)),
+					)
+				));
+			}
+
+			return \Tag::ul(array(
+				"class"   => 'options',
+				"output"  => false,
+				"content" => $opts,
+			));
+		}
+
 
 
 		public static function render_label(\System\Form\Label $el)
