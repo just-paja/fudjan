@@ -5,7 +5,6 @@ namespace System\User\Setup
 	class Variable extends \System\Model\Database
 	{
 		protected static $attrs = array(
-			"id_user_setup_category" => array('int', "is_unsigned" => true),
 			"name"       => array('varchar'),
 			"type"       => array('varchar'),
 			"options"    => array('json'),

@@ -53,7 +53,40 @@ namespace System\Model
 		 */
 		public static function attr_exists($model, $attr)
 		{
-			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr);
+			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr) || self::is_model_belongs_to_id($model, $attr);
+		}
+
+
+		public static function is_model_belongs_to_id($model, $attr)
+		{
+			$is_true = false;
+			$name = null;
+
+			if (any($model::$belongs_to)) {
+				foreach ($model::$belongs_to as $rel_name=>$rel) {
+					if (any($rel['foreign_key'])) {
+						if ($rel['foreign_key'] === $attr) {
+							$is_true = true;
+							$name = $rel['foreign_key'];
+						}
+					} else {
+						if ("id_".$rel_name === $attr) {
+							$is_true = true;
+							$name = "id_".$rel_name;
+						}
+					}
+
+					if ($is_true) break;
+				}
+			}
+
+			if ($is_true) {
+				if (!isset($model::$attrs[$name])) {
+					$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_key" => true);
+				}
+			}
+
+			return $is_true;
 		}
 
 
@@ -303,12 +336,13 @@ namespace System\Model
 				} elseif ($type == 'has-one') {
 
 					$rel_attrs = $model::$has_one[$rel];
-					$idc = self::get_id_col($model);
-					if (any($rel_attrs['foreign-key'])) {
-						$conds = array($rel_attrs['foreign-key'] => $this->id);
+					if (any($rel_attrs['foreign_key'])) {
+						$conds = array($rel_attrs['foreign_key'] => $this->id);
 					} else {
-						$conds = array($idc => $this->$idc);
+						$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:self::get_id_col($model);
+						$conds = array($idc => $this->id);
 					}
+
 					if ($rel_attrs['conds']) {
 						$conds = array_merge($rel_attrs['conds'], $conds);
 					}
@@ -319,9 +353,8 @@ namespace System\Model
 				} elseif ($type == 'belongs-to') {
 
 					$rel_attrs = $model::$belongs_to[$rel];
-					$idl = isset($rel_attrs['local-key']) ? $rel_attrs['local-key']:self::get_id_col($rel_attrs["model"]);
-					$idc = isset($rel_attrs['foreign-key']) ? $rel_attrs['foreign-key']:self::get_id_col($rel_attrs["model"]);
-					$conds = array($idc => $this->$idl);
+					$idc = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:'id_'.$rel;
+					$conds = array($idc => $this->$idc);
 
 					if (any($rel_attrs['conds'])) {
 						$conds = array_merge($rel_attrs['conds'], $conds);
@@ -461,9 +494,11 @@ namespace System\Model
 		 */
 		protected static function prepare_data($model, array &$data)
 		{
-			foreach ($model::$attrs as $attr) {
-				if ($attr[0] === 'json') {
+			foreach ($model::$attrs as $attr=>$attr_def) {
+				if ($attr_def[0] === 'json' && isset($data[$attr])) {
 					$data[$attr] = json_encode($data[$attr]);
+				} elseif (empty($attr_def['is_null'])) {
+					$data[$attr] = any($attr_def['default']) ? $attr_def['default']:'';
 				}
 			}
 		}
@@ -660,6 +695,16 @@ namespace System\Model
 			}
 
 			return $this;
+		}
+
+
+		/** Instance version of model_attr_exist
+		 * @param string $attr Name of attribute
+		 * @returns bool
+		 */
+		public function has_attr($attr)
+		{
+			return self::attr_exists(get_class($this), $attr);
 		}
 	}
 }

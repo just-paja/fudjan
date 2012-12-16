@@ -6,7 +6,6 @@ namespace System\User
 	{
 		protected static $attrs = array(
 			"id_user"           => array('int', "is_unsigned" => true),
-			"id_user_setup_var" => array('int', "is_unsigned" => true),
 			"value"   => array('varchar'),
 		);
 
