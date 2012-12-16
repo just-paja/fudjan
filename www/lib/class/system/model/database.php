@@ -290,19 +290,6 @@ namespace System\Model
 
 		}
 
-		/** Preload relation data
-		 * @returns void
-		 */
-		public function get_rels()
-		{
-			$model = get_class($this);
-			if (isset($model::$has_many)) {
-				foreach ($model::$has_many as $rel=>$rel_attrs) {
-					$this->get_rel($model, $rel, 'has-many');
-				}
-			}
-		}
-
 
 		/** Get relation data
 		 * @param   mixed  $model Instance or class name of model
