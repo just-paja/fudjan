@@ -65,6 +65,7 @@ namespace Database
 			$db = self::get_database();
 			$table = $db->get_table($model::get_table($model));
 			$attrs = \Database\Attr::get_from_model($model);
+			$relations = \Database\Relation::get_from_model($model);
 
 			foreach ($attrs as $attr) {
 				if (!$table->has_column($attr->name)) {
@@ -80,8 +81,6 @@ namespace Database
 
 		public static function sync_model_relations($model)
 		{
-			$db = self::get_database();
-			$table = $db->get_table($model::get_table($model));
 			$attrs = \Database\Attr::get_from_model($model);
 			$relations = \Database\Relation::get_from_model($model);
 

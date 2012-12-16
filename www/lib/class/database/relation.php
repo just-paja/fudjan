@@ -9,6 +9,7 @@ namespace Database
 			"type"        => array('varchar'),
 			"model"       => array('varchar'),
 			"parent"      => array('varchar'),
+			"is_null"     => array('bool'),
 			"is_master"   => array('bool'),
 			"is_bilinear" => array('bool'),
 		);
@@ -22,7 +23,7 @@ namespace Database
 
 		public static function get_from_model($model)
 		{
-			$relations = $model::get_relation_def($model);
+			$relations = $model::get_model_relations($model);
 			$models = array();
 
 			foreach ($relations as $name=>$def) {

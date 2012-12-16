@@ -13,6 +13,7 @@ namespace Database
 			"is_unique"   => array('bool'),
 			"is_null"     => array('bool'),
 			"is_unsigned" => array('bool'),
+			"is_key"      => array('bool'),
 			"is_autoincrement" => array('bool'),
 		);
 
@@ -33,8 +34,9 @@ namespace Database
 		{
 			$result = array();
 			$attrs  = $model::get_attr_def($model);
-
+			$relations = \Database\Relation::get_from_model($model);
 			$id_col = $model::get_id_col($model);
+
 			$result[$id_col] = self::from_def($id_col, array(
 				"type"             => 'int',
 				"is_unsigned"      => true,
@@ -42,14 +44,25 @@ namespace Database
 				"is_autoincrement" => true,
 			));
 
+			foreach ($relations as $rel) {
+				if ($rel->type === 'belongs_to') {
+					$name = \System\Model\Database::get_id_col($rel->model);
+					$result[$name] = self::from_def($name, array(
+						"name"        => $name,
+						"type"        => 'int',
+						"is_unsigned" => true,
+						"is_null"     => $rel->is_null,
+						"is_key"      => true,
+					));
+				}
+			}
+
 			foreach ($attrs as $name => $def) {
-				$attr = self::from_def($name, $def);
-				$result[$name] = $attr;
+				$result[$name] = self::from_def($name, $def);
 			}
 
 			foreach (self::$default_cols as $name => $def) {
-				$attr = self::from_def($name, $def);
-				$result[$name] = $attr;
+				$result[$name] = self::from_def($name, $def);
 			}
 
 			return $result;

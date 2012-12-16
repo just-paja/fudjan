@@ -18,6 +18,7 @@ namespace System\Model
 		static protected $id_cols_generated = array();
 
 		// Relations
+		static protected $relation_types = array('belongs_to', 'has_one', 'has_many');
 		static protected $belongs_to;
 		static protected $has_one;
 		static protected $has_many;
@@ -336,7 +337,6 @@ namespace System\Model
 		}
 
 
-
 		public static function get_bilinear_table_name($model, array $rel_attrs)
 		{
 			$name = array();
@@ -559,14 +559,16 @@ namespace System\Model
 		}
 
 
-		public static function get_relation_def($model)
+		public static function get_model_relations($model)
 		{
 			$relations = array();
 
-			if (isset($model::$has_many)) {
-				foreach ($model::$has_many as $rel_name => $rel_def) {
-					$rel_def['type'] = 'has_many';
-					$relations[$rel_name] = $rel_def;
+			foreach (self::$relation_types as $type) {
+				if (isset($model::$$type)) {
+					foreach ($model::$$type as $rel_name => $rel_def) {
+						$rel_def['type'] = $type;
+						$relations[$rel_name] = $rel_def;
+					}
 				}
 			}
 
