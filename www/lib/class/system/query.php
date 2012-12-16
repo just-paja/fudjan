@@ -148,6 +148,37 @@ namespace System
 		}
 
 
+		/** Filter models with certain has_many or has_one relation
+		 * @param int[] $relations List of relations and IDs
+		 * @returns $this
+		 */
+		public function has(array $relations)
+		{
+			if (any($this->assoc_with_model)) {
+				foreach ($relations as $rel=>$ids) {
+					$rel_attrs = \System\Model\Database::get_rel_def($this->assoc_with_model, $rel);
+					$rel_key   = \System\Model\Database::get_id_col($rel_attrs['model']);
+					$rel_conds = '';
+					$rel_table = any($rel_attrs['is_bilinear']) ?
+						\System\Model\Database::get_bilinear_table_name($this->assoc_with_model, $rel_attrs):
+						\System\Model\Database::get_table($this->assoc_with_model);
+
+					if (any($rel_attrs['is_bilinear'])) {
+						$rel_conds = 'USING('.\System\Model\Database::get_id_col($this->assoc_with_model).')';
+					}
+
+					$this
+						->join($rel_table, $rel_conds, 't_has_'.$rel)
+						->where(array(
+							'`t_has_'.$rel.'`.`'.$rel_key.'`'."IN(".implode(',', array_map('intval', $ids)).")"
+						));
+				}
+			} else throw new \InternalException("Query must be associated with model when using query::has()!");
+
+			return $this;
+		}
+
+
 		public function where_in($col, array $conds, $table_alias = null, $or = false)
 		{
 			if (any($conds)) {

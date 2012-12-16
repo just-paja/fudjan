@@ -574,6 +574,18 @@ namespace System\Model
 		}
 
 
+		public static function get_rel_def($model, $rel)
+		{
+			if (isset($model::$has_many) && isset($model::$has_many[$rel])) {
+				return $model::$has_many[$rel];
+			} elseif (isset($model::$has_one) && isset($model::$has_one[$rel])) {
+				return $model::$has_one[$rel];
+			} elseif (isset($model::$belongs_to) && isset($model::$belongs_to[$rel])) {
+				return $model::$belongs_to[$rel];
+			} else throw new \InternalException("Relation '".$rel."' does not exist.");
+		}
+
+
 		/* Get list of model attributes
 		 * @param string $model Name of model class
 		 * @returns array
