@@ -488,11 +488,18 @@ namespace System\Model
 		protected static function prepare_data($model, array &$data)
 		{
 			foreach ($model::$attrs as $attr=>$attr_def) {
-				if ($attr_def[0] === 'json' && isset($data[$attr])) {
-					$data[$attr] = json_encode($data[$attr]);
-				} elseif (empty($attr_def['is_null'])) {
+				if (empty($data[$attr]) && empty($attr_def['is_null'])) {
 					$data[$attr] = any($attr_def['default']) ? $attr_def['default']:'';
 				}
+
+				if ($attr_def[0] === 'json' && isset($data[$attr])) {
+					$data[$attr] = json_encode($data[$attr]);
+				}
+
+				if ($attr_def[0] === 'int_set' && isset($data[$attr])) {
+					$data[$attr] = implode(',', $data[$attr]);
+				}
+
 			}
 		}
 

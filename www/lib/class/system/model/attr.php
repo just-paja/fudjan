@@ -13,6 +13,7 @@ namespace System\Model
 		protected static $attr_types = array(
 			'bool',
 			'int',
+			'int_set',
 			'varchar',
 			'text',
 			'float',
@@ -329,6 +330,15 @@ namespace System\Model
 						$val = array_filter((array) json_decode($val, true));
 					}
 					break;
+
+				case 'int_set':
+					if (any($val)) {
+						if (is_array($val)) {
+							$val = array_map('intval', array_filter($val));
+						} else {
+							$val = array_map('intval', explode(',', intval($val)));
+						}
+					} else $val = array();
 			}
 
 			return $val;

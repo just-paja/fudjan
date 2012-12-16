@@ -7,6 +7,7 @@ namespace Database\Mysqli
 		private static $complex_types = array(
 			"image"    => array("type" => 'text'),
 			"json"     => array("type" => 'text'),
+			"int_set"  => array("type" => 'text'),
 			"password" => array("type" => 'varchar'),
 			"bool"     => array("type" => 'tinyint', "length" => 1),
 		);
