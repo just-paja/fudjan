@@ -336,7 +336,7 @@ namespace System\Model
 						if (is_array($val)) {
 							$val = array_map('intval', array_filter($val));
 						} else {
-							$val = array_map('intval', explode(',', intval($val)));
+							$val = array_map('intval', explode(',', $val));
 						}
 					} else $val = array();
 			}
