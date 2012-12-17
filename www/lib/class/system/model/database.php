@@ -645,8 +645,10 @@ namespace System\Model
 			if (any($model::$belongs_to)) {
 				foreach ($model::$belongs_to as $rel_name=>$rel) {
 					$name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
+
 					if (empty($model::$attrs[$name])) {
 						$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_index" => true);
+						$attrs[] = $name;
 					}
 				}
 			}
