@@ -123,5 +123,32 @@ namespace Database\Mysqli
 		{
 			return $this->add_column($attr->name, $attr->get_data());
 		}
+
+
+		public function add_index($col)
+		{
+			$this->db()->query("ALTER TABLE `".$this->name."` ADD INDEX `".$col."` (`".$col."`);");
+		}
+
+
+		public function drop_index($col)
+		{
+			$this->db()->query("ALTER TABLE `".$this->name."` DROP INDEX `".$col."`;");
+		}
+
+
+		public function get_indexes()
+		{
+			$result = $this->db()->query("SHOW INDEXES FROM `".$this->name."`")->fetch_assoc();
+			$indexes = array();
+
+			foreach ($result as $res) {
+				if ($res['Non_unique'] != 0) {
+					$indexes[] = $res['Column_name'];
+				}
+			}
+
+			return $indexes;
+		}
 	}
 }

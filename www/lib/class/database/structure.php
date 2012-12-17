@@ -56,6 +56,7 @@ namespace Database
 		public static function sync_model($model)
 		{
 			self::sync_model_table($model);
+			self::sync_model_table_indexes($model);
 			self::sync_model_relations($model);
 		}
 
@@ -76,6 +77,24 @@ namespace Database
 			}
 
 			$table->save();
+		}
+
+
+		public static function sync_model_table_indexes($model)
+		{
+			$db = self::get_database();
+			$table = $db->get_table($model::get_table($model));
+			$attrs = \Database\Attr::get_from_model($model);
+			$indexes = $table->get_indexes();
+
+			foreach ($attrs as $attr) {
+				if ($attr->is_index && !in_array($attr->name, $indexes)) {
+					$table->add_index($attr->name);
+				} elseif (!$attr->is_key && in_array($attr->name, $indexes)) {
+					$table->drop_index($attr->name);
+				}
+			}
+
 		}
 
 

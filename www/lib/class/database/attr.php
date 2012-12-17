@@ -13,7 +13,7 @@ namespace Database
 			"is_unique"   => array('bool'),
 			"is_null"     => array('bool'),
 			"is_unsigned" => array('bool'),
-			"is_key"      => array('bool'),
+			"is_index"    => array('bool'),
 			"is_autoincrement" => array('bool'),
 		);
 
@@ -52,7 +52,7 @@ namespace Database
 						"type"        => 'int',
 						"is_unsigned" => true,
 						"is_null"     => $rel->is_null,
-						"is_key"      => true,
+						"is_index"    => true,
 					));
 				}
 			}

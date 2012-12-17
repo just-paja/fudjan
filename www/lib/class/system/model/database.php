@@ -82,7 +82,7 @@ namespace System\Model
 
 			if ($is_true) {
 				if (!isset($model::$attrs[$name])) {
-					$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_key" => true);
+					$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_index" => true);
 				}
 			}
 
