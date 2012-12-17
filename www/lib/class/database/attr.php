@@ -23,7 +23,7 @@ namespace Database
 		);
 
 		protected static $allowed_types = array(
-			'bool', 'int', 'float', 'varchar', 'text', 'password', 'image', 'datetime', 'json',
+			'bool', 'int', 'int_set', 'float', 'varchar', 'text', 'password', 'image', 'datetime', 'json',
 		);
 
 

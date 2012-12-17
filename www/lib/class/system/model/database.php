@@ -70,7 +70,10 @@ namespace System\Model
 							$name = $rel['foreign_key'];
 						}
 					} else {
-						if ("id_".$rel_name === $attr) {
+						if (any($rel['is_natural']) && $attr === self::get_id_col($rel['model'])) {
+							$is_true = true;
+							$name = self::get_id_col($rel['model']);
+						} elseif ("id_".$rel_name === $attr) {
 							$is_true = true;
 							$name = "id_".$rel_name;
 						}
@@ -632,7 +635,9 @@ namespace System\Model
 			$attrs = array(self::get_id_col($model));
 
 			foreach ($model::$attrs as $attr=>$def) {
-				$attrs[] = $attr;
+				if (empty($def['is_fake'])) {
+					$attrs[] = $attr;
+				}
 			}
 
 			$attrs[] = 'created_at';
