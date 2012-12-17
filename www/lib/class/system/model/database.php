@@ -350,7 +350,7 @@ namespace System\Model
 
 					$rel_attrs = $model::$belongs_to[$rel];
 					$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
-					$idl = any($rel_attrs['is_natural']) ? self::get_id_col($model):'id_'.$rel;
+					$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
 
 					$conds = array($idf => $this->$idl);
 
