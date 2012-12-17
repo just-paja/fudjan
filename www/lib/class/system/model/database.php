@@ -346,11 +346,10 @@ namespace System\Model
 				} elseif ($type == 'belongs-to') {
 
 					$rel_attrs = $model::$belongs_to[$rel];
-					$idc = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:(
-						any($rel_attrs['is_natural']) ? self::get_id_col($model):'id_'.$rel
-					);
+					$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
+					$idl = any($rel_attrs['is_natural']) ? self::get_id_col($model):'id_'.$rel;
 
-					$conds = array($idc => $this->$idc);
+					$conds = array($idf => $this->$idl);
 
 					if (any($rel_attrs['conds'])) {
 						$conds = array_merge($rel_attrs['conds'], $conds);
