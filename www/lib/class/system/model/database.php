@@ -242,9 +242,9 @@ namespace System\Model
 			$type = false;
 
 			if (self::attr_is_rel($model, $attr)) {
-				if (array_key_exists($attr, $model::$has_many))       $type = 'has-many';
-				elseif (array_key_exists($attr, $model::$has_one))    $type = 'has-one';
-				elseif (array_key_exists($attr, $model::$belongs_to)) $type = 'belongs-to';
+				if     (is_array($model::$has_many)   && array_key_exists($attr, $model::$has_many))   $type = 'has-many';
+				elseif (is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))    $type = 'has-one';
+				elseif (is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to)) $type = 'belongs-to';
 			}
 
 			return $type;
