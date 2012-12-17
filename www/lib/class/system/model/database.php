@@ -64,19 +64,10 @@ namespace System\Model
 
 			if (any($model::$belongs_to)) {
 				foreach ($model::$belongs_to as $rel_name=>$rel) {
-					if (any($rel['foreign_key'])) {
-						if ($rel['foreign_key'] === $attr) {
-							$is_true = true;
-							$name = $rel['foreign_key'];
-						}
-					} else {
-						if (any($rel['is_natural']) && $attr === self::get_id_col($rel['model'])) {
-							$is_true = true;
-							$name = self::get_id_col($rel['model']);
-						} elseif ("id_".$rel_name === $attr) {
-							$is_true = true;
-							$name = "id_".$rel_name;
-						}
+					$rel_attr_name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
+					if ($attr == $rel_attr_name) {
+						$is_true = true;
+						$name = $rel['foreign_key'];
 					}
 
 					if ($is_true) break;
@@ -90,6 +81,18 @@ namespace System\Model
 			}
 
 			return $is_true;
+		}
+
+
+		public static function get_attr_name_from_belongs_to_rel($rel_name, $rel)
+		{
+			if (any($rel['foreign_key'])) {
+				return $rel['foreign_key'] === $attr;
+			} else {
+				return any($rel['is_natural']) ? self::get_id_col($rel['model']):"id_".$rel_name;
+			}
+
+			return false;
 		}
 
 
@@ -223,9 +226,9 @@ namespace System\Model
 		public static function attr_is_rel($model, $attr)
 		{
 			return
-					 (isset($model::$has_many)   && array_key_exists($attr, $model::$has_many))
-				|| (isset($model::$has_one)    && array_key_exists($attr, $model::$has_one))
-				|| (isset($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to));
+					 (isset($model::$has_many)   && is_array($model::$has_many)  && array_key_exists($attr, $model::$has_many))
+				|| (isset($model::$has_one)    && is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))
+				|| (isset($model::$belongs_to) && is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to));
 		}
 
 
@@ -636,6 +639,15 @@ namespace System\Model
 			foreach ($model::$attrs as $attr=>$def) {
 				if (empty($def['is_fake'])) {
 					$attrs[] = $attr;
+				}
+			}
+
+			if (any($model::$belongs_to)) {
+				foreach ($model::$belongs_to as $rel_name=>$rel) {
+					$name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
+					if (empty($model::$attrs[$name])) {
+						$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_index" => true);
+					}
 				}
 			}
 
