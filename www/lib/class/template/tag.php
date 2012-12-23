@@ -12,7 +12,7 @@ namespace Template
 			'meta' => array("name", "content", "http-equiv"),
 			'form' => array("method", "action", "enctype"),
 			'textarea' => array("required", "rows", "cols", "!value"),
-			'input' => array("type", "min", "max", "maxlength", "step", "required", "size", "disabled", "checked", "results", "placeholder"),
+			'input' => array("type", "min", "max", "maxlength", "step", "required", "size", "disabled", "checked", "results", "placeholder", "autocomplete"),
 			'select' => array("size", "multiple", "required"),
 			'option' => array("selected", "value"),
 			'button' => array("type"),
