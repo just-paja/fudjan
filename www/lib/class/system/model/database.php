@@ -67,7 +67,7 @@ namespace System\Model
 					$rel_attr_name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
 					if ($attr == $rel_attr_name) {
 						$is_true = true;
-						$name = $rel['foreign_key'];
+						$name = $rel_attr_name;
 					}
 
 					if ($is_true) break;
@@ -504,7 +504,6 @@ namespace System\Model
 				if ($attr_def[0] === 'int_set' && isset($data[$attr])) {
 					$data[$attr] = implode(',', $data[$attr]);
 				}
-
 			}
 		}
 
