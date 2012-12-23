@@ -5,17 +5,19 @@ namespace System\Form
 	class Input extends \System\Form\Element
 	{
 		protected static $attrs = array(
-			"name"     => array("varchar"),
-			"type"     => array("varchar"),
-			"label"    => array("varchar"),
-			"kind"     => array("varchar"),
-			"content"  => array("varchar"),
-			"info"     => array("varchar"),
-			"maxlen"   => array('int'),
-			"required" => array('bool'),
-			"checked"  => array('bool'),
-			"value"    => array('mixed'),
-			"options"  => array('array'),
+			"name"         => array("varchar"),
+			"type"         => array("varchar"),
+			"label"        => array("varchar"),
+			"kind"         => array("varchar"),
+			"content"      => array("varchar"),
+			"info"         => array("varchar"),
+			"placeholder"  => array('varchar'),
+			"maxlen"       => array('int'),
+			"required"     => array('bool'),
+			"checked"      => array('bool'),
+			"autocomplete" => array('bool'),
+			"value"        => array('mixed'),
+			"options"      => array('array'),
 
 			// Search tool specific
 			"model"    => array("varchar"),
