@@ -163,9 +163,9 @@ pwf.register('search_tool', function()
 		};
 
 
-	this.init = function()
+	this.init = function(container)
 	{
-		var tools = $('form .search_tool');
+		var tools = typeof container === 'undefined' ? $('form .search_tool'):container.find('.search_tool');
 
 		for (var i = 0; i<tools.length; i++) {
 			var container = $(tools[i]);
