@@ -27,7 +27,7 @@ namespace System\Form
 			$data['name']   = $el->get_form()->get_prefix().$data['name'];
 
 			if ($el->kind == 'select') {
-				$opts = self::get_select_opts($el);
+				$opts = self::get_select_opts_html($el);
 			}
 
 			$label = $el->has_label() ? \Tag::label(array(
