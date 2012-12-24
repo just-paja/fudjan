@@ -17,9 +17,18 @@ namespace System
 		);
 
 		static protected $attrs = array(
-			"int"      => array('width', 'height', 'file_size'),
-			"string"   => array('file_path', 'file_name', 'file_hash', 'format', 'src', 'file'),
-			"bool"     => array('tmp', 'allow_save', 'to_be_deleted'),
+			"width"         => array('int'),
+			"height"        => array('int'),
+			"file_size"     => array('int'),
+			"file_path"     => array('varchar'),
+			"file_name"     => array('varchar'),
+			"file_hash"     => array('varchar'),
+			"format"        => array('varchar'),
+			"src"           => array('varchar'),
+			"file"          => array('varchar'),
+			"tmp"           => array('bool'),
+			"allow_save"    => array('bool'),
+			"to_be_deleted" => array('bool'),
 		);
 
 
