@@ -69,6 +69,12 @@ namespace System
 		}
 
 
+		public function is_image()
+		{
+			return !is_null($this->get_format());
+		}
+
+
 		public function thumb($width = null, $height = null, $crop = true)
 		{
 			return ($this->check_thumb($width, $height, $crop)) ?
