@@ -21,19 +21,21 @@ namespace System
 								$_FILES[$var][$attr] = $file_attr;
 							}
 						}
-						
+
 						if ($a) unset($_FILES[$var][$attr]);
 					}
 				} else {
 					break;
 				}
 			}
-			
+
 			if (!isset($_GET)) $_GET = array();
 			if (!isset($_POST)) $_POST = array();
 
 			self::$input = array_merge_recursive((array) $_GET, (array) $_POST, (array) $_FILES);
-			self::$input['path'] = $_SERVER['REQUEST_URI'];
+			self::$input['request'] = $_SERVER['REQUEST_URI'];
+			self::$input['path']    = explode('?', $_SERVER['REQUEST_URI'], 2);
+			self::$input['path']    = self::$input['path'][0];
 			self::fix_input(self::$input);
 			unset($_GET, $_POST);
 		}
