@@ -66,6 +66,11 @@ namespace System\Form
 					)),
 				));
 			} else {
+
+				if (in_array($el->type, array('datetime', 'date', 'time')) && $el->value instanceof \DateTime) {
+					$data['value'] = format_date($el->value, 'html5');
+				}
+
 				$html_element = $el->kind;
 				$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
 			}

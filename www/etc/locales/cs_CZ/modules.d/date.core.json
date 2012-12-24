@@ -8,7 +8,7 @@
 	"human-time":"G:i",
 	"human-full-date":"D j. F Y",
 	"human-full-datetime":"l j. F Y G:i",
-	"html5":"Y-m-d\\TH:i",
+	"html5":"Y-m-d\\TH:i:s",
 	"html5-full":"Y-m-d\\TH:i:sP",
 
 	"days":{
@@ -45,7 +45,7 @@
 		"11":"listopad",
 		"12":"prosinec"
 	},
-	
+
 	"months-date":{
 		"1":"ledna",
 		"2":"února",
