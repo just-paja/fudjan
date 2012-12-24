@@ -16,7 +16,7 @@ namespace System\Form
 		}
 
 
-		public static function render_input(\System\Form\Input $el)
+		public static function render_input(\System\Form\Input $el, $output = true)
 		{
 			$el->content = $el->is_value_content() ? $el->value:$el->content;
 			$label_on_right = self::is_label_on_right($el);
@@ -41,11 +41,15 @@ namespace System\Form
 
 				$input = self::get_multi_input_html($el);
 
-			} elseif($el->type === 'search_tool') {
+			} elseif ($el->type === 'search_tool') {
 
 				content_for('scripts', 'pwf/form/search_tool');
 				content_for('styles',  'pwf/form/search_tool');
 				$input = self::get_search_tool_html($el);
+
+			} elseif ($el->type === 'image') {
+
+				$input = self::get_image_input_html($el);
 
 			} else {
 
@@ -85,7 +89,25 @@ namespace System\Form
 			}
 
 			$label_and_input = $label_on_right ? $input.$label:$label.$input;
-			echo $label_and_input.$info.$errors;
+			if ($output) {
+				echo $label_and_input.$info.$errors;
+			} else return $label_and_input.$info.$errors;
+		}
+
+
+		public static function get_image_input_html(\System\Form\Input $el)
+		{
+			$inputs = array();
+
+			foreach ($el->tools as $tool) {
+				$inputs[] = self::render_input($tool, false);
+			}
+
+			return \Tag::div(array(
+				"class" => array('input-container'),
+				"output" => false,
+				"content" => $inputs,
+			));
 		}
 
 

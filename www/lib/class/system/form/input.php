@@ -28,6 +28,11 @@ namespace System\Form
 			"display"  => array("array"),
 			"filter"   => array("array"),
 			"has"      => array("array"),
+
+			// Image input specific
+			"thumb_size" => array("varchar"),
+			"disallow_upload" => array("bool"),
+			"allow_url"  => array("bool"),
 		);
 
 		protected static $required = array(
@@ -52,6 +57,22 @@ namespace System\Form
 			'button',
 			'submit',
 			'password',
+		);
+
+		const IMAGE_KEEP   = 0;
+		const IMAGE_UPLOAD = 1;
+		const IMAGE_URL    = 2;
+		const IMAGE_DROP   = 3;
+		const IMAGE_NONE   = 4;
+
+		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
+
+		protected static $image_input_opts = array(
+			self::IMAGE_NONE   => "image_input_none",
+			self::IMAGE_KEEP   => "image_input_keep",
+			self::IMAGE_UPLOAD => "image_input_upload",
+			self::IMAGE_URL    => "image_input_url",
+			self::IMAGE_DROP   => "image_input_drop",
 		);
 
 
@@ -103,6 +124,18 @@ namespace System\Form
 		public function has_label()
 		{
 			return !in_array($this->kind, self::$kinds_no_label);
+		}
+
+
+		public static function get_image_input_opts()
+		{
+			$opts = array();
+
+			foreach (self::$image_input_opts as $label=>$opt) {
+				$opts[l($label)] = $opt;
+			}
+
+			return $opts;
 		}
 	}
 }

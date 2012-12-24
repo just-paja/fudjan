@@ -10,12 +10,12 @@ namespace System\Form
 		/** Let element use this form
 		 * @return void
 		 */
-		protected function use_form(\System\Form &$f)
+		public function use_form(\System\Form &$f)
 		{
 			$this->form = &$f;
 		}
-		
-		
+
+
 		public function get_form()
 		{
 			return $this->form;

@@ -44,10 +44,11 @@ namespace System
 		 */
 		protected function construct()
 		{
-			!$this->method && $this->method = 'post';
-			!$this->action && $this->action = \System\Input::get('path');
-			!$this->id     && $this->id = self::get_generic_id();
-			!$this->anchor && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
+			!$this->method  && $this->method = 'post';
+			!$this->action  && $this->action = \System\Input::get('path');
+			!$this->id      && $this->id = self::get_generic_id();
+			!$this->anchor  && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
+			!$this->enctype && $this->enctype = 'multipart/form-data';
 
 			if (is_array($this->default)) {
 				$this->data_default = $this->default;
@@ -107,7 +108,7 @@ namespace System
 		 */
 		protected function get_input_value($attrs)
 		{
-			$value = '';
+			$value = null;
 
 			if (isset($attrs['value'])) {
 				$value = $this->data_default[$attrs['name']] = $attrs['value'];
@@ -117,6 +118,22 @@ namespace System
 
 			if ($this->submited && isset($this->data_commited[$attrs['name']])) {
 				$value = $this->data_commited[$attrs['name']];
+			}
+
+			return $value;
+		}
+
+
+		protected function get_input_value_by_name($name, $default = false)
+		{
+			$value = null;
+
+			if (($default || !$this->submited) && isset($this->data_default[$name])) {
+				$value = $this->data_default[$name];
+			}
+
+			if (!$default && $this->submited && isset($this->data_commited[$name])) {
+				$value = $this->data_commited[$name];
 			}
 
 			return $value;
@@ -234,7 +251,7 @@ namespace System
 		public function input(array $attrs)
 		{
 			$this->check_rendering_group('inputs');
-			$attrs['form '] = &$this;
+			$attrs['form'] = &$this;
 			$attrs['value'] = $this->get_input_value($attrs);
 
 			if ($attrs['type'] == 'checkbox') {
@@ -252,9 +269,99 @@ namespace System
 				}
 			}
 
+			if ($attrs['type'] === 'image') {
+				$attrs['tools'] = $this->get_image_input_tools($attrs);
+				$attrs['value'] = $this->get_image_input_value($attrs);
+			}
+
 			return $this->rendering['group']->add_element(new \System\Form\Input($attrs));
 		}
 
+
+		private function get_image_input_tools(array $attrs)
+		{
+			$opts = \System\Form\Input::get_image_input_opts();
+			$action = \System\Form\Input::IMAGE_KEEP;
+			!isset($attrs['thumb_size']) && ($attrs['thumb_size'] = \System\Form\Input::IMAGE_INPUT_SIZE_DEFAULT);
+
+			if (!$attrs['value']) {
+				unset($opts[\System\Form\Input::IMAGE_KEEP]);
+				unset($opts[\System\Form\Input::IMAGE_DROP]);
+				$action = \System\Form\Input::IMAGE_UPLOAD;
+			}
+
+			if (empty($attrs['required'])) {
+				unset($opts[\System\Form\Input::IMAGE_NONE]);
+			}
+
+			if (empty($attrs['allow_url'])) unset($opts[\System\Form\Input::IMAGE_URL]);
+			if (any($attrs['disallow_upload'])) unset($opts[\System\Form\Input::IMAGE_UPLOAD]);
+
+			$input_action_attrs = array(
+				"name"     => $attrs['name'].'_action',
+				"type"     => 'radio',
+				"label"    => l('form_image_input_action'),
+				"options"  => $opts,
+				"multiple" => true,
+				"value"    => $action,
+			);
+
+			$input_file_attrs = array(
+				"name"     => $attrs['name'].'_file',
+				"type"     => 'file',
+				"label"    => l('form_image_input_file'),
+				"options"  => $opts,
+				"multiple" => true,
+			);
+
+			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
+			$input_file_attrs['value'] = $this->get_input_value($input_file_attrs);
+
+			$input_action = new \System\Form\Input($input_action_attrs);
+			$input_file = new \System\Form\Input($input_file_attrs);
+
+			$input_action->use_form($this);
+			$input_file->use_form($this);
+			$inputs = array();
+
+			if (!(count($opts) === 1 && any($opts[\System\Form\Input::IMAGE_UPLOAD]))) {
+				$inputs[] = $input_action;
+			}
+
+			$inputs[] = $input_file;
+			return $inputs;
+		}
+
+
+		private function get_image_input_value(array $attrs)
+		{
+			$value = $this->get_input_value($attrs);
+
+			if ($this->submited) {
+				$name_action = $attrs['name'].'_action';
+				$name_file   = $attrs['name'].'_file';
+
+				$action = $this->get_input_value_by_name($name_action);
+				$file = $this->get_input_value_by_name($name_action);
+
+				if ($action == \System\Form\Input::IMAGE_KEEP) {
+					$value = $this->get_input_value_by_name($attrs['name'], true);
+				}
+
+				if ($action == \System\Form\Input::IMAGE_UPLOAD || is_null($action)) {
+					$value = $this->get_input_value_by_name($name_file);
+					$value = \System\Image::from_path($value['tmp_name']);
+				}
+
+				if ($action == \System\Form\Input::IMAGE_DROP) {
+					$value = \System\Image::from_scratch;
+				}
+
+				$this->data_commited[$attrs['name']] = $value;
+			}
+
+			return $value;
+		}
 
 		/** Add label
 		 * @param string $text
