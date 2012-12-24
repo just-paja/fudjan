@@ -38,33 +38,15 @@ namespace System\Form
 			)):'';
 
 			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
+
 				$input = self::get_multi_input_html($el);
+
 			} elseif($el->type === 'search_tool') {
+
 				content_for('scripts', 'pwf/form/search_tool');
 				content_for('styles',  'pwf/form/search_tool');
+				$input = self::get_search_tool_html($el);
 
-				$input = \Tag::div(array(
-					"class" => array('input-container'),
-					"output" => false,
-					"content" => \Tag::div(array(
-						"class"   => array('search_tool', 'search_tool_'.$el->name),
-						"output"  => false,
-						"content" => \Tag::span(array(
-							"class"   => array('data', 'hidden'),
-							"output"  => false,
-							"style"   => 'display:none',
-							"content" => json_encode(array(
-								"name"        => $el->get_form()->get_prefix().$el->name,
-								"model"       => $el->model,
-								"conds"       => $el->conds,
-								"display"     => $el->display,
-								"filter"      => $el->filter,
-								"has"         => $el->has,
-								"placeholder" => $el->placeholder,
-							)),
-						)),
-					)),
-				));
 			} else {
 
 				if (in_array($el->type, array('datetime', 'date', 'time')) && $el->value instanceof \DateTime) {
@@ -104,6 +86,33 @@ namespace System\Form
 
 			$label_and_input = $label_on_right ? $input.$label:$label.$input;
 			echo $label_and_input.$info.$errors;
+		}
+
+
+		public static function get_search_tool_html(\System\Form\Input $el)
+		{
+			return \Tag::div(array(
+				"class" => array('input-container'),
+				"output" => false,
+				"content" => \Tag::div(array(
+					"class"   => array('search_tool', 'search_tool_'.$el->name),
+					"output"  => false,
+					"content" => \Tag::span(array(
+						"class"   => array('data', 'hidden'),
+						"output"  => false,
+						"style"   => 'display:none',
+						"content" => json_encode(array(
+							"name"        => $el->get_form()->get_prefix().$el->name,
+							"model"       => $el->model,
+							"conds"       => $el->conds,
+							"display"     => $el->display,
+							"filter"      => $el->filter,
+							"has"         => $el->has,
+							"placeholder" => $el->placeholder,
+						)),
+					)),
+				)),
+			));
 		}
 
 
