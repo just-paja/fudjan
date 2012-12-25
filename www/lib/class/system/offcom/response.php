@@ -5,8 +5,9 @@ namespace System\Offcom
 	class Response extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"string" => array('content', 'headers'),
-			"int" => array('status'),
+			"content" => array('blob'),
+			"headers" => array('text'),
+			"status"  => array('int'),
 		);
 
 
