@@ -10,11 +10,11 @@ namespace System\Offcom
 		public static function get($url)
 		{
 			if (function_exists('curl_init')) {
-				$ch = curl_init(); 
-				curl_setopt($ch, CURLOPT_URL, $url); 
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
+				$ch = curl_init();
+				curl_setopt($ch, CURLOPT_URL, $url);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_USERAGENT, \System\Output::introduce());
-				curl_setopt($ch, CURLOPT_HEADER, 1); 
+				curl_setopt($ch, CURLOPT_HEADER, 1);
 				$content = curl_exec($ch);
 				$content = explode("\r\n\r\n", $content, 2);
 
