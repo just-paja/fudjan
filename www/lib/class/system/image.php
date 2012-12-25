@@ -7,8 +7,10 @@ namespace System
 		const DIR = '/var/images';
 		const DIR_TMP = '/var/tmp';
 		const DIR_THUMBS = '/var/thumbs';
+		const FILE_BAD_THUMB = '/share/pixmaps/pwf/bad_thumb.jpg';
 
-		private static $bad_thumb;
+		private static $bad_thumb = null;
+
 		public static $gd_formats = array(
 			IMG_GIF  => "gif",
 			IMG_JPG  => "jpg",
@@ -83,11 +85,11 @@ namespace System
 		}
 
 
-		private function check_thumb($width = null, $height = null, $crop = true)
+		private function check_thumb($width = null, $height = null, $crop = true, $gen = true)
 		{
-			return file_exists(ROOT.$this->get_thumb_path($width, $height)) ?
-				true:
-				$this->make_thumb($width, $height, $crop);
+			return
+				file_exists(ROOT.$this->get_thumb_path($width, $height)) ||
+				($gen && $this->make_thumb($width, $height, $crop));
 		}
 
 
@@ -138,9 +140,12 @@ namespace System
 			if (file_exists($path)) {
 				return new self(array(
 					"src" => 'copy',
-					"tmp_name" => $path
+					"tmp_name"  => $path,
+					"file_path" => $path,
+					"tmp" => true,
 				));
 			}
+
 			return self::from_scratch();
 		}
 
@@ -202,16 +207,12 @@ namespace System
 
 		private static function gen_bad_thumb($width = null, $height = null)
 		{
-			if (!self::$bad_thumb) {
-				self::$bad_thumb = new Image(array(
-					"file_path" => '/share/pixmaps/evil-thumb.png',
-					"file_name" => 'evil-thumb.png',
-					"width"  => 512,
-					"height" => 512
-				));
+			if (is_null(self::$bad_thumb)) {
+				self::$bad_thumb = self::from_path(ROOT.self::FILE_BAD_THUMB);
+				self::$bad_thumb->tmp = true;
 			}
 
-			return self::$bad_thumb->thumb($width, $height, false);
+			return self::$bad_thumb->thumb($width, $height);
 		}
 
 
@@ -235,7 +236,7 @@ namespace System
 		}
 
 
-		public static function gen_thumb(Image $obj, $w = null, $h = null, $crop = true)
+		public static function gen_thumb(self $obj, $w = null, $h = null, $crop = true)
 		{
 			$path = $obj->get_path(true);
 
@@ -244,7 +245,10 @@ namespace System
 			}
 
 			if ($path != ROOT && file_exists($path)) {
+
 				$f = false;
+				$org_w = intval($obj->width);
+				$org_h = intval($obj->height);
 
 				// Prevent bad image size
 				if ($bad_size = ($org_w == 0 && $org_h == 0)) {
@@ -252,8 +256,6 @@ namespace System
 				}
 
 				$tpth = self::prepare_image_dir(ROOT.$obj->get_thumb_path($w, $h, $crop));
-				$org_w = intval($obj->width);
-				$org_h = intval($obj->height);
 
 				if (!$w && $h) {
 					$w = round(($org_w * $h) / $org_h);
@@ -311,6 +313,8 @@ namespace System
 					return copy($path, $tpth);
 				}
 			}
+
+			return false;
 		}
 
 
