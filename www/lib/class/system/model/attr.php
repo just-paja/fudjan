@@ -15,6 +15,7 @@ namespace System\Model
 			'int',
 			'int_set',
 			'varchar',
+			'blob',
 			'text',
 			'float',
 			'datetime',
