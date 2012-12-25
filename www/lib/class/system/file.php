@@ -13,13 +13,24 @@ namespace System
 		private static $operations = self::TMP_DIR;
 
 		static protected $attrs = array(
-			"string" => array('filename', 'dirpath', 'suffix', 'mime-type', 'tmp_name'),
-			"int" => array('size'),
+			"filename"  => array('varchar'),
+			"dirpath"   => array('varchar'),
+			"suffix"    => array('varchar'),
+			"mime_type" => array('varchar'),
+			"tmp_name"  => array('varchar'),
+			"size"      => array('int'),
 		);
 		static protected $required = array();
 		static protected $instances = array();
 
 		private $content;
+
+
+		function __destruct()
+		{
+			//~ $this->remove();
+		}
+
 
 		public static function clear_tmp()
 		{
@@ -52,6 +63,7 @@ namespace System
 		{
 			if(strpos($dir, ROOT.'/var') !== false){
 				$path = array_filter(explode('/', $dir));
+				$dp = '';
 				foreach($path as $p){
 					$dp .= '/'.$p;
 					if(!is_dir($dp)) mkdir($dp);
@@ -77,7 +89,7 @@ namespace System
 
 				$magic = strtoupper(gen_random_string(10));
 				$tmp_name = self::access_dir($dir).'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
-				!!(file_put_contents($tmp_name, $content, LOCK_EX)) ?
+				!!(file_put_contents($tmp_name, $data->content, LOCK_EX)) ?
 					message("success", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' byl úspěšně uložen'), $name), true):
 					message("error", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' se nepovedlo uložit'), $name));
 
@@ -102,6 +114,13 @@ namespace System
 			if (!rename($op, $np)) {
 				$this->errors[] = 'move-failed';
 			}
+			return $this;
+		}
+
+
+		public function remove()
+		{
+			unlink($this->tmp_name);
 			return $this;
 		}
 
