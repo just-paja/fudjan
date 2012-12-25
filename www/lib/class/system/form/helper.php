@@ -99,6 +99,15 @@ namespace System\Form
 		{
 			$inputs = array();
 
+			if ($el->value && $el->value instanceof \System\Image) {
+				list($w, $h) = explode('x', $el->thumb_size);
+				$inputs[] = \Tag::img(array(
+					"src" => $el->value->thumb($w, $h),
+					"alt" => '',
+					"output" => false,
+				));
+			}
+
 			foreach ($el->tools as $tool) {
 				$inputs[] = self::render_input($tool, false);
 			}

@@ -270,6 +270,7 @@ namespace System
 			}
 
 			if ($attrs['type'] === 'image') {
+				!isset($attrs['thumb_size']) && ($attrs['thumb_size'] = \System\Form\Input::IMAGE_INPUT_SIZE_DEFAULT);
 				$attrs['tools'] = $this->get_image_input_tools($attrs);
 				$attrs['value'] = $this->get_image_input_value($attrs);
 			}
@@ -282,7 +283,6 @@ namespace System
 		{
 			$opts = \System\Form\Input::get_image_input_opts();
 			$action = \System\Form\Input::IMAGE_KEEP;
-			!isset($attrs['thumb_size']) && ($attrs['thumb_size'] = \System\Form\Input::IMAGE_INPUT_SIZE_DEFAULT);
 
 			if (!$attrs['value']) {
 				unset($opts[\System\Form\Input::IMAGE_KEEP]);
@@ -290,8 +290,9 @@ namespace System
 				$action = \System\Form\Input::IMAGE_UPLOAD;
 			}
 
-			if (empty($attrs['required'])) {
+			if (any($attrs['required'])) {
 				unset($opts[\System\Form\Input::IMAGE_NONE]);
+				unset($opts[\System\Form\Input::IMAGE_DROP]);
 			}
 
 			if (empty($attrs['allow_url'])) unset($opts[\System\Form\Input::IMAGE_URL]);
@@ -310,25 +311,39 @@ namespace System
 				"name"     => $attrs['name'].'_file',
 				"type"     => 'file',
 				"label"    => l('form_image_input_file'),
-				"options"  => $opts,
-				"multiple" => true,
+			);
+
+			$input_url_attrs = array(
+				"name"     => $attrs['name'].'_url',
+				"type"     => 'url',
+				"label"    => l('form_image_input_file_url'),
 			);
 
 			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
-			$input_file_attrs['value'] = $this->get_input_value($input_file_attrs);
+			$input_file_attrs['value']   = $this->get_input_value($input_file_attrs);
+			$input_url_attrs['value']    = $this->get_input_value($input_url_attrs);
 
 			$input_action = new \System\Form\Input($input_action_attrs);
-			$input_file = new \System\Form\Input($input_file_attrs);
+			$input_file   = new \System\Form\Input($input_file_attrs);
+			$input_url    = new \System\Form\Input($input_url_attrs);
 
 			$input_action->use_form($this);
 			$input_file->use_form($this);
+			$input_url->use_form($this);
 			$inputs = array();
 
 			if (!(count($opts) === 1 && any($opts[\System\Form\Input::IMAGE_UPLOAD]))) {
 				$inputs[] = $input_action;
 			}
 
-			$inputs[] = $input_file;
+			if (empty($attrs['disallow_upload'])) {
+				$inputs[] = $input_file;
+			}
+
+			if (any($attrs['allow_url'])) {
+				$inputs[] = $input_url;
+			}
+
 			return $inputs;
 		}
 
@@ -340,17 +355,31 @@ namespace System
 			if ($this->submited) {
 				$name_action = $attrs['name'].'_action';
 				$name_file   = $attrs['name'].'_file';
+				$name_url    = $attrs['name'].'_url';
 
 				$action = $this->get_input_value_by_name($name_action);
-				$file = $this->get_input_value_by_name($name_action);
+				$file   = $this->get_input_value_by_name($name_file);
+				$url    = $this->get_input_value_by_name($name_url);
 
 				if ($action == \System\Form\Input::IMAGE_KEEP) {
 					$value = $this->get_input_value_by_name($attrs['name'], true);
 				}
 
 				if ($action == \System\Form\Input::IMAGE_UPLOAD || is_null($action)) {
-					$value = $this->get_input_value_by_name($name_file);
+					$value = $file;
 					$value = \System\Image::from_path($value['tmp_name']);
+					$value->tmp = true;
+				}
+
+				if ($action == \System\Form\Input::IMAGE_URL || (is_null($value) && is_null($action))) {
+					$f = \System\File::fetch($url);
+					$value = \System\Image::from_path($f->tmp_name);
+					$value->tmp = true;
+				}
+
+				if (!$value->is_image()) {
+					$value = null;
+					$this->report_error($name_file, l('form_input_image_is_not_image'));
 				}
 
 				if ($action == \System\Form\Input::IMAGE_DROP) {
