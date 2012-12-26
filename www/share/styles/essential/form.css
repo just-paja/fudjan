@@ -153,3 +153,23 @@
 .yaform .input-left .input-container {
 	width:auto;
 }
+
+.yaform .input-image {
+	border:1px solid rgba(0,0,0,0.15);
+	padding:5px;
+	background:rgba(0,0,0,0.05);
+}
+
+.yaform .input-image .im-options {
+	display:inline-block;
+	vertical-align:top;
+}
+
+.yaform .input-image img {
+	margin:0 5px 5px 0;
+	vertical-align:top;
+}
+
+.yaform .input-image .input {
+	margin:5px;
+}

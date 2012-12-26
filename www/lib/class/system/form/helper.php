@@ -108,12 +108,20 @@ namespace System\Form
 				));
 			}
 
+			$to = array("output" => false, "class" => 'im-options', "content" => array());
+
 			foreach ($el->tools as $tool) {
-				$inputs[] = self::render_input($tool, false);
+				$to['content'][] = \Tag::div(array(
+					"class"   => 'input',
+					"output"  => false,
+					"content" => self::render_input($tool, false),
+				));
 			}
 
+			$inputs[] = \Tag::div($to);
+
 			return \Tag::div(array(
-				"class" => array('input-container'),
+				"class" => array('input-container', 'input-image'),
 				"output" => false,
 				"content" => $inputs,
 			));
