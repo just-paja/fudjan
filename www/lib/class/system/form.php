@@ -377,7 +377,9 @@ namespace System
 					$value->tmp = true;
 				}
 
-				if (!$value->is_image()) {
+				if ($value->is_image()) {
+					$value->cache();
+				} else {
 					$value = null;
 					$this->report_error($name_file, l('form_input_image_is_not_image'));
 				}

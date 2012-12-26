@@ -101,10 +101,15 @@ namespace System\Form
 
 			if ($el->value && $el->value instanceof \System\Image) {
 				list($w, $h) = explode('x', $el->thumb_size);
-				$inputs[] = \Tag::img(array(
-					"src" => $el->value->thumb($w, $h),
-					"alt" => '',
-					"output" => false,
+				$inputs[] = \Tag::a(array(
+					"href"    => $el->value->get_path(),
+					"class"   => 'new',
+					"output"  => false,
+					"content" => \Tag::img(array(
+						"src" => $el->value->thumb($w, $h),
+						"alt" => '',
+						"output" => false,
+					))
 				));
 			}
 
