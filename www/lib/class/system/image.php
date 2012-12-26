@@ -8,13 +8,14 @@ namespace System
 		const DIR_TMP = '/var/tmp';
 		const DIR_THUMBS = '/var/thumbs';
 		const FILE_BAD_THUMB = '/share/pixmaps/pwf/bad_thumb.jpg';
+		const IMG_JPEG_OLD = 3;
 
 		private static $bad_thumb = null;
 
 		public static $gd_formats = array(
 			IMG_GIF  => "gif",
 			IMG_JPG  => "jpg",
-			IMG_JPEG => "jpg",
+			self::IMG_JPEG_OLD => "jpg",
 			IMG_PNG  => "png",
 		);
 
@@ -364,6 +365,16 @@ namespace System
 					}
 				}
 			}
+
+			return $this;
+		}
+
+
+		public function cache()
+		{
+			$tmp_path = ROOT.self::DIR_TMP.'/'.$this->get_file_hash().'.'.self::get_suffix($this->get_format());
+			copy($this->get_path(true), $tmp_path);
+			$this->file_path = $tmp_path;
 
 			return $this;
 		}
