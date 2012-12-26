@@ -286,13 +286,11 @@ namespace System
 
 			if (!$attrs['value']) {
 				unset($opts[\System\Form\Input::IMAGE_KEEP]);
-				unset($opts[\System\Form\Input::IMAGE_DROP]);
 				$action = \System\Form\Input::IMAGE_UPLOAD;
 			}
 
 			if (any($attrs['required'])) {
 				unset($opts[\System\Form\Input::IMAGE_NONE]);
-				unset($opts[\System\Form\Input::IMAGE_DROP]);
 			}
 
 			if (empty($attrs['allow_url'])) unset($opts[\System\Form\Input::IMAGE_URL]);
@@ -316,7 +314,7 @@ namespace System
 			$input_url_attrs = array(
 				"name"     => $attrs['name'].'_url',
 				"type"     => 'url',
-				"label"    => l('form_image_input_file_url'),
+				"label"    => l('form_image_input_url'),
 			);
 
 			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
@@ -384,8 +382,8 @@ namespace System
 					$this->report_error($name_file, l('form_input_image_is_not_image'));
 				}
 
-				if ($action == \System\Form\Input::IMAGE_DROP) {
-					$value = \System\Image::from_scratch;
+				if ($action == \System\Form\Input::IMAGE_NONE) {
+					$value = \System\Image::from_scratch();
 				}
 
 				$this->data_commited[$attrs['name']] = $value;
