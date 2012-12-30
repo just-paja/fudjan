@@ -173,3 +173,108 @@
 .yaform .input-image .input {
 	margin:5px;
 }
+
+.yaform .datetime_picker .head {
+	padding:0;
+}
+
+.yaform .datetime_picker .calendar {
+	border:1px solid #ccc;
+	box-shadow:0 0 10px rgba(0,0,0,0.5);
+	background:rgba(0,0,0,0.75);
+	border-radius:8px;
+	padding:5px;
+	display:none;
+	position:absolute;
+	z-index:10000
+}
+
+.yaform .datetime_picker .day {
+	display:block;
+	width:20px;
+	height:20px;
+	line-height:20px;
+	float:left;
+	margin:2px;
+	padding:1px 2px;
+	text-align:center;
+	border-radius:3px;
+}
+
+.yaform .datetime_picker .head .day {
+	padding:0px 3px;
+	color:#ccc;
+}
+
+.yaform .datetime_picker .body .day {
+	border:1px solid rgba(255,255,255,0.25);
+}
+
+.yaform .datetime_picker .day.inactive {
+	color:#999
+}
+
+.yaform .datetime_picker .day.active {
+	color:#fff;
+	cursor:pointer;
+}
+
+.yaform .datetime_picker .day.active:hover {
+	background:rgba(255,255,255,0.25)
+}
+
+.yaform .datetime_picker .calendar .week_start {
+	clear:left;
+}
+
+.yaform .cleaner {
+	clear:both;
+	display:block;
+}
+
+.yaform .datetime_picker .cal {
+	width:20px;
+	height:20px;
+	background:#ccc;
+	display:inline-block;
+	vertical-align:top;
+	margin:0 5px 0 3px;
+}
+
+.yaform .datetime_picker input.time {
+	width:2em;
+	border:none;
+	background:none;
+	margin:0;
+	display:inline-block;
+	text-align:center;
+}
+
+.yaform .datetime_picker .container_time,
+.yaform .datetime_picker .container_date
+{
+	display:inline-block;
+}
+
+.yaform .datetime_picker input.date,
+.yaform .datetime_picker .container_time
+{
+	border:1px solid #ccc;
+	border-radius:3px;
+	width:auto;
+	min-width:0;
+	padding:2px;
+}
+
+.yaform .datetime_picker input.date {
+	width:8em;
+}
+
+.yaform .datetime_picker .controls {
+	position:relative;
+	padding:2px 0;
+	text-align:center;
+	color:#fff;
+	background:rgba(255,255,255,.25);
+	top:-5px;
+}
