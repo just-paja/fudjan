@@ -178,7 +178,6 @@ pwf.register('datetime_picker', function()
 				var date = typeof val !== 'undefined' && val.length > 0 ? new Date(val):new Date();
 
 				date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
-				date.setTime(date.getTime() + date.getTimezoneOffset()*60000);
 				return date;
 			};
 
@@ -193,10 +192,7 @@ pwf.register('datetime_picker', function()
 					day = date.getUTCDate() + '',
 					hrs = date.getUTCHours() + '',
 					min = date.getUTCMinutes() + '',
-					sec = date.getUTCSeconds() + '',
-					tzbase = date.getTimezoneOffset(),
-					tzh = (Math.floor(tzbase/60) * (tzbase >= 0 ? 1:-1)) + '',
-					tzm = ((tzbase%60) * 60) + '';
+					sec = date.getUTCSeconds() + '';
 
 				this.el('input_date').val(day + '.' + mon + '.' + yrs);
 
@@ -205,15 +201,12 @@ pwf.register('datetime_picker', function()
 				(hrs.length <= 1) && (hrs = '0' + hrs);
 				(min.length <= 1) && (min = '0' + min);
 				(sec.length <= 1) && (sec = '0' + sec);
-				(tzh.length <= 1) && (tzh = '0' + tzh);
-				(tzm.length <= 1) && (tzm = '0' + tzm);
 
 				(skip !== 'hrs') && this.el('input_hours').val(hrs);
 				(skip !== 'min') && this.el('input_minutes').val(min);
 				(skip !== 'sec') && this.el('input_seconds').val(sec);
 
-				var tz = (tzbase >= 0 ? '+':'-') + tzh + ':' + tzm;
-				var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + tz;
+				var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + '+00:00';
 				this.el('input').attr('value', val);
 				return this;
 			};
