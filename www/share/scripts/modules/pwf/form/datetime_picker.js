@@ -16,7 +16,10 @@ pwf.register('datetime_picker', function()
 				attrs = {
 					"id":el.attr('id'),
 					"on":false,
-					"week_start":1
+					"week_start":1,
+					"seconds":false,
+					"minutes":true,
+					"hours":true
 				},
 				els = {
 					"container":null,
@@ -64,17 +67,38 @@ pwf.register('datetime_picker', function()
 				this.el('time_separator', '<span class="sep">:</span>');
 
 				this.el('container_date').append([this.el('input_date'), this.el('icon_calendar')]);
-				this.el('container_time').append([
-					this.el('input_hours'),
-					this.el('time_separator'),
-					this.el('input_minutes'),
-					this.el('time_separator'),
-					this.el('input_seconds')
-				]);
+
+				if (this.attr('hours')) {
+					this.el('container_time').append(this.el('input_hours'));
+
+					if (this.attr('minutes') || this.attr('seconds')) {
+						this.el('container_time').append(this.el('time_separator'));
+					}
+				}
+
+				if (this.attr('minutes')) {
+					this.el('container_time').append(this.el('input_minutes'));
+
+					if (this.attr('seconds')) {
+						this.el('container_time').append(this.el('time_separator'));
+					}
+				}
+
+				if (this.attr('seconds')) {
+					this.el('container_time').append(this.el('input_seconds'));
+				}
+
 				this.el('container').append([this.el('container_date'), this.el('container_time')]);
+				this.el('input_hours').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'hrs', "el":this.el('input_hours')}, callback_timeinput);
+				this.el('input_minutes').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'min', "el":this.el('input_minutes')}, callback_timeinput);
+				this.el('input_seconds').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'sec', "el":this.el('input_seconds')}, callback_timeinput);
 
 				this.el('input')
 					.addClass('hidden')
+					.unbind('click.pwf_datetime_picker')
+					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
+
+				this.el('input_date')
 					.unbind('click.pwf_datetime_picker')
 					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
 
@@ -82,12 +106,6 @@ pwf.register('datetime_picker', function()
 					.unbind('click.pwf_datetime_picker')
 					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
 
-			};
-
-
-			var callback_calendar = function(e) {
-				e.preventDefault();
-				e.data.obj.switch_visibility();
 			};
 
 
@@ -122,79 +140,19 @@ pwf.register('datetime_picker', function()
 				if (typeof month === 'undefined') {
 					var date = this.get_date();
 				} else {
-					var date = new Date(year, month);
+					var date = new Date(Date.UTC(year, month, 1));
 				}
 
-				var days = get_day_count(date.getUTCMonth()+1);
-				var day_def = get_day_def();
-				var head = $('<ul class="head"></ul>');
-				var body = $('<ul class="body"></ul>');
-				var controls = $('<div class="controls"></div>');
-				var cpp = $('<span class="cpp">&lt;&lt;</span>');
-				var cnn = $('<span class="cnn">&gt;&gt;</span>');
-				var cp =  $('<span class="cp">&lt;</span>');
-				var cn =  $('<span class="cn">&gt;</span>');
-				var cd = '<span class="month_name">' + get_month(date.getUTCMonth()+1)[2] + ' ' + date.getUTCFullYear() + '</span>';
-				var cleaner = '<span class="cleaner"></span>';
+				date.setUTCHours(0);
+				date.setUTCMinutes(0);
+				date.setUTCSeconds(0);
+
+				var days = get_day_count(date.getUTCMonth());
 				var start = get_cal_month_start(this.attr('week_start'), date);
 				var end = get_cal_month_end(this.attr('week_start'), date);
-				var current = new Date(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate());
+				var current = new Date(start.getTime());
 
-				controls.append([cpp, cp, cd, cn, cnn]);
-
-				cpp.bind('click', {"obj":this, "date":date}, function(e) {
-					e.preventDefault();
-					e.data.obj.create_month_grid(date.getUTCFullYear()-1, date.getUTCMonth());
-				});
-
-				cnn.bind('click', {"obj":this, "date":date}, function(e) {
-					e.preventDefault();
-					e.data.obj.create_month_grid(date.getUTCFullYear()+1, date.getUTCMonth());
-				});
-
-				cp.bind('click', {"obj":this, "date":date}, function(e) {
-					e.preventDefault();
-					e.data.obj.create_month_grid(date.getUTCFullYear(), date.getUTCMonth()-1);
-				});
-
-				cn.bind('click', {"obj":this, "date":date}, function(e) {
-					e.preventDefault();
-					e.data.obj.create_month_grid(date.getUTCFullYear(), date.getUTCMonth()+1);
-				});
-
-
-				for (var i = 0; i<day_def.length; i++) {
-					head.append('<li class="day">'+day_def[i][1]+'</li>');
-				}
-
-				while (current.getTime() <= end.getTime()) {
-					var day = $('<li>'+current.getUTCDate()+'</li>');
-					var day_class = ['day'];
-
-					if (current.getUTCMonth() === date.getUTCMonth()) {
-						day_class.push('active');
-					} else {
-						day_class.push('inactive');
-					}
-
-					if (current.getUTCDay() === this.attr('week_start')) {
-						day_class.push('week_start');
-					}
-
-					day.addClass(day_class.join(' '));
-					day.bind('click', {"obj":this, "date":current.getTime()}, function(e) {
-						e.preventDefault();
-						e.stopPropagation();
-						e.data.obj.select_date(e.data.date);
-					});
-
-					body.append(day);
-					current.setTime(current.getTime()+86400*1000);
-				}
-
-
-				this.el('calendar').html('');
-				this.el('calendar').append([controls, head, body, cleaner]);
+				create_month_grid_html(this, days, date, start, end, current);
 				this.el('container').append(this.el('calendar'));
 				this.attr('on', true);
 				return this;
@@ -210,7 +168,25 @@ pwf.register('datetime_picker', function()
 				date.setUTCHours(current.getUTCHours());
 				date.setUTCMinutes(current.getUTCMinutes());
 				date.getUTCSeconds(current.getUTCSeconds());
+				this.update_value(date);
+			};
 
+
+			this.get_date = function()
+			{
+				var val = this.el('input').val();
+				var date = typeof val !== 'undefined' && val.length > 0 ? new Date(val):new Date();
+
+				date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
+				date.setTime(date.getTime() + date.getTimezoneOffset()*60000);
+				return date;
+			};
+
+
+			this.update_value = function(date, skip)
+			{
+				var date = typeof date === 'undefined' ? this.get_date():date;
+				var skip = typeof skip === 'undefined' ? false:skip;
 				var
 					yrs = date.getUTCFullYear() + '',
 					mon = (date.getUTCMonth() + 1) + '',
@@ -232,110 +208,229 @@ pwf.register('datetime_picker', function()
 				(tzh.length <= 1) && (tzh = '0' + tzh);
 				(tzm.length <= 1) && (tzm = '0' + tzm);
 
-				this.el('input_hours').val(hrs);
-				this.el('input_minutes').val(min);
-				this.el('input_seconds').val(sec);
+				(skip !== 'hrs') && this.el('input_hours').val(hrs);
+				(skip !== 'min') && this.el('input_minutes').val(min);
+				(skip !== 'sec') && this.el('input_seconds').val(sec);
 
 				var tz = (tzbase >= 0 ? '+':'-') + tzh + ':' + tzm;
 				var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + tz;
 				this.el('input').attr('value', val);
-
-				v(this.el('input').attr('value'));
-			};
-
-
-			var get_cal_month_start = function(week_start, date)
-			{
-				var start = new Date(date.getUTCFullYear(), date.getUTCMonth(), 1);
-
-				while (start.getUTCDay() !== week_start) {
-					start.setTime(start.getTime()-86400*1000);
-				}
-
-				return start;
-			};
-
-
-			var get_cal_month_end = function(week_start, date)
-			{
-				var end = new Date(date.getUTCFullYear(), date.getUTCMonth(), get_day_count(date.getUTCMonth()+1));
-
-				while (true) {
-					end.setTime(end.getTime()+86400*1000);
-
-					if (end.getDay() === week_start) {
-						end.setTime(end.getTime()-86400*1000);
-						break;
-					}
-				}
-
-				return end;
-			};
-
-
-			this.get_date = function()
-			{
-				var val = this.el('input').val();
-				v(['from_input', val]);
-				return typeof val !== 'undefined' && val.length > 0 ? new Date(val):new Date();
-			};
-
-			var get_day_count = function(month)
-			{
-				return new Date(get_year(), month, 0).getUTCDate();
-			};
-
-
-			var get_year = function()
-			{
-				return (new Date()).getUTCFullYear();
-			};
-
-			var get_day_def = function()
-			{
-				return [
-					[1, "Po", "Pondělí"],
-					[2, "Út", "Úterý"],
-					[3, "St", "Středa"],
-					[4, "Čt", "Čtvrtek"],
-					[5, "Pá", "Pátek"],
-					[6, "So", "Sobota"],
-					[0, "Ne", "Neděle"]
-				];
-			};
-
-
-			var get_month_def = function()
-			{
-				return [
-					[1,  "Led", "Leden"],
-					[2,  "Úno", "Únor"],
-					[3,  "Bře", "Březen"],
-					[4,  "Dub", "Duben"],
-					[5,  "Kvě", "Květen"],
-					[6,  "Čer", "Červen"],
-					[7,  "Čec", "Červenec"],
-					[8,  "Srp", "Srpen"],
-					[9,  "Zář", "Září"],
-					[10, "Říj", "Říjen"],
-					[11, "Lis", "Listopad"],
-					[12, "Pro", "Prosinec"],
-				]
-			};
-
-
-			var get_month = function(id)
-			{
-				var months = get_month_def();
-				for (var i=0; i<months.length; i++) {
-					if (months[i][0] === id) {
-						return months[i];
-					}
-				}
-
-				return null;
+				return this;
 			};
 		};
+
+
+	var get_day_count = function(month)
+	{
+		return new Date(Date.UTC(get_year(), month, 0)).getUTCDate();
+	};
+
+
+	var get_year = function()
+	{
+		return (new Date()).getUTCFullYear();
+	};
+
+
+	var get_day_def = function()
+	{
+		return [
+			[1, "Po", "Pondělí"],
+			[2, "Út", "Úterý"],
+			[3, "St", "Středa"],
+			[4, "Čt", "Čtvrtek"],
+			[5, "Pá", "Pátek"],
+			[6, "So", "Sobota"],
+			[0, "Ne", "Neděle"]
+		];
+	};
+
+
+	var get_month_def = function()
+	{
+		return [
+			[1,  "Led", "Leden"],
+			[2,  "Úno", "Únor"],
+			[3,  "Bře", "Březen"],
+			[4,  "Dub", "Duben"],
+			[5,  "Kvě", "Květen"],
+			[6,  "Čer", "Červen"],
+			[7,  "Čec", "Červenec"],
+			[8,  "Srp", "Srpen"],
+			[9,  "Zář", "Září"],
+			[10, "Říj", "Říjen"],
+			[11, "Lis", "Listopad"],
+			[12, "Pro", "Prosinec"],
+		]
+	};
+
+
+	var get_month = function(id)
+	{
+		var months = get_month_def();
+		for (var i=0; i<months.length; i++) {
+			if (months[i][0] === id) {
+				return months[i];
+			}
+		}
+
+		return null;
+	};
+
+
+	var create_month_grid_html = function(obj, days, date, start, end, current)
+	{
+		var day_def = get_day_def();
+		var head = $('<ul class="head"></ul>');
+		var body = $('<ul class="body"></ul>');
+		var controls = $('<div class="controls"></div>');
+		var cpp = $('<span class="cpp">&lt;&lt;</span>');
+		var cnn = $('<span class="cnn">&gt;&gt;</span>');
+		var cp =  $('<span class="cp">&lt;</span>');
+		var cn =  $('<span class="cn">&gt;</span>');
+		var cd = '<span class="month_name">' + get_month(date.getUTCMonth()+1)[2] + ' ' + date.getUTCFullYear() + '</span>';
+		var cleaner = '<span class="cleaner"></span>';
+
+		controls.append([cpp, cp, cd, cn, cnn]);
+
+		cpp.bind('click', {"obj":obj, "date":date}, function(e) {
+			e.data.obj.create_month_grid(e.data.date.getUTCFullYear()-1, e.data.date.getUTCMonth());
+			e.preventDefault();
+		});
+
+		cnn.bind('click', {"obj":obj, "date":date}, function(e) {
+			e.data.obj.create_month_grid(e.data.date.getUTCFullYear()+1, e.data.date.getUTCMonth());
+			e.preventDefault();
+		});
+
+		cp.bind('click', {"obj":obj, "date":date}, callback_calendar_cp);
+		cn.bind('click', {"obj":obj, "date":date}, callback_calendar_cn);
+
+		for (var i = 0; i<day_def.length; i++) {
+			head.append('<li class="day">'+day_def[i][1]+'</li>');
+		}
+
+		while (current.getTime() <= end.getTime()) {
+			var day = $('<li>'+current.getUTCDate()+'</li>');
+			var day_class = ['day'];
+
+			if (current.getUTCMonth() === date.getUTCMonth()) {
+				day_class.push('active');
+			} else {
+				day_class.push('inactive');
+			}
+
+			if (current.getUTCDay() === obj.attr('week_start')) {
+				day_class.push('week_start');
+			}
+
+			day.addClass(day_class.join(' '));
+			day.bind('click', {"obj":obj, "date":current.getTime()}, function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				e.data.obj.select_date(e.data.date);
+			});
+
+			body.append(day);
+			current.setTime(current.getTime()+(86400*1000));
+		}
+
+		obj.el('calendar').html('');
+		obj.el('calendar').append([controls, head, body, cleaner]);
+	};
+
+
+	var get_cal_month_start = function(week_start, date)
+	{
+		var start = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1));
+		start.setHours(0);
+
+		while (start.getUTCDay() !== week_start) {
+			start.setTime(start.getTime()-86400*1000);
+		}
+
+		return start;
+	};
+
+
+	var get_cal_month_end = function(week_start, date)
+	{
+		var added = 0;
+		var end = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), get_day_count(date.getUTCMonth()+1)));
+		end.setHours(0);
+
+		if (end.getDay() == week_start) {
+			end.setTime(end.getTime()+86400*1000);
+		}
+
+		while (true) {
+			end.setTime(end.getTime()+86400*1000);
+			added ++;
+
+			if (end.getUTCDay() === week_start) {
+				end.setTime(end.getTime()-86400*1000);
+				break;
+			}
+		}
+
+		return end;
+	};
+
+
+	var callback_calendar_cp = function(e)
+	{
+		var mon = e.data.date.getUTCMonth()-1, yrs = e.data.date.getUTCFullYear();
+
+		if (mon < 0) {
+			yrs = yrs - 1;
+			mon = 12 + mon;
+		}
+
+		e.data.obj.create_month_grid(yrs, mon);
+		e.preventDefault();
+	};
+
+
+	var callback_calendar_cn = function(e)
+	{
+		var mon = e.data.date.getUTCMonth()+1, yrs = e.data.date.getUTCFullYear();
+
+		if (mon > 12) {
+			yrs = yrs + Math.floor(mon/12);
+			mon = mon-12;
+		}
+
+		e.data.obj.create_month_grid(yrs, mon);
+		e.preventDefault();
+	};
+
+
+	var callback_timeinput = function(e)
+	{
+		var val  = e.data.el.val();
+		var date = e.data.obj.get_date();
+
+		if (e.data.type === 'hrs') {
+			date.setUTCHours(val);
+		}
+
+		if (e.data.type === 'min') {
+			date.setUTCMinutes(val);
+		}
+
+		if (e.data.type === 'sec') {
+			date.setUTCSeconds(val);
+		}
+
+		e.data.obj.update_value(date, e.data.type);
+	};
+
+
+	var callback_calendar = function(e) {
+		e.preventDefault();
+		e.data.obj.switch_visibility();
+	};
+
 
 	this.init = function()
 	{
@@ -362,6 +457,7 @@ pwf.register('datetime_picker', function()
 			var inst = new class_datetime_picker(el);
 			instances[el.attr('id')] = inst;
 			inst.create_html_structure();
+			inst.update_value();
 		}
 
 		return this.get_instance(el.attr('id'));

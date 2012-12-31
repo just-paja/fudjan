@@ -272,9 +272,25 @@
 
 .yaform .datetime_picker .controls {
 	position:relative;
-	padding:2px 0;
+	padding:3px 5px;
+	width:100%;
 	text-align:center;
 	color:#fff;
 	background:rgba(255,255,255,.25);
 	top:-5px;
+	left:-5px;
 }
+
+.yaform .datetime_picker .cpp,
+.yaform .datetime_picker .cnn,
+.yaform .datetime_picker .cp,
+.yaform .datetime_picker .cn
+{
+	position:absolute;
+	cursor:pointer;
+}
+
+.yaform .datetime_picker .cpp { left:5px }
+.yaform .datetime_picker .cnn { right:5px }
+.yaform .datetime_picker .cp { left:30px }
+.yaform .datetime_picker .cn { right:30px }
