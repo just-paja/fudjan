@@ -294,8 +294,6 @@
 			self::sync();
 
 			out("Rolling migrations ..");
-			out("");
-
 			self::migrate(false);
 		}
 
@@ -396,14 +394,19 @@
 		{
 			\System\Init::full();
 			$data = System\Json::read_dist(ROOT.System\Database::DIR_INITIAL_DATA);
+			out("Injecting initial data ..");
 
 			foreach ($data as $table => $data_set) {
-				foreach ($data_set as $key => $tdata) {
-					$add_dates = self::table_column_exists($table, 'created_at');
-					out("Using data set '".$table."': ", false);
+				$msg_work = substr($table, 0, 25).(strlen($table) > 25 ? '..':'');
+				$x = 0;
+				$total = count($data_set);
+				show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), null, $msg_work);
 
+				foreach ($data_set as $key => $tdata) {
+					$x++;
+					$add_dates = self::table_column_exists($table, 'created_at');
 					System\Database::simple_insert($table, $tdata, $add_dates);
-					out("ok");
+					show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), null, $msg_work);
 				}
 			}
 		}
@@ -601,7 +604,6 @@
 			$params = CLIOptions::get('params');
 			(empty($params) || in_array('structure', $params)) && self::sync_structure();
 			(empty($params) || in_array('relations', $params)) && self::sync_relations();
-			(empty($params) || in_array('data', $params)) && self::sync_contents();
 		}
 
 
@@ -629,12 +631,6 @@
 		public static function sync_relations()
 		{
 			out('Syncing foreign keys is not implemented yet');
-		}
-
-
-		public static function sync_contents()
-		{
-			out('Syncing contents is not implemented yet');
 		}
 	}
 
