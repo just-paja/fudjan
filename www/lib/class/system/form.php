@@ -38,6 +38,7 @@ namespace System
 		protected $counts = array();
 		protected $errors = array();
 
+		private static $inputs_datetime = array("datetime", "date", "time");
 
 		/** Constructor addon
 		 * @return void
@@ -275,6 +276,11 @@ namespace System
 				$attrs['value'] = $this->get_image_input_value($attrs);
 			}
 
+
+			if (in_array($attrs['type'], self::$inputs_datetime)) {
+				$attrs['value'] = $this->get_datetime_input_value($attrs);
+			}
+
 			return $this->rendering['group']->add_element(new \System\Form\Input($attrs));
 		}
 
@@ -391,6 +397,23 @@ namespace System
 
 			return $value;
 		}
+
+
+		private function get_datetime_input_value(array $attrs)
+		{
+			$value = $this->get_input_value($attrs);
+
+			if (!is_object($value)) {
+				$value = new \DateTime($value);
+			}
+
+			if ($this->submited) {
+				$this->data_commited[$attrs['name']] = $value;
+			}
+
+			return $value;
+		}
+
 
 		/** Add label
 		 * @param string $text
