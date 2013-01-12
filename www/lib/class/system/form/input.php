@@ -5,6 +5,7 @@ namespace System\Form
 	class Input extends \System\Form\Element
 	{
 		protected static $attrs = array(
+			"id"           => array("varchar"),
 			"name"         => array("varchar"),
 			"type"         => array("varchar"),
 			"label"        => array("varchar"),
