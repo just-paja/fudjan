@@ -117,8 +117,12 @@ namespace System
 				$value = $this->data_default[$attrs['name']];
 			}
 
-			if ($this->submited && isset($this->data_commited[$attrs['name']])) {
-				$value = $this->data_commited[$attrs['name']];
+			if ($this->submited) {
+				if (isset($this->data_commited[$attrs['name']])) {
+					$value = $this->data_commited[$attrs['name']];
+				} else {
+					unset($attrs['value']);
+				}
 			}
 
 			return $value;
@@ -266,7 +270,7 @@ namespace System
 
 			if (in_array($attrs['type'], array('checkbox', 'radio'))) {
 				if ($this->submited) {
-					$attrs['checked'] = $this->data_commited[$attrs['name']];
+					$attrs['checked'] = !!$this->data_commited[$attrs['name']];
 				}
 			}
 
