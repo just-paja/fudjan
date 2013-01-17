@@ -167,6 +167,15 @@ namespace System\Form
 		{
 			$opts = array();
 
+			if (!$el->required) {
+				$opts[] = \Tag::option(array(
+					"content" => ' - - - ',
+					"value"   => '',
+					"output"  => false,
+					"selected" => !$el->value,
+				));
+			}
+
 			foreach ($el->options as $label=>$opt) {
 				$opts[] = \Tag::option(array(
 					"content"  => $label,
