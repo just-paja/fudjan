@@ -271,6 +271,8 @@ namespace System
 			if (in_array($attrs['type'], array('checkbox', 'radio'))) {
 				if ($this->submited) {
 					$attrs['checked'] = !!$this->data_commited[$attrs['name']];
+				} else {
+					$attrs['checked'] = isset($this->data_default[$attrs['name']]) && $this->data_default[$attrs['name']];
 				}
 			}
 
