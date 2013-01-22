@@ -343,8 +343,9 @@ namespace System
 
 		public function update_attrs(array $dataray)
 		{
+			parent::update_attrs($dataray);
+
 			!isset($dataray['src']) && $dataray['src'] = '';
-			$this->src = $dataray['src'];
 			$this->allow_save = $this->src == 'upload' || $this->src == 'copy' || $this->src == 'migration';
 
 			if (!($this->to_be_deleted = $dataray['src'] == 'none')) {
@@ -356,12 +357,6 @@ namespace System
 						$this->read_dimensions();
 					} else {
 						message('error', _('Ukládání obrázku selhalo'));
-					}
-				} else {
-					foreach ($dataray as $attr=>$value) {
-						if (property_exists($this, $attr)) {
-							$this->$attr = $value;
-						}
 					}
 				}
 			}
