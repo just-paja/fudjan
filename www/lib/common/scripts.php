@@ -36,7 +36,7 @@ if (is_dir(DIR_MODULES)) {
 		if (file_exists($p = DIR_MODULES."/".$module . '.js')) {
 			require_once($p);
 		} else {
-			echo 'clog("Module not found: '.$module.'");';
+			echo 'v("Module not found: '.$module.'");';
 		}
 	}
 }
