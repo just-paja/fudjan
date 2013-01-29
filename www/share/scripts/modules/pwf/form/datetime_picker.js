@@ -433,8 +433,13 @@ pwf.register('datetime_picker', function()
 
 	this.scan = function(container)
 	{
-		var container = typeof container === 'undefined' ? $('body'):container;
-		var els = container.find(selectors.join(', '));
+		var els;
+
+		if (typeof container === 'undefined') {
+			els = $(selectors.join(', '));
+		} else {
+			els = container.find(selectors.join(', '));
+		}
 
 		for (var i = 0; i < els.length; i++) {
 			this.bind($(els[i]));
