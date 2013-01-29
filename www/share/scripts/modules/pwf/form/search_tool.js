@@ -136,8 +136,16 @@ pwf.register('search_tool', function()
 					display = this.attr('display'),
 					result = [];
 
-				for (var i = 0; i < display.length; i++) {
-					result.push(item[display[i]]);
+				if (display === null) {
+					for (var i in item) {
+						if (item[i] !== null) {
+							result.push(item[i]);
+						}
+					}
+				} else {
+					for (var i = 0; i < display.length; i++) {
+						result.push(item[display[i]]);
+					}
 				}
 
 				return result.join(' ');

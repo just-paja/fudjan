@@ -13,14 +13,15 @@ $limit   = System\Input::get('limit');
 
 if ($model) {
 
-	if (!in_array('id', $display)) {
-		$display[] = 'id';
-	}
-
 	!is_array($display) && ($display = array('id', 'name'));
+	!is_array($filter) && ($filter = array());
 	!is_array($conds) && ($conds = array());
 	!is_array($has) && ($has = array());
 	!$limit && ($limit = 10);
+
+	if (!in_array('id', $display)) {
+		$display[] = 'id';
+	}
 
 	$conds_val = array();
 	$result = array();
@@ -46,7 +47,7 @@ if ($model) {
 		$target = array();
 
 		foreach ($display as $attr) {
-			if (method_exists($object, $attr)) {
+			if (!$object->has_attr($attr) && method_exists($object, $attr)) {
 				$target[$attr] = $object->$attr();
 			} else {
 				$target[$attr] = $object->$attr;
