@@ -31,7 +31,10 @@ namespace System
 			self::report('fatal', $desc);
 			//!Settings::get('dev', 'debug') && ob_end_clean();
 			$format = Output::get_format() ? Output::get_format():'html';
-			require ROOT."/lib/template/errors/bug.".$format.".php";
+
+			if (file_exists($f = ROOT."/lib/template/errors/bug.".$format.".php")) {
+				require $f;
+			} else require ROOT."/lib/template/errors/bug.html.php";
 			exit;
 		}
 
