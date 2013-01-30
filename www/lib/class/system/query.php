@@ -118,32 +118,35 @@ namespace System
 
 		public function where(array $conds, $table_alias = null, $or = false)
 		{
-			if ($or) {
-				$temp = array();
-			} else {
-				$temp = &$this->conds;
-			}
+			if (any($conds)) {
+				if ($or) {
+					$temp = array();
+				} else {
+					$temp = &$this->conds;
+				}
 
-			$ta = $this->resolve_table_alias($table_alias);
+				$ta = $this->resolve_table_alias($table_alias);
 
-			if (!empty($conds)) {
-				foreach ($conds as $col=>$condition) {
-					if (is_array($condition)) {
-						$this->where($condition, $table_alias, !$or);
-						continue;
-					} if (is_object($condition)) {
-						throw new \CatchableException("Query condition cannot be an object");
-					} elseif (is_numeric($col) && !is_array($condition)) {
-						if (strval($condition)) {
-							$temp[] = "$condition";
+				if (!empty($conds)) {
+					foreach ($conds as $col=>$condition) {
+						if (is_array($condition)) {
+							$this->where($condition, $table_alias, !$or);
+							continue;
+						} if (is_object($condition)) {
+							throw new \CatchableException("Query condition cannot be an object");
+						} elseif (is_numeric($col) && !is_array($condition)) {
+							if (strval($condition)) {
+								$temp[] = "$condition";
+							}
+						} else {
+							$temp[] = $ta."`$col` = '$condition'";
 						}
-					} else {
-						$temp[] = $ta."`$col` = '$condition'";
 					}
 				}
+
+				if ($or) $this->conds[] = "(".join(" OR ", $temp).")";
 			}
 
-			if ($or) $this->conds[] = "(".join(" OR ", $temp).")";
 			return $this;
 		}
 
