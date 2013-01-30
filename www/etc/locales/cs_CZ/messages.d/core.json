@@ -1,12 +1,23 @@
 {
 	"form_image_input_action":"Operace s obrázkem",
 	"form_image_input_none":"Žádný obrázek",
-	"form_image_input_keep":"Ponechat obrázek",
+	"form_image_input_keep":"Ponechat stávající",
 	"form_image_input_upload":"Nahrát obrázek",
 	"form_image_input_url":"Použít URL",
 	"form_image_input_drop":"Smazat obrázek",
 	"form_image_input_file":"Soubor s obrázkem",
 	"form_image_input_url":"URL obrázku",
+
+	"form_location_input_action":"Operace s místem",
+	"form_location_input_none":"Žádné místo",
+	"form_location_input_keep":"Ponechat stávající",
+	"form_location_input_new":"Zadat nové",
+	"form_location_input_existing":"Použít existující",
+	"form_location_input_name":"Název",
+	"form_location_input_addr":"Adresa",
+	"form_location_input_site":"Web",
+	"form_location_input_lon":"Zeměpisná délka",
+	"form_location_input_lat":"Zeměpisná šířka",
 
 	"end":""
 }

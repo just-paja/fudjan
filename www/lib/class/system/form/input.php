@@ -60,18 +60,26 @@ namespace System\Form
 			'password',
 		);
 
-		const IMAGE_KEEP   = 0;
-		const IMAGE_UPLOAD = 1;
-		const IMAGE_URL    = 2;
-		const IMAGE_NONE   = 3;
+		const ACTION_KEEP     = 0;
+		const ACTION_UPLOAD   = 1;
+		const ACTION_URL      = 2;
+		const ACTION_NONE     = 3;
+		const ACTION_NEW      = 4;
 
 		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
 
-		protected static $image_input_opts = array(
-			self::IMAGE_KEEP   => "form_image_input_keep",
-			self::IMAGE_NONE   => "form_image_input_none",
-			self::IMAGE_UPLOAD => "form_image_input_upload",
-			self::IMAGE_URL    => "form_image_input_url",
+		protected static $input_opts = array(
+			"image" => array(
+				self::ACTION_KEEP   => "form_image_input_keep",
+				self::ACTION_NONE   => "form_image_input_none",
+				self::ACTION_UPLOAD => "form_image_input_upload",
+				self::ACTION_URL    => "form_image_input_url",
+			),
+			"location" => array(
+				self::ACTION_KEEP     => "form_location_input_keep",
+				self::ACTION_NEW      => "form_location_input_new",
+				self::ACTION_NONE     => "form_location_input_none",
+			),
 		);
 
 
@@ -126,15 +134,17 @@ namespace System\Form
 		}
 
 
-		public static function get_image_input_opts()
+		public static function get_input_opts($type)
 		{
-			$opts = array();
+			if (isset(self::$input_opts[$type])) {
+				$opts = array();
 
-			foreach (self::$image_input_opts as $label=>$opt) {
-				$opts[$label] = l($opt);
-			}
+				foreach (self::$input_opts[$type] as $label=>$opt) {
+					$opts[$label] = l($opt);
+				}
 
-			return $opts;
+				return $opts;
+			} else throw new \InternalException("There are no options for input '".$type."'");
 		}
 	}
 }

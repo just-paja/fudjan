@@ -51,6 +51,11 @@ namespace System\Form
 
 				$input = self::get_image_input_html($el);
 
+			} elseif ($el->type === 'location') {
+
+				content_for('scripts', 'pwf/form/location_picker');
+				$input = self::get_location_input_html($el);
+
 			} else {
 
 				if (in_array($el->type, array('datetime', 'date', 'time')) && $el->value instanceof \DateTime) {
@@ -117,15 +122,7 @@ namespace System\Form
 			}
 
 			$to = array("output" => false, "class" => 'im-options', "content" => array());
-
-			foreach ($el->tools as $tool) {
-				$to['content'][] = \Tag::div(array(
-					"class"   => 'input',
-					"output"  => false,
-					"content" => self::render_input($tool, false),
-				));
-			}
-
+			self::render_input_tools_into($to['content'], $el->tools);
 			$inputs[] = \Tag::div($to);
 
 			return \Tag::div(array(
@@ -133,6 +130,33 @@ namespace System\Form
 				"output" => false,
 				"content" => $inputs,
 			));
+		}
+
+
+		public static function get_location_input_html(\System\Form\Input $el)
+		{
+			$inputs = array();
+			$to = array("output" => false, "class" => 'loc-options', "content" => array());
+			self::render_input_tools_into($to['content'], $el->tools);
+			$inputs[] = \Tag::div($to);
+
+			return \Tag::div(array(
+				"class" => array('input-container', 'input-location'),
+				"output" => false,
+				"content" => $inputs,
+			));
+		}
+
+
+		private static function render_input_tools_into(&$target, $tools)
+		{
+			foreach ($tools as $tool) {
+				$target[] = \Tag::div(array(
+					"class"   => 'input',
+					"output"  => false,
+					"content" => self::render_input($tool, false),
+				));
+			}
 		}
 
 
@@ -234,7 +258,6 @@ namespace System\Form
 				"content" => $opts,
 			));
 		}
-
 
 
 		public static function render_label(\System\Form\Label $el)

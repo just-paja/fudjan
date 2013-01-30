@@ -282,6 +282,10 @@ namespace System
 				$attrs['value'] = $this->get_image_input_value($attrs);
 			}
 
+			if ($attrs['type'] === 'location') {
+				$attrs['tools'] = $this->get_location_input_tools($attrs);
+				$attrs['value'] = $this->get_location_input_value($attrs);
+			}
 
 			if (in_array($attrs['type'], self::$inputs_datetime)) {
 				$attrs['value'] = $this->get_datetime_input_value($attrs);
@@ -293,20 +297,20 @@ namespace System
 
 		private function get_image_input_tools(array $attrs)
 		{
-			$opts = \System\Form\Input::get_image_input_opts();
-			$action = \System\Form\Input::IMAGE_KEEP;
+			$opts = \System\Form\Input::get_input_opts('image');
+			$action = \System\Form\Input::ACTION_KEEP;
 
 			if (!$attrs['value']) {
-				unset($opts[\System\Form\Input::IMAGE_KEEP]);
-				$action = \System\Form\Input::IMAGE_UPLOAD;
+				unset($opts[\System\Form\Input::ACTION_KEEP]);
+				$action = \System\Form\Input::ACTION_UPLOAD;
 			}
 
 			if (any($attrs['required'])) {
-				unset($opts[\System\Form\Input::IMAGE_NONE]);
+				unset($opts[\System\Form\Input::ACTION_NONE]);
 			}
 
-			if (empty($attrs['allow_url'])) unset($opts[\System\Form\Input::IMAGE_URL]);
-			if (any($attrs['disallow_upload'])) unset($opts[\System\Form\Input::IMAGE_UPLOAD]);
+			if (empty($attrs['allow_url'])) unset($opts[\System\Form\Input::ACTION_URL]);
+			if (any($attrs['disallow_upload'])) unset($opts[\System\Form\Input::ACTION_UPLOAD]);
 
 			$input_action_attrs = array(
 				"name"     => $attrs['name'].'_action',
@@ -342,7 +346,7 @@ namespace System
 			$input_url->use_form($this);
 			$inputs = array();
 
-			if (!(count($opts) === 1 && any($opts[\System\Form\Input::IMAGE_UPLOAD]))) {
+			if (!(count($opts) === 1 && any($opts[\System\Form\Input::ACTION_UPLOAD]))) {
 				$inputs[] = $input_action;
 			}
 
@@ -355,6 +359,162 @@ namespace System
 			}
 
 			return $inputs;
+		}
+
+
+		private function get_location_input_tools(array $attrs)
+		{
+			$opts = \System\Form\Input::get_input_opts('location');
+			$action = \System\Form\Input::ACTION_KEEP;
+
+			if (!$attrs['value']) {
+				unset($opts[\System\Form\Input::ACTION_KEEP]);
+				$action = \System\Form\Input::ACTION_NEW;
+			}
+
+			if (any($attrs['required'])) {
+				unset($opts[\System\Form\Input::ACTION_NONE]);
+			}
+
+			$input_action_attrs = array(
+				"name"     => $attrs['name'].'_action',
+				"type"     => 'radio',
+				"label"    => l('form_location_input_action'),
+				"options"  => $opts,
+				"multiple" => true,
+				"value"    => $action,
+			);
+
+			$input_name_attrs = array(
+				"name"     => $attrs['name'].'_name',
+				"type"     => 'text',
+				"label"    => l('form_location_input_name'),
+			);
+
+			$input_addr_attrs = array(
+				"name"     => $attrs['name'].'_addr',
+				"type"     => 'text',
+				"label"    => l('form_location_input_addr'),
+			);
+
+			$input_lon_attrs = array(
+				"name"     => $attrs['name'].'_lon',
+				"type"     => 'text',
+				"label"    => l('form_location_input_lon'),
+			);
+
+			$input_lat_attrs = array(
+				"name"     => $attrs['name'].'_lat',
+				"type"     => 'text',
+				"label"    => l('form_location_input_lat'),
+			);
+
+			$input_site_attrs = array(
+				"name"     => $attrs['name'].'_site',
+				"type"     => 'url',
+				"label"    => l('form_location_input_site'),
+			);
+
+			$value = $value = $this->get_input_value($attrs);
+
+			if ($value instanceof \System\Location) {
+				$input_name_attrs['value'] = $value->name;
+				$input_addr_attrs['value'] = $value->addr;
+				$input_lon_attrs['value']  = $value->lon;
+				$input_lat_attrs['value']  = $value->lat;
+				$input_site_attrs['value'] = $value->site;
+			}
+
+			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
+			$input_name_attrs['value']   = $this->get_input_value($input_name_attrs);
+			$input_addr_attrs['value']   = $this->get_input_value($input_addr_attrs);
+			$input_lon_attrs['value']    = $this->get_input_value($input_lon_attrs);
+			$input_lat_attrs['value']    = $this->get_input_value($input_lat_attrs);
+			$input_site_attrs['value']    = $this->get_input_value($input_site_attrs);
+
+			$input_action   = new \System\Form\Input($input_action_attrs);
+			$input_name     = new \System\Form\Input($input_name_attrs);
+			$input_addr     = new \System\Form\Input($input_addr_attrs);
+			$input_lon      = new \System\Form\Input($input_lon_attrs);
+			$input_lat      = new \System\Form\Input($input_lat_attrs);
+			$input_site     = new \System\Form\Input($input_site_attrs);
+
+			$input_action->use_form($this);
+			$input_name->use_form($this);
+			$input_addr->use_form($this);
+			$input_lon->use_form($this);
+			$input_lat->use_form($this);
+			$input_site->use_form($this);
+			$inputs = array();
+
+			if (count($opts) !== 1) {
+				$inputs[] = $input_action;
+			}
+
+			$inputs[] = $input_name;
+			$inputs[] = $input_addr;
+			$inputs[] = $input_lon;
+			$inputs[] = $input_lat;
+			$inputs[] = $input_site;
+			return $inputs;
+		}
+
+
+		private function get_location_input_value(array $attrs)
+		{
+			$value = $this->get_input_value($attrs);
+
+			if ($this->submited) {
+				$name_action = $attrs['name'].'_action';
+				$name_name   = $attrs['name'].'_name';
+				$name_addr   = $attrs['name'].'_addr';
+				$name_lon    = $attrs['name'].'_lon';
+				$name_lat    = $attrs['name'].'_lat';
+				$name_site   = $attrs['name'].'_site';
+
+				$action = $this->get_input_value_by_name($name_action);
+				$name   = $this->get_input_value_by_name($name_name);
+				$addr   = $this->get_input_value_by_name($name_addr);
+				$lon    = $this->get_input_value_by_name($name_lon);
+				$lat    = $this->get_input_value_by_name($name_lat);
+				$site   = $this->get_input_value_by_name($name_site);
+
+				if (is_null($action)) {
+					$action = $this->data_default[$name_action];
+				}
+
+				if ($action == \System\Form\Input::ACTION_KEEP) {
+					$value = $this->get_input_value_by_name($attrs['name'], true);
+
+					if ($value instanceof \System\Location) {
+						$value->update_attrs(array(
+							"name" => $name,
+							"addr" => $addr,
+							"lon"  => $lon,
+							"lat"  => $lat,
+							"site" => $site,
+						));
+					}
+				}
+
+				if ($action == \System\Form\Input::ACTION_NONE) {
+					$value = null;
+				}
+
+				if ($action == \System\Form\Input::ACTION_NEW) {
+					$value = new \System\Location(array(
+						"name" => $name,
+						"addr" => $addr,
+						"lon"  => $lon,
+						"lat"  => $lat,
+						"site" => $site,
+					));
+				}
+
+				$this->data_commited[$attrs['name']] = $value;
+			}
+
+			return $value;
 		}
 
 
@@ -371,17 +531,17 @@ namespace System
 				$file   = $this->get_input_value_by_name($name_file);
 				$url    = $this->get_input_value_by_name($name_url);
 
-				if ($action == \System\Form\Input::IMAGE_KEEP) {
+				if ($action == \System\Form\Input::ACTION_KEEP) {
 					$value = $this->get_input_value_by_name($attrs['name'], true);
 				}
 
-				if ($action == \System\Form\Input::IMAGE_UPLOAD || is_null($action)) {
+				if ($action == \System\Form\Input::ACTION_UPLOAD || is_null($action)) {
 					$value = $file;
 					$value = \System\Image::from_path($value['tmp_name']);
 					$value->tmp = true;
 				}
 
-				if ($action == \System\Form\Input::IMAGE_URL || (is_null($value) && is_null($action))) {
+				if ($action == \System\Form\Input::ACTION_URL || (is_null($value) && is_null($action))) {
 					$f = \System\File::fetch($url);
 					$value = \System\Image::from_path($f->tmp_name);
 					$value->tmp = true;
@@ -394,7 +554,7 @@ namespace System
 					$this->report_error($name_file, l('form_input_image_is_not_image'));
 				}
 
-				if ($action == \System\Form\Input::IMAGE_NONE) {
+				if ($action == \System\Form\Input::ACTION_NONE) {
 					$value = \System\Image::from_scratch();
 				}
 
