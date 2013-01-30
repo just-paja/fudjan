@@ -9,6 +9,8 @@ namespace Database\Mysqli
 			"json"     => array("type" => 'text'),
 			"int_set"  => array("type" => 'text'),
 			"password" => array("type" => 'varchar'),
+			"url"      => array("type" => 'varchar'),
+			"email"    => array("type" => 'varchar'),
 			"bool"     => array("type" => 'tinyint', "length" => 1),
 		);
 
