@@ -418,7 +418,7 @@ namespace System
 
 		public function paginate($per_page = 20, $page_offset = 0)
 		{
-			$this->add_opts(array("per-page" => intval($per_page), "page-offset" => intval($per_page)*intval($page_offset)));
+			$this->add_opts(array("per-page" => intval($per_page), "offset" => intval($per_page)*intval($page_offset)));
 			return $this;
 		}
 
