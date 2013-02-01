@@ -58,6 +58,10 @@ namespace System
 					if (is_readable($path)) {
 						if (!is_array($this->locals)) $this->locals = array($this->locals);
 						$locals = &$this->locals;
+
+						def($locals['per_page'], 20);
+						def($locals['page'], intval(System\Input::get('page')));
+
 						if (is_array($locals)) {
 							$input = Input::get('page');
 							$propagated = array();
