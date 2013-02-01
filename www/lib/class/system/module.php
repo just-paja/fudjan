@@ -60,7 +60,7 @@ namespace System
 						$locals = &$this->locals;
 
 						def($locals['per_page'], 20);
-						def($locals['page'], intval(System\Input::get('page')));
+						def($locals['page'], intval(\System\Input::get('page')));
 
 						if (is_array($locals)) {
 							$input = Input::get('page');
