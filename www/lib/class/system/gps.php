@@ -56,7 +56,7 @@ namespace System
 			$str = substr($str, strlen('POINT('));
 			$str = substr($str, 0, strlen($str) - 1);
 			$str = explode(' ', $str);
-			return self::from_array(array("lat" => $str[0], "lng" => $str[1]));
+			return self::from_array(array("lat" => \System\Database::escape($str[0]), "lng" => \System\Database::escape($str[1])));
 		}
 
 

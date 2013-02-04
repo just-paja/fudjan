@@ -164,8 +164,8 @@ namespace System
 				} else {
 					switch (gettype($value)) {
 						case 'boolean': $value = $value ? 1:0; break;
-						case 'integer': $value = intval($value); break;
-						case 'double': case 'float': $value = str_replace(',', '.', floatval($value)); break;
+						case 'integer': $value = self::num2db(intval($value)); break;
+						case 'double': case 'float': $value = self::num2db(floatval($value)); break;
 						case 'NULL': $value = 'NULL'; break;
 						default: $value = "'".self::get_db()->escape_string($value)."'";
 					}
@@ -174,6 +174,23 @@ namespace System
 
 				return $value;
 			}
+		}
+
+
+		public static function num2db($val)
+		{
+			$larr = localeconv();
+			$search = array(
+				$larr['decimal_point'],
+				$larr['mon_decimal_point'],
+				$larr['thousands_sep'],
+				$larr['mon_thousands_sep'],
+				$larr['currency_symbol'],
+				$larr['int_curr_symbol']
+			);
+			$replace = array('.', '.', '', '', '', '');
+
+			return str_replace($search, $replace, $val);
 		}
 
 
