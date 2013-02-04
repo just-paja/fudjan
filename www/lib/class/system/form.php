@@ -287,6 +287,11 @@ namespace System
 				$attrs['value'] = $this->get_location_input_value($attrs);
 			}
 
+			if ($attrs['type'] === 'gps') {
+				$attrs['tools'] = $this->get_gps_input_tools($attrs);
+				$attrs['value'] = $this->get_gps_input_value($attrs);
+			}
+
 			if (in_array($attrs['type'], self::$inputs_datetime)) {
 				$attrs['value'] = $this->get_datetime_input_value($attrs);
 			}
@@ -295,6 +300,10 @@ namespace System
 		}
 
 
+		/** Get additional inputs for image input
+		 * @param array $attrs
+		 * @returns array Set of input attrs
+		*/
 		private function get_image_input_tools(array $attrs)
 		{
 			$opts = \System\Form\Input::get_input_opts('image');
@@ -415,7 +424,7 @@ namespace System
 				"label"    => l('form_location_input_site'),
 			);
 
-			$value = $value = $this->get_input_value($attrs);
+			$value = $this->get_input_value($attrs);
 
 			if ($value instanceof \System\Location) {
 				$input_name_attrs['value'] = $value->name;
@@ -457,6 +466,42 @@ namespace System
 			$inputs[] = $input_lat;
 			$inputs[] = $input_site;
 			return $inputs;
+		}
+
+
+		private function get_gps_input_tools(array $attrs)
+		{
+			$input_lat_attrs = array(
+				"name"     => $attrs['name'].'_lat',
+				"type"     => 'text',
+				"label"    => l('form_gps_input_lat'),
+				"required" => !empty($attrs['required']),
+			);
+
+			$input_lng_attrs = array(
+				"name"     => $attrs['name'].'_lng',
+				"type"     => 'text',
+				"label"    => l('form_gps_input_lng'),
+				"required" => !empty($attrs['required']),
+			);
+
+			$value = $this->get_input_value($attrs);
+
+			if ($value instanceof \System\Gps) {
+				$input_lat_attrs['value'] = $value->lat();
+				$input_lng_attrs['value'] = $value->lng();
+			}
+
+			$input_lat_attrs['value'] = $this->get_input_value($input_lat_attrs);
+			$input_lng_attrs['value'] = $this->get_input_value($input_lng_attrs);
+
+			$input_lat = new \System\Form\Input($input_lat_attrs);
+			$input_lng = new \System\Form\Input($input_lng_attrs);
+
+			$input_lat->use_form($this);
+			$input_lng->use_form($this);
+
+			return array($input_lat, $input_lng);
 		}
 
 
@@ -512,6 +557,26 @@ namespace System
 				}
 
 				$this->data_commited[$attrs['name']] = $value;
+			}
+
+			return $value;
+		}
+
+
+		private function get_gps_input_value(array $attrs)
+		{
+			$value = $this->get_input_value($attrs);
+
+			if ($this->submited) {
+				$name_lat = $attrs['name'].'_lat';
+				$name_lng = $attrs['name'].'_lng';
+
+				$this->data_commited[$attrs['name']] = $value = \System\Gps::from_array(array(
+					"lat" => $this->get_input_value_by_name($name_lat),
+					"lng" => $this->get_input_value_by_name($name_lng),
+				));
+
+				unset($this->data_commited[$name_lat], $this->data_commited[$name_lng]);
 			}
 
 			return $value;

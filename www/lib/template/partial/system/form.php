@@ -8,7 +8,7 @@ Tag::div(array(
 	"output" => true,
 ));
 
-	Tag::a(array("name" => $f->anchor, "close" => true));
+	Tag::a(array("name" => $f->anchor, "id" => $f->anchor, "close" => true));
 
 	$f->heading && print(section_heading($f->heading));
 	$f->desc && Tag::p(array("content" => $f->desc));
@@ -27,7 +27,7 @@ Tag::div(array(
 		));
 
 		$objects = $f->get_objects();
-	
+
 		foreach ($objects as $obj) {
 			System\Form\Helper::render_element($obj);
 		}

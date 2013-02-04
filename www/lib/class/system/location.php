@@ -7,8 +7,7 @@ namespace System
 		protected static $attrs = array(
 			"name" => array("varchar"),
 			"addr" => array("varchar"),
-			"lon"  => array("varchar"),
-			"lat"  => array("varchar"),
+			"gps"  => array("point"),
 			"desc" => array("text"),
 			"site" => array("url"),
 		);

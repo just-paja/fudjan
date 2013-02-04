@@ -637,7 +637,11 @@ namespace System\Model
 
 			foreach ($model::$attrs as $attr=>$def) {
 				if (empty($def['is_fake'])) {
-					$attrs[] = $attr;
+					if ($def[0] === 'point') {
+						$attrs[$attr] = 'AsWKT('.$attr.')';
+					} else {
+						$attrs[] = $attr;
+					}
 				}
 			}
 

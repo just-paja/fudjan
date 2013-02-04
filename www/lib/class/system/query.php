@@ -252,7 +252,9 @@ namespace System
 
 					!isset($this->cols[$t_alias]) && $this->cols[$t_alias] = array();
 					foreach ($this->cols[$t_alias] as $alias => $col) {
-						$this->parsed['cols'][] = "`".($a && $t_alias ? $t_alias:$table)."`.".$col.($alias && !is_numeric($alias) ? " `".$alias."`":null);
+						$fn = strpos($col, '(') !== false;
+						$t = $fn ? "":"`".($a && $t_alias ? $t_alias:$table)."`.";
+						$this->parsed['cols'][] = $t.$col.($alias && !is_numeric($alias) ? " `".$alias."`":null);
 					}
 				}
 

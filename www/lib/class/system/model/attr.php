@@ -272,9 +272,11 @@ namespace System\Model
 					$val = intval($val);
 					break;
 
+
 				case 'float':
 					$val = floatval($val);
 					break;
+
 
 				case 'bool':
 					$val = is_null($val) ? false:!!$val;
@@ -286,6 +288,7 @@ namespace System\Model
 					$val = mb_substr(strval($val), 0, $attr_data['length']);
 					break;
 
+
 				case 'datetime':
 					if (is_null($val)) {
 						$val = new \DateTime();
@@ -295,6 +298,7 @@ namespace System\Model
 						$val = new \DateTime($val);
 					}
 					break;
+
 
 				case 'image':
 					if (!($val instanceof \System\Image)) {
@@ -326,11 +330,13 @@ namespace System\Model
 					}
 					break;
 
+
 				case 'json':
 					if (any($val) && is_string($val)) {
 						$val = array_filter((array) json_decode($val, true));
 					}
 					break;
+
 
 				case 'int_set':
 					if (any($val)) {
@@ -340,6 +346,16 @@ namespace System\Model
 							$val = array_map('intval', explode(',', $val));
 						}
 					} else $val = array();
+
+
+				case 'point':
+					if (any($val) && !($val instanceof \System\Gps)) {
+						if (is_array($val)) {
+							$val = \System\Gps::from_array($val);
+						} else {
+							$val = \System\Gps::from_sql($val);
+						}
+					}
 			}
 
 			return $val;

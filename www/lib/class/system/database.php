@@ -159,6 +159,7 @@ namespace System
 					switch (get_class($value)) {
 						case 'DateTime': $value = "'".format_date($value, 'sql')."'"; break;
 						case 'System\Image': $value = "'".$value->to_json()."'"; break;
+						case 'System\Gps': $value = $value->to_sql(); break;
 					}
 				} else {
 					switch (gettype($value)) {

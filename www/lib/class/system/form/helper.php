@@ -56,6 +56,11 @@ namespace System\Form
 				content_for('scripts', 'pwf/form/location_picker');
 				$input = self::get_location_input_html($el);
 
+			} elseif ($el->type === 'gps') {
+
+				content_for('scripts', 'pwf/form/gps');
+				$input = self::get_gps_input_html($el);
+
 			} else {
 
 				if (in_array($el->type, array('datetime', 'date', 'time')) && $el->value instanceof \DateTime) {
@@ -140,8 +145,25 @@ namespace System\Form
 			self::render_input_tools_into($to['content'], $el->tools);
 			$inputs[] = \Tag::div($to);
 
+
 			return \Tag::div(array(
 				"class" => array('input-container', 'input-location'),
+				"output" => false,
+				"content" => $inputs,
+			));
+		}
+
+
+		public static function get_gps_input_html(\System\Form\Input $el)
+		{
+			$inputs = array();
+			$to = array("output" => false, "class" => 'gps-options', "content" => array());
+
+			self::render_input_tools_into($to['content'], $el->tools);
+			$inputs[] = \Tag::div($to);
+
+			return \Tag::div(array(
+				"class" => array('input-container', 'input-gps'),
 				"output" => false,
 				"content" => $inputs,
 			));
