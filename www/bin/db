@@ -405,6 +405,14 @@
 				foreach ($data_set as $key => $tdata) {
 					$x++;
 					$add_dates = self::table_column_exists($table, 'created_at');
+
+					// Respect GPS data
+					foreach ($tdata as &$val) {
+						if (preg_match('/^POINT\([0-9\.]+ [0-9\.]+\)$/', $val)) {
+							$val = \System\Gps::from_sql($val);
+						}
+					}
+
 					System\Database::simple_insert($table, $tdata, $add_dates);
 					show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), null, $msg_work);
 				}
