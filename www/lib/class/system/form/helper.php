@@ -58,6 +58,7 @@ namespace System\Form
 
 			} elseif ($el->type === 'gps') {
 
+				content_for('scripts', 'pwf/form/jquery.gmap');
 				content_for('scripts', 'pwf/form/gps');
 				$input = self::get_gps_input_html($el);
 
