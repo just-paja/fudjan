@@ -352,8 +352,10 @@ namespace System\Model
 					if (any($val) && !($val instanceof \System\Gps)) {
 						if (is_array($val)) {
 							$val = \System\Gps::from_array($val);
-						} else {
+						} elseif (strpos($val, 'POINT(') === 0) {
 							$val = \System\Gps::from_sql($val);
+						} else {
+							$val = new \System\Gps();
 						}
 					}
 			}
