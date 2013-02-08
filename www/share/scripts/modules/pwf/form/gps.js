@@ -171,6 +171,7 @@ pwf.register('gps', function()
 				"draggable":true,
 				"key":"pointer"
 			}],
+			"streetViewControl":false,
 			"latitude":input.lat.val(),
 			"longitude":input.lng.val(),
 			"zoom":(!input.lat.val() || !input.lng.val()) ? 5:14,
@@ -191,8 +192,8 @@ pwf.register('gps', function()
 
 	this.load_gm = function()
 	{
-		var url_maps = 'https://maps.googleapis.com/maps/api/js?sensor=true';
-		$.getScript(url, function(obj) {
+		var url_maps = 'https://www.google.com/jsapi';
+		$.getScript(url_maps, function(obj) {
 			return function() {
 				google.load("maps", "3", {
 					"other_params":'sensor=true',
