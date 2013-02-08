@@ -48,64 +48,71 @@ pwf.register('datetime_picker', function()
 			};
 
 
-			this.create_html_structure = function()
+			this.create_html_structure = function(el)
 			{
-				this.el('container') === null && this.el('container', $('<div class="datetime_picker" id="'+this.attr('id')+'"></div>'));
-				this.el('calendar') === null && this.el('calendar', $('<div class="calendar"></div>'));
-				this.el('parent', this.el('input').parent());
-				this.el('container_date', $('<div class="container_date"></div>'));
-				this.el('container_time', $('<div class="container_time"></div>'));
-
-				this.el('input').remove();
-				this.el('parent').append(this.el('container').append(this.el('input')));
-
-				this.el('input_date', $('<input class="date" type="text" name="" value="" id="'+this.attr('id')+'_input_date">'));
-				this.el('input_hours', $('<input class="time" type="text" step="1" max="23" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_hours">'));
-				this.el('input_minutes', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_minutes">'));
-				this.el('input_seconds', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_seconds">'));
-				this.el('icon_calendar', $('<span class="icon cal" style=""></span>'));
-				this.el('time_separator', '<span class="sep">:</span>');
-
-				this.el('container_date').append([this.el('input_date'), this.el('icon_calendar')]);
-
-				if (this.attr('hours')) {
-					this.el('container_time').append(this.el('input_hours'));
-
-					if (this.attr('minutes') || this.attr('seconds')) {
-						this.el('container_time').append(this.el('time_separator'));
-					}
+				if (typeof el !== 'undefined') {
+					this.el('input', el);
 				}
 
-				if (this.attr('minutes')) {
-					this.el('container_time').append(this.el('input_minutes'));
+				if (this.el('container') === null || !is_attached(this.el('container'))) {
+					this.el('container', $('<div class="datetime_picker"></div>'));
+					this.el('calendar', $('<div class="calendar"></div>'));
+					this.el('parent', this.el('input').parent());
+					this.el('container_date', $('<div class="container_date"></div>'));
+					this.el('container_time', $('<div class="container_time"></div>'));
+
+					this.el('input').remove();
+					this.el('parent').append(this.el('container').append(this.el('input')));
+
+					this.el('input_date', $('<input class="date" type="text" name="" value="" id="'+this.attr('id')+'_input_date">'));
+					this.el('input_hours', $('<input class="time" type="text" step="1" max="23" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_hours">'));
+					this.el('input_minutes', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_minutes">'));
+					this.el('input_seconds', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_seconds">'));
+					this.el('icon_calendar', $('<span class="icon cal" style=""></span>'));
+					this.el('time_separator', '<span class="sep">:</span>');
+
+					this.el('container_date').append([this.el('input_date'), this.el('icon_calendar')]);
+
+					if (this.attr('hours')) {
+						this.el('container_time').append(this.el('input_hours'));
+
+						if (this.attr('minutes') || this.attr('seconds')) {
+							this.el('container_time').append(this.el('time_separator'));
+						}
+					}
+
+					if (this.attr('minutes')) {
+						this.el('container_time').append(this.el('input_minutes'));
+
+						if (this.attr('seconds')) {
+							this.el('container_time').append(this.el('time_separator'));
+						}
+					}
 
 					if (this.attr('seconds')) {
-						this.el('container_time').append(this.el('time_separator'));
+						this.el('container_time').append(this.el('input_seconds'));
 					}
+
+					this.el('container').append([this.el('container_date'), this.el('container_time')]);
+					this.el('input_hours').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'hrs', "el":this.el('input_hours')}, callback_timeinput);
+					this.el('input_minutes').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'min', "el":this.el('input_minutes')}, callback_timeinput);
+					this.el('input_seconds').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'sec', "el":this.el('input_seconds')}, callback_timeinput);
+
+					this.el('input')
+						.addClass('hidden')
+						.unbind('click.pwf_datetime_picker')
+						.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
+
+					this.el('input_date')
+						.unbind('click.pwf_datetime_picker')
+						.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
+
+					this.el('icon_calendar')
+						.unbind('click.pwf_datetime_picker')
+						.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
+
+					v(this.el('container'));
 				}
-
-				if (this.attr('seconds')) {
-					this.el('container_time').append(this.el('input_seconds'));
-				}
-
-				this.el('container').append([this.el('container_date'), this.el('container_time')]);
-				this.el('input_hours').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'hrs', "el":this.el('input_hours')}, callback_timeinput);
-				this.el('input_minutes').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'min', "el":this.el('input_minutes')}, callback_timeinput);
-				this.el('input_seconds').bind('keyup.pwf_datetime_picker', {"obj":this, "type":'sec', "el":this.el('input_seconds')}, callback_timeinput);
-
-				this.el('input')
-					.addClass('hidden')
-					.unbind('click.pwf_datetime_picker')
-					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
-
-				this.el('input_date')
-					.unbind('click.pwf_datetime_picker')
-					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
-
-				this.el('icon_calendar')
-					.unbind('click.pwf_datetime_picker')
-					.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
-
 			};
 
 
@@ -455,6 +462,10 @@ pwf.register('datetime_picker', function()
 			var inst = new class_datetime_picker(el);
 			instances[el.attr('id')] = inst;
 			inst.create_html_structure();
+			inst.update_value();
+		} else {
+			var inst = this.get_instance(el.attr('id'));
+			inst.create_html_structure(el);
 			inst.update_value();
 		}
 
