@@ -433,13 +433,14 @@ namespace System
 			$input_name_attrs['value']   = $this->get_input_value($input_name_attrs);
 			$input_addr_attrs['value']   = $this->get_input_value($input_addr_attrs);
 			$input_gps_attrs['value']    = $this->get_gps_input_value($input_gps_attrs);
-			$input_site_attrs['value']    = $this->get_input_value($input_site_attrs);
+			$input_site_attrs['value']   = $this->get_input_value($input_site_attrs);
 
-			$input_action   = new \System\Form\Input($input_action_attrs);
-			$input_name     = new \System\Form\Input($input_name_attrs);
-			$input_addr     = new \System\Form\Input($input_addr_attrs);
-			$input_gps      = new \System\Form\Input($input_gps_attrs);
-			$input_site     = new \System\Form\Input($input_site_attrs);
+
+			$input_action = new \System\Form\Input($input_action_attrs);
+			$input_name   = new \System\Form\Input($input_name_attrs);
+			$input_addr   = new \System\Form\Input($input_addr_attrs);
+			$input_gps    = new \System\Form\Input($input_gps_attrs);
+			$input_site   = new \System\Form\Input($input_site_attrs);
 
 
 			$input_action->use_form($this);
@@ -505,15 +506,13 @@ namespace System
 				$name_action = $attrs['name'].'_action';
 				$name_name   = $attrs['name'].'_name';
 				$name_addr   = $attrs['name'].'_addr';
-				$name_lon    = $attrs['name'].'_lon';
-				$name_lat    = $attrs['name'].'_lat';
+				$name_gps    = $attrs['name'].'_gps';
 				$name_site   = $attrs['name'].'_site';
 
 				$action = $this->get_input_value_by_name($name_action);
 				$name   = $this->get_input_value_by_name($name_name);
 				$addr   = $this->get_input_value_by_name($name_addr);
-				$lon    = $this->get_input_value_by_name($name_lon);
-				$lat    = $this->get_input_value_by_name($name_lat);
+				$gps    = $this->get_input_value_by_name($name_gps);
 				$site   = $this->get_input_value_by_name($name_site);
 
 				if (is_null($action)) {
@@ -527,8 +526,7 @@ namespace System
 						$value->update_attrs(array(
 							"name" => $name,
 							"addr" => $addr,
-							"lon"  => $lon,
-							"lat"  => $lat,
+							"gps"  => $gps,
 							"site" => $site,
 						));
 					}
@@ -542,8 +540,7 @@ namespace System
 					$value = new \System\Location(array(
 						"name" => $name,
 						"addr" => $addr,
-						"lon"  => $lon,
-						"lat"  => $lat,
+						"gps"  => $gps,
 						"site" => $site,
 					));
 				}
