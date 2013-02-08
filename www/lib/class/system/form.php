@@ -406,16 +406,10 @@ namespace System
 				"label"    => l('form_location_input_addr'),
 			);
 
-			$input_lon_attrs = array(
-				"name"     => $attrs['name'].'_lon',
-				"type"     => 'text',
-				"label"    => l('form_location_input_lon'),
-			);
-
-			$input_lat_attrs = array(
-				"name"     => $attrs['name'].'_lat',
-				"type"     => 'text',
-				"label"    => l('form_location_input_lat'),
+			$input_gps_attrs = array(
+				"name"     => $attrs['name'].'_gps',
+				"type"     => 'gps',
+				"label"    => l('form_location_input_gps'),
 			);
 
 			$input_site_attrs = array(
@@ -429,30 +423,29 @@ namespace System
 			if ($value instanceof \System\Location) {
 				$input_name_attrs['value'] = $value->name;
 				$input_addr_attrs['value'] = $value->addr;
-				$input_lon_attrs['value']  = $value->lon;
-				$input_lat_attrs['value']  = $value->lat;
+				$input_gps_attrs['value']  = $value->gps;
 				$input_site_attrs['value'] = $value->site;
 			}
+
+			$input_gps_attrs['tools'] = $this->get_gps_input_tools($input_gps_attrs);
 
 			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
 			$input_name_attrs['value']   = $this->get_input_value($input_name_attrs);
 			$input_addr_attrs['value']   = $this->get_input_value($input_addr_attrs);
-			$input_lon_attrs['value']    = $this->get_input_value($input_lon_attrs);
-			$input_lat_attrs['value']    = $this->get_input_value($input_lat_attrs);
+			$input_gps_attrs['value']    = $this->get_gps_input_value($input_gps_attrs);
 			$input_site_attrs['value']    = $this->get_input_value($input_site_attrs);
 
 			$input_action   = new \System\Form\Input($input_action_attrs);
 			$input_name     = new \System\Form\Input($input_name_attrs);
 			$input_addr     = new \System\Form\Input($input_addr_attrs);
-			$input_lon      = new \System\Form\Input($input_lon_attrs);
-			$input_lat      = new \System\Form\Input($input_lat_attrs);
+			$input_gps      = new \System\Form\Input($input_gps_attrs);
 			$input_site     = new \System\Form\Input($input_site_attrs);
+
 
 			$input_action->use_form($this);
 			$input_name->use_form($this);
 			$input_addr->use_form($this);
-			$input_lon->use_form($this);
-			$input_lat->use_form($this);
+			$input_gps->use_form($this);
 			$input_site->use_form($this);
 			$inputs = array();
 
@@ -462,8 +455,7 @@ namespace System
 
 			$inputs[] = $input_name;
 			$inputs[] = $input_addr;
-			$inputs[] = $input_lon;
-			$inputs[] = $input_lat;
+			$inputs[] = $input_gps;
 			$inputs[] = $input_site;
 			return $inputs;
 		}
