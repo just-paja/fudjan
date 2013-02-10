@@ -530,7 +530,7 @@ namespace System\Model
 
 			$conds = array();
 			foreach (self::$quick_conds as $attr=>$val) {
-				self::model_attr_exists($model, $attr) && $conds[$attr] = $val;
+				self::attr_exists($model, $attr) && $conds[$attr] = $val;
 			}
 			return $conds;
 		}
