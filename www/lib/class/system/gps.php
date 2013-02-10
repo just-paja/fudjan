@@ -29,7 +29,7 @@ namespace System
 
 		public function to_sql()
 		{
-			$data = [$this->lat(), $this->lng()];
+			$data = array($this->lat(), $this->lng());
 			return 'GeomFromText(\'POINT('.\System\Database::escape($data[0]).' '.\System\Database::escape($data[1]).')\')';
 		}
 
