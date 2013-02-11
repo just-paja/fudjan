@@ -200,9 +200,7 @@ pwf.register('gps', function()
 						return function() {
 							$.getScript('/share/scripts/noess:libs/jquery/gmap', function(obj) {
 								return function() {
-v('load');
 									obj.proceed();
-									v('proceed');
 								}
 							}(obj));
 						};
