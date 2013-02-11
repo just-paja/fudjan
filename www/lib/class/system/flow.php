@@ -80,7 +80,7 @@ namespace System
 		{
 			if(is_array($msgs = Message::get_all())) {
 				foreach($msgs as $msg){
-					self::add('core/universal/message', array("message" => $msg));
+					self::add('system/message', array("message" => $msg));
 				}
 				self::run();
 			}
