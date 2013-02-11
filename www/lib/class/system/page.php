@@ -42,12 +42,6 @@ namespace System
 		private static function parse_path()
 		{
 			self::$path = array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ? strpos($_SERVER['REQUEST_URI'], '?'):strlen($_SERVER['REQUEST_URI']))));
-
-			if(preg_match("/\.([a-zA-Z])+$/", end(self::$path))){
-				Output::set_format(last_part('.', end(self::$path)));
-				self::$path = remove_last_part('.', end(self::$path));
-			}
-
 			reset(self::$path) == Output::PREFIX_AJAX && Output::use_ajax(true);
 		}
 
