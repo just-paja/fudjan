@@ -27,6 +27,7 @@ $result = Compiler::process('compile.classes', $msg, array(), function($make, $d
 
 	$minified[]  = 'namespace{';
 	$minified[] .= 'define(\'YAWF_PACKED\', true);';
+	$minified[]  = $path['dir-data'].'/lib/include/constants.php';
 	$minified[]  = $path['dir-data'].'/lib/include/core.php';
 	$minified[]  = $path['dir-data'].'/lib/include/functions.php';
 	$minified[]  = $path['dir-data'].'/lib/include/aliases.php';
