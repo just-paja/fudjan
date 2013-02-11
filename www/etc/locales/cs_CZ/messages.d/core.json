@@ -10,7 +10,7 @@
 
 	"form_location_input_action":"Operace s místem",
 	"form_location_input_none":"Žádné místo",
-	"form_location_input_keep":"Ponechat stávající",
+	"form_location_input_edit":"Upravit stávající",
 	"form_location_input_new":"Zadat nové",
 	"form_location_input_existing":"Použít existující",
 	"form_location_input_name":"Název",

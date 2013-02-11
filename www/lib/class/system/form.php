@@ -374,10 +374,10 @@ namespace System
 		private function get_location_input_tools(array $attrs)
 		{
 			$opts = \System\Form\Input::get_input_opts('location');
-			$action = \System\Form\Input::ACTION_KEEP;
+			$action = \System\Form\Input::ACTION_EDIT;
 
 			if (!$attrs['value']) {
-				unset($opts[\System\Form\Input::ACTION_KEEP]);
+				unset($opts[\System\Form\Input::ACTION_EDIT]);
 				$action = \System\Form\Input::ACTION_NEW;
 			}
 
@@ -406,16 +406,16 @@ namespace System
 				"label"    => l('form_location_input_addr'),
 			);
 
-			$input_gps_attrs = array(
-				"name"     => $attrs['name'].'_gps',
-				"type"     => 'gps',
-				"label"    => l('form_location_input_gps'),
-			);
-
 			$input_site_attrs = array(
 				"name"     => $attrs['name'].'_site',
 				"type"     => 'url',
 				"label"    => l('form_location_input_site'),
+			);
+
+			$input_gps_attrs = array(
+				"name"     => $attrs['name'].'_gps',
+				"type"     => 'gps',
+				"label"    => l('form_location_input_gps'),
 			);
 
 			$value = $this->get_input_value($attrs);
@@ -423,8 +423,8 @@ namespace System
 			if ($value instanceof \System\Location) {
 				$input_name_attrs['value'] = $value->name;
 				$input_addr_attrs['value'] = $value->addr;
-				$input_gps_attrs['value']  = $value->gps;
 				$input_site_attrs['value'] = $value->site;
+				$input_gps_attrs['value']  = $value->gps;
 			}
 
 			$input_gps_attrs['tools'] = $this->get_gps_input_tools($input_gps_attrs);
@@ -432,22 +432,22 @@ namespace System
 			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
 			$input_name_attrs['value']   = $this->get_input_value($input_name_attrs);
 			$input_addr_attrs['value']   = $this->get_input_value($input_addr_attrs);
-			$input_gps_attrs['value']    = $this->get_gps_input_value($input_gps_attrs);
 			$input_site_attrs['value']   = $this->get_input_value($input_site_attrs);
+			$input_gps_attrs['value']    = $this->get_gps_input_value($input_gps_attrs);
 
 
 			$input_action = new \System\Form\Input($input_action_attrs);
 			$input_name   = new \System\Form\Input($input_name_attrs);
 			$input_addr   = new \System\Form\Input($input_addr_attrs);
-			$input_gps    = new \System\Form\Input($input_gps_attrs);
 			$input_site   = new \System\Form\Input($input_site_attrs);
+			$input_gps    = new \System\Form\Input($input_gps_attrs);
 
 
 			$input_action->use_form($this);
 			$input_name->use_form($this);
 			$input_addr->use_form($this);
-			$input_gps->use_form($this);
 			$input_site->use_form($this);
+			$input_gps->use_form($this);
 			$inputs = array();
 
 			if (count($opts) !== 1) {
@@ -456,8 +456,8 @@ namespace System
 
 			$inputs[] = $input_name;
 			$inputs[] = $input_addr;
-			$inputs[] = $input_gps;
 			$inputs[] = $input_site;
+			$inputs[] = $input_gps;
 			return $inputs;
 		}
 
@@ -485,8 +485,8 @@ namespace System
 				$input_lng_attrs['value'] = $value->lng();
 			}
 
-			$input_lat_attrs['value'] = $this->get_input_value($input_lat_attrs);
-			$input_lng_attrs['value'] = $this->get_input_value($input_lng_attrs);
+			$input_lat_attrs['value'] = number_format($this->get_input_value($input_lat_attrs), true);
+			$input_lng_attrs['value'] = number_format($this->get_input_value($input_lng_attrs), true);
 
 			$input_lat = new \System\Form\Input($input_lat_attrs);
 			$input_lng = new \System\Form\Input($input_lng_attrs);
@@ -519,7 +519,7 @@ namespace System
 					$action = $this->data_default[$name_action];
 				}
 
-				if ($action == \System\Form\Input::ACTION_KEEP) {
+				if ($action == \System\Form\Input::ACTION_EDIT) {
 					$value = $this->get_input_value_by_name($attrs['name'], true);
 
 					if ($value instanceof \System\Location) {
@@ -545,6 +545,7 @@ namespace System
 					));
 				}
 
+				unset($this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
 				$this->data_commited[$attrs['name']] = $value;
 			}
 
