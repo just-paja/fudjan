@@ -18,16 +18,17 @@ exec('
 
 // Pack it all together
 Compiler::process('postprocess.user-friendly-package', 'Creating user ready package', $path, function($make, $path) {
+	$pkg = Compiler::get('package');
+	$p = $path['output-dir'].'/'.$path['output-uf'].($pkg['branch'] === 'master' ? '':'.'.$pkg['branch']).'.tar.bz2';
 
 	$make->progress(0, 100);
 	exec('cd '.$path['dir-temp'].'; tar -c '.$path['output-uf'].' > '.$path['output-uf'].'.tar');
 	$make->progress(33, 100);
 	exec('cd '.$path['dir-temp'].'; bzip2 '.$path['output-uf'].'.tar');
 	$make->progress(66, 100);
-	exec('cd '.$path['dir-temp'].'; cp '.$path['output-uf'].'.tar.bz2 '.$path['output-dir']);
+	exec('cd '.$path['dir-temp'].'; cp '.$path['output-uf'].'.tar.bz2 '.$p);
 	$make->progress(100, 100);
 
-	$p = $path['output-dir'].'/'.$path['output-uf'].'.tar.bz2';
 	Compiler::message('User ready package was created in "'.$p.'"');
 	return file_exists($p);
 });

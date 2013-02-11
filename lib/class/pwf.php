@@ -7,18 +7,18 @@ abstract class Pwf
 	const REF_DEFAULT = 'master';
 
 
-	public static function read_meta_info($path, $ref = self::REF_DEFAULT)
+	public static function read_meta_info($path)
 	{
 		$info = json_decode(file_get_contents($path.'/lib/make.d/info.json'), true);
 		$info['dir-make'] = $path.'/lib/make.d';
-		$info['package-version'] = self::get_version($path, $ref);
+		$info['package-version'] = self::get_version($path, self::get_branch($path));
 		return $info;
 	}
 
 
-	public static function get_version($directory, $ref = self::REF_DEFAULT)
+	public static function get_version($directory)
 	{
-		$ver = exec("cd ".$directory."; git log --pretty=\'%b\' ".$ref." | sort | uniq | wc -l");
+		$ver = exec("cd ".$directory."; git log --pretty=\'%b\' ".self::get_branch($directory)." | sort | uniq | wc -l");
 		$subver = floor($ver/100);
 		$microver = floor($ver - $subver * 100);
 		$mver = 0;
