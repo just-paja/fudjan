@@ -3,4 +3,4 @@ RewriteRule ^share/icons/(([a-zA-Z0-9\-\_]*)/)?([0-9]{1,4})/([a-zA-Z0-9\-]*)/([a
 
 # Catch other resources
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^share/([a-zA-Z]+)/([0-9a-zA-Z\.\-;_=:\/]*)$ lib/common/$1.php?modules=$2 [L]
+RewriteRule ^share/([a-zA-Z]+)/([0-9a-zA-Z\.\-;_=:\/]*)$ lib/common/resource.php?type=$1&modules=$2 [L]

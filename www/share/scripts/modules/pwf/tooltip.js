@@ -70,4 +70,4 @@ pwf.register = function()
 		});
 		return true;
 	};
-}
+};

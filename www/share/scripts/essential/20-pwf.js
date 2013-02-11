@@ -41,6 +41,4 @@ var pwf = function()
 }();
 
 
-$(function() {
-	pwf.init_remaining();
-});
+$(function() { pwf.init_remaining(); });

@@ -1,4 +1,4 @@
-function v(msg)
+var v = function(msg)
 {
 	if (typeof console != 'undefined' && typeof console.log == 'function') {
 		console.log(msg);
@@ -10,7 +10,7 @@ function v(msg)
  * @param jQuery ref
  * @returns bool
  */
-function is_attached(ref)
+var is_attached = function(ref)
 {
 	return ref.parents(':last').is('html');
-}
+};

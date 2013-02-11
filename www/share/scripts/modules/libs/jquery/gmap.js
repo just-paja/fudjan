@@ -1,32 +1,27 @@
-/**
- * jQuery gMap v3
+/** jQuery gMap v3
  *
  * @url         http://www.smashinglabs.pl/gmap
  * @author      Sebastian Poreba <sebastian.poreba@gmail.com>
  * @version     3.3.3
  * @date        27.12.2012
  */
-/*jslint white: false, undef: true, regexp: true, plusplus: true, bitwise: true, newcap: true, strict: true, devel: true, maxerr: 50, indent: 4 */
-/*global window, jQuery, $, google, $googlemaps */
 (function($) {
 	'use strict';
 
-	/**
-		 * Internals and experimental section
-		 */
+	/** Internals and experimental section
+	 */
 	var Cluster = function() {
 		this.markers = [];
 		this.mainMarker = false;
 		this.icon = 'http://www.google.com/mapfiles/marker.png';
 	};
 
-	/**
-		 * For iterating over all clusters to find if any is close enough to be merged with marker
-		 *
-		 * @param marker
-		 * @param currentSize - calculated as viewport percentage (opts.clusterSize).
-		 * @return bool.
-		 */
+	/** For iterating over all clusters to find if any is close enough to be merged with marker
+	 *
+	 * @param marker
+	 * @param currentSize - calculated as viewport percentage (opts.clusterSize).
+	 * @return bool.
+	 */
 	Cluster.prototype.dist = function(marker) {
 		return Math.sqrt(Math.pow(this.markers[0].latitude - marker.latitude, 2) +
 						Math.pow(this.markers[0].longitude - marker.longitude, 2));
@@ -40,10 +35,9 @@
 		this.markers[this.markers.length] = marker;
 	};
 
-	/**
-		 * returns one marker if there is only one or
-		 * returns special cloister marker if there are more
-		 */
+	/** returns one marker if there is only one or
+	 * returns special cloister marker if there are more
+	 */
 	Cluster.prototype.getMarker = function() {
 		if (this.mainmarker) {return this.mainmarker; }
 		var gicon, title;

@@ -38,7 +38,6 @@ pwf.register('location_picker', function()
 		if (typeof instances[id] === 'undefined') {
 			var inst = new class_location_picker(el);
 			instances[el.attr('id')] = inst;
-			//~ inst.update_value();
 		}
 
 		return this.get_instance(el.attr('id'));
