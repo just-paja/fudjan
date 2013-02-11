@@ -65,6 +65,7 @@ namespace System\Form
 		const ACTION_URL      = 2;
 		const ACTION_NONE     = 3;
 		const ACTION_NEW      = 4;
+		const ACTION_EDIT     = 5;
 
 		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
 
@@ -76,7 +77,7 @@ namespace System\Form
 				self::ACTION_URL    => "form_image_input_url",
 			),
 			"location" => array(
-				self::ACTION_KEEP     => "form_location_input_keep",
+				self::ACTION_EDIT     => "form_location_input_edit",
 				self::ACTION_NEW      => "form_location_input_new",
 				self::ACTION_NONE     => "form_location_input_none",
 			),

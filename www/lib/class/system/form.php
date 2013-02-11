@@ -374,10 +374,10 @@ namespace System
 		private function get_location_input_tools(array $attrs)
 		{
 			$opts = \System\Form\Input::get_input_opts('location');
-			$action = \System\Form\Input::ACTION_KEEP;
+			$action = \System\Form\Input::ACTION_EDIT;
 
 			if (!$attrs['value']) {
-				unset($opts[\System\Form\Input::ACTION_KEEP]);
+				unset($opts[\System\Form\Input::ACTION_EDIT]);
 				$action = \System\Form\Input::ACTION_NEW;
 			}
 
@@ -485,8 +485,8 @@ namespace System
 				$input_lng_attrs['value'] = $value->lng();
 			}
 
-			$input_lat_attrs['value'] = $this->get_input_value($input_lat_attrs);
-			$input_lng_attrs['value'] = $this->get_input_value($input_lng_attrs);
+			$input_lat_attrs['value'] = number_format($this->get_input_value($input_lat_attrs), true);
+			$input_lng_attrs['value'] = number_format($this->get_input_value($input_lng_attrs), true);
 
 			$input_lat = new \System\Form\Input($input_lat_attrs);
 			$input_lng = new \System\Form\Input($input_lng_attrs);
@@ -519,7 +519,7 @@ namespace System
 					$action = $this->data_default[$name_action];
 				}
 
-				if ($action == \System\Form\Input::ACTION_KEEP) {
+				if ($action == \System\Form\Input::ACTION_EDIT) {
 					$value = $this->get_input_value_by_name($attrs['name'], true);
 
 					if ($value instanceof \System\Location) {
@@ -545,6 +545,7 @@ namespace System
 					));
 				}
 
+				unset($this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
 				$this->data_commited[$attrs['name']] = $value;
 			}
 
