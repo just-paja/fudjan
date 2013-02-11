@@ -75,7 +75,7 @@ namespace System\Model
 
 				$col = Database::get_id_col($model);
 				if (!is_numeric($ids)) {
-					if (self::model_attr_exists($model, 'seoname')) {
+					if (self::attr_exists($model, 'seoname')) {
 						$col = 'seoname';
 					} else {
 						$ids = intval(substr($ids, strlen($ids) - strpos(strrev($ids), '-')));
