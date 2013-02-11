@@ -72,7 +72,9 @@ namespace System
 							}
 
 							foreach (self::$array_forced_locals as $var) {
-								if (isset($locals[$var]) && !is_array($locals[$var])) throw new \System\Error\Argument(sprintf(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->path));
+								if (isset($locals[$var]) && !is_array($locals[$var])) {
+									throw new \System\Error\Argument(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->path));
+								}
 							}
 
 							foreach ($locals as $key=>&$val) {
