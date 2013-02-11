@@ -16,8 +16,9 @@
 	"form_location_input_name":"Název",
 	"form_location_input_addr":"Adresa",
 	"form_location_input_site":"Web",
-	"form_location_input_lon":"Zeměpisná délka",
-	"form_location_input_lat":"Zeměpisná šířka",
+	"form_gps_input_lon":"Zeměpisná délka",
+	"form_gps_input_lat":"Zeměpisná šířka",
+	"form_location_input_gps":"Poloha",
 
 	"end":""
 }
