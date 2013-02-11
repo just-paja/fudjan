@@ -247,7 +247,7 @@ namespace System
 			} elseif (is_array($color)) {
 				$c = $color;
 			} else {
-				throw new \InvalidArgumentException("Template::get_color_container: arg 0 must be instance of ColorModel or set of color composition");
+				throw new \System\Error\Argument("Argument 0 must be instance of System\Model\Color or set of color composition");
 			}
 
 			return is_null($c[3]) ?
@@ -263,7 +263,7 @@ namespace System
 			} elseif (is_array($color)) {
 				$c = $color;
 			} else {
-				throw new \InvalidArgumentException("Template::get_color_container: arg0 must be instance of ColorModel or set of color composition");
+				throw new \System\Error\Argument("Argument 0 must be instance of System\Model\Color or set of color composition");
 			}
 
 			return '<span class="color-container" style="background-color:'.self::get_css_color($c).'"></span>';

@@ -120,7 +120,7 @@ namespace System\Model
 		 */
 		public static function get_all($model, array $conds = array(), array $opts = array(), array $joins = array())
 		{
-			if (!$model || !class_exists($model)) throw new \FatalException(sprintf(_('Model not found: %s'), var_export($model, true)));
+			if (!$model || !class_exists($model)) throw new \System\Error\Argument(sprintf('Model %s not found', $model));
 
 			if (empty($opts['order-by']) && self::attr_exists($model, 'order')) {
 				$opts['order-by'] = "`t0`.`order` ASC";
@@ -623,7 +623,7 @@ namespace System\Model
 				return $model::$has_one[$rel];
 			} elseif (isset($model::$belongs_to) && isset($model::$belongs_to[$rel])) {
 				return $model::$belongs_to[$rel];
-			} else throw new \InternalException("Relation '".$rel."' does not exist.");
+			} else throw new \System\Error\Database("Relation '".$rel."' does not exist.");
 		}
 
 
@@ -699,7 +699,7 @@ namespace System\Model
 
 						$q2->insert();
 					}
-				} else throw new \ArgumentException("Relation must be bilinear!");
+				} else throw new \System\Error\Database("Relation must be bilinear!");
 			}
 		}
 

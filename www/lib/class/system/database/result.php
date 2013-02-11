@@ -53,7 +53,7 @@ namespace System\Database
 
 		public function fetch_model($model, $key = null)
 		{
-			if (!is_string($model)) throw new ArgumentException('Model name must be a string', $model);
+			if (!is_string($model)) throw new \System\Error\Argument('Model name must be a string', $model);
 			$result = array();
 
 			if ($this->res !== null) {
@@ -62,7 +62,7 @@ namespace System\Database
 						$result[] = new $model($data);
 					} else {
 						$result[$data[$key]] = new $model($data);
-					}	
+					}
 					if ($this->first) break;
 				}
 			}

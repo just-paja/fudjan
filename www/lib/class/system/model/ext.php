@@ -18,7 +18,7 @@ namespace System\Model
 		static function get_all($model, array $conds = array(), array $opts = array(), array $joins = array())
 		{
 			self::clear_name($model);
-			if (!$model || !class_exists($model)) throw new \FatalException(sprintf(_('Model not found: %s'), var_export($model, true)));
+			if (!$model || !class_exists($model)) throw new \System\Error\File(sprintf('Model not found: "%s"', var_export($model, true)));
 			if (!in_array("System\ExtModel", class_parents($model)) || !any($attrs = self::get_model_attrs($model))) {
 				return parent::get_all($model, $conds, $opts, $joins);
 			}

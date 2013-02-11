@@ -93,7 +93,7 @@ namespace System\Form
 			$this->type == 'submit' && $this->kind = 'button';
 
 			if (!$this->name) {
-				throw new \MissingArgumentException('You must enter input name!', $this->type);
+				throw new \System\Error\Form('You must enter input name!', $this->type);
 			}
 		}
 
@@ -144,7 +144,7 @@ namespace System\Form
 				}
 
 				return $opts;
-			} else throw new \InternalException("There are no options for input '".$type."'");
+			} else throw new \System\Error\Form("There are no options for input '".$type."'");
 		}
 	}
 }

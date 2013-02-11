@@ -56,7 +56,7 @@ namespace System
 					Status::format_errors($d, $errors);
 				}
 			} elseif (is_object($desc)) {
-				if ($desc instanceof \InternalException) {
+				if ($desc instanceof \System\Error) {
 					foreach ($desc->get_explanation() as $msg) {
 						$errors[] = $msg;
 					}

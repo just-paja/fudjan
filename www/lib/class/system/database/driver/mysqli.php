@@ -24,7 +24,7 @@ namespace System\Database\Driver
 
 		public function __construct()
 		{
-			if (!extension_loaded('mysqli')) throw new DependencyException("PHP extension 'mysqli' is not loaded.");
+			if (!extension_loaded('mysqli')) throw new \System\Error\Database("PHP extension 'mysqli' is not loaded.");
 		}
 
 
@@ -68,7 +68,7 @@ namespace System\Database\Driver
 			}
 
 			if (!$this->is_connected()) {
-				throw new \DatabaseException('Could not connect to database "'.$config['database'].'" for following reasons.');
+				throw new \System\Error\Database('Could not connect to database "'.$config['database'].'" for following reasons.');
 			}
 
 			if (isset($config['charset'])) {
@@ -97,7 +97,7 @@ namespace System\Database\Driver
 		{
 			if ($this->connection->select_db($name)) {
 				$this->db_selected = true;
-			} else throw new \DatabaseException('Could select database "'.$name.'". Does it exist?');
+			} else throw new \System\Error\Database('Could select database "'.$name.'". Does it exist?');
 		}
 
 
@@ -118,7 +118,7 @@ namespace System\Database\Driver
 		{
 			$res = $this->connection->query($sql);
 			if ($this->connection->errno) {
-				throw new \DatabaseException(mysqli_error($this->connection), mysqli_errno($this->connection), $sql);
+				throw new \System\Error\Database(mysqli_error($this->connection), mysqli_errno($this->connection), $sql);
 			}
 
 			return new \System\Database\Result($res);
@@ -218,19 +218,19 @@ namespace System\Database\Driver
 			switch ($type) {
 				case \System\Database::TYPE_TEXT:
 					if (!is_resource($this->connection)) {
-						throw new \DatabaseException('Lost connection to server.');
+						throw new \System\Error\Database('Lost connection to server.');
 					}
 					return "'" . mysql_real_escape_string($value, $this->connection) . "'";
 
 				case \System\Database::TYPE_BINARY:
 					if (!is_resource($this->connection)) {
-						throw new \DatabaseException('Lost connection to server.');
+						throw new \System\Error\Database('Lost connection to server.');
 					}
 					return "_binary'" . mysql_real_escape_string($value, $this->connection) . "'";
 
 				case \System\Database::TYPE_IDENTIFIER: return '`' . str_replace('`', '``', $value) . '`';
 
-				default: throw new ArgumentException('Unsupported type.');
+				default: throw new \System\Error\Argument('Unsupported type: '.$type);
 			}
 		}
 
@@ -239,7 +239,7 @@ namespace System\Database\Driver
 			if ($this->is_connected())
 				return $this->connection->real_escape_string($value);
 
-			throw new \DatabaseException('Lost connection to server.');
+			throw new \System\Error\Database('Lost connection to server.');
 		}
 
 
@@ -280,7 +280,7 @@ namespace System\Database\Driver
 		public function get_row_count()
 		{
 			if (!$this->buffered) {
-				throw new DevelopmentException('Row count is not available for unbuffered queries.');
+				throw new \System\Error\Development('Row count is not available for unbuffered queries.');
 			}
 
 			return mysqli_num_rows($this->resultSet);
@@ -305,7 +305,7 @@ namespace System\Database\Driver
 		public function seek($row)
 		{
 			if (!$this->buffered) {
-				throw new DevelopmentException('Cannot seek an unbuffered result set.');
+				throw new \System\Error\Development('Cannot seek an unbuffered result set.');
 			}
 
 			return mysqli_data_seek($this->resultSet, $row);
@@ -347,7 +347,7 @@ namespace System\Database\Driver
 		{
 			if ($this->is_connected()) {
 				$this->query("CREATE DATABASE ".$this->config['database']);
-			} else throw new Exception(sprintf("Not connected to any server. Cannot create database %s", $this->config['database']));
+			} else throw new \System\Error\Database(sprintf("Not connected to any server. Cannot create database %s", $this->config['database']));
 		}
 
 

@@ -53,7 +53,7 @@ namespace Database\Mysqli
 		{
 			if ($this->has_column($name)) {
 				return $this->columns[$name];
-			} else throw new \DatabaseException(sprintf("Column '%s' does not exist in table '%s'", $name, $this->name));
+			} else throw new \System\Error\Database(sprintf("Column '%s' does not exist in table '%s'", $name, $this->name));
 		}
 
 
@@ -71,7 +71,7 @@ namespace Database\Mysqli
 				$col->set_cfg($cfg);
 				$this->columns[$name] = $col;
 				return $col;
-			} else throw new \DatabaseException(sprintf("Column '%s' already exists in table '%s'", $name, $this->name));
+			} else throw new \System\Error\Database(sprintf("Column '%s' already exists in table '%s'", $name, $this->name));
 		}
 
 

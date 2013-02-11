@@ -30,7 +30,7 @@ namespace System
 				}
 			} else {
 				if (!($action = @mkdir($pathname, $mode, true))) {
-					throw new \InternalException(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, $mode));
+					throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, $mode));
 				}
 			}
 

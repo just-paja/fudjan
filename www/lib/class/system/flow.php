@@ -4,6 +4,8 @@ namespace System
 {
 	abstract class Flow
 	{
+		const REDIRECT_LATER  = 1;
+		const REDIRECT_IMMEDIATELY = 2;
 
 		private static $headers = array(
 			200 => "HTTP/1.0 200 OK",
@@ -50,7 +52,7 @@ namespace System
 				$mod = array_shift(self::$queue);
 				$retval = $mod->make();
 				Status::log('Modules', array($mod->get_path() ), !!$retval, !!$retval);
-				if($r = &self::$redirect[REDIRECT_AFTER_FLOW]) self::redirect_now($r);
+				if($r = &self::$redirect[self::REDIRECT_LATER]) self::redirect_now($r);
 			}
 			self::save_referer();
 		}
@@ -68,8 +70,8 @@ namespace System
 
 		public static function redirect($url, array $opts = array())
 		{
-			$r = array("url" => $url, "status" => any($opts['status']) ? $opts['status']:'', "when" => any($opts['when']) ? $opts['when']:REDIRECT_AFTER_FLOW);
-			$opts['when'] == REDIRECT_IMMEDIATELY && self::redirect_now($r);
+			$r = array("url" => $url, "status" => any($opts['status']) ? $opts['status']:'', "when" => any($opts['when']) ? $opts['when']:self::REDIRECT_LATER);
+			$opts['when'] == self::REDIRECT_IMMEDIATELY && self::redirect_now($r);
 			self::$redirect[$r['when']] = $r;
 		}
 
@@ -89,14 +91,14 @@ namespace System
 		{
 			if(!!Status::$save_referer) $_SESSION['yacms-referer'] = $_SERVER['REQUEST_URI'];
 		}
-		
-		
+
+
 		public static function get_exec_time()
 		{
 			return microtime(true) - self::$start_time;
 		}
-		
-		
+
+
 		public static function get_queue()
 		{
 			return self::$queue;

@@ -94,7 +94,7 @@ namespace System
 					message("error", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' se nepovedlo uložit'), $name));
 
 				return new self(array("filename" => $name, "dirpath" => dirname($dir), "suffix" => $suffix, "tmp_name" => $tmp_name));
-			} else throw new \InternalException(l('Couldn\'t fetch file'), sprintf(l('HTTP error %s '), $data->status));
+			} else throw new \System\Error\Connection('Couldn\'t fetch file', sprintf('HTTP error %s ', $data->status));
 		}
 
 
@@ -146,7 +146,7 @@ namespace System
 		{
 			if (Directory::check(dirname($filepath)) && ($action = file_put_contents($filepath, $content))) {
 				$action = chmod($filepath, $mode);
-			} else throw new \InternalException(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $filepath, $mode));
+			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $filepath, $mode));
 
 			return $action;
 		}

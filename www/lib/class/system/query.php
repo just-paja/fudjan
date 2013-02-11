@@ -133,7 +133,7 @@ namespace System
 							$this->where($condition, $table_alias, !$or);
 							continue;
 						} if (is_object($condition)) {
-							throw new \CatchableException("Query condition cannot be an object");
+							throw new \System\Error\Argument("Query condition cannot be an object!");
 						} elseif (is_numeric($col) && !is_array($condition)) {
 							if (strval($condition)) {
 								$temp[] = "$condition";
@@ -176,7 +176,7 @@ namespace System
 							'`t_has_'.$rel.'`.`'.$rel_key.'`'."IN(".implode(',', array_map('intval', $ids)).")"
 						));
 				}
-			} else throw new \InternalException("Query must be associated with model when using query::has()!");
+			} else throw new \System\Error\Database("Query must be associated with model when using query::has()!");
 
 			return $this;
 		}

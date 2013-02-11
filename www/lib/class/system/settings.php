@@ -75,14 +75,14 @@ namespace System
 			}
 
 			if (!file_exists($p = ROOT.self::DIR_CONF_DIST.'/pages.json') && !\System\File::save_content($p, '{}')) {
-				throw new \InternalException(l('Couldn\'t create pages file. Please check your file system permissions on file "'.$p.'/".'));
+				throw new \System\Error\Permissions(l('Couldn\'t create pages file. Please check your file system permissions on file "'.$p.'/".'));
 			}
 
 			if ($content = @file_get_contents($p)) {
 				self::$conf['pages'] = json_decode($content, true);
 				self::$no_pages = empty(self::$conf['pages']);
 			} else {
-				throw new \InternalException('Couldn\'t find any pages. Please check JSON integrity of file "'.$p.'"');
+				throw new \System\Error\Format('Couldn\'t find any pages. Please check JSON integrity of file "'.$p.'"');
 			}
 
 			$dir = opendir($p = ROOT.self::DIR_ROUTES_STATIC);
@@ -200,7 +200,7 @@ namespace System
 				if (isset($iter[$arg])) {
 					$iter = &$iter[$arg];
 				} else {
-					throw new \InternalException(sprintf('There is no config on path \'%s\'', implode('/', $args)));
+					throw new \System\Error\Config(sprintf('There is no config on path \'%s\'', implode('/', $args)));
 				}
 			}
 
@@ -239,7 +239,7 @@ namespace System
 			$data = \System\Json::json_humanize(json_encode(self::get($module)));
 
 			if (!($action = \System\File::save_content($path, $data))) {
-				throw new \InternalException(sprintf(l('Failed to write settings. Please check your permissions on directory \'%s\''), ROOT.self::DIR_CONF_DIST));
+				throw new \System\Error\Permissions(sprintf('Failed to write settings. Please check your permissions on directory \'%s\'', ROOT.self::DIR_CONF_DIST));
 			}
 
 			Status::log('sys_notice', array("New config saved: ".self::DIR_CONF_DIST.'/'.$module.".json"), $action);

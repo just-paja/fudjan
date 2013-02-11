@@ -27,7 +27,7 @@ namespace System\Offcom
 				curl_close($ch);
 				return new Response($dataray);
 
-			} else throw new \InternalException(l('Please allow CURL extension'));
+			} else throw new \System\Error\Internal('Please allow CURL extension for System\Offcom\Request class');
 		}
 
 

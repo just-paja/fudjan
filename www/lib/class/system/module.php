@@ -54,8 +54,8 @@ namespace System
 			$path = ROOT.self::BASE_DIR.$this->path.'.php';
 
 			if (file_exists($path)) {
-				if (user()->is_root() || user()->has_right_to('*') || user()->has_right_to(substr($this->path, 1))) {
-					if (is_readable($path)) {
+				if (is_readable($path)) {
+					if (user()->is_root() || user()->has_right_to('*') || user()->has_right_to(substr($this->path, 1))) {
 						if (!is_array($this->locals)) $this->locals = array($this->locals);
 						$locals = &$this->locals;
 
@@ -72,7 +72,7 @@ namespace System
 							}
 
 							foreach (self::$array_forced_locals as $var) {
-								if (isset($locals[$var]) && !is_array($locals[$var])) throw new \CatchableException(sprintf(_('Module: `%s`'), $this->path).":\n".sprintf(_('local var `$%s` must be an array'), $var));
+								if (isset($locals[$var]) && !is_array($locals[$var])) throw new \System\Error\Argument(sprintf(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->path));
 							}
 
 							foreach ($locals as $key=>&$val) {
@@ -98,9 +98,9 @@ namespace System
 						}
 
 						return !!$req;
-					} else return message("error", _('Moduly'), _('Modul není určen ke čtení: ').$this->path, true);
-				} else return message("error", _('Oprávnění'), sprintf(_('Nemáte oprávnění přistupovat k modulu %s'), $this->path), true);
-			} else return message("error", _('Moduly'), _('Modul nebyl nalezen: ').$this->path, true);
+					} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". Permission denied.', $this->path));
+				} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". File is not readable.', $this->path));
+			} else throw new \System\Error\File(sprintf('Module not found: "%s", expected on path "%s".', $this->path, $path));
 		}
 
 

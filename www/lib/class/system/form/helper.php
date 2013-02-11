@@ -250,7 +250,7 @@ namespace System\Form
 					if ($opt instanceof \System\Model\Attr) {
 						$id  = $opt->id;
 						$lbl = $opt->name;
-					} else throw new \InternalException('Form options set passed as object must inherit System\Model\Attr');
+					} else throw new \System\Error\Form('Form options set passed as object must inherit System\Model\Attr');
 				} else {
 					$lbl = $opt;
 				}

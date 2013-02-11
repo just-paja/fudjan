@@ -80,7 +80,7 @@ namespace Database
 			}
 
 			if (!in_array($def['type'], self::$allowed_types)) {
-				throw new \WtfException(sprintf("Unknown attribute type: %s", $def['type']));
+				throw new \System\Error\Wtf(sprintf("Unknown attribute type: %s", $def['type']));
 			}
 
 			$def['name'] = $name;

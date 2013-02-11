@@ -33,7 +33,7 @@ namespace System\Offcom
 		{
 			foreach ($this->rcpt as $member) {
 				if (!self::isAddrValid($member)) {
-					throw new \Core\System\Model\OffcomException("E-mail address '".$member."' is not valid!");
+					throw new \System\Error\Format("E-mail address '".$member."' is not valid!");
 				}
 			}
 			return true;
@@ -44,7 +44,7 @@ namespace System\Offcom
 		{
 			try {
 				$this->validate();
-			} catch (\Core\System\Model\OffcomException $e) {
+			} catch (\System\Error\Format $e) {
 				$this->status = self::STATUS_FAILED;
 				message('error', l("Cannot send e-mail"), $e->msg());
 				return false;
@@ -68,7 +68,7 @@ namespace System\Offcom
 			if (mail($rcpt, $objhead['subject'], '', implode("\n", $body))) {
 				$this->status = self::STATUS_SENT;
 			} else $this->status = self::STATUS_FAILED;
-			
+
 			return $this->status;
 		}
 

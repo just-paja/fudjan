@@ -73,7 +73,7 @@ namespace System
 				$type = substr($name, strlen(self::SEPARATOR_INPUT_METHOD));
 
 				if (!isset($args[0])) {
-					throw new \ArgumentException(sprintf(l('You must enter input name as first argument for System\\Form::%s method'), $name));
+					throw new \System\Error\Argument(sprintf('You must enter input name as first argument for System\\Form::%s method', $name));
 				}
 
 				$this->input(array(
@@ -84,7 +84,7 @@ namespace System
 					"info"     => def($args[3], ''),
 				));
 
-			} else throw new \WtfException(sprintf(l('There is no form method "%s".'), $name));
+			} else throw new \System\Error\Wtf(sprintf('There is no form method "%s".', $name));
 		}
 
 

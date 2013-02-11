@@ -68,7 +68,7 @@ namespace System\Model
 					(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
 			}
 
-			throw new \InternalException(l('Trying to access internal private attribute: "'.$attr.'"'));
+			throw new \System\Error\Argument(sprintf('Trying to access internal private attribute "%s" for model "%s"', $attr, get_class($this)));
 		}
 
 

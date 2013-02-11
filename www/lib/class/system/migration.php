@@ -19,7 +19,7 @@ namespace System
 		{
 			try {
 				$old_items = get_all("System\Migration")->fetch();
-			} catch (Exception $e) {
+			} catch (\System\Error $e) {
 				$old_items = array();
 			}
 
@@ -34,7 +34,7 @@ namespace System
 				$sums = collect(array('attr', 'md5_sum'), $items, true);
 				try {
 					$old = get_all("\System\Migration", array("t0.md5_sum IN ('".implode("','", $sums)."')"))->fetch();
-				} catch (Exception $e) 	{
+				} catch (\System\Error $e) {
 					$old = array();
 				}
 			}
@@ -132,7 +132,7 @@ namespace System
 		{
 			try {
 				return Database::query($query);
-			} catch (Exception $e) {
+			} catch (\System\Error $e) {
 				$this->status = 'failed';
 				$this->errors[] = $e->getMessage();
 			}

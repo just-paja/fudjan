@@ -81,7 +81,7 @@ namespace System
 			$this->data[$this->type] = file_get_contents(self::HEADER_BZ2.$this->path);
 
 			if ($this->data[$this->type] === false) {
-				throw new InternalException(sprintf(l('Cannot read bz2 archive "%s"'), $this->path));
+				throw new \System\Error\Format(sprintf(l('Cannot read bz2 archive "%s"'), $this->path));
 			}
 
 			return $this;

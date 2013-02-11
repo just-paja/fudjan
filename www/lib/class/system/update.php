@@ -13,7 +13,7 @@ namespace System
 		{
 			try {
 				return !!Query::simple_count("user_perms", array('id_user_perm'));
-			} catch (Exception $e) {
+			} catch (\System\Error $e) {
 				return false;
 			}
 		}

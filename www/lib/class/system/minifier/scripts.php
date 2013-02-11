@@ -137,7 +137,7 @@ namespace System\Minifier
 				return $content;
 
 			} catch(Exception $e) {
-				if(isset(self::$jshrink))
+				if (isset(self::$jshrink))
 					self::$jshrink->clean();
 
 				ob_end_clean();
@@ -356,7 +356,7 @@ namespace System\Minifier
 					}
 
 					if($char === false)
-						throw new \RuntimeException('Stray comment. ' . $this->index);
+						throw new \System\Error\Format('Stray comment. ' . $this->index);
 
 					// if we're here c is part of the comment and therefore tossed
 					if(isset($this->c))
@@ -407,7 +407,7 @@ namespace System\Minifier
 							break 2;
 
 						case "\n":
-							throw new \RuntimeException('Unclosed string. ' . $this->index);
+							throw new \System\Error\Format('Unclosed string. ' . $this->index);
 							break;
 
 						case '\\':
@@ -438,7 +438,7 @@ namespace System\Minifier
 				}
 
 				if($this->a == "\n")
-					throw new \RuntimeException('Stray regex pattern. ' . $this->index);
+					throw new \System\Error\Format('Stray regex pattern. ' . $this->index);
 
 				echo $this->a;
 			}

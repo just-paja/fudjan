@@ -5,7 +5,7 @@ echo l('Fatal error has occurred')."\n";
 echo '-------------------------'."\n";
 
 
-if ($desc instanceof InternalException) {
+if ($desc instanceof System\Error\Internal) {
 	$msgs = $desc->get_explanation();
 	$back = $desc->get_backtrace();
 
@@ -16,7 +16,7 @@ if ($desc instanceof InternalException) {
 			var_dump($row);
 		}
 	}
-	
+
 	foreach ($back as $trace) {
 		echo "---\n";
 		foreach ($trace as $key=>$msg) {

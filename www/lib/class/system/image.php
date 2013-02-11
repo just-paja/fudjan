@@ -242,7 +242,7 @@ namespace System
 			$path = $obj->get_path(true);
 
 			if (($w && !is_numeric(	$w)) || ($w && !is_numeric($w))) {
-				throw new CatchableException("Image::gen_thumb(): Width and height must be integer");
+				throw new \System\Error\Argument("Width and height must be integer.");
 			}
 
 			if ($path != ROOT && file_exists($path)) {

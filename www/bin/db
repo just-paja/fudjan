@@ -139,7 +139,7 @@
 					$mlast = get_first("\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
 					$mlast_date = $mlast->updated_at;
 					$stat = "Ok";
-				} catch (Exception $e) {
+				} catch (System\Error $e) {
 					$stat = "Migrating database is necessary.";
 				}
 

@@ -136,14 +136,14 @@ namespace System
 
 				try {
 					Database::connect($settings['database'], $settings['database']['ident']);
-				} catch (\DatabaseException $e) {}
+				} catch (\System\Error\Database $e) {}
 
 				if (!Database::is_ready($settings['database']['ident'])) {
 					try {
 						$instance = Database::get_db($d['database_ident']);
 						$instance->create_database();
 						Database::connect($settings['database'], $settings['database']['ident']);
-					} catch (\Exception $e) {
+					} catch (\System\Error $e) {
 						v($e);exit;
 					}
 				}
@@ -201,7 +201,7 @@ namespace System
 		protected static function lock()
 		{
 			if (!($action = @file_put_contents(ROOT.\System\Settings::DIR_CONF_ALL.'/install.lock', time()))) {
-				throw new \InternalException(sprintf(
+				throw new \System\Error\Permissions(sprintf(
 					l('Failed to lock installer. Please check permissions on your \'%s\' directory and re-run the installer.'),
 					ROOT.\System\Settings::DIR_CONF_ALL
 				));

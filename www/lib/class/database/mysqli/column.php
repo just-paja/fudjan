@@ -168,7 +168,7 @@ namespace Database\Mysqli
 			if ($this->drop) {
 				if ($this->exists()) {
 				return "DROP `".$this->name."`";
-				} else throw new \DatabaseException(sprintf('Column %s cannot be dropped from table %s. It does not exists.', $this->name, $this->table()->name()));
+				} else throw new \System\Error\Database(sprintf('Column %s cannot be dropped from table %s. It does not exists.', $this->name, $this->table()->name()));
 			} else {
 				$exists = $this->exists();
 

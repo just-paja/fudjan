@@ -167,7 +167,7 @@ namespace System
 				$info = self::$types[$type];
 				$info[self::KEY_TYPE] = $type;
 				return $info;
-			} else throw new \InternalException('Resource of type "'.$type.'" does not exist.');
+			} else throw new \System\Error\Argument('Resource of type "'.$type.'" does not exist.');
 		}
 
 

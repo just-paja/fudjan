@@ -24,7 +24,7 @@ namespace System
 				if (php_sapi_name() == 'cli') {
 					exec(ROOT.'/bin/db --setup');
 				} else {
-					throw new \ConfigException(l('No database is set. Please rerun installer or run `bin/db --setup` to set up basic config or create config files manually'));
+					throw new \System\Error\Config('No database is set.');
 				}
 			}
 		}
@@ -35,7 +35,7 @@ namespace System
 			!$ident && $ident = $cfg['database'];
 			try {
 				$default_ident = cfg('database', 'default');
-			} catch (\Exception $e) { $default_ident = $ident; }
+			} catch (\System\Error $e) { $default_ident = $ident; }
 
 			$driver_name = 'System\\Database\\Driver\\'.ucfirst($cfg['driver']);
 			$driver = &self::$instances[$ident];
@@ -54,7 +54,7 @@ namespace System
 				$res = $db->query($query);
 				self::$queries ++;
 				return $res;
-			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
+			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
 
@@ -64,7 +64,7 @@ namespace System
 				$res = $db->count($query);
 				self::$queries ++;
 				return $res;
-			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
+			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
 
@@ -96,7 +96,7 @@ namespace System
 				$res = $db->query($sql);
 				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
-			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
+			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
 
@@ -132,7 +132,7 @@ namespace System
 
 				self::get_db($db_ident)->query($sql);
 				return $result;
-			} else throw new \DatabaseException('Not connected to database "'.$db_ident.'"');
+			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
 

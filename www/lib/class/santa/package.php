@@ -68,7 +68,7 @@ namespace Santa
 				));
 
 				return $pkg;
-			} else throw new \MissingFileException(sprintf(l('Cannot load package metadata from directory "%s"'), $path));
+			} else throw new \System\Error\File(sprintf(l('Cannot load package metadata from directory "%s"'), $path));
 		}
 
 
@@ -163,7 +163,7 @@ namespace Santa
 						self::$tree = $tmp['tree'];
 						self::check_tree_dir();
 						file_put_contents(ROOT.self::DIR_TMP_TREE.'/tree.json', json_encode(self::$tree));
-					} else throw new \InternalException(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
+					} else throw new \System\Error\Connection(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
 				}
 			}
 		}
@@ -327,7 +327,7 @@ namespace Santa
 
 				if ($data->ok()) {
 					$this->downloaded = \System\File::save_content($this->get_file_path(), $data->content);
-				} else throw new \InternalException(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
+				} else throw new \System\Error\Connection(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
 			}
 
 			return $this->downloaded;

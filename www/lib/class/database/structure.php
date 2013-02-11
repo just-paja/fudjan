@@ -31,7 +31,7 @@ namespace Database
 
 			if (\System\Database::exists($db_ident)) {
 				return cfg('database', 'list', $db_ident, 'driver');
-			} else throw new \DatabaseException(sprintf('Database %s does not exist', $db_ident));
+			} else throw new \System\Error\Database(sprintf('Database %s does not exist', $db_ident));
 		}
 
 

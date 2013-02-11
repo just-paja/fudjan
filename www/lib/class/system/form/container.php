@@ -40,7 +40,7 @@ namespace System\Form
 			$this->use_form($this->opts['form']);
 
 			if (!$this->type) {
-				throw new \MissingArgumentException('You must set form container type');
+				throw new \System\Error\Form('You must set form container type');
 			}
 
 			if (!$this->class) {
@@ -63,7 +63,7 @@ namespace System\Form
 			$el->form = $this->form;
 			if (in_array(get_class($el), $this->get_expected_class())) {
 				$this->elements[$el->name] = $el;
-			} else throw new \InvalidArgumentException(sprintf(
+			} else throw new \System\Error\Form(sprintf(
 				'Form container %s cannot accomodate element of type %s',
 				$this->type,
 				get_class($el)
