@@ -4,6 +4,16 @@ namespace System
 {
 	class Json
 	{
+		/** Read JSON from file on path
+		 * @param string $path
+		 * @returns array|false
+		 */
+		public static function read($path, $silent = false)
+		{
+			return json_decode(\System\File::read($path, $silent), true);
+		}
+
+
 		/** Read all JSON files in dir and return content
 		 * @param string $dir_dist Path to directory
 		 * @param &array $temp     Variable to write in
@@ -16,7 +26,7 @@ namespace System
 			while ($f = readdir($dir)) {
 				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 					list($mod) = explode(".", $f);
-					$json = (array) json_decode(file_get_contents($dir_dist.'/'.$f), true);
+					$json = (array) json_decode(\System\File::read($dir_dist.'/'.$f), true);
 
 					if ($assoc_keys) {
 						$temp[$mod] = $json;

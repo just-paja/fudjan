@@ -74,7 +74,7 @@ namespace System
 				$f = $p.'.core.json';
 			}
 
-			self::$messages[$lang][$module] = json_decode(file_get_contents($f), true);
+			self::$messages[$lang][$module] = \System\Json::read($f);
 
 			if (empty(self::$messages[$lang][$module])) {
 				Status::report('error', sprintf('Locales module %s/%s is empty or broken', $lang, $module));
@@ -105,7 +105,7 @@ namespace System
 			$_SESSION['lang'] = self::$lang = $lang;
 
 			if (file_exists($f = ROOT.self::DIR.'/'.self::$lang.'/core.json')) {
-				self::$messages[self::$lang]['all'] = json_decode(file_get_contents($f), true);
+				self::$messages[self::$lang]['all'] = \System\Json::read($f);
 			}
 
 			return self::$lang;

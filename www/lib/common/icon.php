@@ -28,7 +28,7 @@ file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.System\Template::DEFAULT
 
 if ($path) {
 
-	$cont = file_get_contents($path);
+	$cont = System\File::read($path);
 	header("HTTP/1.1 200 OK");
 	header("Content-Type: image/png");
 	header("Content-Length: ".strlen($cont));
@@ -40,6 +40,6 @@ if ($path) {
 	echo $cont;
 	exit;
 
-} else header("HTTP/1.1 404 Not Found");
+} throw new \System\Error\NotFound();
 
 

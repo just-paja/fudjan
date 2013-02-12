@@ -144,11 +144,29 @@ namespace System
 
 		public static function save_content($filepath, $content, $mode = self::MOD_DEFAULT)
 		{
-			if (Directory::check(dirname($filepath)) && ($action = file_put_contents($filepath, $content))) {
-				$action = chmod($filepath, $mode);
-			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $filepath, $mode));
+			return self::put($filepath, $content, $mode);
+		}
+
+
+		public static function put($path, $content, $mode = self::MOD_DEFAULT)
+		{
+			if (\System\Directory::check(dirname($path)) && ($action = file_put_contents($path, $content))) {
+				$action = chmod($path, $mode);
+			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $path, $mode));
 
 			return $action;
+		}
+
+
+		public static function read($path, $silent = false)
+		{
+			if (\System\Directory::check(dirname($path)) && file_exists($path)) {
+				if (is_readable($path)) {
+					return file_get_contents($path);
+				} else if (!$silent) throw new \System\Error\Permissions(sprintf('Failed to read file "%s". It is not readable.', $path));
+			} else if (!$silent) throw new \System\Error\File(sprintf('Failed to read file "%s". It does not exist.', $path));
+
+			return false;
 		}
 	}
 }

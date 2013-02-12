@@ -169,12 +169,11 @@ namespace System
 		{
 			if (count($this->template) > 0) {
 				foreach ((array) $this->template as $t) {
-					if (file_exists($p = ROOT.self::DIR_TEMPLATE_MODULES."/".$t.".json")) {
-						$modules = json_decode(file_get_contents($p), true);
-						foreach ((array) $modules as $id=>$mod) {
-							$mod[1]['module_id'] = $id;
-							Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
-						}
+					$modules = \System\Json::read(ROOT.self::DIR_TEMPLATE_MODULES."/".$t.".json", true);
+
+					foreach ((array) $modules as $id=>$mod) {
+						$mod[1]['module_id'] = $id;
+						Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
 					}
 				}
 			}

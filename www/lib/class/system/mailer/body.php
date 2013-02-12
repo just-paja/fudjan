@@ -40,9 +40,7 @@ namespace System\Mailer
 
 		public function get_template()
 		{
-			if ($this->template_name && file_exists($p = ROOT.\Core\Mailer::TEMPLATE_DIR.'/'.$this->template_name)) {
-				return file_get_contents($p);
-			}
+			return \System\File::read(ROOT.\Core\Mailer::TEMPLATE_DIR.'/'.$this->template_name);
 		}
 	}
 }

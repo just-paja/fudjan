@@ -70,16 +70,11 @@ namespace System
 				if (preg_match(self::CONF_FILE_REGEXP, $file) && !is_dir($p."/".$file)) {
 					$d = explode(".", $file);
 					array_pop($d);
-					self::$conf[implode(null, $d)] = json_decode(file_get_contents($p."/".$file), true);
+					self::$conf[implode(null, $d)] = json_decode(\System\File::read($p."/".$file), true);
 				}
 			}
 
-			if (!file_exists($p = ROOT.self::DIR_CONF_DIST.'/pages.json') && !\System\File::save_content($p, '{}')) {
-				throw new \System\Error\Permissions(l('Couldn\'t create pages file. Please check your file system permissions on file "'.$p.'/".'));
-			}
-
-			if ($content = @file_get_contents($p)) {
-				self::$conf['pages'] = json_decode($content, true);
+			if (self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json')) {
 				self::$no_pages = empty(self::$conf['pages']);
 			} else {
 				throw new \System\Error\Format('Couldn\'t find any pages. Please check JSON integrity of file "'.$p.'"');
@@ -89,7 +84,7 @@ namespace System
 			while ($f = readdir($dir)) {
 				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 					$key = substr($f, 0, strpos($f, "."));
-					self::$conf['pages'][$key] = json_decode(file_get_contents($p.'/'.$f), true);
+					self::$conf['pages'][$key] = json_decode(\System\File::read($p.'/'.$f), true);
 
 				}
 			}
@@ -97,9 +92,9 @@ namespace System
 			$version_path = ROOT.self::FILE_VERSION;
 
 			if (file_exists($version_path)) {
-				$cfg = explode("\n", file_get_contents($version_path, true));
+				$cfg = explode("\n", \System\File::read($version_path));
 			} else {
-				\System\File::save_content($version_path, implode("\n", $cfg = self::$version_default));
+				\System\File::put($version_path, implode("\n", $cfg = self::$version_default));
 			}
 
 			self::$conf['own'] = array(
@@ -153,7 +148,7 @@ namespace System
 				\System\Directory::create(dirname(self::get_cache_filename()), 0770);
 			}
 
-			$fp = file_put_contents(self::get_cache_filename(), serialize($conf));
+			$fp = \System\File::put(self::get_cache_filename(), serialize($conf));
 			@chmod(self::get_cache_filename(), 0770);
 			Status::log('Settings', array("written"), true);
 		}
@@ -179,7 +174,7 @@ namespace System
 		 */
 		private static function load_cache()
 		{
-			self::$conf = unserialize(file_get_contents(self::get_cache_filename()));
+			self::$conf = unserialize(\System\File::read(self::get_cache_filename()));
 			ksort(self::$conf);
 			Status::log('Settings', array("loaded from cache"), true);
 		}
@@ -267,7 +262,7 @@ namespace System
 				if (defined("YACMS_ENV")) {
 					self::$env = YACMS_ENV;
 				} elseif (file_exists($ef = ROOT.self::DIR_CONF_DIST.'/env')) {
-						self::$env = trim(file_get_contents($ef));
+						self::$env = trim(\System\File::read($ef));
 				}
 			} else {
 				self::$env = $env;

@@ -78,7 +78,7 @@ namespace System
 		public function read_bz2($tar = false)
 		{
 			if($tar) $this->type = 'tar';
-			$this->data[$this->type] = file_get_contents(self::HEADER_BZ2.$this->path);
+			$this->data[$this->type] = \System\File::read(self::HEADER_BZ2.$this->path);
 
 			if ($this->data[$this->type] === false) {
 				throw new \System\Error\Format(sprintf(l('Cannot read bz2 archive "%s"'), $this->path));
@@ -91,7 +91,7 @@ namespace System
 		public function read_gz($tar = false)
 		{
 			if($tar) $this->type = 'tar';
-			$this->data[$this->type] = file_get_contents(self::HEADER_GZ.$this->path);
+			$this->data[$this->type] = \System\File::read(self::HEADER_GZ.$this->path);
 			return $this;
 		}
 
@@ -135,7 +135,7 @@ namespace System
 				if ($this->type == 'tar') {
 					$this->set_path(ROOT.File::TMP_DIR.'/'.strtoupper(gen_random_string(10)).'.tar');
 					$this->is_temp(true);
-					file_put_contents($this->path, $this->data['tar']);
+					\System\File::put($this->path, $this->data['tar']);
 
 					$files = array();
 					$dirs = array();

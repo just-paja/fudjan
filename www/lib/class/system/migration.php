@@ -122,7 +122,7 @@ namespace System
 		private function get_checksum()
 		{
 			if (!$this->md5_sum) {
-				$this->md5_sum = md5(file_get_contents($p = ROOT.self::BASEDIR.'/'.$this->get_filename()));
+				$this->md5_sum = md5(\System\File::read($p = ROOT.self::BASEDIR.'/'.$this->get_filename()));
 			}
 			return $this->md5_sum;
 		}

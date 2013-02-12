@@ -54,7 +54,7 @@ namespace System
 			$files   = self::file_list($info[self::KEY_TYPE], $modules);
 			$content = self::get_content($info, $files);
 
-			self::send_header($info['type']);
+			self::send_header($info['type'], strlen($content));
 			echo $content;
 		}
 
@@ -62,7 +62,7 @@ namespace System
 		private static function get_content(array $info, array $files)
 		{
 			if (!cfg('dev', 'debug') && file_exists($f = self::get_cache_path($info, $files[self::KEY_SUM]))) {
-				$content = file_get_contents($f);
+				$content = \System\File::read($f);
 			} else {
 				ob_start();
 
@@ -75,7 +75,7 @@ namespace System
 				}
 
 				$content = \System\Minifier::process($info['type'], ob_get_clean());
-				file_put_contents(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
+				\System\File::put(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
 			}
 
 			return $content;
@@ -171,11 +171,17 @@ namespace System
 		}
 
 
-		public static function send_header($type)
+		public static function send_header($type, $length)
 		{
 			$info = self::get_type_info($type);
 
 			header('Content-Type: '.$info['content']);
+			header('Content-Length: '.$length);
+
+			if (!cfg('dev', 'debug')) {
+				header('Cache-Control: public');
+				header('Expires: '.date(\DateTime::RFC1123, time() + 86400 + rand(0,60)));
+			}
 		}
 	}
 }

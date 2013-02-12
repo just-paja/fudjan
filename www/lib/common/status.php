@@ -28,7 +28,7 @@ $cfg_status['Page tree'] = array(
 );
 
 $htaccess_current = sha1(System\Router::generate_htaccess());
-$htaccess_system = sha1(file_get_contents(ROOT.'/.htaccess'));
+$htaccess_system = sha1(System\File::read(ROOT.'/.htaccess'));
 $ok = $htaccess_current == $htaccess_system;
 
 $cfg_status['Apache mod rewrite'] = array(

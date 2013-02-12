@@ -15,7 +15,7 @@ namespace System
 
 			while ($file = readdir($od)) {
 				if (strpos($file, '.') !== 0) {
-					$files[$file] = file_get_contents($dir.'/'.$file);
+					$files[$file] = \System\File::read($dir.'/'.$file);
 				}
 			}
 

@@ -200,12 +200,7 @@ namespace System
 		 */
 		protected static function lock()
 		{
-			if (!($action = @file_put_contents(ROOT.\System\Settings::DIR_CONF_ALL.'/install.lock', time()))) {
-				throw new \System\Error\Permissions(sprintf(
-					l('Failed to lock installer. Please check permissions on your \'%s\' directory and re-run the installer.'),
-					ROOT.\System\Settings::DIR_CONF_ALL
-				));
-			}
+			\System\File::put(ROOT.\System\Settings::DIR_CONF_ALL.'/install.lock', time());
 		}
 
 

@@ -103,8 +103,8 @@ namespace System
 
 		private function get_file_hash()
 		{
-			if (!$this->file_hash) {
-			 $this->file_hash = md5(@file_get_contents($this->get_path(true)));
+			if (!$this->file_hash && file_exists($this->get_path(true))) {
+			 $this->file_hash = md5(\System\File::read($this->get_path(true)));
 		 }
 
 			return $this->file_hash;
@@ -196,7 +196,7 @@ namespace System
 
 		private function gen_name()
 		{
-			return md5(file_get_contents($this->file_path, false, NULL, -1, 2048).'-'.intval($this->file_size).'-'.intval($this->width).'x'.intval($this->height)).'.'.self::get_suffix($this->format);
+			return md5(\System\File::read($this->file_path, false, NULL, -1, 2048).'-'.intval($this->file_size).'-'.intval($this->width).'x'.intval($this->height)).'.'.self::get_suffix($this->format);
 		}
 
 
