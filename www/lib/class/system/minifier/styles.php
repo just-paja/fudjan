@@ -84,14 +84,13 @@ namespace System\Minifier
 					$css = preg_replace('/\\s*([{;])\\s*([\\*_]?[\\w\\-]+)\\s*:\\s*(\\b|[#\'"-])/x', '$1$2:$3', $css);
 
 					// remove ws in selectors
-					$css = preg_replace_callback('/(?:\\s*[^~>+,\\s]+\\s*[,>+~])+\\s*[^~>+,\\s]+{/x' ,array($this, '_selectorsCB'), $css);
+					$css = preg_replace_callback('/(?:\\s*[^~>+,\\s]+\\s*[,>+~])+\\s*[^~>+,\\s]+{/x', array($this, '_selectorsCB'), $css);
 
 					// minimize hex colors
 					$css = preg_replace('/([^=])#([a-f\\d])\\2([a-f\\d])\\3([a-f\\d])\\4([\\s;\\}])/i', '$1#$2$3$4$5', $css);
 
 					// remove spaces between font families
-					$css = preg_replace_callback('/font-family:([^;}]+)([;}])/'
-							,array($this, '_fontFamilyCB'), $css);
+					$css = preg_replace_callback('/font-family:([^;}]+)([;}])/', array($this, '_fontFamilyCB'), $css);
 
 					$css = preg_replace('/@import\\s+url/', '@import url', $css);
 
@@ -106,7 +105,7 @@ namespace System\Minifier
 
 					// prevent triggering IE6 bug: http://www.crankygeek.com/ie6pebug/
 					$css = preg_replace('/:first-l(etter|ine)\\{/', ':first-l$1 {', $css);
-					$css = str_replace("\n", '', $css);
+					$css = str_replace("\n", ' ', $css);
 
 					return trim($css);
 			}
