@@ -295,6 +295,10 @@
 		}
 
 
+		/** Deploy using good old file transfer protocol
+		 * @param array $cfg
+		 * @param array $files
+		 */
 		private static function deploy_over_ftp(array $cfg, array $files)
 		{
 			out();
