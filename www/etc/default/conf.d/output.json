@@ -7,5 +7,16 @@
 		"txt":"text/plain"
 	},
 	"format_default":"html",
-	"meta_tags":["description", "keywords", "author", "copyright", "robots"]
+	"meta_tags":["description", "keywords", "author", "copyright", "robots"],
+	"errors":{
+		"not_found":{
+			"title":"core_page_not_found",
+			"template":["pwf/errors/layout", "pwf/errors/404"]
+		},
+		"access_denied":{
+			"title":"core_access_denied",
+			"template":["pwf/errors/layout", "pwf/errors/403"]
+		}
+	}
+
 }

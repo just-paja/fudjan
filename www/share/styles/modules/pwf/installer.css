@@ -1,43 +1,3 @@
-html,
-body
-{
-	background-color:#000;
-	font-family:"Droid Sans", "Arial", "Dejavu Sans", sans-serif;
-	font-size:15px;
-}
-
-body {
-	padding:25px;
-	color:#efefef;
-}
-
-form {
-	font-size:14px;
-}
-
-h1 {
-	margin:0 0 15px;
-	font-weight:normal;
-}
-
-#container,
-footer
-{
-	width:750px;
-	margin:0 auto;
-}
-
-#container {
-	border:1px solid #633B00;
-	box-shadow:0 0 50px #4C0057;
-	background:#333;
-	padding:30px;
-}
-
-footer {
-	padding:5px;
-}
-
 .yaform {
 	border-top:1px solid #985B00;
 	padding-top:15px;
@@ -123,11 +83,6 @@ footer {
 
 .yaform .errors {
 	margin:0 0 10px;
-}
-
-
-footer {
-	color:#666;
 }
 
 .yaform button {

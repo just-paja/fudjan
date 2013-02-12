@@ -9,7 +9,7 @@ namespace System
 		public static function init()
 		{
 			\System\Router::update_rewrite();
-			\System\Output::set_template('setup');
+			\System\Output::set_template('pwf/setup');
 		}
 
 

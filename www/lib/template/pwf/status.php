@@ -4,7 +4,7 @@ Tag::doctype();
 Tag::html();
 
 	Tag::head();
-		content_for('styles', 'installer');
+		content_for('styles', 'pwf/base');
 		content_from('head');
 	Tag::close('head');
 
@@ -16,7 +16,6 @@ Tag::html();
 		));
 
 			yield();
-			System\Setup::run();
 			slot();
 
 		Tag::close('section', true);

@@ -100,7 +100,24 @@ namespace System
 
 		public static function catch_exception(\Exception $e)
 		{
-			self::error($e);
+			$errors = cfg('output', 'errors');
+
+			if (array_key_exists($e->get_name(), $errors)) {
+
+				try {
+					$page = new \System\Page($errors[$e->get_name()]);
+					\System\Output::set_opts(array(
+						"format"   => cfg("output", 'format_default'),
+						"title"    => $page->title,
+						"template" => $page->template,
+						"page"     => $page->seoname,
+					));
+
+					\System\Output::out();
+					self::report('error', $e);
+
+				} catch (\Exception $e) { self::catch_exception($e); }
+			} else self::error($e);
 		}
 	}
 }

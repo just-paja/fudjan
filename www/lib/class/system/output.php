@@ -4,9 +4,9 @@ namespace System
 {
 	class Output
 	{
-		const PAGE_DIR = "/lib/template";
-		const TEMPLATE_DIR = "/lib/template/layout";
-		const DEFAULT_TEMPLATE = "default";
+		const DIR_TEMPLATE = "/lib/template";
+		const DIR_PARTIAL = "/lib/template/partial";
+		const DEFAULT_TEMPLATE = "pwf/default";
 		const DEFAULT_OUT = "html";
 		const PREFIX_AJAX = "ajax-api";
 
@@ -176,8 +176,8 @@ namespace System
 
 			switch ($type)
 			{
-				case 'layout': $base .= self::TEMPLATE_DIR.'/'; break;
-				case 'partial': $base .= self::PAGE_DIR.'/partial/'; break;
+				case 'layout': $base .= self::DIR_TEMPLATE.'/'; break;
+				case 'partial': $base .= self::DIR_PARTIAL.'/'; break;
 			}
 
 			file_exists($temp = $base.Template::get_filename($name, self::$format, \System\Locales::get_lang())) ||

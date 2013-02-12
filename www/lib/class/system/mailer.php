@@ -4,12 +4,12 @@ namespace System
 {
 	class Mailer
 	{
-		const TEMPLATE_DIR = "/lib/template/mailer";
+		const DIR_TEMPLATE = "/lib/template/mailer";
 
 		public static function get_all_templates($type = null)
 		{
 			$templates = array();
-			$dir = opendir($p = ROOT.self::TEMPLATE_DIR);
+			$dir = opendir($p = ROOT.self::DIR_TEMPLATE);
 
 			while ($f = readdir($dir)) {
 				if ((is_file($p.'/'.$f) && (strpos($f, ".html") || strpos($f, ".txt"))) && (!$type || ($type && strpos($f, ".".$type.".")))) {
@@ -47,7 +47,7 @@ namespace System
 					message('success', _('Rozesílání fronty zpráv'), _('Rozesílání e-mailové fronty dokončeno'));
 				} else message('error', _('Rozesílání fronty zpráv'), _('Síťová komunikace je zakázána'));
 			} else message('error', _('Rozesílání fronty zpráv'), _('Nemáte oprávnění k rozesílání e-mailové fronty'));
-			
+
 			return $status;
 		}
 	}

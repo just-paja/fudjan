@@ -36,6 +36,7 @@ namespace System
 			return self::$current;
 		}
 
+
 		/** Parse page path
 		 * @returns void
 		 */
