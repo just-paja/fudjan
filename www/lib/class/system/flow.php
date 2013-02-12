@@ -51,7 +51,7 @@ namespace System
 		{
 			self::save_referer();
 			session_write_close();
-			header(\System\Http::get_header($r['code'] ? $r['code']:302]));
+			header(\System\Http::get_header($r['code'] ? $r['code']:302));
 			header("Location:".$r['url']);
 			exit;
 		}
