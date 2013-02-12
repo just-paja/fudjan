@@ -1,6 +1,6 @@
 <?
 
-namespace Template
+namespace System\Template
 {
 	abstract class Tag
 	{

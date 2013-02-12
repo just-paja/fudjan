@@ -12,16 +12,17 @@ function quick_conds($model) { return System\Model\Database::get_quick_conds($mo
 
 // Messages
 function message($status, $title, $message=null, $autohide=false, $links = array()) { $msg = new System\Message($status, $title, $message, $autohide, $links, false); return $msg->get_retval(); }
-function t_message($status, $title, $message=null, $autohide=false, $links = array()) { $msg = new System\Message($status, $title, $message, $autohide, $links, false);
+function t_message($status, $title, $message=null, $autohide=false, $links = array())
+{
+	$msg = new System\Message($status, $title, $message, $autohide, $links, false);
 	System\Template::partial("/message", array("message" => $msg));
-	return $msg->get_retval(); }
+	return $msg->get_retval();
+}
 
 
 // Redirects
 function redirect_now($url) { return System\Flow::redirect_now($url); }
 function redirect($url, array $opts = array()) { return System\Flow::redirect($url, $opts); }
-
-
 function trigger($name, array $data, $immediate = false){ System\Mailer::trigger($name, $data, $immediate); }
 
 
@@ -33,7 +34,7 @@ function icon($icon, $size=32, array $attrs = array()){ return System\Template::
 function format_time($datetime, $format){ return System\Template::format_time($datetime, $format); }
 function heading($label, $save_level = true, $level = NULL){ return System\Template::heading($label, $save_level, $level); }
 function section_heading($label, $level = NULL){ return System\Template::section_heading($label, $level); }
-function html_attrs($tag, $attrs){ return Template\Tag::html_attrs($tag, $attrs); }
+function html_attrs($tag, $attrs){ return System\Template\Tag::html_attrs($tag, $attrs); }
 function content_for($place, $content, $overwrite = false) { return System\Output::content_for($place, $content, $overwrite); }
 function content_from($place) { return System\Output::content_from($place); }
 function slot($name = System\Template::DEFAULT_SLOT) { return System\Output::slot($name); }
@@ -42,7 +43,7 @@ function title() { return System\Output::get_title(true); }
 function path() { return System\Page::get_path(); }
 function get_css_color($color) { return System\Template::get_css_color($color); }
 function get_color_container($color) { return System\Template::get_color_container($color); }
-class Tag extends Template\Tag {}
+class Tag extends System\Template\Tag {}
 
 
 // Miscelanous
