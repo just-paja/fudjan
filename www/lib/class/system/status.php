@@ -11,15 +11,19 @@ namespace System
 		public static $save_referer = true;
 
 
-		public static function error($desc)
+		public static function error($desc, $report = true)
 		{
+			header('HTTP/1.1 500 Internal Server Error');
 			$format = Output::get_format() ? Output::get_format():'html';
 
 			if (file_exists($f = ROOT."/lib/template/errors/bug.".$format.".php")) {
 				require $f;
 			} else require ROOT."/lib/template/errors/bug.html.php";
 
-			self::report('fatal', $desc);
+			if ($report) {
+				self::report('fatal', $desc);
+			}
+
 			exit;
 		}
 
@@ -52,22 +56,27 @@ namespace System
 		public static function report($type, $msg)
 		{
 			if (!isset(self::$log_files[$type]) || !is_resource(self::$log_files[$type])) {
-				\System\Directory::check(ROOT.self::DIR_LOGS);
-				self::$log_files[$type] = fopen(ROOT.self::DIR_LOGS.'/'.$type.'.log', 'a+');
+				try {
+					\System\Directory::check(ROOT.self::DIR_LOGS);
+					self::$log_files[$type] = @fopen(ROOT.self::DIR_LOGS.'/'.$type.'.log', 'a+');
+				} catch(\System\Error $e) {
+					self::error($e, false);
+				}
 			}
 
-			$report = @date('[Y-m-d H:i:s]');
-			php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
-			self::append_msg_info($msg, $report);
+			if (is_resource(self::$log_files[$type])) {
+				$report = @date('[Y-m-d H:i:s]');
+				php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
+				self::append_msg_info($msg, $report);
 
-
-			if (php_sapi_name() == 'cli') {
-				$report .= "> Run from console".NL;
-			} else {
-				$report .= "> Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
+				if (php_sapi_name() == 'cli') {
+					$report .= "> Run from console".NL;
+				} else {
+					$report .= "> Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
+				}
+				$report .= NL;
+				fwrite(self::$log_files[$type], $report);
 			}
-			$report .= NL;
-			fwrite(self::$log_files[$type], $report);
 		}
 
 
