@@ -74,11 +74,8 @@ namespace System
 				}
 			}
 
-			if (self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json')) {
-				self::$no_pages = empty(self::$conf['pages']);
-			} else {
-				throw new \System\Error\Format('Couldn\'t find any pages. Please check JSON integrity of file "'.$p.'"');
-			}
+			self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
+			self::$no_pages = empty(self::$conf['pages']);
 
 			$dir = opendir($p = ROOT.self::DIR_ROUTES_STATIC);
 			while ($f = readdir($dir)) {
