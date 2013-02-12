@@ -6,6 +6,7 @@ namespace System
 	{
 		protected $data = array();
 		protected $backtrace = array();
+		const HTTP_STATUS = 500;
 
 		function __construct()
 		{
@@ -59,6 +60,12 @@ namespace System
 		public function get_name()
 		{
 			return str_replace('system/error/', '', \System\Loader::get_class_file_name(get_class($this)));
+		}
+
+
+		public function get_http_status()
+		{
+			return \System\Http::get_header($this::HTTP_STATUS);
 		}
 	}
 }

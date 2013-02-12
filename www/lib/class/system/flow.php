@@ -7,16 +7,6 @@ namespace System
 		const REDIRECT_LATER  = 1;
 		const REDIRECT_IMMEDIATELY = 2;
 
-		private static $headers = array(
-			200 => "HTTP/1.0 200 OK",
-			301 => "HTTP/1.0 301 Moved Permanently",
-			302 => "HTTP/1.0 302 Found",
-			303 => "HTTP/1.0 303 See Other",
-			307 => "HTTP/1.0 307 Temporary Redirect",
-			403 => "HTTP/1.0 403 Forbidden",
-			404 => "HTTP/1.0 404 Page Not Found",
-		);
-
 		private static $queue = array();
 		private static $redirect = array();
 		private static $start_time = 0.0;
@@ -61,7 +51,7 @@ namespace System
 		{
 			self::save_referer();
 			session_write_close();
-			header(self::$headers[$r['code'] ? $r['code']:302]);
+			header(\System\Http::get_header($r['code'] ? $r['code']:302]));
 			header("Location:".$r['url']);
 			exit;
 		}

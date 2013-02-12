@@ -10,24 +10,6 @@ namespace System
 
 		public static $save_referer = true;
 
-
-		public static function error($desc, $report = true)
-		{
-			header('HTTP/1.1 500 Internal Server Error');
-			$format = Output::get_format() ? Output::get_format():'html';
-
-			if (file_exists($f = ROOT."/lib/template/errors/bug.".$format.".php")) {
-				require $f;
-			} else require ROOT."/lib/template/errors/bug.html.php";
-
-			if ($report) {
-				self::report('fatal', $desc);
-			}
-
-			exit;
-		}
-
-
 		public static function format_errors($desc, array &$errors = array())
 		{
 			if (is_array($desc)) {
@@ -103,21 +85,29 @@ namespace System
 			$errors = cfg('output', 'errors');
 
 			if (array_key_exists($e->get_name(), $errors)) {
+				$error_page = $errors[$e->get_name()];
+			} else {
+				$error_page = array(
+					"title"    => 'l_error',
+					"template" => array('pwf/errors/layout', 'pwf/errors/bug'),
+				);
+			}
 
-				try {
-					$page = new \System\Page($errors[$e->get_name()]);
-					\System\Output::set_opts(array(
-						"format"   => cfg("output", 'format_default'),
-						"title"    => $page->title,
-						"template" => $page->template,
-						"page"     => $page->seoname,
-					));
+			header($e->get_http_status());
 
-					\System\Output::out();
-					self::report('error', $e);
+			try {
+				$page = new \System\Page($error_page);
+				\System\Output::set_opts(array(
+					"format"   => cfg("output", 'format_default'),
+					"title"    => $page->title,
+					"template" => $page->template,
+					"page"     => $page->seoname,
+				));
 
-				} catch (\Exception $e) { self::catch_exception($e); }
-			} else self::error($e);
+				\System\Output::out();
+				self::report('error', $e);
+
+			} catch (\Exception $e) { self::catch_exception($e); }
 		}
 	}
 }
