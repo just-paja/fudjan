@@ -229,7 +229,7 @@ namespace System
 			$path = ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json";
 			$data = \System\Json::json_humanize(json_encode(self::get($module)));
 
-			if (!($action = \System\File::save_content($path, $data))) {
+			if (!($action = \System\File::put($path, $data))) {
 				throw new \System\Error\Permissions(sprintf('Failed to write settings. Please check your permissions on directory \'%s\'', ROOT.self::DIR_CONF_DIST));
 			}
 

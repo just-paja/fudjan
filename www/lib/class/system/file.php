@@ -148,10 +148,16 @@ namespace System
 		}
 
 
-		public static function put($path, $content, $mode = self::MOD_DEFAULT)
+		public static function put($path, $content, $mode = null)
 		{
-			if (\System\Directory::check(dirname($path)) && ($action = file_put_contents($path, $content))) {
-				$action = chmod($path, $mode);
+			if (\System\Directory::check(dirname($path)) && (!($ex = file_exists($path)) || is_writable($path))) {
+				$action = file_put_contents($path, $content);
+
+				if (!$ex && is_null($mode)) {
+					chmod($path, self::MOD_DEFAULT);
+				}
+
+				return is_null($mode) ? $action:$action && chmod($path, $mode);
 			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $path, $mode));
 
 			return $action;

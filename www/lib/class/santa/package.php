@@ -326,7 +326,7 @@ namespace Santa
 				$data = \System\Offcom\Request::get($url);
 
 				if ($data->ok()) {
-					$this->downloaded = \System\File::save_content($this->get_file_path(), $data->content);
+					$this->downloaded = \System\File::put($this->get_file_path(), $data->content);
 				} else throw new \System\Error\Connection(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
 			}
 
