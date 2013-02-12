@@ -8,8 +8,8 @@ namespace System
 
 		public static function init()
 		{
-			\System\Cli::try_shell("bin/system htaccess");
-			Output::set_template('setup');
+			\System\Router::update_rewrite();
+			\System\Output::set_template('setup');
 		}
 
 

@@ -120,7 +120,7 @@
 		{
 			\System\Init::basic();
 			vout(l('Updating .htaccess rules'));
-			file_put_contents(ROOT.'/.htaccess', System\Router::generate_htaccess());
+			System\Router::update_rewrite();
 		}
 	}
 

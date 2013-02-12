@@ -5,9 +5,10 @@ namespace System
 	abstract class Router
 	{
 		const DIR_REWRITE = '/etc/rewrite.d';
+		const REWRITE_TARGET = '/.htaccess';
 
 
-		public static function generate_htaccess()
+		public static function generate_rewrite_rules()
 		{
 			$dir = ROOT.self::DIR_REWRITE;
 			$od = opendir($dir);
@@ -21,6 +22,12 @@ namespace System
 
 			ksort($files);
 			return implode("\n", $files);
+		}
+
+
+		public static function update_rewrite()
+		{
+			\System\File::put(ROOT.self::REWRITE_TARGET, self::generate_rewrite_rules());
 		}
 	}
 }
