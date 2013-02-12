@@ -150,15 +150,24 @@ namespace System
 
 		public static function put($path, $content, $mode = null)
 		{
-			if (\System\Directory::check(dirname($path)) && (!($ex = file_exists($path)) || is_writable($path))) {
-				$action = file_put_contents($path, $content);
+			if (\System\Directory::check($d = dirname($path)) && (($ex = file_exists($path)) || is_writable($d))) {
+				if (!$ex || is_writable($path)) {
+					$write = file_put_contents($path, $content);
+					$mod = true;
 
-				if (!$ex && is_null($mode)) {
-					chmod($path, self::MOD_DEFAULT);
-				}
+					if (!$ex && is_null($mode)) {
+						chmod($path, self::MOD_DEFAULT);
+					}
 
-				return is_null($mode) ? $action:$action && chmod($path, $mode);
-			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s" with mode "%s". Check your permissions.', $path, $mode));
+					if (!is_null($mode)) {
+						if (!$mod = @chmod($path, $mode)) {
+							throw new \System\Error\Permissions(sprintf('Failed to set %s permissions on file "%s".', $mode, $path));
+						}
+					}
+
+					return $write && $mod;
+				} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s". Check your permissions.', $path));
+			} else throw new \System\Error\Permissions(sprintf('Failed to write data into file "%s". Parent directory is not writeable.', $path));
 
 			return $action;
 		}
