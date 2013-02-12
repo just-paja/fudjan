@@ -106,7 +106,7 @@ namespace System
 			);
 
 			ksort(self::$conf);
-			Status::log('Settings', array("reloaded"), false);
+			Status::report('info', "Settings reloaded");
 		}
 
 
@@ -150,7 +150,7 @@ namespace System
 
 			$fp = \System\File::put(self::get_cache_filename(), serialize($conf));
 			@chmod(self::get_cache_filename(), 0770);
-			Status::log('Settings', array("written"), true);
+			Status::report('info', 'New settings saved');
 		}
 
 
@@ -176,7 +176,6 @@ namespace System
 		{
 			self::$conf = unserialize(\System\File::read(self::get_cache_filename()));
 			ksort(self::$conf);
-			Status::log('Settings', array("loaded from cache"), true);
 		}
 
 
@@ -237,7 +236,6 @@ namespace System
 				throw new \System\Error\Permissions(sprintf('Failed to write settings. Please check your permissions on directory \'%s\'', ROOT.self::DIR_CONF_DIST));
 			}
 
-			Status::log('sys_notice', array("New config saved: ".self::DIR_CONF_DIST.'/'.$module.".json"), $action);
 			self::purge_cache();
 			self::reload();
 			return $action;

@@ -51,9 +51,9 @@ namespace System
 				$$k=$v;
 			}
 
-			return $temp ?
-				include($temp):
-				Status::log("out_partial", array("Partial not found: ".$name), false, true);
+			if (file_exists($temp)) {
+				include($temp);
+			} else throw new \System\Error\File(sprintf('Template "%s" not found.', $temp));
 		}
 
 

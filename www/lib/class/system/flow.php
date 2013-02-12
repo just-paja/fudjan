@@ -51,7 +51,6 @@ namespace System
 			while (!empty(self::$queue)) {
 				$mod = array_shift(self::$queue);
 				$retval = $mod->make();
-				Status::log('Modules', array($mod->get_path() ), !!$retval, !!$retval);
 				if($r = &self::$redirect[self::REDIRECT_LATER]) self::redirect_now($r);
 			}
 			self::save_referer();

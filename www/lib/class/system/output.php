@@ -82,7 +82,6 @@ namespace System
 				$format = self::DEFAULT_OUT;
 			}
 
-			Status::log("Output", array(Settings::get('output', 'format', $format)), true);
 			self::$format = $format;
 		}
 
@@ -162,7 +161,6 @@ namespace System
 		static function use_ajax($really = true)
 		{
 			self::$ajax = $really;
-			Status::log("out_layout", array("none"));
 		}
 
 
@@ -203,7 +201,6 @@ namespace System
 				$temp = self::get_template('page');
 			}
 
-			any($temp) && Status::log("out_template", array(($f===true ? "Forced ".$type." fallback to: ":null).$temp), $f === true ? null:true);
 			return $temp;
 		}
 
@@ -228,10 +225,6 @@ namespace System
 		 */
 		public static function out()
 		{
-			if (any(self::$objects)) {
-				Status::log("out_objects", array("objects in queue: ".count(self::$objects)), any(self::$objects) ? true:false);
-			}
-
 			ksort(self::$templates);
 			ob_start();
 

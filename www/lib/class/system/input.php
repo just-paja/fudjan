@@ -103,7 +103,6 @@ namespace System
 				foreach (self::$input['exec'] as $e) {
 					$file = ROOT.self::EXEC_DIR.'/'.str_replace('..', '', $e).'.php';
 					self::$exec_status[$e] = file_exists($file) ? !!include($file):false;
-					Status::log('in_exec', array($file), self::$exec_status[$e]);
 				}
 			}
 			return self::exec_check();

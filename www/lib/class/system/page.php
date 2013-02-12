@@ -66,7 +66,6 @@ namespace System
 					if ($add_modules) {
 						$page->template && $page->fill_template();
 						$page->add_modules();
-						Status::log("Page path", array(self::get_path()), true);
 					}
 
 					return $page;

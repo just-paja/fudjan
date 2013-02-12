@@ -4,47 +4,22 @@ namespace System
 {
 	abstract class Status
 	{
-
 		const DIR_LOGS = '/var/log';
 
-		private static $log = array();
 		private static $log_files = array();
 
 		public static $save_referer = true;
 
-		public static function unlog()
+
+		public static function error($desc)
 		{
-			return self::$log;
-		}
-
-
-		public static function log($where, array $what, $status = null, $fatal = false)
-		{
-			if (!isset(self::$log[$where])) self::$log[$where] = array();
-			$e = &self::$log[$where][];
-			$e = array_merge($what, array("status" => $status));
-		}
-
-
-		public static function fatal_error($desc)
-		{
-			self::report('fatal', $desc);
-			//!Settings::get('dev', 'debug') && ob_end_clean();
 			$format = Output::get_format() ? Output::get_format():'html';
 
 			if (file_exists($f = ROOT."/lib/template/errors/bug.".$format.".php")) {
 				require $f;
 			} else require ROOT."/lib/template/errors/bug.html.php";
-			exit;
-		}
 
-
-		public static function recoverable_error($id, $desc = null)
-		{
-			//!Settings::get('dev', 'debug') && ob_end_clean();
-			$format = Output::get_format() ? Output::get_format():'html';
-			header("HTTP/1.0 ".$id);
-			include ROOT."/lib/template/errors/".$id.".".$format.".php";
+			self::report('fatal', $desc);
 			exit;
 		}
 
@@ -116,8 +91,7 @@ namespace System
 
 		public static function catch_exception(\Exception $e)
 		{
-			$sql = method_exists($e, "getSql") ? $e->getSql():'';
-			self::fatal_error($e);
+			self::error($e);
 		}
 	}
 }
