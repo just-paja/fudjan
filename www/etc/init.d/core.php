@@ -10,6 +10,7 @@ if ($sys_package = stream_resolve_include_path(ROOT."/lib/include/system.php")) 
 }
 
 if (!defined('YAWF_PACKED')) {
+	require_once ROOT."/lib/class/system/loader.php";
 	require_once ROOT."/lib/include/constants.php";
 	require_once ROOT."/lib/include/functions.php";
 	require_once ROOT."/lib/include/core.php";
