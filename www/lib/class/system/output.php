@@ -55,7 +55,7 @@ namespace System
 		{
 			return $last ?
 				end(self::$title):
-				implode(Settings::get('default', 'title_separator'), array_reverse(self::$title));
+				implode(Settings::get('default', 'title_separator'), array_reverse(array_filter(self::$title)));
 		}
 
 
