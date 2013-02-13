@@ -55,7 +55,7 @@ namespace System
 				$this->data_default = $this->default;
 			}
 
-			$this->class = array('yaform');
+			$this->class = array_merge((array) $this->class, array('yaform'));
 			$this->take_data_from_input();
 
 			$this->hidden('submited', true);
