@@ -1,0 +1,39 @@
+h1 {
+	font-size:24px;
+}
+
+h2 {
+	margin:0 0 10px;
+	font-size:20px;
+}
+
+h1 .type {
+	display:block;
+	font-size:18px;
+	font-weight:normal;
+	color:#999;
+}
+
+h4 {
+	margin:0;
+	font-weight:normal;
+}
+
+p {
+	margin:0 0 10px;
+}
+
+
+li.err {
+	margin-bottom:5px;
+	list-style:square;
+	color:#999;
+}
+
+li.err_0 { color:#fff; }
+li.err_1 { color:#eee; }
+li.err_2 { color:#ddd; }
+li.err_3 { color:#ddd; }
+li.err_4 { color:#ccc; }
+li.err_5 { color:#bbb; }
+li.err_6 { color:#aaa; }

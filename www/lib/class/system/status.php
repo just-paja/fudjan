@@ -7,34 +7,13 @@ namespace System
 		const DIR_LOGS = '/var/log';
 
 		private static $log_files = array();
-
 		public static $save_referer = true;
 
-		public static function format_errors($desc, array &$errors = array())
-		{
-			if (is_array($desc)) {
-				foreach ($desc as $d) {
-					Status::format_errors($d, $errors);
-				}
-			} elseif (is_object($desc)) {
-				if ($desc instanceof \System\Error) {
-					foreach ($desc->get_explanation() as $msg) {
-						$errors[] = $msg;
-					}
 
-					foreach ($desc->get_backtrace() as $msg) {
-						$errors[] = implode(':', $msg);
-					}
-				} else {
-					$errors[] = var_export($desc);
-				}
-			} else {
-				$errors[] = $desc;
-			}
-			return $errors;
-		}
-
-
+		/** Write error into log file
+		 * @param string $type
+		 * @param string $msg
+		 */
 		public static function report($type, $msg)
 		{
 			if (!isset(self::$log_files[$type]) || !is_resource(self::$log_files[$type])) {
@@ -62,6 +41,10 @@ namespace System
 		}
 
 
+		/** Add message info to report
+		 * @param mixed  $msg
+		 * @param string $report
+		 */
 		private static function append_msg_info($msg, &$report)
 		{
 			foreach ((array) $msg as $line) {
@@ -80,7 +63,10 @@ namespace System
 		}
 
 
-		public static function catch_exception(\Exception $e)
+		/** General exception handler - Catches exception and displays error
+		 * @param \Exception $e
+		 */
+		public static function catch_exception(\Exception $e, $ignore_next = false)
 		{
 			$errors = cfg('output', 'errors');
 
@@ -89,7 +75,8 @@ namespace System
 			} else {
 				$error_page = array(
 					"title"    => 'l_error',
-					"template" => array('pwf/errors/layout', 'pwf/errors/bug'),
+					"template" => array('pwf/errors/layout'),
+					"partial"  => 'system/error/bug',
 				);
 			}
 
@@ -97,6 +84,7 @@ namespace System
 
 			try {
 				$page = new \System\Page($error_page);
+
 				\System\Output::set_opts(array(
 					"format"   => cfg("output", 'format_default'),
 					"title"    => $page->title,
@@ -104,10 +92,23 @@ namespace System
 					"page"     => $page->seoname,
 				));
 
+				\System\Output::add_template(array(
+					"name" => $page->partial,
+					"locals" => array(
+						"desc" => $e,
+					)
+				), \System\Template::DEFAULT_SLOT);
+
 				\System\Output::out();
 				self::report('error', $e);
 
-			} catch (\Exception $e) { self::catch_exception($e); }
+			} catch (\Exception $e) {
+				if (!$ignore_next) {
+					self::catch_exception($e, true);
+				} else {
+					v($e);
+				}
+			}
 		}
 	}
 }

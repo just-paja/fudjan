@@ -1,3 +1,4 @@
 <?
 
-define("NL", "\n");
+define("NL",  "\n");
+define("TAB", "\t");
