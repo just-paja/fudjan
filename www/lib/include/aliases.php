@@ -15,7 +15,7 @@ function message($status, $title, $message=null, $autohide=false, $links = array
 function t_message($status, $title, $message=null, $autohide=false, $links = array())
 {
 	$msg = new System\Message($status, $title, $message, $autohide, $links, false);
-	System\Template::partial("/message", array("message" => $msg));
+	System\Template::partial("system/message", array("message" => $msg));
 	return $msg->get_retval();
 }
 
