@@ -53,7 +53,7 @@ namespace System
 
 			if (file_exists($temp)) {
 				include($temp);
-			} else throw new \System\Error\File(sprintf('Template "%s" not found.', $temp));
+			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
 		}
 
 
