@@ -12,8 +12,12 @@ namespace System
 
 		private static $lang;
 		private static $messages = array();
+		private static $files = array();
 
 
+		/** Class init
+		 * @returns void
+		 */
 		public static function init()
 		{
 			mb_language('uni');
@@ -23,6 +27,18 @@ namespace System
 		}
 
 
+		/** Get list of all loaded locale files
+		 * @returns array
+		 */
+		public static function get_loaded_files()
+		{
+			return self::$files;
+		}
+
+
+		/** Set locale by configured language
+		 * @returns void
+		 */
 		private static function set_locale()
 		{
 			$lang = self::get_lang();
@@ -37,6 +53,11 @@ namespace System
 		}
 
 
+		/** Get locale module data
+		 * @param string      $str        Callstring
+		 * @param null|string $force_lang Use this language
+		 * @returns mixed
+		 */
 		public static function get($str, $force_lang = NULL)
 		{
 			$lang = $force_lang ? $force_lang:self::get_lang();
@@ -52,12 +73,21 @@ namespace System
 		}
 
 
+		/** Get all loaded messages for language
+		 * @param string $lang
+		 * @returns array
+		 */
 		public static function get_all_messages($lang = null)
 		{
 			return self::$messages[is_null($lang) ? self::get_lang():$lang];
 		}
 
 
+		/** Translate string
+		 * @param string      $str
+		 * @param null|string $force_lang
+		 * @returns string
+		 */
 		public static function translate($str, $force_lang = NULL)
 		{
 			$lang = $force_lang ? $force_lang:self::get_lang();
@@ -66,18 +96,38 @@ namespace System
 		}
 
 
+		/** Translate and replace arguments if necessary
+		 * @param string $str
+		 * @param array  $data Data to replace
+		 * @returns string
+		 */
+		public static function translate_and_replace($str, array $data)
+		{
+			unset($data[0]);
+			return vsprintf(self::translate($str), $data);
+		}
+
+
+		/** Load module
+		 * @param string $module
+		 * @param null|string $force_lang
+		 * @returns void
+		 */
 		private static function load($module, $force_lang = NULL)
 		{
 			$lang = $force_lang ? $force_lang:self::get_lang();
 
-			if (!file_exists($f = ($p = ROOT.self::DIR.'/'.$lang.self::DIR_MODULES.'/'.$module).'.json')) {
-				$f = $p.'.core.json';
-			}
+			if (!isset(self::$messages[$lang][$module])) {
+				if (!file_exists($f = ($p = ROOT.self::DIR.'/'.$lang.self::DIR_MODULES.'/'.$module).'.json')) {
+					$f = $p.'.core.json';
+				}
 
-			self::$messages[$lang][$module] = \System\Json::read($f);
+				self::$messages[$lang][$module] = \System\Json::read($f);
+				self::$files[$lang][] = $f;
 
-			if (empty(self::$messages[$lang][$module])) {
-				Status::report('error', sprintf('Locales module %s/%s is empty or broken', $lang, $module));
+				if (empty(self::$messages[$lang][$module])) {
+					Status::report('error', sprintf('Locales module %s/%s is empty or broken', $lang, $module));
+				}
 			}
 		}
 
@@ -100,28 +150,14 @@ namespace System
 		}
 
 
+		/** Set locale environment
+		 * @param string $lang
+		 * @returns string Resulted language
+		 */
 		static function set_lang($lang)
 		{
 			$_SESSION['lang'] = self::$lang = $lang;
-
-			if (file_exists($f = ROOT.self::DIR.'/'.self::$lang.'/core.json')) {
-				self::$messages[self::$lang]['all'] = \System\Json::read($f);
-			}
-
 			return self::$lang;
-		}
-
-
-
-		static function init_sysmsgs()
-		{
-			$fmessages = file_exists('lib/locales/messages') ? file('lib/locales/messages', true):@file('lib/locales/messages.core', true);
-			if (any($fmessages)) {
-				foreach($fmessages as $row){
-					list($key, $msg) = explode('::', $row);
-					self::$sysmsgs[$key] = trim($msg);
-				}
-			}
 		}
 
 
@@ -177,7 +213,9 @@ namespace System
 		{
 			($d = !isset(self::$messages[$lang])) && \System\Json::read_dist(
 				ROOT.self::DIR.'/'.self::get_lang().self::DIR_MESSAGES,
-				self::$messages[self::get_lang()]
+				self::$messages[$lang],
+				false,
+				self::$files[$lang]
 			);
 		}
 

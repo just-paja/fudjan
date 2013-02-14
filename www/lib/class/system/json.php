@@ -19,7 +19,7 @@ namespace System
 		 * @param &array $temp     Variable to write in
 		 * @return array
 		 */
-		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false)
+		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false, &$files = array())
 		{
 			!$assoc_keys && ($temp = array());
 			$dir = opendir($dir_dist);
@@ -27,6 +27,7 @@ namespace System
 				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 					list($mod) = explode(".", $f);
 					$json = (array) json_decode(\System\File::read($dir_dist.'/'.$f), true);
+					$files[] = str_replace(ROOT, '', $dir_dist.'/'.$f);
 
 					if ($assoc_keys) {
 						$temp[$mod] = $json;

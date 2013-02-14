@@ -61,6 +61,7 @@ function collect_names(array $array){ return collect(array('this', 'get_name'), 
 function translate_date($str, $hard = false) { return System\Locales::translate_date($str, $hard); }
 function sysmsg($errors) { return System\Locales::sysmsg($errors); }
 function l($str, $lang = null) { return System\Locales::translate($str, $lang); }
+function t($str) { return System\Locales::translate_and_replace($str, func_get_args()); }
 
 
 // Config
