@@ -9,6 +9,7 @@ namespace System
 		const DIR_MODULES = '/modules.d';
 		const ENCODING = 'UTF-8';
 		const LANG_DEFAULT = 'en_US';
+		const KEY_MESSAGES = 'messages';
 
 		private static $lang;
 		private static $messages = array();
@@ -92,7 +93,7 @@ namespace System
 		{
 			$lang = $force_lang ? $force_lang:self::get_lang();
 			self::load_messages($lang);
-			return isset(self::$messages[self::$lang][$str]) ? self::$messages[self::$lang][$str]:$str;
+			return isset(self::$messages[self::$lang][self::KEY_MESSAGES][$str]) ? self::$messages[self::$lang][self::KEY_MESSAGES][$str]:$str;
 		}
 
 
@@ -115,6 +116,10 @@ namespace System
 		 */
 		private static function load($module, $force_lang = NULL)
 		{
+			if ($module === self::KEY_MESSAGES) {
+				throw new \System\Error\Argument(sprintf('Locales module must not be named %s', $module));
+			}
+
 			$lang = $force_lang ? $force_lang:self::get_lang();
 
 			if (!isset(self::$messages[$lang][$module])) {
@@ -123,7 +128,7 @@ namespace System
 				}
 
 				self::$messages[$lang][$module] = \System\Json::read($f);
-				self::$files[$lang][] = $f;
+				self::$files[$lang][] = str_replace(ROOT, '', $f);
 
 				if (empty(self::$messages[$lang][$module])) {
 					Status::report('error', sprintf('Locales module %s/%s is empty or broken', $lang, $module));
@@ -211,9 +216,9 @@ namespace System
 		 */
 		private static function load_messages($lang)
 		{
-			($d = !isset(self::$messages[$lang])) && \System\Json::read_dist(
+			($d = !isset(self::$messages[$lang][self::KEY_MESSAGES])) && \System\Json::read_dist(
 				ROOT.self::DIR.'/'.self::get_lang().self::DIR_MESSAGES,
-				self::$messages[$lang],
+				self::$messages[$lang][self::KEY_MESSAGES],
 				false,
 				self::$files[$lang]
 			);
