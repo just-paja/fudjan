@@ -153,9 +153,20 @@ namespace System
 
 		public static function icon_for($icon, $size=32, $url, $label = NULL, $object = array())
 		{
-			$object['title'] = $label;
 			def($object['label'], '');
-			return self::link_for(self::icon($icon, $size).'<span class="lt">'.($object['label']?$label:'').'</span>', $url, $object);
+			def($object['label_left'], false);
+
+			$object['title'] = $label;
+			return self::link_for(
+				($object['label_left'] && $object['label'] ? self::label_text($object['label']):'').
+				self::icon($icon, $size).
+				(!$object['label_left'] && $object['label'] ? self::label_text($object['label']):''), $url, $object);
+		}
+
+
+		public static function label_text($label)
+		{
+			return '<span class="lt">'.$label.'</span>';
 		}
 
 
