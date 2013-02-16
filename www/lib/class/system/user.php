@@ -11,7 +11,7 @@ namespace System
 			"first_name"  => array('varchar'),
 			"last_name"   => array('varchar'),
 			"password"    => array('password', "default" => ''),
-			"avatar"      => array('image', "is_null" => true),
+			"avatar"      => array('image'),
 			"last_login"  => array('datetime', "default" => 0),
 			"com_email"   => array('bool', "default" => true),
 			"com_sms"     => array('bool', "default" => false),
