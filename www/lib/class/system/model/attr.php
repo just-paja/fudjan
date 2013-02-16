@@ -267,7 +267,7 @@ namespace System\Model
 		{
 			$attr_data = self::get_attr($model, $attr);
 
-			if (any($attr_data['is_null']) && is_null($val)) {
+			if (isset($attr_data['is_null']) && $attr_data['is_null'] && is_null($val)) {
 				return $val = null;
 			}
 
