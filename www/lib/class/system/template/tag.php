@@ -5,19 +5,21 @@ namespace System\Template
 	abstract class Tag
 	{
 		private static $html_attrs = array(
-			'*' => array("class", "id", "onclick", "onfocus", "title"),
-			'#inputs' => array("onchange", "onkeyup", "name", "value"),
-			'#source' => array("src"),
-			'#links' => array("href"),
-			'meta' => array("name", "content", "http-equiv"),
-			'form' => array("method", "action", "enctype"),
-			'textarea' => array("required", "rows", "cols", "!value"),
-			'input' => array("type", "min", "max", "maxlength", "step", "required", "size", "disabled", "checked", "results", "placeholder", "autocomplete"),
-			'select' => array("size", "multiple", "required"),
-			'option' => array("selected", "value"),
-			'button' => array("type"),
-			'html' => array('xmlns'),
-			'label' => array('for'),
+			'*' => array('class', 'id', 'onclick', 'onfocus', 'title'),
+			'#inputs'   => array('onchange', 'onkeyup', 'name', 'value'),
+			'#source'   => array('src'),
+			'#links'    => array('href'),
+			'#sizeable' => array('width', 'height'),
+			'iframe'    => array('frameborder', 'allowfullscreen'),
+			'meta'      => array('name', 'content', 'http-equiv'),
+			'form'      => array('method', 'action', 'enctype'),
+			'textarea'  => array('required', 'rows', 'cols', '!value'),
+			'input'     => array('type', 'min', 'max', 'maxlength', 'step', 'required', 'size', 'disabled', 'checked', 'results', 'placeholder', 'autocomplete'),
+			'select'    => array('size', 'multiple', 'required'),
+			'option'    => array('selected', 'value'),
+			'button'    => array('type'),
+			'html'      => array('xmlns'),
+			'label'     => array('for'),
 		);
 
 		private static $noclose_tags = array(
@@ -33,15 +35,16 @@ namespace System\Template
 		);
 
 		private static $attr_separators = array(
-			"content" => '',
-			"style"   => ';',
-			"class"   => ' ',
+			'content' => '',
+			'style'   => ';',
+			'class'   => ' ',
 		);
 
 		private static $html_schema = array(
-			'#inputs' => array('select', 'input', 'textarea', 'button', 'option'),
-			'#source' => array('img', 'iframe', 'script'),
-			'#links' => array('a', 'link'),
+			'#inputs'   => array('select', 'input', 'textarea', 'button', 'option'),
+			'#source'   => array('img', 'iframe', 'script'),
+			'#links'    => array('a', 'link'),
+			'#sizeable' => array('iframe', 'img', 'video'),
 		);
 
 
