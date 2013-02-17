@@ -385,6 +385,20 @@ namespace System\Model
 
 					break;
 				}
+
+
+				case 'video_youtube':
+				{
+					if (any($val) && !($val instanceof \System\Video\Youtube)) {
+						if (is_string($val)) {
+
+							($vid = \System\Video\Youtube::from_url($val)) ||
+							($vid = \System\Video\Youtube::from_id($val));
+							$val = $vid;
+
+						} else throw new \System\Error\Format('Cannot create Youtube video object from "'.gettype($val).'".');
+					}
+				}
 			}
 
 			return $val;

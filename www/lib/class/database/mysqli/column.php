@@ -5,13 +5,14 @@ namespace Database\Mysqli
 	class Column
 	{
 		private static $complex_types = array(
-			"image"    => array("type" => 'text'),
-			"json"     => array("type" => 'text'),
-			"int_set"  => array("type" => 'text'),
-			"password" => array("type" => 'varchar'),
-			"url"      => array("type" => 'varchar'),
-			"email"    => array("type" => 'varchar'),
-			"bool"     => array("type" => 'tinyint', "length" => 1),
+			"image"         => array("type" => 'text'),
+			"video_youtube" => array("type" => 'varchar'),
+			"json"          => array("type" => 'text'),
+			"int_set"       => array("type" => 'text'),
+			"password"      => array("type" => 'varchar'),
+			"url"           => array("type" => 'varchar'),
+			"email"         => array("type" => 'varchar'),
+			"bool"          => array("type" => 'tinyint', "length" => 1),
 		);
 
 		private $table;
