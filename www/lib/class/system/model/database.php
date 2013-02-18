@@ -446,10 +446,12 @@ namespace System\Model
 
 						// Store or delete the image when making changes
 						foreach ($model::$attrs['image'] as $name) {
-							if (is_object($this->$name) && $this->$name->allow_save()) {
-								$this->$name->save();
-							} elseif ($this->$name->is_to_be_deleted()) {
-								$this->data[$name] = null;
+							if (is_object($this->$name)) {
+								if ($this->$name->allow_save()) {
+									$this->$name->save();
+								} elseif ($this->$name->is_to_be_deleted()) {
+									$this->data[$name] = null;
+								} else $nochange[] = $name;
 							} else $nochange[] = $name;
 						}
 
