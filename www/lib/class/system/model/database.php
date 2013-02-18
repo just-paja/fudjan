@@ -495,8 +495,8 @@ namespace System\Model
 		protected static function prepare_data($model, array &$data)
 		{
 			foreach ($model::$attrs as $attr=>$attr_def) {
-				if (empty($data[$attr]) && empty($attr_def['is_null'])) {
-					$data[$attr] = any($attr_def['default']) ? $attr_def['default']:'';
+				if (empty($data[$attr]) && empty($attr_def['is_null']) && any($attr_def['default'])) {
+					$data[$attr] = $attr_def['default'];
 				}
 
 				if ($attr_def[0] === 'json' && isset($data[$attr])) {
