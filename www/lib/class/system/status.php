@@ -68,6 +68,7 @@ namespace System
 		 */
 		public static function catch_exception(\Exception $e, $ignore_next = false)
 		{
+			@ob_clean();
 			$errors = cfg('output', 'errors');
 
 			if (array_key_exists($e->get_name(), $errors)) {
@@ -80,7 +81,9 @@ namespace System
 				);
 			}
 
-			header($e->get_http_status());
+			if (!self::on_cli()) {
+				header($e->get_http_status());
+			}
 
 			try {
 				$page = new \System\Page($error_page);
@@ -109,6 +112,12 @@ namespace System
 					v($e);
 				}
 			}
+		}
+
+
+		public static function on_cli()
+		{
+			return substr(php_sapi_name(), 0, 3) === 'cli';
 		}
 	}
 }

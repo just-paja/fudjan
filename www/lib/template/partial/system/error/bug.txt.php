@@ -15,7 +15,7 @@ $back = $desc->get_backtrace();
 
 
 foreach ($exp as $ex) {
-	echo TAB."- ".$ex;
+	echo $ex;
 }
 
 echo NL;
@@ -49,11 +49,12 @@ foreach ($back as $b) {
 			echo NL;
 
 			foreach ($b['args'] as $key=>$arg) {
-				echo TAB.($key).':'.var_export($arg, true);
+				echo TAB.($key).':'.@var_export($arg, true);
 			}
+
+			echo NL;
 		}
 	}
 
-	echo NL;
 	echo NL;
 }
