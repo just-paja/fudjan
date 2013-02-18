@@ -602,11 +602,13 @@ namespace System
 					$value->tmp = true;
 				}
 
-				if ($value->is_image()) {
-					$value->cache();
-				} else {
-					$value = null;
-					$this->report_error($name_file, l('form_input_image_is_not_image'));
+				if ($value->tmp) {
+					if ($value->is_image()) {
+						$value->cache();
+					} else {
+						$value = null;
+						$this->report_error($name_file, l('form_input_image_is_not_image'));
+					}
 				}
 
 				if ($action == \System\Form\Input::ACTION_NONE) {

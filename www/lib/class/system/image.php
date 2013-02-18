@@ -149,7 +149,8 @@ namespace System
 					"src" => 'copy',
 					"tmp_name"  => $path,
 					"file_path" => str_replace(ROOT, '', $path),
-					"tmp" => true,
+					"file_name" => basename($path),
+					"tmp" => false,
 				));
 			}
 
