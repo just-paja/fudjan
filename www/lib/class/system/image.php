@@ -138,7 +138,7 @@ namespace System
 		// absolute path or http (not implemented)
 		public static function from_path($path)
 		{
-			if (file_exists($path)) {
+			if (file_exists($path)|| file_exists($path = ROOT.$path)) {
 				return new self(array(
 					"src" => 'copy',
 					"tmp_name"  => $path,
@@ -333,11 +333,8 @@ namespace System
 
 		public function get_path($with_root = false)
 		{
-			return $with_root ?
-				($this->tmp ? $this->file_path:ROOT.$this->file_path):
-				(strpos($this->file_path, ROOT) === 0 ?
-					substr($this->file_path, strlen(ROOT)):
-					$this->file_path);
+			$path = strpos($this->file_path, ROOT) === 0 ? substr($this->file_path, strlen(ROOT)):$this->file_path;
+			return $with_root ? ROOT.$path:$path;
 		}
 
 
