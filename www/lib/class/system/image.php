@@ -30,6 +30,8 @@ namespace System
 			"src"           => array('varchar'),
 			"file"          => array('varchar'),
 			"tmp"           => array('bool'),
+			"bad"           => array('bool'),
+			"cache"         => array('bool'),
 			"allow_save"    => array('bool'),
 			"to_be_deleted" => array('bool'),
 		);
@@ -78,11 +80,15 @@ namespace System
 		}
 
 
-		public function thumb($width = null, $height = null, $crop = true)
+		public function thumb($width, $height, $crop = true)
 		{
-			return ($this->check_thumb($width, $height, $crop)) ?
-				$this->get_thumb_path($width, $height, $crop):
-				self::gen_bad_thumb($width, $height);
+			if ($this->check_thumb($width, $height, $crop)) {
+				return $this->get_thumb_path($width, $height, $crop);
+			} else {
+				if ($this->bad) {
+					throw new \System\Error('Cannot generate thumb.');
+				} else return self::gen_bad_thumb($width, $height);
+			}
 		}
 
 
@@ -111,7 +117,7 @@ namespace System
 		}
 
 
-		private function make_thumb($width = null, $height = null, $crop = true)
+		private function make_thumb($width, $height, $crop = true)
 		{
 			if (extension_loaded('imagemagick')) {
 				$im = new ImageMagick($this->get_path(true));
@@ -142,12 +148,12 @@ namespace System
 				return new self(array(
 					"src" => 'copy',
 					"tmp_name"  => $path,
-					"file_path" => $path,
+					"file_path" => str_replace(ROOT, '', $path),
 					"tmp" => true,
 				));
 			}
 
-			return self::from_scratch();
+			return false;
 		}
 
 
@@ -177,15 +183,19 @@ namespace System
 
 		public function save($path = null)
 		{
-			if ($this->tmp && $this->allow_save) {
+			if ($this->cache && $this->allow_save) {
 				if (!$path) {
 					$new_name = $this->gen_name();
 					$path = self::prepare_image_dir(ROOT.self::DIR.'/'.substr($new_name, 0, 4).'/'.$new_name);
 				}
 
-				if (($this->src == 'copy' && $ok = copy($this->file_path, $path)) || $ok = rename($this->file_path, $path)) {
+				self::prepare_image_dir($this->get_path(true));
+				if (($this->src == 'copy' && $ok = copy($this->get_path(true), $path)) || $ok = rename($this->get_path(true), $path)) {
 					$this->file_path = $path;
-					$this->file_name = basename($path);
+					$this->file_name = basename($this->get_path(true));
+					$this->cache = false;
+					$this->tmp = false;
+					$this->allow_save = false;
 					chmod($this->file_path, 0644);
 				}
 
@@ -196,7 +206,7 @@ namespace System
 
 		private function gen_name()
 		{
-			return md5(\System\File::read($this->file_path, false, NULL, -1, 2048).'-'.intval($this->file_size).'-'.intval($this->width).'x'.intval($this->height)).'.'.self::get_suffix($this->format);
+			return md5(\System\File::read($this->get_path(true), false, NULL, -1, 2048).'-'.intval($this->file_size).'-'.intval($this->width).'x'.intval($this->height)).'.'.self::get_suffix($this->format);
 		}
 
 
@@ -211,6 +221,7 @@ namespace System
 			if (is_null(self::$bad_thumb)) {
 				self::$bad_thumb = self::from_path(ROOT.self::FILE_BAD_THUMB);
 				self::$bad_thumb->tmp = true;
+				self::$bad_thumb->bad = true;
 			}
 
 			return self::$bad_thumb->thumb($width, $height);
@@ -237,11 +248,11 @@ namespace System
 		}
 
 
-		public static function gen_thumb(self $obj, $w = null, $h = null, $crop = true)
+		public static function gen_thumb(self $obj, $w, $h, $crop = true)
 		{
 			$path = $obj->get_path(true);
 
-			if (($w && !is_numeric(	$w)) || ($w && !is_numeric($w))) {
+			if (($w && !is_numeric($w)) || ($h && !is_numeric($h))) {
 				throw new \System\Error\Argument("Width and height must be integer.");
 			}
 
@@ -333,8 +344,8 @@ namespace System
 
 		public function get_path($with_root = false)
 		{
-			$path = strpos($this->file_path, ROOT) === 0 ? substr($this->file_path, strlen(ROOT)):$this->file_path;
-			return $with_root ? ROOT.$path:$path;
+			$path = str_replace(ROOT, '', $this->file_path);
+			return $with_root ? ($this->tmp && !$this->bad ? '':ROOT).$path:$path;
 		}
 
 
@@ -348,13 +359,12 @@ namespace System
 			if (!($this->to_be_deleted = $dataray['src'] == 'none')) {
 				if (isset($dataray['tmp_name']) && empty($dataray['error'])) {
 					$this->tmp = $dataray['src'] == 'upload';
+
 					if (is_uploaded_file($dataray['tmp_name']) || file_exists($dataray['tmp_name'])) {
 						$this->file_path = $dataray['tmp_name'];
-						$this->file_name = basename($dataray['tmp_name']);
+						$this->file_name = basename($this->get_path(true));
 						$this->read_dimensions();
-					} else {
-						message('error', _('Ukládání obrázku selhalo'));
-					}
+					} else throw new \System\Error\File(sprintf('Image "%s" could not be saved!', $dataray['tmp_name']));
 				}
 			}
 
@@ -365,8 +375,14 @@ namespace System
 		public function cache()
 		{
 			$tmp_path = ROOT.self::DIR_TMP.'/'.$this->get_file_hash().'.'.self::get_suffix($this->get_format());
-			copy($this->get_path(true), $tmp_path);
-			$this->file_path = $tmp_path;
+			if (@copy($this->get_path(true), $tmp_path)) {
+				$this->file_path = str_replace(ROOT, '', $tmp_path);
+				$this->tmp = false;
+				$this->cache = true;
+			} else throw new \System\Error\File(
+				sprintf('Copying image from "%s" to "%s" failed while caching!', $this->get_path(true), $tmp_path),
+				'Please check your permissions and disk space'
+			);
 
 			return $this;
 		}
