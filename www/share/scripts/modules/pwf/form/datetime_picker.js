@@ -19,7 +19,8 @@ pwf.register('datetime_picker', function()
 					"week_start":1,
 					"seconds":false,
 					"minutes":true,
-					"hours":true
+					"hours":true,
+					"required":!!el.prop('required')
 				},
 				els = {
 					"container":null,
@@ -68,10 +69,9 @@ pwf.register('datetime_picker', function()
 					this.el('input_hours', $('<input class="time" type="text" step="1" max="23" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_hours">'));
 					this.el('input_minutes', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_minutes">'));
 					this.el('input_seconds', $('<input class="time" type="text" step="1" max="59" min="0" maxlength="2" name="" value="" id="'+this.attr('id')+'_input_time_seconds">'));
-					this.el('icon_calendar', $('<span class="icon cal" style=""></span>'));
 					this.el('time_separator', '<span class="sep">:</span>');
 
-					this.el('container_date').append([this.el('input_date'), this.el('icon_calendar')]);
+					this.el('container_date').append([this.el('input_date')]);
 
 					if (this.attr('hours')) {
 						this.el('container_time').append(this.el('input_hours'));
@@ -107,11 +107,13 @@ pwf.register('datetime_picker', function()
 						.unbind('click.pwf_datetime_picker')
 						.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
 
-					this.el('icon_calendar')
-						.unbind('click.pwf_datetime_picker')
-						.bind('click.pwf_datetime_picker', {"obj":this}, callback_calendar);
-
-					v(this.el('container'));
+					if (!this.attr('required')) {
+						this.el('button_clear', $('<span class="icon clear" style=""></span>'));
+						this.el('container').append(this.el('button_clear'));
+						this.el('button_clear')
+							.unbind('click.pwf_datetime_picker')
+							.bind('click.pwf_datetime_picker', {"obj":this}, callback_clear);
+					}
 				}
 			};
 
@@ -133,6 +135,24 @@ pwf.register('datetime_picker', function()
 			};
 
 
+			this.clear = function()
+			{
+				this.get_inputs().val('');
+				this.update_value(null);
+			};
+
+
+			this.get_inputs = function()
+			{
+				return $([
+					this.el('input_date')[0],
+					this.el('input_hours')[0],
+					this.el('input_minutes')[0],
+					this.el('input_seconds')[0]
+				]);
+			};
+
+
 			this.show = function()
 			{
 				this.create_month_grid();
@@ -146,6 +166,10 @@ pwf.register('datetime_picker', function()
 			{
 				if (typeof month === 'undefined') {
 					var date = this.get_date();
+
+					if (date === null) {
+						date = new Date();
+					}
 				} else {
 					var date = new Date(Date.UTC(year, month, 1));
 				}
@@ -171,6 +195,11 @@ pwf.register('datetime_picker', function()
 				this.hide();
 				var date = new Date();
 				var current = this.get_date();
+
+				if (current === null) {
+					current = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds()));
+				}
+
 				date.setTime(microtime);
 				date.setUTCHours(current.getUTCHours());
 				date.setUTCMinutes(current.getUTCMinutes());
@@ -182,9 +211,12 @@ pwf.register('datetime_picker', function()
 			this.get_date = function()
 			{
 				var val = this.el('input').val();
-				var date = typeof val !== 'undefined' && val.length > 0 ? new Date(val):new Date();
+				var date = typeof val !== 'undefined' && val.length > 0 ? new Date(val):null;
 
-				date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
+				if (date !== null) {
+					date = new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds()));
+				}
+
 				return date;
 			};
 
@@ -193,29 +225,34 @@ pwf.register('datetime_picker', function()
 			{
 				var date = typeof date === 'undefined' ? this.get_date():date;
 				var skip = typeof skip === 'undefined' ? false:skip;
-				var
-					yrs = date.getUTCFullYear() + '',
-					mon = (date.getUTCMonth() + 1) + '',
-					day = date.getUTCDate() + '',
-					hrs = date.getUTCHours() + '',
-					min = date.getUTCMinutes() + '',
-					sec = date.getUTCSeconds() + '';
 
-				this.el('input_date').val(day + '.' + mon + '.' + yrs);
+				if (date === null) {
+					this.el('input').attr('value', '');
+				} else {
+					var
+						yrs = date.getUTCFullYear() + '',
+						mon = (date.getUTCMonth() + 1) + '',
+						day = date.getUTCDate() + '',
+						hrs = date.getUTCHours() + '',
+						min = date.getUTCMinutes() + '',
+						sec = date.getUTCSeconds() + '';
 
-				(mon.length <= 1) && (mon = '0' + mon);
-				(day.length <= 1) && (day = '0' + day);
-				(hrs.length <= 1) && (hrs = '0' + hrs);
-				(min.length <= 1) && (min = '0' + min);
-				(sec.length <= 1) && (sec = '0' + sec);
+					this.el('input_date').val(day + '.' + mon + '.' + yrs);
 
-				(skip !== 'hrs') && this.el('input_hours').val(hrs);
-				(skip !== 'min') && this.el('input_minutes').val(min);
-				(skip !== 'sec') && this.el('input_seconds').val(sec);
+					(mon.length <= 1) && (mon = '0' + mon);
+					(day.length <= 1) && (day = '0' + day);
+					(hrs.length <= 1) && (hrs = '0' + hrs);
+					(min.length <= 1) && (min = '0' + min);
+					(sec.length <= 1) && (sec = '0' + sec);
 
-				var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + '+00:00';
-				this.el('input').attr('value', val);
-				return this;
+					(skip !== 'hrs') && this.el('input_hours').val(hrs);
+					(skip !== 'min') && this.el('input_minutes').val(min);
+					(skip !== 'sec') && this.el('input_seconds').val(sec);
+
+					var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + '+00:00';
+					this.el('input').attr('value', val);
+					return this;
+				}
 			};
 		};
 
@@ -429,6 +466,12 @@ pwf.register('datetime_picker', function()
 	var callback_calendar = function(e) {
 		e.preventDefault();
 		e.data.obj.switch_visibility();
+	};
+
+
+	var callback_clear = function(e) {
+		e.stopPropagation();
+		e.data.obj.clear();
 	};
 
 

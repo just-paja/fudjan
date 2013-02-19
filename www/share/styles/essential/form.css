@@ -1,122 +1,122 @@
-.yaform {
+.pwform {
 	font-size:13px;
 }
 
-.yaform input {
+.pwform input {
 	font-size:11px;
 }
 
-.yaform .input-container {
+.pwform .input-container {
 	display:inline-block;
 	vertical-align:top;
 }
 
-.yaform .label,
-.yaform .input,
-.yaform .errors
+.pwform .label,
+.pwform .input,
+.pwform .errors
 {
 	line-height:14px;
 }
 
-.yaform .input {
+.pwform .input {
 	padding:0 5px;
 }
 
-.yaform .input.button {
+.pwform .input.button {
 	padding:0;
 }
 
-.yaform ul, ul.plain{
+.pwform ul, ul.plain{
 	list-style:none;
 	margin:0;
 	padding:0;
 }
-.yaform ul li ul{padding:5px 0 0}
-.yaform ul li{margin:5px 0}
-.yaform ul li ul li{margin-left:15px}
-.yaform ul li ul li label{width:300px;}
-.yaform ul li label.label-left{ margin-right:7px; }
-.yaform .input-checkbox, .yaform .input-radio{margin-right:7px}
-.yaform .input-text, .yaform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
+.pwform ul li ul{padding:5px 0 0}
+.pwform ul li{margin:5px 0}
+.pwform ul li ul li{margin-left:15px}
+.pwform ul li ul li label{width:300px;}
+.pwform ul li label.label-left{ margin-right:7px; }
+.pwform .input-checkbox, .pwform .input-radio{margin-right:7px}
+.pwform .input-text, .pwform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
 	width:250px;
 }
-.yaform .textarea .form-input {
+.pwform .textarea .form-input {
 	vertical-align:bottom;
 	margin-left:7px;
 	width:500px;
 	display:inline-block;
 }
-.yaform .select-input {
+.pwform .select-input {
 	vertical-align:bottom;
 	margin-left:0px;
 }
-.yaform label{cursor:pointer; width:125px; display:inline-block; vertical-align:top; }
-.yaform input.input-checkbox{ margin-left:135px; }
-.yaform ul li ul.choice-group li{display:inline-block;width:200px}
-.yaform ul li ul.choice-group li label{width:auto;}
-.yaform ul li legend, .yaform ul li label{font-weight:bold}
-.yaform ul li .input-group label{font-weight:normal; text-align:left}
-.yaform ul li .list{display:inline-block;border:1px solid #eaeaea}
-.yaform ul li .list a{display:block; padding:4px}
-.yaform ul li .list a:hover{ background:#f9f9f9 }
-.yaform .inputs{margin:0 0 10px}
-.yaform .buttons{margin:15px 0 0}
-.yaform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
-.yaform ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
-.yaform ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
+.pwform label{cursor:pointer; width:125px; display:inline-block; vertical-align:top; }
+.pwform input.input-checkbox{ margin-left:135px; }
+.pwform ul li ul.choice-group li{display:inline-block;width:200px}
+.pwform ul li ul.choice-group li label{width:auto;}
+.pwform ul li legend, .pwform ul li label{font-weight:bold}
+.pwform ul li .input-group label{font-weight:normal; text-align:left}
+.pwform ul li .list{display:inline-block;border:1px solid #eaeaea}
+.pwform ul li .list a{display:block; padding:4px}
+.pwform ul li .list a:hover{ background:#f9f9f9 }
+.pwform .inputs{margin:0 0 10px}
+.pwform .buttons{margin:15px 0 0}
+.pwform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
+.pwform ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
+.pwform ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
 
-.yaform .image-uploader,
-.yaform .image-uploader ul,
-.yaform .image-uploader li
+.pwform .image-uploader,
+.pwform .image-uploader ul,
+.pwform .image-uploader li
 { margin:0; padding:0; }
 
-.yaform .image-uploader .thumb,
-.yaform .image-uploader .controls { display:inline-block; vertical-align:top; margin-bottom:5px; }
-.yaform .image-uploader .thumb { border:1px solid #ccc; margin-right:10px }
-.yaform .image-uploader .controls label { margin-bottom:2px }
+.pwform .image-uploader .thumb,
+.pwform .image-uploader .controls { display:inline-block; vertical-align:top; margin-bottom:5px; }
+.pwform .image-uploader .thumb { border:1px solid #ccc; margin-right:10px }
+.pwform .image-uploader .controls label { margin-bottom:2px }
 
-.yaform .image-uploader .fup-cont, .yaform .input-list-container {
+.pwform .image-uploader .fup-cont, .pwform .input-list-container {
 	border:1px solid #e0e0e0;
 	padding-left:15px;
 	margin:0 0 0 4px;
 	padding:10px 15px;
 	display:inline-block;
 }
-.yaform .image-uploader .label-left { vertical-align:top }
-.yaform .image-uploader .fup-cont label { width:125px }
+.pwform .image-uploader .label-left { vertical-align:top }
+.pwform .image-uploader .fup-cont label { width:125px }
 
-.yaform .input-list-container {
+.pwform .input-list-container {
 	display:inline-block;
 	vertical-align:top;
 	padding:5px 10px;
 	margin:0 0 2px 7px;
 }
-.yaform .input-list-container a.list-link-add { position:relative; left:-2px }
-.yaform li.input-list-editor {
+.pwform .input-list-container a.list-link-add { position:relative; left:-2px }
+.pwform li.input-list-editor {
 	width:0;
 	height:0;
 	overflow:visible;
 }
-.yaform .ilve { display:none; }
-.yaform .input-list-content { padding:0 }
-.yaform .input-list-content .key { font-weight:bold; }
-.yaform .hide-keys .input-list-content .key { display:none }
+.pwform .ilve { display:none; }
+.pwform .input-list-content { padding:0 }
+.pwform .input-list-content .key { font-weight:bold; }
+.pwform .hide-keys .input-list-content .key { display:none }
 .hide-keys .key { display:none }
 
 
-.yaform .form-tip{
+.pwform .form-tip{
 	display:inline-block;
 	margin:0 10px;
 }
-.yaform .form-subli label{ font-weight:normal }
-.yaform ul.form-group-switch>:first-child { display:none }
-.yaform .label-multi-checkbox{width:100%}
-.yaform .label-right{width:auto}
+.pwform .form-subli label{ font-weight:normal }
+.pwform ul.form-group-switch>:first-child { display:none }
+.pwform .label-multi-checkbox{width:100%}
+.pwform .label-right{width:auto}
 
-.yaform .formel-text label{
+.pwform .formel-text label{
 	cursor:auto;
 }
-.yaform .formel-text p{
+.pwform .formel-text p{
 	display:inline-block;
 	margin:0 0 0 12px;
 	padding:5px 0;
@@ -125,60 +125,60 @@
 .form-group{
 	border:1px solid #efefef;
 }
-.yaform .form-group label{
+.pwform .form-group label{
 	font-weight:normal;
 	width:112px;
 }
 
 
-.yaform .errors {
+.pwform .errors {
 	display:inline-block;
 	padding:0;
 	margin:0;
 }
 
-.yaform .errors li {
+.pwform .errors li {
 	padding:0;
 	margin:0 10px;
 }
 
-.yaform .input-label-right {
+.pwform .input-label-right {
 	font-weight:normal;
 }
 
-.yaform .input-left {
+.pwform .input-left {
 	padding-left:138px;
 }
 
-.yaform .input-left .input-container {
+.pwform .input-left .input-container {
 	width:auto;
 }
 
-.yaform .input-image {
+.pwform .input-image {
 	border:1px solid rgba(0,0,0,0.15);
 	padding:5px;
 	background:rgba(0,0,0,0.05);
 }
 
-.yaform .input-image .im-options {
+.pwform .input-image .im-options {
 	display:inline-block;
 	vertical-align:top;
 }
 
-.yaform .input-image img {
+.pwform .input-image img {
 	margin:5px;
 	vertical-align:top;
 }
 
-.yaform .input-image .input {
+.pwform .input-image .input {
 	margin:5px;
 }
 
-.yaform .datetime_picker .head {
+.pwform .datetime_picker .head {
 	padding:0;
 }
 
-.yaform .datetime_picker .calendar {
+.pwform .datetime_picker .calendar {
 	border:1px solid #ccc;
 	box-shadow:0 0 10px rgba(0,0,0,0.5);
 	background:rgba(0,0,0,0.75);
@@ -189,7 +189,7 @@
 	z-index:10000
 }
 
-.yaform .datetime_picker .day {
+.pwform .datetime_picker .day {
 	display:block;
 	width:20px;
 	height:20px;
@@ -201,76 +201,86 @@
 	border-radius:3px;
 }
 
-.yaform .datetime_picker .head .day {
+.pwform .datetime_picker .head .day {
 	padding:0px 3px;
 	color:#ccc;
 }
 
-.yaform .datetime_picker .body .day {
+.pwform .datetime_picker .body .day {
 	border:1px solid rgba(255,255,255,0.25);
 }
 
-.yaform .datetime_picker .day.inactive {
+.pwform .datetime_picker .day.inactive {
 	color:#999
 }
 
-.yaform .datetime_picker .day.active {
+.pwform .datetime_picker .day.active {
 	color:#fff;
 	cursor:pointer;
 }
 
-.yaform .datetime_picker .day.active:hover {
+.pwform .datetime_picker .day.active:hover {
 	background:rgba(255,255,255,0.25)
 }
 
-.yaform .datetime_picker .calendar .week_start {
+.pwform .datetime_picker .calendar .week_start {
 	clear:left;
 }
 
-.yaform .cleaner {
+.pwform .cleaner {
 	clear:both;
 	display:block;
 }
 
-.yaform .datetime_picker .cal {
+.pwform .datetime_picker .clear {
 	width:20px;
 	height:20px;
-	background:#ccc;
+	background:url(/share/icons/16/pwf/actions/clear) center center no-repeat;
 	display:inline-block;
 	vertical-align:top;
 	margin:0 5px 0 3px;
+	cursor:pointer;
 }
 
-.yaform .datetime_picker input.time {
-	width:2em;
+.pwform .datetime_picker input.time,
+.pwform .datetime_picker input.date {
 	border:none;
 	background:none;
 	margin:0;
 	display:inline-block;
+}
+
+.pwform .datetime_picker input.time {
+	width:2em;
 	text-align:center;
 }
 
-.yaform .datetime_picker .container_time,
-.yaform .datetime_picker .container_date
-{
-	display:inline-block;
+.pwform .datetime_picker input.date {
+	width:6em;
+	padding-left:3px;
+	padding-right:3px;
 }
 
-.yaform .datetime_picker input.date,
-.yaform .datetime_picker .container_time
+.pwform .datetime_picker input.time,
+.pwform .datetime_picker input.date,
+.pwform .datetime_picker .sep
 {
+	font-size:11px;
+}
+
+.pwform .datetime_picker .container_time,
+.pwform .datetime_picker .container_date
+{
+	display:inline-block;
 	border:1px solid #ccc;
 	border-radius:3px;
 	width:auto;
 	min-width:0;
 	padding:2px;
+	margin-right:5px;
 }
 
-.yaform .datetime_picker input.date {
-	width:8em;
-}
-
-.yaform .datetime_picker .controls {
+.pwform .datetime_picker .controls {
 	position:relative;
 	padding:3px 5px;
 	width:100%;
@@ -281,16 +291,16 @@
 	left:-5px;
 }
 
-.yaform .datetime_picker .cpp,
-.yaform .datetime_picker .cnn,
-.yaform .datetime_picker .cp,
-.yaform .datetime_picker .cn
+.pwform .datetime_picker .cpp,
+.pwform .datetime_picker .cnn,
+.pwform .datetime_picker .cp,
+.pwform .datetime_picker .cn
 {
 	position:absolute;
 	cursor:pointer;
 }
 
-.yaform .datetime_picker .cpp { left:5px }
-.yaform .datetime_picker .cnn { right:5px }
-.yaform .datetime_picker .cp { left:30px }
-.yaform .datetime_picker .cn { right:30px }
+.pwform .datetime_picker .cpp { left:5px }
+.pwform .datetime_picker .cnn { right:5px }
+.pwform .datetime_picker .cp { left:30px }
+.pwform .datetime_picker .cn { right:30px }

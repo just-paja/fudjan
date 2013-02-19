@@ -64,11 +64,15 @@ namespace System\Form
 
 			} else {
 
-				if (in_array($el->type, array('datetime', 'date', 'time')) && $el->value instanceof \DateTime) {
-					$tz = new \DateTimeZone('UTC');
-					$el->value->modify('+'.$el->value->getOffset().' seconds');
-					$el->value->setTimezone($tz);
-					$data['value'] = format_date($el->value, 'html5-full');
+				if (in_array($el->type, array('datetime', 'date', 'time'))) {
+					content_for('scripts', 'pwf/form/datetime_picker');
+
+					if ($el->value instanceof \DateTime) {
+						$tz = new \DateTimeZone('UTC');
+						$el->value->modify('+'.$el->value->getOffset().' seconds');
+						$el->value->setTimezone($tz);
+						$data['value'] = format_date($el->value, 'html5-full');
+					}
 				}
 
 				$html_element = $el->kind;

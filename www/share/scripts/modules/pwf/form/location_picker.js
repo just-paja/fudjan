@@ -58,7 +58,7 @@ pwf.register('location_picker', function()
 
 	var create_id = function()
 	{
-		var id = "datetime_picker_" + Math.round(Math.random()*1000000);
+		var id = "location_picker_" + Math.round(Math.random()*1000000);
 		return typeof instances[id] === 'undefined' ? id:create_id();
 	};
 });

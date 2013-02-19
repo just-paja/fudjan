@@ -626,7 +626,7 @@ namespace System
 		{
 			$value = $this->get_input_value($attrs);
 
-			if (!is_object($value)) {
+			if (!is_object($value) && $value) {
 				$value = new \DateTime($value);
 			}
 
