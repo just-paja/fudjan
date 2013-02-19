@@ -21,7 +21,7 @@ function t_message($status, $title, $message=null, $autohide=false, $links = arr
 
 
 // Redirects
-function redirect_now($url) { return System\Flow::redirect_now($url); }
+function redirect_now($url) { return System\Flow::redirect_now(array("url" => $url, "code" => 302)); }
 function redirect($url, array $opts = array()) { return System\Flow::redirect($url, $opts); }
 function trigger($name, array $data, $immediate = false){ System\Mailer::trigger($name, $data, $immediate); }
 

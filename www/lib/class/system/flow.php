@@ -59,7 +59,12 @@ namespace System
 
 		public static function redirect($url, array $opts = array())
 		{
-			$r = array("url" => $url, "status" => any($opts['status']) ? $opts['status']:'', "when" => any($opts['when']) ? $opts['when']:self::REDIRECT_LATER);
+			$r = array(
+				"url" => $url,
+				"status" => any($opts['status']) ? $opts['status']:'',
+				"when" => any($opts['when']) ? $opts['when']:self::REDIRECT_LATER
+			);
+
 			$opts['when'] == self::REDIRECT_IMMEDIATELY && self::redirect_now($r);
 			self::$redirect[$r['when']] = $r;
 		}

@@ -35,7 +35,9 @@ namespace System
 
 		private $prefix = '';
 		protected $checkboxes = array();
-		protected $counts = array();
+		protected $counts = array(
+			'inputs' => 1,
+		);
 		protected $errors = array();
 
 		private static $inputs_datetime = array("datetime", "date", "time");
@@ -187,7 +189,6 @@ namespace System
 
 			$this->objects[$el->name] = $el;
 			$this->rendering['group'] = $this->objects[$el->name];
-			$this->counts['inputs'] ++;
 			return $this->rendering['group'];
 		}
 
