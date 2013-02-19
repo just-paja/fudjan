@@ -80,7 +80,7 @@ namespace System
 		}
 
 
-		public function thumb($width, $height, $crop = true)
+		public function thumb($width, $height = null, $crop = true)
 		{
 			if ($this->check_thumb($width, $height, $crop)) {
 				return $this->get_thumb_path($width, $height, $crop);
