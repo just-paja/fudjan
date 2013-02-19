@@ -39,6 +39,7 @@ namespace System
 		protected $errors = array();
 
 		private static $inputs_datetime = array("datetime", "date", "time");
+		private static $inputs_button = array("button", "submit");
 
 		/** Constructor addon
 		 * @return void
@@ -94,12 +95,18 @@ namespace System
 		protected function take_data_from_input()
 		{
 			$this->data_commited = \System\Input::get_by_prefix($this->get_prefix());
-			$this->submited = isset($this->data_commited['submited']) ? !!$this->data_commited['submited']:false;
 
 			if (isset($this->data_commited['data_hidden'])) {
-				$this->data_hidden = json_decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
+				$this->data_hidden = json_decode(htmlspecialchars_decode($this->data_commited['data_hidden']), true);
+
+				foreach ($this->data_hidden as $key=>$val) {
+					$this->data_commited[$key] = $val;
+				}
+
 				unset($this->data_commited['data_hidden']);
 			}
+
+			$this->submited = isset($this->data_commited['submited']) ? !!$this->data_commited['submited']:false;
 		}
 
 
@@ -200,8 +207,8 @@ namespace System
 		 */
 		public function check_rendering_group($type)
 		{
-			if ($this->rendering['group'] === false) {
-				$this->group_start($type);
+			if ($this->rendering['group'] === false || $this->rendering['group']->type != $type) {
+				$this->group_start($type, count($this->objects));
 			}
 
 			return $this->rendering['group'];
@@ -255,7 +262,12 @@ namespace System
 		 */
 		public function input(array $attrs)
 		{
-			$this->check_rendering_group('inputs');
+			if (in_array($attrs['type'], self::$inputs_button)) {
+				$this->check_rendering_group('buttons');
+			} else {
+				$this->check_rendering_group('inputs');
+			}
+
 			$attrs['form'] = &$this;
 			$attrs['value'] = $this->get_input_value($attrs);
 
@@ -664,10 +676,10 @@ namespace System
 		public function submit($label = self::LABEL_SUBMIT_DEFAULT)
 		{
 			return $this->input(array(
-				"name"    => 'submited',
+				"name"    => 'button_submited',
 				"value"   => true,
 				"type"    => 'submit',
-				"content" => $label,
+				"label"   => $label,
 			));
 		}
 

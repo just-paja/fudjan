@@ -20,7 +20,7 @@ Tag::div(array("id" => $f->id.'-container', "class" => array_merge(array('pwform
 			"content" => Tag::input(array(
 				"value"  => htmlspecialchars(json_encode($f->get_hidden_data())),
 				"type"   => 'hidden',
-				"name"   => $f->get_prefix().'hidden_data',
+				"name"   => $f->get_prefix().'data_hidden',
 				"close"  => true,
 				"output" => false,
 			)),

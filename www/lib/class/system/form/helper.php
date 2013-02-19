@@ -30,6 +30,10 @@ namespace System\Form
 				$data['content'] = self::get_select_opts_html($el);
 			}
 
+			if ($el->kind == 'button') {
+				$data['content'] = $el->label;
+			}
+
 			$label = $el->has_label() ? \Tag::label(array(
 				"class"   => array('input-label', 'input-label-'.($label_on_right ? 'right':'left')),
 				"content" => $el->label.($label_on_right ? '':':'),
@@ -300,7 +304,8 @@ namespace System\Form
 				{
 					switch ($el->type) {
 						case 'inputs':
-							\Tag::fieldset();
+						case 'buttons':
+							\Tag::fieldset(array("class" => $el->type.'_container'));
 								\Tag::ul($el->get_data());
 									foreach ($el->get_elements() as $name=>$object) {
 										\Tag::li(array("class" => self::get_object_class($object)));
