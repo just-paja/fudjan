@@ -127,9 +127,9 @@ namespace System\Form
 				));
 			}
 
-			$to = array("output" => false, "class" => 'im-options', "content" => array());
+			$to = array("output" => false, "class" => 'inputs im-options', "content" => array());
 			self::render_input_tools_into($to['content'], $el->tools);
-			$inputs[] = \Tag::div($to);
+			$inputs[] = \Tag::ul($to);
 
 			return \Tag::div(array(
 				"class" => array('input-container', 'input-image'),
@@ -142,9 +142,9 @@ namespace System\Form
 		public static function get_location_input_html(\System\Form\Input $el)
 		{
 			$inputs = array();
-			$to = array("output" => false, "class" => 'loc-options', "content" => array());
+			$to = array("output" => false, "class" => 'inputs loc-options', "content" => array());
 			self::render_input_tools_into($to['content'], $el->tools);
-			$inputs[] = \Tag::div($to);
+			$inputs[] = \Tag::ul($to);
 
 
 			return \Tag::div(array(
@@ -158,10 +158,10 @@ namespace System\Form
 		public static function get_gps_input_html(\System\Form\Input $el)
 		{
 			$inputs = array();
-			$to = array("output" => false, "class" => 'gps-options', "content" => array());
+			$to = array("output" => false, "class" => 'inputs gps-options', "content" => array());
 
 			self::render_input_tools_into($to['content'], $el->tools);
-			$inputs[] = \Tag::div($to);
+			$inputs[] = \Tag::ul($to);
 
 			return \Tag::div(array(
 				"class" => array('input-container', 'input-gps'),
@@ -174,7 +174,7 @@ namespace System\Form
 		private static function render_input_tools_into(&$target, $tools)
 		{
 			foreach ($tools as $tool) {
-				$target[] = \Tag::div(array(
+				$target[] = \Tag::li(array(
 					"class"   => 'input',
 					"output"  => false,
 					"content" => self::render_input($tool, false),
