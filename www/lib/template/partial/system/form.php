@@ -1,17 +1,17 @@
 <?
 
 $sub_li = $li = 0;
+$cclass = array();
 
-Tag::div(array(
-	"class"  => 'yaform-container',
-	"id"     => $f->id.'-container',
-	"output" => true,
-));
+foreach ((array) $f->class as $c) {
+	$cclass[] = $c.'_outer';
+}
+
+Tag::div(array("id" => $f->id.'-container', "class" => array_merge(array('pwform'), $cclass)));
 
 	Tag::a(array("name" => $f->anchor, "id" => $f->anchor, "close" => true));
-
 	$f->heading && print(section_heading($f->heading));
-	$f->desc && Tag::p(array("content" => $f->desc));
+	$f->desc && Tag::p(array("class" => 'desc', "content" => $f->desc));
 
 	Tag::form($f->get_attr_data());
 
@@ -35,20 +35,10 @@ Tag::div(array(
 	Tag::close('form');
 Tag::close('div');
 
-if(!empty($f->form_js)){
-	?>
-	<script type="text/javascript">
-		//<![CDATA[
-			$(function() {
-				<?
-				if(is_array($f->form_js)){
-					foreach($f->form_js as $line){
-						echo $line."\n";
-					}
-				}
-				?>
-			});
-		//]]>
-	</script>
-<?
+
+if (!empty($f->form_js)) {
+	Tag::script(array(
+		"type"    => 'text/javascript',
+		"content" => '$(function() { '.implode("\n", $f->form_js).' });',
+	));
 }
