@@ -97,8 +97,8 @@ pwf.register('gps', function()
 				callback_gps_input({"data":pass});
 			}
 		}(pass);
+
 		instances[id] = binder;
-		v(id);
 	};
 
 
