@@ -5,7 +5,8 @@ pwf.register('gps', function()
 		bind_cache = [],
 		selectors = [".input-gps"],
 		ready = false,
-		self = this;
+		self = this,
+		instances = {};
 
 
 	this.init = function()
@@ -50,7 +51,8 @@ pwf.register('gps', function()
 
 	this.bind = function(el)
 	{
-		var inputs   = el.find('input');
+		var id = get_el_id(el);
+		var inputs = el.find('input');
 		var binder = {
 			"container":el,
 			"location":el.parents('.input-location').length >= 1
@@ -86,8 +88,17 @@ pwf.register('gps', function()
 			}
 		}
 
-		binder.lat.bind("keyup.gps", {"obj":this, "input":binder, "coord":'lat'}, callback_gps_input);
-		binder.lng.bind("keyup.gps", {"obj":this, "input":binder, "coord":'lng'}, callback_gps_input);
+		var pass = {"obj":this, "input":binder, "coord":'lat'};
+		binder.lat.bind("keyup.gps", pass, callback_gps_input);
+		binder.lng.bind("keyup.gps", pass, callback_gps_input);
+		binder.update = function(pass) {
+			return function() {
+				pass.skip_addr = true;
+				callback_gps_input({"data":pass});
+			}
+		}(pass);
+		instances[id] = binder;
+		v(id);
 	};
 
 
@@ -98,7 +109,10 @@ pwf.register('gps', function()
 
 		e.data.input.map.data('$gmap').setCenter(pos);
 		m.setPosition(pos);
-		e.data.obj.update_addr(e.data.input);
+
+		if (typeof e.data.skip_addr === 'undefined') {
+			e.data.obj.update_addr(e.data.input);
+		}
 	};
 
 
@@ -191,6 +205,7 @@ pwf.register('gps', function()
 		return input;
 	};
 
+
 	this.load_gm = function()
 	{
 		var url_maps = 'https://www.google.com/jsapi';
@@ -222,5 +237,25 @@ pwf.register('gps', function()
 		}
 
 		bind_cache = [];
+	};
+
+
+	this.get_instance = function(id)
+	{
+		return instances[id];
+	};
+
+
+	var get_el_id = function(el)
+	{
+		typeof el.attr('id') === 'undefined' && el.attr('id', create_id());
+		return el.attr('id');
+	};
+
+
+	var create_id = function()
+	{
+		var id = "gps_picker_" + Math.round(Math.random()*1000000);
+		return typeof instances[id] === 'undefined' ? id:create_id();
 	};
 });

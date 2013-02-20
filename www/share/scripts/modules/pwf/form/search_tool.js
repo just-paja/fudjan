@@ -11,6 +11,7 @@ pwf.register('search_tool', function()
 				last_val = null,
 				results = {};
 
+
 			this.create = function()
 			{
 				if (typeof els.input === 'undefined') {
@@ -184,13 +185,13 @@ pwf.register('search_tool', function()
 			var data_container;
 
 			if ((data_container = container.find('span.data')).length === 1) {
-				create_instance(container, JSON.parse(data_container.html()));
+				this.create_instance(container, JSON.parse(data_container.html()));
 			}
 		}
 	};
 
 
-	var create_instance = function(container, data)
+	this.create_instance = function(container, data)
 	{
 		if (typeof instances[data.name] === 'undefined') {
 			instances[data.name] = new search_tool_helper(container, data);

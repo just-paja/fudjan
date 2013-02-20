@@ -57,7 +57,9 @@ namespace System\Form
 
 			} elseif ($el->type === 'location') {
 
+				content_for('scripts', 'pwf/form/autocompleter');
 				content_for('scripts', 'pwf/form/location_picker');
+				content_for('styles',  'pwf/form/autocompleter');
 				$input = self::get_location_input_html($el);
 
 			} elseif ($el->type === 'gps') {

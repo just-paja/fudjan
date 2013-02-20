@@ -77,8 +77,8 @@ namespace System\Form
 				self::ACTION_URL    => "form_image_input_url",
 			),
 			"location" => array(
-				self::ACTION_EDIT     => "form_location_input_edit",
 				self::ACTION_NEW      => "form_location_input_new",
+				self::ACTION_EDIT     => "form_location_input_edit",
 				self::ACTION_NONE     => "form_location_input_none",
 			),
 		);

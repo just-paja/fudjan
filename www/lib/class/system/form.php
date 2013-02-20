@@ -387,9 +387,12 @@ namespace System
 		private function get_location_input_tools(array $attrs)
 		{
 			$opts = \System\Form\Input::get_input_opts('location');
-			$action = \System\Form\Input::ACTION_EDIT;
+			$action = \System\Form\Input::ACTION_NEW;
 
-			if (!$attrs['value']) {
+			if ($attrs['value']) {
+				unset($opts[\System\Form\Input::ACTION_NEW]);
+				$action = \System\Form\Input::ACTION_EDIT;
+			} else {
 				unset($opts[\System\Form\Input::ACTION_EDIT]);
 				$action = \System\Form\Input::ACTION_NEW;
 			}

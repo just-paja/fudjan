@@ -5,7 +5,7 @@ namespace System
 	class Location extends \System\Model\Database
 	{
 		protected static $attrs = array(
-			"name" => array("varchar"),
+			"name" => array("varchar", "is_unique" => true),
 			"addr" => array("varchar"),
 			"gps"  => array("point"),
 			"desc" => array("text"),

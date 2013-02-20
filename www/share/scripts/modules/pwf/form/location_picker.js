@@ -5,8 +5,80 @@ pwf.register('location_picker', function()
 		instances = {},
 		class_location_picker = function(el)
 		{
+			var el = el;
+
+
+			this.bind = function()
+			{
+				var inputs = el.find('input');
+
+				for (var i = 0; i < inputs.length; i++) {
+					var input = $(inputs[i]);
+
+					if (input.attr('name').match(/name$/)) {
+
+						pwf.autocompleter.bind(input, {
+							"model":"\\System\\Location",
+							"filter":["name"],
+							"display":["name"],
+							"fetch":["addr", "site", "gps"],
+							"placeholder":"",
+							"callback_item":callback_autocompleter,
+							"callback_attrs":{"picker":this}
+						});
+					}
+				}
+			};
+
+
+			this.el = function()
+			{
+				return el;
+			};
 
 		};
+
+	var callback_autocompleter = function(e)
+	{
+		e.stopPropagation();
+		e.data.ac.el('input').val(e.data.label);
+		var inputs = e.data.extra.picker.el().find('input');
+		var gps_id = e.data.extra.picker.el().find('.input-gps').attr('id');
+		var gps = JSON.parse(e.data.data.gps);
+		var lng;
+
+
+		for (var i = 0; i<inputs.length; i++) {
+			var input = $(inputs[i]);
+
+			if (input.attr('name').match(/addr$/)) {
+				input.val(e.data.data.addr);
+			}
+
+			if (input.attr('name').match(/site$/)) {
+				input.val(e.data.data.site);
+			}
+
+			if (input.attr('name').match(/lat$/)) {
+				input.val(gps.lat);
+			}
+
+			if (input.attr('name').match(/lng$/)) {
+				lng = input;
+				input.val(gps.lng);
+			}
+		}
+
+		if (typeof lng === 'object') {
+			var gps_picker = pwf.gps.get_instance(gps_id);
+			if (typeof gps_picker === 'object') {
+				gps_picker.update();
+			}
+		}
+
+
+		e.data.ac.hide();
+	};
 
 
 	this.init = function()
@@ -38,6 +110,7 @@ pwf.register('location_picker', function()
 		if (typeof instances[id] === 'undefined') {
 			var inst = new class_location_picker(el);
 			instances[el.attr('id')] = inst;
+			inst.bind();
 		}
 
 		return this.get_instance(el.attr('id'));
