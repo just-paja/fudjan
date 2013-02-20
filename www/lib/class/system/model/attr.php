@@ -7,7 +7,7 @@ namespace System\Model
 		// Object data
 		protected $data = array();
 		protected $opts = array();
-		protected $errors   = array();
+
 
 		// List of allowed attribute types
 		protected static $attr_types = array(
@@ -35,7 +35,7 @@ namespace System\Model
 		 * @param array $dataray Set of data used by object
 		 * @returns BasicModel
 		 */
-		public function __construct($dataray = array())
+		public function __construct(array $dataray = array())
 		{
 			$model = get_class($this);
 			$this->update_attrs($dataray);
@@ -50,6 +50,8 @@ namespace System\Model
 			if (method_exists($this, 'construct')) {
 				$this->construct($dataray);
 			}
+
+			$this->changed = false;
 		}
 
 
@@ -81,6 +83,7 @@ namespace System\Model
 		{
 			if ($this->has_attr($attr)) {
 				$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
+				$this->changed = true;
 			} else $this->opts[$attr] = $value;
 
 			return $this;
@@ -102,26 +105,6 @@ namespace System\Model
 		public function get_opts()
 		{
 			return $this->opts;
-		}
-
-
-		/** Did the object encounter any internal errors
-		 * @returns bool
-		 */
-		public function errors()
-		{
-			return empty($this->errors) ? false:$this->errors;
-		}
-
-
-		/* Report internal error
-		 * @param string $msg
-		 * @returns BasicModel
-		 */
-		private function error($msg)
-		{
-			$this->errors[] = $msg;
-			return $this;
 		}
 
 
@@ -404,5 +387,14 @@ namespace System\Model
 			return $val;
 		}
 
+
+		public function changed($status = null)
+		{
+			if (!is_null($status)) {
+				$this->changed = !!$status;
+			}
+
+			return $this->changed;
+		}
 	}
 }

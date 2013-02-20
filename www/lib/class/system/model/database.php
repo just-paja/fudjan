@@ -404,7 +404,7 @@ namespace System\Model
 			if (isset($model::$required)) {
 				foreach ($model::$required as $attr) {
 					if (!$this->data[$attr]) {
-						$this->errors[] = 'missing-attr-'.$attr;
+						//~ $this->errors[] = 'missing-attr-'.$attr;
 						$e = true;
 					}
 				}
@@ -418,10 +418,7 @@ namespace System\Model
 		 */
 		public function save()
 		{
-			if (any($this->before_save)) {
-				self::run_tasks($this, $this->before_save);
-			}
-
+			$this->run_tasks(\System\Model\Callback::BEFORE_SAVE);
 			$model = get_class($this);
 			if ($this->update_check()) {
 
@@ -473,18 +470,11 @@ namespace System\Model
 					$id = \System\Database::simple_insert(self::get_table($model), $data);
 					if ($id) {
 						return $this->update_attrs(array(self::get_id_col($model) => $id));
-					} else {
-						$this->errors[] = 'save-failed';
-					}
+					} else throw new \System\Error\Database('Could not save model.');
 				}
-			} else {
-				$this->errors[] = 'missing-required-attrs';
 			}
 
-			if (any($this->after_save)) {
-				self::run_tasks($this, $this->after_save);
-			}
-
+			$this->run_tasks(\System\Model\Callback::AFTER_SAVE);
 			return $this;
 		}
 
@@ -728,6 +718,22 @@ namespace System\Model
 		public function has_attr($attr)
 		{
 			return self::attr_exists(get_class($this), $attr);
+		}
+
+
+		public function __construct(array $update = array())
+		{
+			$model = get_class($this);
+
+			if (!$this->has_attr('created_at')) {
+				$model::$attrs['created_at'] = array('datetime', "default" => 'NOW()');
+			}
+
+			if (!$this->has_attr('updated_at')) {
+				$model::$attrs['updated_at'] = array('datetime');
+			}
+
+			return parent::__construct($update);
 		}
 	}
 }
