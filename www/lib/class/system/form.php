@@ -494,12 +494,12 @@ namespace System
 			$value = $this->get_input_value($attrs);
 
 			if ($value instanceof \System\Gps) {
-				$input_lat_attrs['value'] = $value->lat();
-				$input_lng_attrs['value'] = $value->lng();
+				$input_lat_attrs['value'] = $value->latf();
+				$input_lng_attrs['value'] = $value->lngf();
 			}
 
-			$input_lat_attrs['value'] = number_format($this->get_input_value($input_lat_attrs), true);
-			$input_lng_attrs['value'] = number_format($this->get_input_value($input_lng_attrs), true);
+			$input_lat_attrs['value'] = number_format($this->get_input_value($input_lat_attrs), 20);
+			$input_lng_attrs['value'] = number_format($this->get_input_value($input_lng_attrs), 20);
 
 			$input_lat = new \System\Form\Input($input_lat_attrs);
 			$input_lng = new \System\Form\Input($input_lng_attrs);

@@ -61,7 +61,7 @@ namespace System
 		 */
 		private function format($num)
 		{
-			return number_format($num, 15, '.', '');
+			return number_format($num, 20, '.', '');
 		}
 
 
