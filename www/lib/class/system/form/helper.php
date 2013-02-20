@@ -82,6 +82,11 @@ namespace System\Form
 				}
 
 				$html_element = $el->kind;
+
+				if ($el->type === 'password') {
+					unset($data['value']);
+				}
+
 				$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
 			}
 

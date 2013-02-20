@@ -535,30 +535,21 @@ namespace System
 					$action = $this->data_default[$name_action];
 				}
 
-				if ($action == \System\Form\Input::ACTION_EDIT) {
-					$value = $this->get_input_value_by_name($attrs['name'], true);
+				if ($action == \System\Form\Input::ACTION_NONE) {
+					$value = null;
+				}
 
-					if ($value instanceof \System\Location) {
-						$value->update_attrs(array(
+				if ($action == \System\Form\Input::ACTION_NEW || \System\Form\Input::ACTION_EDIT) {
+					$value = get_first('\System\Location')->where(array("name" => $name))->fetch();
+
+					if (!$value) {
+						$value = new \System\Location(array(
 							"name" => $name,
 							"addr" => $addr,
 							"gps"  => $gps,
 							"site" => $site,
 						));
 					}
-				}
-
-				if ($action == \System\Form\Input::ACTION_NONE) {
-					$value = null;
-				}
-
-				if ($action == \System\Form\Input::ACTION_NEW) {
-					$value = new \System\Location(array(
-						"name" => $name,
-						"addr" => $addr,
-						"gps"  => $gps,
-						"site" => $site,
-					));
 				}
 
 				unset($this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
