@@ -6,6 +6,7 @@
 	border:1px solid #999;
 	box-shadow:0 0 20px rgba(0,0,0,0.25);
 	overflow:hidden;
+	z-index:1000;
 }
 
 .pwform .input-pwf-autocompleter .pwf_autocompleter li {
@@ -26,6 +27,5 @@
 .pwform .input-pwf-autocompleter .pwf_autocompleter li:hover {
 	background:#800080;
 	background:rgba(128,0,128,.8);
-
 	color:#fff;
 }
