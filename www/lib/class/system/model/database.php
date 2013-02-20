@@ -725,6 +725,10 @@ namespace System\Model
 		{
 			$model = get_class($this);
 
+			if (!array_key_exists($idc = self::get_id_col($model), $model::$attrs)) {
+				$model::$attrs[$idc] = array("int", "is_unsigned" => true, "is_index" => true);
+			}
+
 			if (!$this->has_attr('created_at')) {
 				$model::$attrs['created_at'] = array('datetime', "default" => 'NOW()');
 			}
