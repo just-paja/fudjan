@@ -18,7 +18,6 @@ try {
 
 
 $exp = $desc->get_explanation();
-
 echo section_heading(isset($exp[0]) ? $exp[0].Tag::span(array("class" => 'type', "content" => get_class($desc), "output" => false)):get_class($desc));
 
 if (count($exp) > 1) {

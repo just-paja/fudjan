@@ -8,6 +8,7 @@ namespace System
 		protected $backtrace = array();
 		const HTTP_STATUS = 500;
 
+
 		function __construct()
 		{
 			$this->explanation = func_get_args();
@@ -36,6 +37,12 @@ namespace System
 		public function get_http_status()
 		{
 			return \System\Http::get_header($this::HTTP_STATUS);
+		}
+
+
+		public static function from_exception(\Exception $e)
+		{
+			return new self($e->getMessage());
 		}
 	}
 }

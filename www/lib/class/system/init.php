@@ -70,6 +70,7 @@ namespace System
 		public static function bind_error_handlers()
 		{
 			set_exception_handler(array("System\Status", "catch_exception"));
+			set_error_handler(array("System\Status", "catch_error"));
 
 			ini_set('log_errors',     true);
 			ini_set('display_errors', true);

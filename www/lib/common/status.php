@@ -27,7 +27,7 @@ $cfg_status['Page tree'] = array(
 	"class" => $empty ? 'status-ok':'status-bad',
 );
 
-$htaccess_current = sha1(System\Router::generate_htaccess());
+$htaccess_current = sha1(System\Router::generate_rewrite_rules());
 $htaccess_system = sha1(System\File::read(ROOT.'/.htaccess'));
 $ok = $htaccess_current == $htaccess_system;
 
@@ -43,6 +43,6 @@ $status = array(
 
 System\Template::insert('system/status-full', array("status" => $status));
 
-System\Output::set_template('status');
+System\Output::set_template('pwf/status');
 System\Output::set_format('html');
 System\Output::out();

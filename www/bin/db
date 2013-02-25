@@ -130,15 +130,18 @@
 						GROUP BY table_schema;
 				")->fetch();
 
-				$mlast_date = new DateTime('0000-00-00');
+				$mlast_date = false;
 				$mcount = 0;
 
 				try {
 					$mig = System\Migration::get_new();
 					$mcount = count($mig);
 					$mlast = get_first("\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
-					$mlast_date = $mlast->updated_at;
 					$stat = "Ok";
+
+					if ($mlast) {
+						$mlast_date = $mlast->updated_at;
+					}
 				} catch (System\Error $e) {
 					$stat = "Migrating database is necessary.";
 				}
@@ -159,7 +162,7 @@
 					"Size"           => System\Template::convert_value('information', $size['size']),
 					"Free space"     => System\Template::convert_value('information', $size['free']),
 					"Structure"      => $stat,
-					"Last migrated"  => format_date($mlast_date, 'sql'),
+					"Last migrated"  => $mlast_date ? format_date($mlast_date, 'sql'):l('never'),
 					"New migrations" => $mcount,
 				));
 				vout("");
