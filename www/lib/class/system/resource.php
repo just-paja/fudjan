@@ -27,6 +27,8 @@ namespace System
 		const KEY_STRING_NOT_FOUND = 'not_found_string';
 		const KEY_POSTFIXES        = 'postfixes';
 
+		const MAX_AGE = 86400;
+
 
 		private static $types = array(
 			self::TYPE_SCRIPTS => array(
@@ -175,12 +177,15 @@ namespace System
 		{
 			$info = self::get_type_info($type);
 
+			header("HTTP/1.1 200 OK");
 			header('Content-Type: '.$info['content']);
 			header('Content-Length: '.$length);
 
 			if (!cfg('dev', 'debug')) {
+				header("Pragma: public,max-age=".self::MAX_AGE);
 				header('Cache-Control: public');
-				header('Expires: '.date(\DateTime::RFC1123, time() + 86400 + rand(0,60)));
+				header('Expires: '.date(\DateTime::RFC1123, time() + self::MAX_AGE + rand(0,60)));
+				header('Age: 0');
 			}
 		}
 	}
