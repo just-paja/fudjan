@@ -102,13 +102,11 @@ namespace System
 				$path_prefix = $this->path.'_files';
 			}
 
-			if ($this->type == 'raw')
+			if ($this->type != 'raw')
 			{
-				message('success', _(self::$msg_title), _('Archiv byl úspěšně rozbalen'), true);
-			} else {
-				!!(in_array($this->type, self::$types))?
-					$d = $this->decompress(true):
-					message('error', _(self::$msg_title), _('Archiv nelze uložit - neznámý formát archivu.'), true);
+				if (in_array($this->type, self::$types)) {
+					$d = $this->decompress(true);
+				} else throw new \System\Error\Format(sprintf('Unknown archive format "%s", could not save archive.', $this->type));
 
 				if ($d) {
 					$this->extract_path = clear_url($path_prefix);
@@ -122,7 +120,6 @@ namespace System
 						fwrite($fp, $file['content']);
 						fclose($fp);
 					}
-					message("success", self::$msg_title, sprintf(_('Archiv %s byl úspěšně rozbalen'), $this->path), true);
 				}
 			}
 			return $this;
@@ -142,13 +139,11 @@ namespace System
 
 					while ($block = $this->tar_read_block()) {
 						if (!$this->read_tar_header($block, $header)) {
-							//dump($header);
-							message("error", _(self::$msg_title), _('Hlavičky tar archivu jsou porušeny, archiv nelze rozbalit'));
+							throw new \System\Error\Format('Tar headers seem to be brokend. Could not unpack tarball.');
 							break;
 						}
 						if ($header['typeflag'] == 'L' && !$this->read_tar_long_header($header)) {
-							//dump($header);
-							message("error", _(self::$msg_title), _('Hlavičky tar archivu jsou porušeny, archiv nelze rozbalit'));
+							throw new \System\Error\Format('Tar headers seem to be brokend. Could not unpack tarball.');
 							break;
 						}
 
@@ -173,12 +168,12 @@ namespace System
 					$this->dirs = $dirs;
 					$this->files = $files;
 					return true;
-				}else{
-					message('error', self::$msg_title, _('Archiv nelze rozparsovat. Neimplementovaný typ archivu.'), true);
+				} else {
+					throw new \System\Error\Format(sprintf('Could not unpack archive, format "%s" is not supported.', $this->type));
 					return false;
 				}
-			}else{
-				message('error', self::$msg_title, _('Archiv nelze uložit - neznámý formát archivu.'), true);
+			} else {
+				throw new \System\Error\Format(sprintf('Could not save archive, format "%s" is not supported.', $this->type));
 				return false;
 			}
 		}
