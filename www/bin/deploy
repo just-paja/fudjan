@@ -42,9 +42,9 @@
 			self::$info = array(
 				"name" => NAME,
 				"head" =>
-					'PWF deploy manager'.CR.
-					'Script allowing you to upload your local system version on other environments.'.CR.
-					'All necessary informations are read from yacms settings'.CR,
+					'PWF deploy manager'.NL.
+					'Script allowing you to upload your local system version on other environments.'.NL.
+					'All necessary informations are read from yacms settings'.NL,
 
 				"foot" => '',
 			);
@@ -85,7 +85,7 @@
 				}
 
 				self::print_info($cfg);
-				echo CR;
+				echo NL;
 				$proceed = is_yes(read("Do you wish to proceed? (yes/no): "));
 
 				if (!$proceed) {
@@ -107,7 +107,7 @@
 				}
 			} else give_up("Giving up after being trolled 3 times");
 
-			echo CR;
+			echo NL;
 		}
 
 

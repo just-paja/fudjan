@@ -75,10 +75,10 @@
 			self::$info = array(
 				"name" => NAME,
 				"head" =>
-					'Santa package manager'.CR.
-					'Internal package manager for YaWF system'.CR,
+					'Santa package manager'.NL.
+					'Internal package manager for YaWF system'.NL,
 
-				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch'.CR,
+				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch'.NL,
 			);
 		}
 	}
