@@ -80,7 +80,7 @@ namespace System
 		public static function meta_out()
 		{
 			Output::content_for("meta", array("name" => 'generator', "content" => Output::introduce()));
-			Output::content_for("meta", array("name" => 'generated-at', "content" => self::format_time('std')));
+			Output::content_for("meta", array("name" => 'generated-at', "content" => self::format_date(null, 'std')));
 			Output::content_for("meta", array("http-equiv" => 'content-type', "content" => Output::get_format(true).'; charset=utf-8'));
 
 			$meta = Output::get_content_from("meta");
@@ -227,26 +227,25 @@ namespace System
 		}
 
 
-		public static function format_time($format = "std", $datetime = NULL)
+		/** Format and translate datetime format
+		 * @param mixed  $date
+		 * @param string $format Format name
+		 * @returns string
+		 */
+		public static function format_date($date, $format = 'std')
 		{
-			if (is_numeric($datetime)) {
-				$obj = new Datetime();
-				$obj->setTimestamp($datetime);
-			} else {
-				$obj = $datetime instanceof \Datetime ? $datetime:new \Datetime($datetime);
+			if (is_null($date)) {
+				$date = new \DateTime();
 			}
 
-			$format = Locales::get('date:'.$format) ? Locales::get('date:'.$format):self::$default_time_format;
-
-			if (strpos($format, 'human') !== false) {
-				$f = str_split($format, 1);
-				$str = '';
-				foreach ($f as $l) {
-					$str .= $obj->format($l);
-				}
-				return $str;
+			if ($date instanceof \DateTime) {
+				$d = $date->format(\System\Locales::get('date:'.$format));
+				return strpos($format, 'html5') === 0 ? $d:\System\Locales::translate_date($d);
+			} elseif(is_numeric($date)) {
+				$d = date(\System\Locales::get('date:'.$format), $date);
+				return strpos($format, 'html5') === 0 ? $d:\System\Locales::translate_date($d);
 			} else {
-				return $obj->format($format);
+				return $date;
 			}
 		}
 

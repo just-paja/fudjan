@@ -1,1 +1,5 @@
-<? $this->template("system/message", $locals);
+<?
+
+def($template, 'system/message');
+
+$this->template($template, $locals);

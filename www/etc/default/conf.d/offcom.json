@@ -1,9 +1,8 @@
 {
-	"helpdesk":"just.paja@seznam.cz",
-	"robot-name":"Robot Novalighting",
-	"reply-to-default":"info@novalighting.cz",
-	"from-default":"robot@novalighting.cz",
-	"sms-from-default":"info@novalighting.cz",
+	"default":{
+		"email_sender":"robot@localhost"
+	},
+
 	"disable":0,
 	"enable-email":1,
 	"enable-sms":1

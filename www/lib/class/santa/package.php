@@ -312,7 +312,7 @@ namespace Santa
 					}
 				}
 				return !!(empty($bad)) ? true:$bad;
-			} else return message("info", self::$msg_title, l('Chybí kontrolní soubor balíčku.'), true);
+			} else throw new \System\Error\Santa(sprintf('Could not find checksum file for package "%s%".', $this->get_package_name()));
 		}
 
 
@@ -447,9 +447,7 @@ namespace Santa
 				copy(ROOT.self::DIR_META.'/'.$this->name.'/version', ROOT.self::DIR_META.'/version');
 			}
 
-			return !!(empty($bad)) ?
-				message("success", sprintf(l('Install %s'), $this->name), l('Installation was successful')):
-				$bad;
+			return !!(empty($bad)) ? true:$bad;
 		}
 
 

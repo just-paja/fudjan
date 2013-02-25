@@ -26,7 +26,12 @@ namespace System
 			}
 
 			if (is_resource(self::$log_files[$type])) {
-				$report = @date('[Y-m-d H:i:s]');
+				try {
+					$report = @date('[Y-m-d H:i:s]');
+				} catch(\Exception $e) {
+					$report = time();
+				}
+
 				php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
 				self::append_msg_info($msg, $report);
 
@@ -71,6 +76,10 @@ namespace System
 			@ob_clean();
 			$errors = cfg('output', 'errors');
 
+			if (!($e instanceof \System\Error)) {
+				$e = \System\Error::from_exception($e);
+			}
+
 			if (array_key_exists($e->get_name(), $errors)) {
 				$error_page = $errors[$e->get_name()];
 			} else {
@@ -109,15 +118,23 @@ namespace System
 				if (!$ignore_next) {
 					self::catch_exception($e, true);
 				} else {
-					v($e);
+					//~ v($e);
 				}
+			}
+		}
+
+
+		public static function catch_error($number, $string, $file = null, $line = null, $context = array())
+		{
+			if (error_reporting()) {
+				self::catch_exception(new \System\Error\Code($string, $number, $file, $line));
 			}
 		}
 
 
 		public static function on_cli()
 		{
-			return substr(php_sapi_name(), 0, 3) === 'cli';
+			return php_sapi_name() === 'cli';
 		}
 	}
 }

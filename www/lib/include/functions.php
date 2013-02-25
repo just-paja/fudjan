@@ -1,6 +1,7 @@
 <?
 
-/** Just alias - looks better
+
+/** Contains variable something?
  * @param &array $var
  * @returns bool
  */
@@ -10,13 +11,23 @@ function any(&$var)
 }
 
 
-/** Returns first item from array - wrapper that does not return reference
+/** Returns first item from array
  * @param array $array
  * @returns mixed
  */
 function first(array $array)
 {
 	return reset($array);
+}
+
+
+/** Returns last item from array
+ * @param array $array
+ * @returns mixed
+ */
+function last(array $array)
+{
+	return $array[count($array) - 1];
 }
 
 
@@ -37,8 +48,6 @@ function first_key(array $array)
 function clear_url($url, $mode=null)
 {
 	if(!is_array($url)) $url = explode('/', $url);
-	//$url = array_filter($url);
-//	if(!$mode) array_unshift($url, null);
 	return implode('/', $url);
 }
 
@@ -62,43 +71,32 @@ function members_to_path(array $members)
 }
 
 
-/** Print nice output of arguments
- * @return mixed
- */
-function dump()
-{
-	if (cfg('dev', 'debug') || defined("YACMS_INSTALLER")) {
-		foreach (func_get_args() as $var) {
-			$trace = debug_backtrace();
-			echo '<div class="debug dump"><b>'.basename($trace[0]['file']).":".$trace[0]['line'].", ".(@$trace[1]['class']).'::'.$trace[1]['function']."()"."</b><pre>";
-				function_exists('var_export') && !is_string($var) ? var_export($var):print_r($var);
-			echo '</pre></div>';
-		}
-	}
-
-	return func_num_args() > 1 ? func_get_args():$var;
-}
-
-
 function v()
 {
+	$trace = debug_backtrace();
+
 	foreach (func_get_args() as $var) {
-		$trace = debug_backtrace();
-		echo '<div class="debug dump"><b>'.basename($trace[0]['file']).":".$trace[0]['line'].", ".(@$trace[1]['class']).'::'.$trace[1]['function']."()"."</b><pre>";
+		$path = '';
+
+		if (isset($trace[0]['file'])) {
+			$path .= basename($trace[0]['file']);
+
+			if (isset($trace[0]['line'])) {
+				$path .= ":".$trace[0]['line'];
+			}
+
+			$path .= ", ";
+		}
+
+		if (isset($trace[0]['class'])) {
+			$path .= $trace[0]['class'].'::'.$trace[0]['function']."()";
+		} elseif (isset($trace[0]['function'])) {
+			$path .= $trace[0]['function']."()";
+		}
+
+		echo '<div class="debug dump"><b>'.$path."</b><pre>";
 			function_exists('var_export') && !is_string($var) ? var_export($var):print_r($var);
 		echo '</pre></div>';
-	}
-}
-
-
-// paths
-function &array_get(&$iter, $path)
-{
-	if (is_array($path)) {
-		$key = array_shift($path);
-		$iter = array_get($storage[$key], $path);
-	} else {
-		return $iter[$path];
 	}
 }
 
@@ -177,38 +175,6 @@ function collect_pair($func_keys, $func_data, array $data)
 	$keys = collect($func_keys, $data, true);
 	$data = collect($func_data, $data, true);
 	return empty($keys) ? array():array_combine($keys, $data);
-}
-
-
-/** Format and translate datetime format
- * @param mixed  $date
- * @param string $format Format name
- * @returns string
- */
-function format_date($date, $format = 'std')
-{
-	if ($date instanceof DateTime) {
-		$d = $date->format(System\Locales::get('date:'.$format));
-		return strpos($format, 'html5') === 0 ? $d:translate_date($d);
-	} elseif(is_numeric($date)) {
-		$d = date(System\Locales::get('date:'.$format), $date);
-		return strpos($format, 'html5') === 0 ? $d:translate_date($d);
-	} else {
-		return $date;
-	}
-}
-
-
-/** Get icon of module
- * @param string $module_namespace
- * @param string $prefix
- * @param array  $attrs HTML attributes for icon
- */
-function module_icon($module_namespace, $prefix = null, $size = 32, array $attrs = array())
-{
-	return file_exists(System\Template::ICONS_DIR.'/'.$size.'/modules/'.$prefix.'-'.$module_namespace.'.png') ?
-		icon('modules/'.$prefix.'/'.$module_namespace, $size, array("title" => ucfirst($prefix.'/'.$module_namespace))):
-		icon('modules/'.$module_namespace, $size, array("title" => ucfirst(($prefix ? $prefix.'/':null).$module_namespace)));
 }
 
 
