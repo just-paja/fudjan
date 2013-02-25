@@ -23,7 +23,6 @@ function t_message($status, $title, $message=null, $autohide=false, $links = arr
 // Redirects
 function redirect_now($url) { return System\Flow::redirect_now(array("url" => $url, "code" => 302)); }
 function redirect($url, array $opts = array()) { return System\Flow::redirect($url, $opts); }
-function trigger($name, array $data, $immediate = false){ System\Mailer::trigger($name, $data, $immediate); }
 
 
 // Template
@@ -32,10 +31,9 @@ function icon_for($icon, $size=32, $url, $label = NULL, $object = array()){ retu
 function label_for($icon, $size=32, $label, $url, $object = array()) { $object['label'] = $label; return System\Template::icon_for($icon, $size, $url, $label, $object);}
 function label_right_for($icon, $size=32, $label, $url, $object = array()) { $object['label'] = $label; $object['label_left'] = true; return System\Template::icon_for($icon, $size, $url, $label, $object);}
 function icon($icon, $size=32, array $attrs = array()){ return System\Template::icon($icon, $size, $attrs); }
-function format_time($datetime, $format){ return System\Template::format_time($datetime, $format); }
+function format_date($datetime = null, $format = 'std'){ return System\Template::format_date($datetime, $format); }
 function heading($label, $save_level = true, $level = NULL){ return System\Template::heading($label, $save_level, $level); }
 function section_heading($label, $level = NULL){ return System\Template::section_heading($label, $level); }
-function html_attrs($tag, $attrs){ return System\Template\Tag::html_attrs($tag, $attrs); }
 function content_for($place, $content, $overwrite = false) { return System\Output::content_for($place, $content, $overwrite); }
 function content_from($place) { return System\Output::content_from($place); }
 function slot($name = System\Template::DEFAULT_SLOT) { return System\Output::slot($name); }
@@ -59,8 +57,6 @@ function collect_names(array $array){ return collect(array('this', 'get_name'), 
 
 
 // Locales
-function translate_date($str, $hard = false) { return System\Locales::translate_date($str, $hard); }
-function sysmsg($errors) { return System\Locales::sysmsg($errors); }
 function l($str, $lang = null) { return System\Locales::translate($str, $lang); }
 function t($str) { return System\Locales::translate_and_replace($str, func_get_args()); }
 

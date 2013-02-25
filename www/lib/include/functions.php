@@ -178,25 +178,6 @@ function collect_pair($func_keys, $func_data, array $data)
 }
 
 
-/** Format and translate datetime format
- * @param mixed  $date
- * @param string $format Format name
- * @returns string
- */
-function format_date($date, $format = 'std')
-{
-	if ($date instanceof DateTime) {
-		$d = $date->format(System\Locales::get('date:'.$format));
-		return strpos($format, 'html5') === 0 ? $d:translate_date($d);
-	} elseif(is_numeric($date)) {
-		$d = date(System\Locales::get('date:'.$format), $date);
-		return strpos($format, 'html5') === 0 ? $d:translate_date($d);
-	} else {
-		return $date;
-	}
-}
-
-
 /** Preset variable with default value if not set
  * @param &mixed $var     Variable to set
  * @param  mixed $def_val Default value to set
