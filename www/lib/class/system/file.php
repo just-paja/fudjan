@@ -36,7 +36,6 @@ namespace System
 		{
 			self::remove_directory(ROOT.self::TMP_DIR);
 			mkdir(ROOT.self::TMP_DIR, 0777, true);
-			message("info", _('Informace'), _('Dočasné soubory byly pročištěny.'), true);
 		}
 
 
@@ -89,9 +88,10 @@ namespace System
 
 				$magic = strtoupper(gen_random_string(10));
 				$tmp_name = self::access_dir($dir).'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
-				!!(file_put_contents($tmp_name, $data->content, LOCK_EX)) ?
-					message("success", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' byl úspěšně uložen'), $name), true):
-					message("error", _('Nahrávání souboru'), sprintf(_('Soubor \'%s\' se nepovedlo uložit'), $name));
+
+				if (!file_put_contents($tmp_name, $data->content, LOCK_EX)) {
+					throw new \System\Error\File(sprintf('Could not temporarily save fetched file into "%s".', $tmp_name));
+				}
 
 				return new self(array("filename" => $name, "dirpath" => dirname($dir), "suffix" => $suffix, "tmp_name" => $tmp_name));
 			} else throw new \System\Error\Connection('Couldn\'t fetch file', sprintf('HTTP error %s ', $data->status));
