@@ -791,5 +791,19 @@ namespace System\Model
 
 			return parent::get_attr($model, $attr);
 		}
+
+
+		/** Unified name getter
+		 * @param pattern
+		 * @returns string
+		 */
+		public function get_name($pattern = null)
+		{
+			if (is_null($pattern)) {
+				return $this->has_attr('name') ? $this->name:$this->id;
+			} else {
+				return soprintf($pattern, $this);
+			}
+		}
 	}
 }
