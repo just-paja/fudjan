@@ -70,5 +70,13 @@ namespace System
 
 			return $files;
 		}
+
+
+		public static function find($path, $regexp = null)
+		{
+			$files = array();
+			self::find_all_files($path, $files, $regexp);
+			return $files;
+		}
 	}
 }
