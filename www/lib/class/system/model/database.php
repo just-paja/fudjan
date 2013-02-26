@@ -111,6 +111,13 @@ namespace System\Model
 		}
 
 
+		public static function create($model, array $attrs)
+		{
+			$obj = new $model($attrs);
+			return $obj->save();
+		}
+
+
 		/* Get all models of a class
 		 * @param   string $model Class name desired model
 		 * @param   array  $conds Set of conditions
@@ -187,6 +194,39 @@ namespace System\Model
 			}
 
 			return $helper;
+		}
+
+
+		/** Find model by ID or set of IDs
+		 * @param string    $model      Class name of desired model
+		 * @param int|array $ids        ID or list of IDs to look for
+		 * @param bool      $force_list Returns array even if single result
+		 * @returns self|array
+		 */
+		public static function find($model, $ids = NULL, $force_list = false)
+		{
+			if (is_array($ids) || ($ex = strpos($ids, ','))) {
+
+				$ex && $ids = explode(',', $ids);
+				$conds = array(self::get_id_col($model). " IN ('" .implode('\',\'', $ids)."')");
+				return self::get_all($model, $conds)->fetch();
+
+			} else {
+
+				$col = self::get_id_col($model);
+				if (!is_numeric($ids)) {
+					if (self::attr_exists($model, 'seoname')) {
+						$col = 'seoname';
+					} else {
+						$ids = intval(substr($ids, strlen($ids) - strpos(strrev($ids), '-')));
+					}
+				}
+
+				$conds = array($col => $ids);
+				$result = self::get_first($model, $conds)->fetch();
+
+				return $force_list ? array($result):$result;
+			}
 		}
 
 

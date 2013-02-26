@@ -164,6 +164,21 @@ namespace System
 		}
 
 
+		public static function label_for($icon, $size=32, $label, $url, $object = array())
+		{
+			$object['label'] = $label;
+			return System\Template::icon_for($icon, $size, $url, $label, $object);
+		}
+
+
+		public static function label_right_for($icon, $size=32, $label, $url, $object = array())
+		{
+			$object['label'] = $label;
+			$object['label_left'] = true;
+			return System\Template::icon_for($icon, $size, $url, $label, $object);
+		}
+
+
 		public static function label_text($label)
 		{
 			return '<span class="lt">'.$label.'</span>';
