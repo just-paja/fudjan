@@ -83,7 +83,7 @@ namespace System\Form
 
 				$html_element = $el->kind;
 
-				if ($el->type === 'password') {
+				if ($el->type === 'password' || $el->type === 'textarea') {
 					unset($data['value']);
 				}
 
