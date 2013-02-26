@@ -672,7 +672,9 @@ namespace System\Model
 					if ($def[0] === 'point') {
 						$attrs[$attr] = 'AsWKT('.$attr.')';
 					} else {
-						$attrs[] = $attr;
+						if ($attr != self::get_id_col($model)) {
+							$attrs[] = $attr;
+						}
 					}
 				}
 			}
@@ -688,8 +690,8 @@ namespace System\Model
 				}
 			}
 
-			$attrs[] = 'created_at';
-			$attrs[] = 'updated_at';
+			!in_array('created_at', $attrs) && $attrs[] = 'created_at';
+			!in_array('updated_at', $attrs) && $attrs[] = 'updated_at';
 
 			return $attrs;
 		}
@@ -778,6 +780,16 @@ namespace System\Model
 			}
 
 			return parent::__construct($update);
+		}
+
+
+		public static function get_attr($model, $attr)
+		{
+			if ($attr === 'id') {
+				$attr = self::get_id_col($model);
+			}
+
+			return parent::get_attr($model, $attr);
 		}
 	}
 }

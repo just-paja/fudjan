@@ -225,7 +225,7 @@ namespace System\Model
 		 * @param string $model
 		 * @param string $attribute
 		 */
-		protected static function get_attr($model, $attr)
+		public static function get_attr($model, $attr)
 		{
 			$attr_data = &$model::$attrs[$attr];
 

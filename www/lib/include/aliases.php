@@ -3,6 +3,16 @@
 // Tag class total alias, put it into root namespace
 class Tag extends System\Template\Tag {}
 
+// Silent tag class
+class Stag extends Tag {
+	public static function __callStatic($name, $args)
+	{
+		$attrs = &$args[0];
+		$attrs['output'] = false;
+		return parent::tag($name, $attrs);
+	}
+}
+
 // BasicModel & ExtModel aliases
 /** @alias System\Model\Database::get_all */
 function get_all($model, array $conds = array(), array $opts = array(), array $joins = array()) {
