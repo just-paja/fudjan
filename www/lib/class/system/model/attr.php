@@ -410,6 +410,12 @@ namespace System\Model
 		}
 
 
+		public function get_model_name($plural = false)
+		{
+			return self::get_model_model_name($model, $plural);
+		}
+
+
 		public static function get_model_attr_name($model, $attr)
 		{
 			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
@@ -419,6 +425,12 @@ namespace System\Model
 		public static function get_model_attr_desc($model, $attr)
 		{
 			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+		}
+
+
+		public static function get_model_model_name($model, $plural = false)
+		{
+			return l('model_'.\System\Loader::get_link_from_class($model).($plural ? '_plural':''));
 		}
 	}
 }

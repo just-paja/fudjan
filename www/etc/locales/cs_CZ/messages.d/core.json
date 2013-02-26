@@ -33,6 +33,8 @@
 	"created_at":"Vytvořeno",
 	"updated_at":"Poslední úprava",
 
+	"model_system_user":"Uživatel",
+	"model_system_user_plural":"Uživatelé",
 	"attr_system_user_login":"Přihlašovací jméno",
 	"attr_system_user_nick":"Přezdívka",
 	"attr_system_user_first_name":"Křestní jméno",
@@ -44,10 +46,14 @@
 	"attr_system_user_com_sms":"Posílat sms",
 	"attr_system_user_get_name":"Jméno",
 
+	"model_system_text":"Statický text",
+	"model_system_text_plural":"Statické texty",
 	"attr_system_text_name":"Titulek textu",
 	"attr_system_text_text":"Textu",
 	"attr_system_text_visible":"Viditelnost",
 
+	"model_system_location":"Umístění",
+	"model_system_location_plural":"Umístění",
 	"attr_system_location_name":"Název umístění",
 	"attr_system_location_addr":"Adresa",
 	"attr_system_location_gps":"GPS lokace",
