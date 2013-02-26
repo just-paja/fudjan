@@ -30,6 +30,8 @@
 	"core_bug_report_trace":"Traceback",
 	"core_bug_report_reason":"Odůvodnění",
 
+	"created_at":"Vytvořeno",
+	"updated_at":"Poslední úprava",
 
 	"attr_system_user_login":"Přihlašovací jméno",
 	"attr_system_user_nick":"Přezdívka",
@@ -40,6 +42,7 @@
 	"attr_system_user_last_login":"Poslední přihlášení",
 	"attr_system_user_com_email":"Posílat e-maily",
 	"attr_system_user_com_sms":"Posílat sms",
+	"attr_system_user_get_name":"Jméno",
 
 	"attr_system_text_name":"Titulek textu",
 	"attr_system_text_text":"Textu",
