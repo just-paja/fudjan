@@ -97,11 +97,11 @@
 			self::$info = array(
 				"name" => NAME,
 				"head" =>
-					'Modify YaCMS database'.CR.
-					'Read settings from your environment and perform action'.CR,
+					'Modify YaCMS database'.NL.
+					'Read settings from your environment and perform action'.NL,
 
 				"foot" =>
-					'If no options are set, config is read from \$root/\$env'.CR,
+					'If no options are set, config is read from \$root/\$env'.NL,
 			);
 		}
 	}

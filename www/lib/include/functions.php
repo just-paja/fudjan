@@ -1,7 +1,7 @@
 <?
 
 
-/** Contains variable something?
+/** Does variable contain something?
  * @param &array $var
  * @returns bool
  */
@@ -71,6 +71,9 @@ function members_to_path(array $members)
 }
 
 
+/** Dump function - displays debug info on all arguments
+ * @returns void
+ */
 function v()
 {
 	$trace = debug_backtrace();
@@ -308,4 +311,19 @@ function read_dir_contents($dir, array &$files = array(), array &$directories = 
 function hash_passwd($str)
 {
 	return sha1(md5('PERFECT_STRING_PREFIX'.$str.'PERFECT_STRING_POSTFIX'.crc32($str)));
+}
+
+
+/** Collect ids of all database models in list
+ * @param array $list
+ */
+function collect_ids(array $list) {
+	return collect(array('attr', 'id'), $list);
+}
+
+/** Collect names of all database models in list
+ * @param array $list
+ */
+function collect_names(array $list) {
+	return collect(array('this', 'get_name'), $list);
 }

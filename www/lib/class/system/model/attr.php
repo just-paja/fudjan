@@ -225,7 +225,7 @@ namespace System\Model
 		 * @param string $model
 		 * @param string $attribute
 		 */
-		protected static function get_attr($model, $attr)
+		public static function get_attr($model, $attr)
 		{
 			$attr_data = &$model::$attrs[$attr];
 
@@ -395,6 +395,42 @@ namespace System\Model
 			}
 
 			return $this->changed;
+		}
+
+
+		public function get_attr_name($attr)
+		{
+			return self::get_model_attr_name(get_class($this), $attr);
+		}
+
+
+		public function get_attr_desc($attr)
+		{
+			return self::get_model_attr_desc(get_class($this), $attr);
+		}
+
+
+		public function get_model_name($plural = false)
+		{
+			return self::get_model_model_name($model, $plural);
+		}
+
+
+		public static function get_model_attr_name($model, $attr)
+		{
+			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
+		}
+
+
+		public static function get_model_attr_desc($model, $attr)
+		{
+			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+		}
+
+
+		public static function get_model_model_name($model, $plural = false)
+		{
+			return l('model_'.\System\Loader::get_link_from_class($model).($plural ? '_plural':''));
 		}
 	}
 }

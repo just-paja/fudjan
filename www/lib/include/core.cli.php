@@ -19,7 +19,7 @@ abstract class YacmsCLIOptions
 	// Predefined environment
 	protected static $env = 'dev';
 
-	// Script information
+	// SNLipt information
 	protected static $info = array(
 		"head" => null,
 		"name" => null,
@@ -206,26 +206,26 @@ abstract class YacmsCLIOptions
 		}
 
 		echo
-			self::$info['head'].CR.
+			self::$info['head'].NL.
 
-			"Usage:".CR.
-				"  ./".self::$info['name']." ".(empty(self::$commands) ? "environment":"command")." ".CR.
-				"  ./".self::$info['name']." ".(empty(self::$commands) ? "environment":"command")." [params]".CR.
-			CR;
+			"Usage:".NL.
+				"  ./".self::$info['name']." ".(empty(self::$commands) ? "environment":"command")." ".NL.
+				"  ./".self::$info['name']." ".(empty(self::$commands) ? "environment":"command")." [params]".NL.
+			NL;
 
 		if (!empty(self::$commands)) {
 			echo
-				"Commands:".CR;
+				"Commands:".NL;
 				out_flist($cmd_list, false, 2);
 
-			echo CR;
+			echo NL;
 		}
 
 		echo
-			"Options:".CR;
+			"Options:".NL;
 			out_flist($opt_list, false, 2);
 
-		echo CR.
+		echo NL.
 
 			self::$info['foot'];
 		exit;

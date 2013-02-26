@@ -6,7 +6,7 @@
  * @return void;
  */
 function out($str = '', $break = true, $return = false) {
-	$str = $str.($break ? CR:'');
+	$str = $str.($break ? NL:'');
 	if ($return) return $str; else echo $str;
 }
 
@@ -32,8 +32,8 @@ function sep($return = false) {
 	for ($i = 0; $i <= CLIOptions::get_con_width(); $i++) {
 		$str .= '-';
 	}
-	$str .= CR;
-	
+	$str .= NL;
+
 	if ($return) return $str; else echo $str;
 }
 
@@ -69,11 +69,11 @@ function out_flist(array $list, $semicolon = true, $margin = 0, $return = false,
 }
 
 
-/* Kill script with return code
+/* Kill sNLipt with return code
  * @returns int Return code
  */
 function give_up($str, $code = 1) {
-	echo $str.CR;
+	echo $str.NL;
 	exit($code);
 }
 

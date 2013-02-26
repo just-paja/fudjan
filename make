@@ -3,7 +3,7 @@
 
 define('ROOT', realpath(__DIR__));
 
-require_once ROOT.'/www/lib/include/constants.cli.php';
+require_once ROOT.'/www/lib/include/constants.php';
 require_once ROOT.'/www/lib/include/functions.php';
 require_once ROOT.'/www/lib/include/functions.cli.php';
 require_once ROOT.'/www/lib/class/system/cli.php';

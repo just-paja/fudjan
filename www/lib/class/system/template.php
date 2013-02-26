@@ -164,6 +164,21 @@ namespace System
 		}
 
 
+		public static function label_for($icon, $size=32, $label, $url, $object = array())
+		{
+			$object['label'] = $label;
+			return \System\Template::icon_for($icon, $size, $url, $label, $object);
+		}
+
+
+		public static function label_right_for($icon, $size=32, $label, $url, $object = array())
+		{
+			$object['label'] = $label;
+			$object['label_left'] = true;
+			return \System\Template::icon_for($icon, $size, $url, $label, $object);
+		}
+
+
 		public static function label_text($label)
 		{
 			return '<span class="lt">'.$label.'</span>';
@@ -306,6 +321,45 @@ namespace System
 		{
 			$theme = cfg('icons', 'theme');
 			return $theme ? $theme:self::DEFAULT_ICON_THEME;
+		}
+
+
+		/** Convert value to HTML parseable format
+		 * @param mixed $value
+		 * @returns string
+		 */
+		public static function to_html($value)
+		{
+			if (is_object($value) && method_exists($value, 'to_html')) {
+				return $value->to_html();
+			}
+
+			if ($value instanceof \DateTime) {
+				return format_date($value, 'human');
+			}
+
+			if ($value instanceof \System\Image) {
+				return \Tag::img(array(
+					"src" => $value->thumb(100, 100),
+					"alt" => '',
+					"output" => false,
+				));
+			}
+
+			if (gettype($value) == 'boolean') {
+				$value = $value ? 'yes':'no';
+				return \Tag::span(array(
+					"output"  => false,
+					"content" => l($value),
+					"class"   => $value,
+				));
+			}
+
+			if (gettype($value) == 'float') {
+				return number_format($value, 5);
+			}
+
+			return $value;
 		}
 	}
 }
