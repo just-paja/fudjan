@@ -10,7 +10,7 @@ namespace System\Form
 			"type"         => array("varchar"),
 			"label"        => array("varchar"),
 			"kind"         => array("varchar"),
-			"content"      => array("varchar"),
+			"content"      => array("text"),
 			"info"         => array("varchar"),
 			"placeholder"  => array('varchar'),
 			"maxlen"       => array('int'),
