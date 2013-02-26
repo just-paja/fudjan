@@ -32,5 +32,25 @@ namespace System
 		{
 			return str_replace("\_", '/', substr(strtolower(preg_replace("/([A-Z])/", "_$1", $class_name)), 1)).($with_suffix ? ".php":'');
 		}
+
+
+		/** Get class name in link format from model format
+		 * @param string $model
+		 * @returns string
+		 */
+		public static function get_link_from_model($model)
+		{
+			return str_replace('::', '_', strtolower($model));
+		}
+
+
+		/** Get class name from model format
+		 * @param string $model
+		 * @returns string
+		 */
+		public static function get_class_from_model($model)
+		{
+			return ucfirsts($model, '::', '\\');
+		}
 	}
 }
