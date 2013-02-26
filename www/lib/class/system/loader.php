@@ -44,6 +44,16 @@ namespace System
 		}
 
 
+		/** Get class name in link format from standart format
+		 * @param string $model
+		 * @returns string
+		 */
+		public static function get_link_from_class($model)
+		{
+			return str_replace('\\', '_', strtolower(preg_replace('/^\\\\/', '', $model)));
+		}
+
+
 		/** Get class name from model format
 		 * @param string $model
 		 * @returns string

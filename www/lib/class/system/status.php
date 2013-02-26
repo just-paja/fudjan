@@ -121,6 +121,8 @@ namespace System
 					//~ v($e);
 				}
 			}
+
+			exit(1);
 		}
 
 

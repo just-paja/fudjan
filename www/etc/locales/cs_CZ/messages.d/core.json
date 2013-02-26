@@ -30,5 +30,27 @@
 	"core_bug_report_trace":"Traceback",
 	"core_bug_report_reason":"Odůvodnění",
 
+
+	"attr_system_user_login":"Přihlašovací jméno",
+	"attr_system_user_nick":"Přezdívka",
+	"attr_system_user_first_name":"Křestní jméno",
+	"attr_system_user_last_name":"Příjmení",
+	"attr_system_user_password":"Heslo",
+	"attr_system_user_avatar":"Avatar",
+	"attr_system_user_last_login":"Poslední přihlášení",
+	"attr_system_user_com_email":"Posílat e-maily",
+	"attr_system_user_com_sms":"Posílat sms",
+
+	"attr_system_text_name":"Titulek textu",
+	"attr_system_text_text":"Textu",
+	"attr_system_text_visible":"Viditelnost",
+
+	"attr_system_location_name":"Název umístění",
+	"attr_system_location_addr":"Adresa",
+	"attr_system_location_gps":"GPS lokace",
+	"attr_system_location_desc":"Popis",
+	"attr_system_location_url":"Adresa webu",
+
+
 	"end":""
 }

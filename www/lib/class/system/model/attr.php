@@ -396,5 +396,29 @@ namespace System\Model
 
 			return $this->changed;
 		}
+
+
+		public function get_attr_name($attr)
+		{
+			return self::get_model_attr_name(get_class($this), $attr);
+		}
+
+
+		public function get_attr_desc($attr)
+		{
+			return self::get_model_attr_desc(get_class($this), $attr);
+		}
+
+
+		public static function get_model_attr_name($model, $attr)
+		{
+			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
+		}
+
+
+		public static function get_model_attr_desc($model, $attr)
+		{
+			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+		}
 	}
 }
