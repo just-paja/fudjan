@@ -167,7 +167,7 @@ namespace System
 		public static function label_for($icon, $size=32, $label, $url, $object = array())
 		{
 			$object['label'] = $label;
-			return System\Template::icon_for($icon, $size, $url, $label, $object);
+			return \System\Template::icon_for($icon, $size, $url, $label, $object);
 		}
 
 
@@ -175,7 +175,7 @@ namespace System
 		{
 			$object['label'] = $label;
 			$object['label_left'] = true;
-			return System\Template::icon_for($icon, $size, $url, $label, $object);
+			return \System\Template::icon_for($icon, $size, $url, $label, $object);
 		}
 
 
