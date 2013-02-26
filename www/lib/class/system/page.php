@@ -80,7 +80,7 @@ namespace System
 		 * @param  array $path
 		 * @returns array
 		 */
-		public static function browse_tree(&$tree, array $path)
+		public static function browse_tree(&$tree, array $path, $return_anchor = true)
 		{
 			$params = array(
 				"found" => false,
@@ -128,7 +128,11 @@ namespace System
 				$params['found'] = !!$found;
 			} while(!empty($p));
 
-			return array(&$iter["#"], $params);;
+			if ($return_anchor) {
+				return array(&$iter["#"], $params);
+			} else {
+				return array(&$iter, $params);
+			}
 		}
 
 
