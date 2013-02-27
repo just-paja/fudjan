@@ -6,7 +6,7 @@ namespace System\Form
 	{
 		const TYPE_INPUTS       = 'inputs';
 		const TYPE_BUTTONS      = 'buttons';
-		const TYPE_TABS         = 'tabs';
+		const TYPE_TAB         = 'tab';
 
 		protected static $attrs = array(
 			"id"    => array('varchar'),
@@ -20,13 +20,13 @@ namespace System\Form
 		protected static $types = array(
 			self::TYPE_INPUTS,
 			self::TYPE_BUTTONS,
-			self::TYPE_TABS,
+			self::TYPE_TAB,
 		);
 
 		protected static $type_models = array(
 			self::TYPE_INPUTS  => array('System\\Form\\Input', 'System\\Form\\Label', 'System\\Form\\Text'),
 			self::TYPE_BUTTONS => array('System\\Form\\Input'),
-			self::TYPE_TABS    => array(),
+			self::TYPE_TAB     => array(),
 		);
 
 		private $elements = array();

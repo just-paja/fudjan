@@ -257,6 +257,12 @@ namespace System
 		}
 
 
+		public function tab($label, $name = null)
+		{
+
+		}
+
+
 		/** Add input
 		 * @param array $attrs
 		 * @returns System\Form\Input
