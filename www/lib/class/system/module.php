@@ -22,6 +22,7 @@ namespace System
 			} else {
 				$this->id = self::get_new_id();
 			}
+
 			$this->slot = def($locals['slot'], Template::DEFAULT_SLOT);
 		}
 
@@ -93,7 +94,15 @@ namespace System
 								}
 
 								$val === '#' && $val = end($input);
-								!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val) && $val = Input::get('page', intval(substr($val, 2)));
+								if (!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
+									$temp = \System\Page::get_path_variables();
+									$temp_key = intval(substr($val, 2));
+
+									if (isset($temp[$temp_key])) {
+										$val = $temp[$temp_key];
+									} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
+								}
+
 								!is_object($val) && !is_array($val) && strpos($val, '#user{') === 0 && $val = soprintf(substr($val, 5), user());
 
 								$$key = &$val;

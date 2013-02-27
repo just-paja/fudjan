@@ -14,6 +14,7 @@ namespace System
 			"seoname"   => array('varchar'),
 			"modules"   => array('list'),
 			"template"  => array('list'),
+			"variable"  => array('list'),
 			"post"      => array('varchar'),
 			"keywords"  => array('varchar'),
 			"desc"      => array('text'),
@@ -59,9 +60,13 @@ namespace System
 		 */
 		private static function parse_path()
 		{
-			self::$path = array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ?
+			self::$path = array();
+
+			foreach (array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ?
 				strpos($_SERVER['REQUEST_URI'], '?'):strlen($_SERVER['REQUEST_URI']))
-			));
+			)) as $p) {
+				self::$path[] = $p;
+			}
 		}
 
 
@@ -99,10 +104,11 @@ namespace System
 		 * @param  array $path
 		 * @returns &array|false
 		 */
-		public static function &browse_tree(&$tree, array $path, $return_anchor = true)
+		public static function browse_tree(&$tree, array $path, $return_anchor = true)
 		{
 			$params = array();
 			$found  = true;
+			$variable = array();
 			$p = $path;
 			$iter = &$tree;
 
@@ -119,6 +125,7 @@ namespace System
 				} elseif(isset($iter["*"]) && is_array($iter["*"])) {
 					$iter = &$iter["*"];
 					$found = is_array($iter['#']);
+					$variable[] = $page;
 				} else {
 					$found = false;
 					break;
@@ -135,6 +142,7 @@ namespace System
 			}
 
 			$iter['#'] = array_merge($params, $iter['#']);
+			$iter['#']['variable'] = $variable;
 
 			if ($found) {
 				if ($return_anchor) {
@@ -201,6 +209,26 @@ namespace System
 			} else {
 				return '/'.implode('/', self::$path).(count(self::$path) > 0 ? '/':'');
 			}
+		}
+
+
+		/** Get path as array
+		 * @returns array
+		 */
+		public static function get_path_list()
+		{
+			return self::$path;
+		}
+
+
+		/** Get variables from parsed page path
+		 * @returns array
+		 */
+		public static function get_path_variables()
+		{
+			if (self::get_current()) {
+				return self::get_current()->variable;
+			} else return array();
 		}
 
 
