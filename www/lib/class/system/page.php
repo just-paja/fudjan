@@ -55,6 +55,15 @@ namespace System
 		}
 
 
+		/** Set current page
+		 * @param System\Page $page
+		 */
+		public static function set_current(self $page)
+		{
+			return self::$current = $page;
+		}
+
+
 		/** Parse page path
 		 * @returns void
 		 */
