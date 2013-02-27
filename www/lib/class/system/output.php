@@ -16,7 +16,6 @@ namespace System
 		private static $objects = array();
 		private static $templates = array();
 		private static $meta = array();
-		private static $ajax = false;
 		private static $def_template_used = false;
 		private static $content = array(
 			"headers" => array(),
@@ -76,10 +75,6 @@ namespace System
 		{
 			if ($format == 'cli') {
 				return self::$format = $format;
-			}
-
-			if (!$format || self::$ajax || (Settings::get('dev', 'debug') && $format == 'xhtml')) {
-				$format = self::DEFAULT_OUT;
 			}
 
 			self::$format = $format;
@@ -155,15 +150,6 @@ namespace System
 		}
 
 
-		/** Use ajax api
-		 * @param bool $really
-		 */
-		public static function use_ajax($really = true)
-		{
-			self::$ajax = $really;
-		}
-
-
 		/** Get template full path
 		 * @param string $type
 		 * @param string $name
@@ -228,24 +214,15 @@ namespace System
 			ksort(self::$templates);
 			ob_start();
 
-			if (self::$ajax) {
-				if (self::$template && ($template = self::get_template('layout', null, true))) {
-					include($template);
-				} else {
-					self::yield();
-				}
-			} else {
-
-				if (Settings::get('dev', 'debug') && !Output::$ajax) {
-					self::add_template(array("name" => 'system/status'), Template::DEFAULT_SLOT);
-				}
-
-				$name = array_shift(self::$template);
-
-				is_null($name) ?
-					self::slot():
-					include(self::get_template('layout', $name));
+			if (Settings::get('dev', 'debug')) {
+				self::add_template(array("name" => 'system/status'), Template::DEFAULT_SLOT);
 			}
+
+			$name = array_shift(self::$template);
+
+			is_null($name) ?
+				self::slot():
+				include(self::get_template('layout', $name));
 
 			self::content_for('output', ob_get_contents());
 			ob_end_clean();

@@ -4,20 +4,30 @@ namespace System
 {
 	class Page extends Model\Attr
 	{
-		const DIR_TEMPLATE_MODULES = "/lib/template/modules";
-
 		private static $path = array();
 		private static $input = array();
 		private static $current;
 		protected static $attrs = array(
-			"string" => array('title', 'page', 'seoname', 'template', 'post', 'keywords', 'desc', 'robots', 'copyright', 'author'),
+			"title"     => array('varchar'),
+			"page"      => array('varchar'),
+			"path"      => array('varchar'),
+			"seoname"   => array('varchar'),
+			"modules"   => array('list'),
+			"template"  => array('list'),
+			"post"      => array('varchar'),
+			"keywords"  => array('varchar'),
+			"desc"      => array('text'),
+			"robots"    => array('varchar'),
+			"copyright" => array('varchar'),
+			"author"    => array('varchar'),
 		);
 
 
+		/** Init page class
+		 */
 		public static function init()
 		{
 			self::parse_path();
-			self::$current = self::fetch_page();
 		}
 
 
@@ -25,14 +35,21 @@ namespace System
 		{
 			parent::__construct($dataray);
 
-			if (strpos($this->get_path(), '/cron') === 0) {
+			if (strpos($this->path, '/cron') === 0) {
 				$this->template = array(null);
 			}
 		}
 
 
+		/** Get (and find if none) current page
+		 * @returns System\Page|false
+		 */
 		public static function get_current()
 		{
+			if (empty(self::$current)) {
+				self::$current = self::fetch_page();
+			}
+
 			return self::$current;
 		}
 
@@ -42,43 +59,45 @@ namespace System
 		 */
 		private static function parse_path()
 		{
-			self::$path = array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ? strpos($_SERVER['REQUEST_URI'], '?'):strlen($_SERVER['REQUEST_URI']))));
-			reset(self::$path) == Output::PREFIX_AJAX && Output::use_ajax(true);
+			self::$path = array_filter(explode('/', substr($_SERVER['REQUEST_URI'], 0, strpos($_SERVER['REQUEST_URI'], '?') ?
+				strpos($_SERVER['REQUEST_URI'], '?'):strlen($_SERVER['REQUEST_URI']))
+			));
 		}
 
 
 		/** Fetch page model from the tree
 		 * @param mixed $path
 		 * @param bool  $add_modules Add modules to the flow imediately?
+		 * @returns System\Page|false
 		 */
 		public static function fetch_page($search_path = null, $add_modules = true)
 		{
-			static $title;
-			$iter = &Settings::get('pages');
+			$iter = &\System\Settings::get('pages');
 
 			if (any($iter)) {
-				$path = ($search_path) ? array_filter(explode('/', $search_path)):self::$path;
+				$path = is_null($search_path) ? self::$path:array_filter(explode('/', $search_path));
 				$pd = self::browse_tree($iter, $path);
 
 				if ($pd) {
-					$pd['page_path'] = $path;
+					$pd['path'] = '/'.implode('/', $path).(count($path) > 0 ? '/':'');
 					$page = new self($pd);
 
 					if ($add_modules) {
-						$page->template && $page->fill_template();
 						$page->add_modules();
 					}
 
 					return $page;
-				} else return false;
-			} else return false;
+				}
+			}
+
+			return false;
 		}
 
 
 		/** Browse page tree and fetch requested path
 		 * @param &array $tree
 		 * @param  array $path
-		 * @returns array
+		 * @returns &array|false
 		 */
 		public static function &browse_tree(&$tree, array $path, $return_anchor = true)
 		{
@@ -99,7 +118,6 @@ namespace System
 					$found = is_array($iter['#']);
 				} elseif(isset($iter["*"]) && is_array($iter["*"])) {
 					$iter = &$iter["*"];
-					Input::add((array) 'page', $page);
 					$found = is_array($iter['#']);
 				} else {
 					$found = false;
@@ -134,10 +152,12 @@ namespace System
 		public function get_meta()
 		{
 			$dataray = array();
-			$meta = Settings::get('output', 'meta_tags');
-			foreach((array) $meta as $name){
+			$meta = cfg('output', 'meta_tags');
+
+			foreach ((array) $meta as $name) {
 				if (!empty($this->data[$name])) $dataray[$name] = $this->data[$name];
 			}
+
 			return $dataray;
 		}
 
@@ -147,31 +167,9 @@ namespace System
 		 */
 		public function add_modules()
 		{
-			if (!empty($this->opts['modules'])) {
-				foreach((array) $this->opts['modules'] as $id=>$mod){
-					$mod[1]['module_id'] = $id;
-					Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
-				}
-			}
-
-			return $this;
-		}
-
-
-		/** Use template modules
-		 * @returns System\Page
-		 */
-		function fill_template()
-		{
-			if (count($this->template) > 0) {
-				foreach ((array) $this->template as $t) {
-					$modules = \System\Json::read(ROOT.self::DIR_TEMPLATE_MODULES."/".$t.".json", true);
-
-					foreach ((array) $modules as $id=>$mod) {
-						$mod[1]['module_id'] = $id;
-						Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
-					}
-				}
+			foreach ($this->modules as $id=>$mod){
+				$mod[1]['module_id'] = $id;
+				Flow::add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
 			}
 
 			return $this;
@@ -198,7 +196,11 @@ namespace System
 		 */
 		public static function get_path()
 		{
-			return '/'.implode('/', self::$path).(count(self::$path) > 0 ? '/':'');
+			if (self::get_current()) {
+				return self::get_current()->path;
+			} else {
+				return '/'.implode('/', self::$path).(count(self::$path) > 0 ? '/':'');
+			}
 		}
 
 
