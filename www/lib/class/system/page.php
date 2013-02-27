@@ -60,9 +60,9 @@ namespace System
 				$path = ($search_path) ? array_filter(explode('/', $search_path)):self::$path;
 				$pd = self::browse_tree($iter, $path);
 
-				if ($pd[1]['found']) {
+				if ($pd) {
 					$pd['page_path'] = $path;
-					$page = new self(array_merge($pd[0], $pd[1]));
+					$page = new self($pd);
 
 					if ($add_modules) {
 						$page->template && $page->fill_template();
@@ -70,8 +70,8 @@ namespace System
 					}
 
 					return $page;
-				}
-			}
+				} else return false;
+			} else return false;
 		}
 
 
@@ -80,24 +80,16 @@ namespace System
 		 * @param  array $path
 		 * @returns array
 		 */
-		public static function browse_tree(&$tree, array $path, $return_anchor = true)
+		public static function &browse_tree(&$tree, array $path, $return_anchor = true)
 		{
-			$params = array(
-				"found" => false,
-			);
+			$params = array();
+			$found  = true;
 			$p = $path;
 			$iter = &$tree;
 
 			self::use_param("template", $iter, $params);
-			self::use_param("admin_menu", $iter, $params);
 
-			if (empty($path)) {
-				$params['page_path'] = $path;
-				$params['found'] = true;
-				return array(&$iter['#'], $params);
-			}
-
-			do {
+			while (!empty($p)) {
 				$page = array_shift($p);
 				$found = false;
 
@@ -105,13 +97,12 @@ namespace System
 					$iter = &$iter[$page];
 					$seoname = $page;
 					$found = is_array($iter['#']);
-					$template = any($iter["#"]["template"]);
 				} elseif(isset($iter["*"]) && is_array($iter["*"])) {
 					$iter = &$iter["*"];
 					Input::add((array) 'page', $page);
 					$found = is_array($iter['#']);
-					$template = any($iter["#"]["template"]);
 				} else {
+					$found = false;
 					break;
 				}
 
@@ -120,19 +111,20 @@ namespace System
 					$title = def($iter['#']['title'], '');
 
 					self::use_param("template", $iter, $params);
-					self::use_param("admin_menu", $iter, $params);
 					self::use_param("seoname", $iter, $params);
 					self::use_param("title", $iter, $params);
 				}
-
-				$params['found'] = !!$found;
-			} while(!empty($p));
-
-			if ($return_anchor) {
-				return array(&$iter["#"], $params);
-			} else {
-				return array(&$iter, $params);
 			}
+
+			$iter['#'] = array_merge($params, $iter['#']);
+
+			if ($found) {
+				if ($return_anchor) {
+					return $iter["#"];
+				} else {
+					return $iter;
+				}
+			} else return $found;
 		}
 
 
