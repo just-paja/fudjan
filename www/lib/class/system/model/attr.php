@@ -22,6 +22,8 @@ namespace System\Model
 			'password',
 			'json',
 			'image',
+			'gps',
+			'list',
 		);
 
 		// Registered object handlers
@@ -61,13 +63,12 @@ namespace System\Model
 		 */
 		public function __get($attr)
 		{
-			if (!in_array($attr, array('attrs', 'opts', 'errors'))) {
+			if (!in_array($attr, array('data', 'opts'))) {
 				$model = get_class($this);
 				$attr == 'id' && isset($model::$id_col) && $attr = $model::$id_col;
 
 				return $this->has_attr($attr) ?
-					(isset($this->data[$attr]) ? $this->data[$attr]:null):
-					(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
+					$this->get_attr_value($attr):(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
 			}
 
 			throw new \System\Error\Argument(sprintf('Trying to access internal private attribute "%s" for model "%s"', $attr, get_class($this)));
@@ -82,6 +83,18 @@ namespace System\Model
 		public function __set($attr, $value)
 		{
 			if ($this->has_attr($attr)) {
+				$null_error = false;
+
+				if (is_null($value)) {
+					$def = self::get_attr(get_class($this), $attr);
+
+					if (empty($def['is_null'])) {
+						if (any($def['default'])) {
+							$value = $def['default'];
+						}
+					}
+				}
+
 				$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
 				$this->changed = true;
 			} else $this->opts[$attr] = $value;
@@ -382,6 +395,14 @@ namespace System\Model
 						} else throw new \System\Error\Format('Cannot create Youtube video object from "'.gettype($val).'".');
 					}
 				}
+
+
+				case 'list':
+				{
+					if (!is_array($val)) {
+						$val = (array) $val;
+					}
+				}
 			}
 
 			return $val;
@@ -431,6 +452,17 @@ namespace System\Model
 		public static function get_model_model_name($model, $plural = false)
 		{
 			return l('model_'.\System\Loader::get_link_from_class($model).($plural ? '_plural':''));
+		}
+
+
+		public function get_attr_value($attr)
+		{
+			if (isset($this->data[$attr])) {
+				return $this->data[$attr];
+			} else {
+				$this->__set($attr, null);
+				return $this->data[$attr];
+			}
 		}
 	}
 }

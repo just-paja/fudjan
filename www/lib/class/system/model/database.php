@@ -207,7 +207,7 @@ namespace System\Model
 		{
 			if (is_array($ids) || ($ex = strpos($ids, ','))) {
 
-				$ex && $ids = explode(',', $ids);
+				any($ex) && $ids = explode(',', $ids);
 				$conds = array(self::get_id_col($model). " IN ('" .implode('\',\'', $ids)."')");
 				return self::get_all($model, $conds)->fetch();
 
