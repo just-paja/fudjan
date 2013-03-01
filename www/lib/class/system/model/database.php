@@ -5,8 +5,8 @@ namespace System\Model
 	abstract class Database extends Callback
 	{
 		// Replace chars
-		private static $bad_chars  = array(' ', '_', '--');
-		private static $good_chars = array('-', '-', '-', '');
+		private static $bad_chars  = array(' ', '_', '--', '.');
+		private static $good_chars = array('-', '-', '-', '', '');
 
 		private static $strictly_bad_chars = array('-');
 		private static $strictly_good_chars = array('_');
