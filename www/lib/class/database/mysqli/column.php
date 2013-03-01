@@ -4,6 +4,8 @@ namespace Database\Mysqli
 {
 	class Column
 	{
+		private static $cols_no_default = array('text', 'blob');
+
 		private static $complex_types = array(
 			"image"         => array("type" => 'text'),
 			"video_youtube" => array("type" => 'varchar'),
@@ -198,7 +200,7 @@ namespace Database\Mysqli
 					$this->attrs['type'].(any($this->attrs['length']) ? '('.$this->attrs['length'].')':''),
 					any($this->attrs['is_unsigned']) ? 'unsigned':'',
 					any($this->attrs['is_null']) && !isset($this->attrs['default']) ? 'NULL':'NOT NULL',
-					isset($this->attrs['default']) ? 'DEFAULT '.$defval.'':'',
+					isset($this->attrs['default']) && !in_array($this->attrs['type'], self::$cols_no_default) ? 'DEFAULT '.$defval.'':'',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
 					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) && empty($this->default['is_unique']) ? 'UNIQUE':'',
 					any($this->attrs['is_primary']) && empty($this->default['is_primary']) ? 'PRIMARY KEY':'',
