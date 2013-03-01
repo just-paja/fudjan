@@ -32,10 +32,10 @@ namespace System
 					$report = time();
 				}
 
-				php_sapi_name() != 'cli' && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
+				!self::on_cli() && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
 				self::append_msg_info($msg, $report);
 
-				if (php_sapi_name() == 'cli') {
+				if (self::on_cli()) {
 					$report .= "> Run from console".NL;
 				} else {
 					$report .= "> Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
@@ -136,7 +136,7 @@ namespace System
 
 		public static function on_cli()
 		{
-			return php_sapi_name() === 'cli';
+			return php_sapi_name() == 'cli';
 		}
 	}
 }

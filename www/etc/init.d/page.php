@@ -7,7 +7,6 @@ if (System\Settings::is_this_first_run()) {
 	System\Setup::init();
 	System\Output::init();
 	System\Output::set_format('html');
-	System\Output::send_headers();
 	System\Output::out();
 
 } else {
@@ -56,7 +55,6 @@ if (System\Settings::is_this_first_run()) {
 		System\Setup::set_step('no_pages');
 		System\Output::init();
 		System\Output::set_format('html');
-		System\Output::send_headers();
 		System\Output::out();
 
 	}

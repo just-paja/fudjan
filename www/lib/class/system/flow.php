@@ -51,8 +51,11 @@ namespace System
 		{
 			self::save_referer();
 			session_write_close();
-			header(\System\Http::get_header(any($r['code']) ? $r['code']:302));
-			header("Location:".$r['url']);
+
+			if (!\System\Status::on_cli()) {
+				header(\System\Http::get_header(any($r['code']) ? $r['code']:302));
+				header("Location:".$r['url']);
+			} else throw new \System\Error\Format(stprintf('Cannot redirect to "%s" while on console.', $r['url']));
 			exit;
 		}
 

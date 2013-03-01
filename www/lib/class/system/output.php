@@ -73,7 +73,7 @@ namespace System
 		 */
 		public static function set_format($format)
 		{
-			if ($format == 'cli') {
+			if (!\System\Status::on_cli()) {
 				return self::$format = $format;
 			}
 
@@ -227,7 +227,10 @@ namespace System
 			self::content_for('output', ob_get_contents());
 			ob_end_clean();
 
-			self::send_headers();
+			if (!\System\Status::on_cli()) {
+				self::send_headers();
+			}
+
 			Template::head_out();
 
 			foreach (self::$content['output'] as $row) {
