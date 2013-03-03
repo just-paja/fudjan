@@ -234,6 +234,10 @@ namespace
 	{
 		$data = array_merge($object->get_opts(), $object->get_data());
 
+		if ($object instanceof System\Model\Database) {
+			$data[System\Model\Database::get_id_col(get_class($object))] = $object->id;
+		}
+
 		if (!$object->has_attr('seoname')) {
 			$data['seoname'] = $object->get_seoname();
 		}
