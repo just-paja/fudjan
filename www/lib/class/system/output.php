@@ -40,8 +40,8 @@ namespace System
 		 */
 		public static function set_title()
 		{
-			foreach(func_get_args() as $title){
-				self::$title[] = $title;
+			foreach (func_get_args() as $title) {
+				self::$title[] = l($title);
 			}
 		}
 
