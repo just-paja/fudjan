@@ -624,6 +624,10 @@ namespace System
 					}
 				}
 
+				if ($action == \System\Form\Input::ACTION_NONE) {
+					$value = null;
+				}
+
 				if ($this->submited) {
 					unset($this->data_commited[$attrs['name'].'_file']);
 				}
