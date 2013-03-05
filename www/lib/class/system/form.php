@@ -615,7 +615,7 @@ namespace System
 					$value->tmp = true;
 				}
 
-				if ($value->tmp) {
+				if ($value instanceof \System\Image && $value->tmp) {
 					if ($value->is_image()) {
 						$value->cache();
 					} else {
@@ -624,8 +624,8 @@ namespace System
 					}
 				}
 
-				if ($action == \System\Form\Input::ACTION_NONE) {
-					$value = \System\Image::from_scratch();
+				if ($this->submited) {
+					unset($this->data_commited[$attrs['name'].'_file']);
 				}
 
 				$this->data_commited[$attrs['name']] = $value;
