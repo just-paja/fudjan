@@ -142,7 +142,7 @@ namespace System
 
 				if ($found) {
 					if (any($iter["#"]['title'])) $params['title'] = def($title, '');
-					$title = def($iter['#']['title'], '');
+					$title = l(def($iter['#']['title'], ''));
 
 					self::use_param("template", $iter, $params);
 					self::use_param("seoname", $iter, $params);
