@@ -72,7 +72,7 @@ Tag::ul();
 
 					foreach ($b['args'] as $arg) {
 						$args[] = Tag::li(array(
-							"content" => var_export($arg, true),
+							"content" => var_dump($arg, true),
 							"output"  => false,
 						));
 					}

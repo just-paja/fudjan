@@ -99,7 +99,7 @@ namespace
 			}
 
 			echo '<div class="debug dump"><b>'.$path."</b><pre>";
-				function_exists('var_export') && !is_string($var) ? var_export($var):print_r($var);
+				function_exists('var_export') && !is_string($var) ? var_dump($var):print_r($var);
 			echo '</pre></div>';
 		}
 	}
