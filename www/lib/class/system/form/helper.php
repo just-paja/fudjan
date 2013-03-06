@@ -326,19 +326,22 @@ namespace System\Form
 						}
 						case \System\Form\Container::TYPE_TAB:
 						{
-							content_for('scripts', 'pwf/forms/tabs');
 							\Tag::div(array("class" => array('tab', $el->name)));
 							\Tag::div(array("class" => 'tab_label', "content" => $el->label));
+							\Tag::div(array("class" => 'tab_content'));
 
 							foreach ($el->get_elements() as $el) {
 								self::render_element($el);
 							}
 
 							\Tag::close('div');
+							\Tag::close('div');
 							break;
 						}
 						case \System\Form\Container::TYPE_TAB_GROUP:
 						{
+							content_for('styles', 'pwf/form/tabs');
+							content_for('scripts', 'pwf/form/tab_manager');
 							\Tag::div(array("class" => array('tab_group', $el->name)));
 
 							foreach ($el->get_elements() as $el) {
