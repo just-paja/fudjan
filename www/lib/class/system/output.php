@@ -25,6 +25,8 @@ namespace System
 			"output" => array()
 		);
 
+		private static $content_filter = array('scripts', 'styles');
+
 
 		/** Class init
 		 * @returns void
@@ -277,6 +279,10 @@ namespace System
 		 */
 		public static function &get_content_from($place)
 		{
+			if (is_array(self::$content[$place]) && in_array($place, self::$content_filter)) {
+				self::$content[$place] = array_unique(self::$content[$place]);
+			}
+
 			return self::$content[$place];
 		}
 
