@@ -4,9 +4,10 @@ namespace System\Form
 {
 	class Container extends \System\Form\Element
 	{
-		const TYPE_INPUTS       = 'inputs';
-		const TYPE_BUTTONS      = 'buttons';
-		const TYPE_TAB         = 'tab';
+		const TYPE_INPUTS    = 'inputs';
+		const TYPE_BUTTONS   = 'buttons';
+		const TYPE_TAB_GROUP = 'tab_group';
+		const TYPE_TAB       = 'tab';
 
 		protected static $attrs = array(
 			"id"    => array('varchar'),
@@ -24,9 +25,10 @@ namespace System\Form
 		);
 
 		protected static $type_models = array(
-			self::TYPE_INPUTS  => array('System\\Form\\Input', 'System\\Form\\Label', 'System\\Form\\Text'),
-			self::TYPE_BUTTONS => array('System\\Form\\Input'),
-			self::TYPE_TAB     => array(),
+			self::TYPE_INPUTS    => array('System\\Form\\Input', 'System\\Form\\Label', 'System\\Form\\Text'),
+			self::TYPE_BUTTONS   => array('System\\Form\\Input'),
+			self::TYPE_TAB_GROUP => array('System\\Form\\Container'),
+			self::TYPE_TAB       => array('System\\Form\\Container'),
 		);
 
 		private $elements = array();
@@ -86,7 +88,7 @@ namespace System\Form
 		 */
 		private function generate_name()
 		{
-			$this->name = implode(\System\Form::SEPARATOR_ID, array('container', $this->form->get_count($this->type)));
+			$this->name = implode(\System\Form::SEPARATOR_ID, array($this->type, $this->form->get_count($this->type)));
 		}
 
 

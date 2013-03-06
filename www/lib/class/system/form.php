@@ -29,14 +29,17 @@ namespace System
 
 		private $objects = array();
 		private $rendering = array(
-			"group" => false,
-			"tab"   => false,
+			"group"     => false,
+			"tab_group" => false,
+			"tab"       => false,
 		);
 
 		private $prefix = '';
 		protected $checkboxes = array();
 		protected $counts = array(
-			'inputs' => 1,
+			'inputs'    => 1,
+			"tab_group" => 0,
+			'tab'       => 0,
 		);
 		protected $errors = array();
 
@@ -167,9 +170,11 @@ namespace System
 		 * @param System\Form\Element $element
 		 * @returns void
 		 */
-		protected function add_object(\System\Form\Element $element)
+		protected function &add_object(\System\Form\Element $element)
 		{
-			$this->objects[] = $element;
+			$obj = &$this->objects[];
+			$obj = $element;
+			return $obj;
 		}
 
 
@@ -187,8 +192,13 @@ namespace System
 				"type"  => $type,
 			));
 
-			$this->objects[$el->name] = $el;
-			$this->rendering['group'] = $this->objects[$el->name];
+			if ($this->rendering['tab'] instanceof \System\Form\Container) {
+				$this->rendering['group'] = $this->rendering['tab']->add_element($el);
+			} else {
+				$this->objects[$el->name] = $el;
+				$this->rendering['group'] = $this->objects[$el->name];
+			}
+
 			return $this->rendering['group'];
 		}
 
@@ -257,9 +267,80 @@ namespace System
 		}
 
 
+		/** Check if tab group has started, start it if not
+		 * @returns $this
+		 */
+		public function tab_group_check()
+		{
+			if (!($this->rendering[\System\Form\Container::TYPE_TAB_GROUP] instanceof \System\Form\Container)) {
+				$this->tab_group_start();
+			}
+
+			return $this;
+		}
+
+
+		/** Start groupping tabs into a group
+		 * @returns $this
+		 */
+		public function tab_group_start()
+		{
+			$el = $this->add_object(new \System\Form\Container(array(
+				"type" => \System\Form\Container::TYPE_TAB_GROUP,
+				"form" => $this,
+			)));
+
+			$this->rendering[$el->type] = $el;
+			$this->counts[$el->type]++;
+			return $this;
+		}
+
+
+		/** Stop groupping tabs into a group
+		 * @returns $this
+		 */
+		public function tab_group_end()
+		{
+			$this->rendering[\System\Form\Container::TYPE_TAB] = false;
+			$this->rendering[\System\Form\Container::TYPE_TAB_GROUP] = false;
+			return $this;
+		}
+
+
+		/** Start groupping input containers into tab
+		 * @param string $label Tab label
+		 * @param string $name  Tab name, usefull for JS calls
+		 * @returns $this
+		 */
 		public function tab($label, $name = null)
 		{
+			$this->group_end();
+			$this->tab_end();
+			$this->tab_group_check();
 
+			$el = new \System\Form\Container(array(
+				"type"  => \System\Form\Container::TYPE_TAB,
+				"name"  => $name,
+				"label" => $label,
+				"form"  => $this,
+			));
+
+			$this->counts[$el->type] ++;
+			if (($this->rendering[\System\Form\Container::TYPE_TAB_GROUP] instanceof \System\Form\Container) && $this->rendering[\System\Form\Container::TYPE_TAB_GROUP]->type == \System\Form\Container::TYPE_TAB_GROUP) {
+				$this->rendering[$el->type] = $this->rendering[\System\Form\Container::TYPE_TAB_GROUP]->add_element($el);
+			} else throw new \System\Error\Form('You must put tab into tab group.');
+
+			return $this;
+		}
+
+
+		/** Stop grouping inputs into current tab
+		 * @returns $this
+		 */
+		public function tab_end()
+		{
+			$this->rendering['tab'] = false;
+			return $this;
 		}
 
 
@@ -697,7 +778,7 @@ namespace System
 		public function out(\System\Module $obj = NULL, array $locals = array())
 		{
 			$this->group_end();
-			//~ $this->tab_group_end();
+			$this->tab_group_end();
 
 			return $obj instanceof \System\Module ?
 				$obj->template(self::get_default_template(), (array) $locals + array("f" => $this)):

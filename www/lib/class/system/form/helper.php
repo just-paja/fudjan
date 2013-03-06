@@ -310,8 +310,9 @@ namespace System\Form
 				case 'System\Form\Container':
 				{
 					switch ($el->type) {
-						case 'inputs':
-						case 'buttons':
+						case \System\Form\Container::TYPE_INPUTS:
+						case \System\Form\Container::TYPE_BUTTONS:
+						{
 							\Tag::fieldset(array("class" => $el->type.'_container'));
 								\Tag::ul($el->get_data());
 									foreach ($el->get_elements() as $name=>$object) {
@@ -322,6 +323,31 @@ namespace System\Form
 								\Tag::close('ul');
 							\Tag::close('fieldset');
 							break;
+						}
+						case \System\Form\Container::TYPE_TAB:
+						{
+							content_for('scripts', 'pwf/forms/tabs');
+							\Tag::div(array("class" => array('tab', $el->name)));
+							\Tag::div(array("class" => 'tab_label', "content" => $el->label));
+
+							foreach ($el->get_elements() as $el) {
+								self::render_element($el);
+							}
+
+							\Tag::close('div');
+							break;
+						}
+						case \System\Form\Container::TYPE_TAB_GROUP:
+						{
+							\Tag::div(array("class" => array('tab_group', $el->name)));
+
+							foreach ($el->get_elements() as $el) {
+								self::render_element($el);
+							}
+
+							\Tag::close('div');
+							break;
+						}
 					}
 					break;
 				}
