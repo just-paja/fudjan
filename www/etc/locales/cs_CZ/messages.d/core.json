@@ -45,6 +45,7 @@
 	"attr_system_user_com_email":"Posílat e-maily",
 	"attr_system_user_com_sms":"Posílat sms",
 	"attr_system_user_get_name":"Jméno",
+	"attr_system_user_groups":"Uživatelské skupiny",
 
 	"model_system_text":"Statický text",
 	"model_system_text_plural":"Statické texty",
