@@ -2,8 +2,7 @@ pwf.register('tab_manager', function() {
 
 	var
 		ready = false,
-		selectors = ['.tab_group'],
-		instances = [];
+		selectors = ['.tab_group']
 
 	this.init = function()
 	{
@@ -74,23 +73,34 @@ pwf.register('tab_manager', function() {
 	this.show = function(group, tab_number)
 	{
 		var tabs = group.find('.tab');
+		var labels = group.find('.tab_label');
+
+		for (var i = 0; i < labels.length; i++) {
+			var label = $(labels[i]);
+			if (i == tab_number) {
+				label.addClass('active');
+			} else {
+				label.removeClass('active');
+			}
+		}
 
 		for (var i = 0; i < tabs.length; i++) {
 			var tab = $(tabs[i]);
-
-			if (i == tab_number) {
-				tab.show();
-			} else {
-				this.hide(tab);
-			}
+			i == tab_number ? this.show_tab(tab):this.hide_tab(tab);
 		}
 
 		return this;
 	};
 
 
-	this.hide = function(tab)
+	this.show_tab = function(tab)
 	{
-		tab.hide();
+		tab.show().addClass('active');
+	};
+
+
+	this.hide_tab = function(tab)
+	{
+		tab.hide().removeClass('active');
 	};
 });
