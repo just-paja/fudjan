@@ -4,23 +4,6 @@ namespace System\User
 {
 	class Contact extends \System\Model\Database
 	{
-		static protected $attrs = array(
-			"id_contact_type" => array('int', "is_unsigned" => true),
-			"name"            => array('varchar'),
-			"ident"           => array('varchar'),
-			"visible"         => array('bool'),
-			"deleted"         => array('bool'),
-		);
-
-		static protected $belongs_to = array(
-			"user" => array("model" => '\System\User', "is_natural" => true),
-		);
-
-		static private $internal_types = array(
-			'email'  => self::STD_EMAIL,
-			'mobile' => self::STD_MOBILE,
-		);
-
 		const STD_EMAIL   = 1;
 		const STD_MOBILE  = 2;
 		const STD_WEBSITE = 3;
@@ -32,5 +15,33 @@ namespace System\User
 		const IM_ICQ   = 8;
 		const IM_MSN   = 9;
 		const IM_YAHOO = 10;
+
+		protected static $attrs = array(
+			"type"    => array('int', "is_unsigned" => true, "options" => array(
+				self::STD_EMAIL      => 'contact_type_email',
+				self::STD_MOBILE     => 'contact_type_mobile',
+				self::STD_WEBSITE    => 'contact_type_website',
+				self::STD_PHONE      => 'contact_type_phone',
+				self::IM_XMPP_JABBER => 'contact_type_xmpp_jabber',
+				self::IM_XMPP_GTALK  => 'contact_type_xmpp_gtalk',
+				self::IM_AIM         => 'contact_type_aim',
+				self::IM_ICQ         => 'contact_type_icq',
+				self::IM_MSN         => 'contact_type_msn',
+				self::IM_YAHOO       => 'contact_type_yahoo',
+			)),
+			"name"    => array('varchar'),
+			"ident"   => array('varchar'),
+			"visible" => array('bool'),
+			"public"  => array('bool'),
+		);
+
+		protected static $belongs_to = array(
+			"user" => array("model" => '\System\User', "is_natural" => true),
+		);
+
+		private static $internal_types = array(
+			'email'  => self::STD_EMAIL,
+			'mobile' => self::STD_MOBILE,
+		);
 	}
 }
