@@ -799,5 +799,25 @@ namespace System\Model
 				return soprintf($pattern, $this);
 			}
 		}
+
+
+		/** Get all attribute names that point to system::location
+		 * @param string $model
+		 * @returns array
+		 */
+		public static function get_location_attrs($model)
+		{
+			$attrs = array();
+
+			if (isset($model::$belongs_to)) {
+				foreach ($model::$belongs_to as $attr=>$def) {
+					if ($def['model'] === 'System\\Location' || $def['model'] === '\\System\\Location') {
+						$attrs[] = $attr;
+					}
+				}
+			}
+
+			return $attrs;
+		}
 	}
 }
