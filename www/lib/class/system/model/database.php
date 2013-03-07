@@ -298,11 +298,6 @@ namespace System\Model
 		 */
 		public function __set($name, $value)
 		{
-			if (self::attr_is_rel($this, $name)) {
-				$this->$name = $value;
-				return $this;
-			}
-
 			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
 				$this->data[self::get_id_col(get_class($this))] = intval($value);
 			}
@@ -746,7 +741,6 @@ namespace System\Model
 				$def = $model::$has_many[$rel_name];
 				$items_current = collect_ids($this->$rel_name->fetch());
 				self::relation_save($model, $this->id, $rel_name, array_diff($ids_new, $items_current), array_diff($items_current, $ids_new));
-				$this->$rel_name = get_all($def['model'])->where_in(self::get_id_col($def['model']), $ids_new)->fetch();
 			}
 
 			return $this;
