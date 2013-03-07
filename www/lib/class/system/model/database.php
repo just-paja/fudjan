@@ -298,6 +298,16 @@ namespace System\Model
 		 */
 		public function __set($name, $value)
 		{
+			$model = get_class($this);
+			if (self::attr_is_rel($model, $name)) {
+				$type = self::get_rel_type($model, $name);
+
+				if ($type != 'has-many') {
+					$this->$name = $value;
+					return $this;
+				}
+			}
+
 			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
 				$this->data[self::get_id_col(get_class($this))] = intval($value);
 			}
