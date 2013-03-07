@@ -608,6 +608,9 @@ namespace System\Model
 		}
 
 
+		/** Get all children of Database model
+		 * @returns array List of class names
+		 */
 		public static function get_all_children()
 		{
 			$all_classes = get_declared_classes();
@@ -625,6 +628,10 @@ namespace System\Model
 		}
 
 
+		/** Get definition of all model relations
+		 * @param string $model
+		 * @returns array
+		 */
 		public static function get_model_relations($model)
 		{
 			$relations = array();
@@ -642,6 +649,11 @@ namespace System\Model
 		}
 
 
+		/** Get definition of relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns array
+		 */
 		public static function get_rel_def($model, $rel)
 		{
 			if (isset($model::$has_many) && isset($model::$has_many[$rel])) {
@@ -692,6 +704,14 @@ namespace System\Model
 		}
 
 
+		/** Save relation
+		 * @param string $model      Name of model
+		 * @param string $model_id   ID of object
+		 * @param string $rel_name   Name of relation
+		 * @param list   $ids_save   List of IDs to keep/save
+		 * @param list   $ids_delete List of IDs to delete
+		 * @returns  void
+		 */
 		private function relation_save($model, $model_id, $rel_name, array $ids_save, array $ids_delete)
 		{
 			if (isset($model::$has_many[$rel_name])) {
@@ -733,6 +753,11 @@ namespace System\Model
 		}
 
 
+		/** Assign and save relation by IDs
+		 * @param string $rel_name Name of relation
+		 * @param list   $ids_new  List of new IDs - others will be deleted
+		 * @returns $this
+		 */
 		public function assign_rel($rel_name, array $ids_new)
 		{
 			$model = get_class($this);
@@ -757,6 +782,10 @@ namespace System\Model
 		}
 
 
+		/** Override of constructor, adds id column, created_at and updated_at into attrs
+		 * @param array $update
+		 * @returns new object
+		 */
 		public function __construct(array $update = array())
 		{
 			$model = get_class($this);
@@ -777,6 +806,11 @@ namespace System\Model
 		}
 
 
+		/** Override of attr models get_attr, respects 'id' alias
+		 * @param string $model
+		 * @param string $attr
+		 * @returns mixed
+		 */
 		public static function get_attr($model, $attr)
 		{
 			if ($attr === 'id') {
