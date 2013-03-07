@@ -127,8 +127,7 @@ namespace System\Model
 		 */
 		public function update_attrs(array $update)
 		{
-			$model = get_class($this);
-			foreach($update as $attr=>$val){
+			foreach ($update as $attr=>$val) {
 				$this->__set($attr, $val);
 			}
 
