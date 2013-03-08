@@ -67,18 +67,17 @@ Tag::ul();
 
 				$str_desc[] = $b['function'].'()';
 
+
 				if (isset($b['args']) && any($b['args'])) {
 					$args = array();
 
 					foreach ($b['args'] as $arg) {
-						$args[] = Tag::li(array(
-							"content" => var_dump($arg, true),
-							"output"  => false,
-						));
+						$arg_content = is_object($arg) ? 'Instance of '.get_class($arg):var_export($arg, true);
+						$args[] = Stag::li(array("content" => $arg_content));
 					}
 
 					$str_args[] = heading('Arguments:', true, 4);
-					$str_args[] = Tag::ol(array('output' => false, "content" => $args));
+					$str_args[] = Stag::ol(array("content" => $args));
 				}
 			}
 
@@ -96,7 +95,12 @@ Tag::ul();
 				"output"  => false
 			));
 
-			echo implode('', array_merge($str, $str_args, $str_obj));
+			Tag::details(array(
+				"content" => array(
+					Stag::summary(array("content" => $str)),
+					Stag::div(array("class" => 'cont', "content" => array_merge($str_args, $str_obj))),
+				)
+			));
 
 
 		Tag::close('li');
