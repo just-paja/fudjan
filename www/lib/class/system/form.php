@@ -104,10 +104,16 @@ namespace System
 			if (isset($this->data_commited['data_hidden'])) {
 				$this->data_hidden = json_decode(htmlspecialchars_decode($this->data_commited['data_hidden']), true);
 
+				$tmp = array();
 				foreach ($this->data_hidden as $key=>$val) {
-					$this->data_commited[$key] = $val;
+					$tmp[$key] = $val;
 				}
 
+				foreach ($this->data_commited as $key=>$val) {
+					$tmp[$key] = $val;
+				}
+
+				$this->data_commited = $tmp;
 				unset($this->data_commited['data_hidden']);
 			}
 
