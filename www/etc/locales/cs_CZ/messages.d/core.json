@@ -5,7 +5,7 @@
 	"form_image_input_upload":"Nahrát obrázek",
 	"form_image_input_url":"Použít URL",
 	"form_image_input_drop":"Smazat obrázek",
-	"form_image_input_file":"Soubor s obrázkem",
+	"form_image_input_file":"Nahrát",
 	"form_image_input_url":"URL obrázku",
 
 	"form_location_input_action":"Operace s místem",
@@ -58,7 +58,7 @@
 	"model_system_user_contact_plural":"Kontakty uživatele",
 	"attr_system_user_contact_type":"Služba",
 	"attr_system_user_contact_name":"Jméno",
-	"attr_system_user_contact_ident":"Jedinečný identifikátor",
+	"attr_system_user_contact_ident":"Identifikátor",
 	"attr_system_user_contact_visible":"Viditelný",
 	"attr_system_user_contact_public":"Veřejný",
 
