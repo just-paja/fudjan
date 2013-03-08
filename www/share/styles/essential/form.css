@@ -155,24 +155,54 @@
 }
 
 .pwform .input-image {
-	border:1px solid rgba(0,0,0,0.15);
-	padding:5px;
-	background:rgba(0,0,0,0.05);
 }
 
+.pwform .input-image .im-options li {
+	line-height:23px;
+	margin-left:10px;
+}
 .pwform .input-image .im-options {
 	display:inline-block;
 	vertical-align:top;
+	border:1px solid rgba(0,0,0,0.05);
+	background:rgba(0,0,0,0.025);
+}
+
+.pwform .input-image .im-options .options {
+	max-width:75%;
+	height:auto;
+	vertical-align:top;
+}
+.pwform .input-image .im-options .options,
+.pwform .input-image .im-options .options li
+{
+	vertical-align:top;
+	display:inline-block;
+	margin-top:0;
+	margin-bottom:0;
+	padding:0;
+}
+
+.pwform .input-image .im-options .options li {
+	display:block;
+}
+
+.pwform .input-image .im-options label { width:auto; margin-right:5px; }
+.pwform .input-image .im-options .options label { width:auto; vertical-align:top; margin-right:0; }
+.pwform .input-image .im-options .options input { vertical-align:middle; }
+
+.pwform .input-image a {
+	display:inline-block;
 }
 
 .pwform .input-image img {
-	margin:5px;
+	margin:0 8px 0 0;
 	vertical-align:top;
+	display:block;
+	border:1px solid rgba(0,0,0,0.05);
 }
 
-.pwform .input-image .input {
-	margin:5px;
-}
+.pwform .input-image .input { margin:5px; }
 
 .pwform .datetime_picker .head {
 	padding:0;
