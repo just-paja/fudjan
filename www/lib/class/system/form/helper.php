@@ -314,6 +314,11 @@ namespace System\Form
 						case \System\Form\Container::TYPE_BUTTONS:
 						{
 							\Tag::fieldset(array("class" => $el->type.'_container'));
+
+								if ($el->label) {
+									\Tag::div(array("class" => 'group_label', "content" => $el->label));
+								}
+
 								\Tag::ul($el->get_data());
 									foreach ($el->get_elements() as $name=>$object) {
 										\Tag::li(array("class" => self::get_object_class($object)));
