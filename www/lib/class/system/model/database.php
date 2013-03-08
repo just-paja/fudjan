@@ -657,10 +657,13 @@ namespace System\Model
 		public static function get_rel_def($model, $rel)
 		{
 			if (isset($model::$has_many) && isset($model::$has_many[$rel])) {
+				!isset($model::$has_many[$rel]['name']) && $model::$has_many[$rel]['name'] = $rel;
 				return $model::$has_many[$rel];
 			} elseif (isset($model::$has_one) && isset($model::$has_one[$rel])) {
+				!isset($model::$has_one[$rel]['name']) && $model::$has_one[$rel]['name'] = $rel;
 				return $model::$has_one[$rel];
 			} elseif (isset($model::$belongs_to) && isset($model::$belongs_to[$rel])) {
+				!isset($model::$belongs_to[$rel]['name']) && $model::$belongs_to[$rel]['name'] = $rel;
 				return $model::$belongs_to[$rel];
 			} else throw new \System\Error\Database("Relation '".$rel."' does not exist.");
 		}
@@ -867,6 +870,49 @@ namespace System\Model
 					return $model::$attrs[$attr]['options'];
 				} else return false;
 			} else throw new \System\Error\Model(sprintf('Attr %s does not exist.', $attr));
+		}
+
+
+		/** Get belongs_to relation that is bound to has_many or has_one relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns false|array
+		 */
+		public static function get_rel_bound_to($model, $rel)
+		{
+			$def = self::get_rel_def($model, $rel);
+
+			if (isset($def['model']::$belongs_to)) {
+				$match = array();
+
+				foreach ($def['model']::$belongs_to as $rel_name=>$rel_def) {
+					if ($rel_def['model'] == $model) {
+						$match[] = $rel_name;
+					}
+				}
+
+				if (any($match)) {
+					if (count($match) === 1) {
+						return $match[0];
+					} else throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
+				} else return false;
+			} else throw new \System\Error\Model(sprintf('Model "%s" has no belongs_to relations.', $def['model']));
+		}
+
+
+		/** Get definition of relation bound to another relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns array
+		 */
+		public static function get_rel_bound_to_def($model, $rel)
+		{
+			$type = self::get_rel_type($model, $rel);
+
+			if ($target = self::get_rel_bound_to($model, $rel)) {
+				$def = self::get_rel_def($model, $rel);
+				return self::get_rel_def($def['model'], $target);
+			} else throw new \System\Error\Model(sprintf('Relation bound to "%s::%s::%s" was not found.', $model, $type, $rel));
 		}
 	}
 }
