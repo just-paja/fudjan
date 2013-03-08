@@ -42,7 +42,9 @@ namespace System
 
 		public static function from_exception(\Exception $e)
 		{
-			return new self($e->getMessage());
+			$exc = new self($e->getMessage());
+			$exc->backtrace = $e->getTrace();
+			return $exc;
 		}
 	}
 }
