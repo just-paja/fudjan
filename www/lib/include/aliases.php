@@ -38,7 +38,7 @@ namespace
 
 	/** @alias System\Model\Database::create */
 	function create($model, array $attrs) {
-		System\Model\Database::create($model, $attrs);
+		return System\Model\Database::create($model, $attrs);
 	}
 
 
