@@ -87,7 +87,7 @@ namespace System\Model
 		public static function get_attr_name_from_belongs_to_rel($rel_name, $rel)
 		{
 			if (any($rel['foreign_key'])) {
-				return $rel['foreign_key'] === $attr;
+				return $rel['foreign_key'];
 			} else {
 				return any($rel['is_natural']) ? self::get_id_col($rel['model']):"id_".$rel_name;
 			}
