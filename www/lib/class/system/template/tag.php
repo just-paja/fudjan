@@ -130,7 +130,7 @@ namespace System\Template
 					$attr = implode($separator, $attr);
 				}
 
-				$is_valid = !is_null($attr) && strlen($attr);
+				$is_valid = (!is_null($attr) && strlen($attr)) || $name == 'value';
 				$available_for_tag = isset(self::$html_attrs[$tag]) && (self::$html_attrs[$tag] == '*' || in_array($name, self::$html_attrs[$tag]));
 				$available_for_all_tags = in_array($name, self::$html_attrs['*']);
 				$available_for_tag_class = in_array($name, self::get_tag_class($tag));
