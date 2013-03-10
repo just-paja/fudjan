@@ -34,11 +34,10 @@ namespace System\Form
 				$data['content'] = $el->label;
 			}
 
-			$label = $el->has_label() ? \Tag::label(array(
+			$label = $el->has_label() ? \Stag::label(array(
 				"class"   => array('input-label', 'input-label-'.($label_on_right ? 'right':'left')),
 				"content" => $el->label.($label_on_right ? '':':'),
 				"for"     => $el->id,
-				"output"  => false,
 			)):'';
 
 			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
@@ -85,6 +84,10 @@ namespace System\Form
 
 				if ($el->type === 'password' || $el->type === 'textarea') {
 					unset($data['value']);
+				}
+
+				if ($el->type === 'checkbox' && !$el->value) {
+					$data['value'] = true;
 				}
 
 				$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
@@ -314,6 +317,11 @@ namespace System\Form
 						case \System\Form\Container::TYPE_BUTTONS:
 						{
 							\Tag::fieldset(array("class" => $el->type.'_container'));
+
+								if ($el->label) {
+									\Tag::div(array("class" => 'group_label', "content" => $el->label));
+								}
+
 								\Tag::ul($el->get_data());
 									foreach ($el->get_elements() as $name=>$object) {
 										\Tag::li(array("class" => self::get_object_class($object)));

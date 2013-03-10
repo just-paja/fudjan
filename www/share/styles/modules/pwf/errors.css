@@ -37,3 +37,13 @@ li.err_3 { color:#ddd; }
 li.err_4 { color:#ccc; }
 li.err_5 { color:#bbb; }
 li.err_6 { color:#aaa; }
+
+.err details {
+	margin:0;
+	padding:0;
+	display:block;
+}
+
+.err details .cont {
+	display:none;
+}

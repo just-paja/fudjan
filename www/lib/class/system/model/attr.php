@@ -450,12 +450,6 @@ namespace System\Model
 		}
 
 
-		public static function get_model_model_name($model, $plural = false)
-		{
-			return l('model_'.\System\Loader::get_link_from_class($model).($plural ? '_plural':''));
-		}
-
-
 		public function get_attr_value($attr)
 		{
 			if (isset($this->data[$attr])) {

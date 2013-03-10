@@ -87,7 +87,7 @@ namespace System\Model
 		public static function get_attr_name_from_belongs_to_rel($rel_name, $rel)
 		{
 			if (any($rel['foreign_key'])) {
-				return $rel['foreign_key'] === $attr;
+				return $rel['foreign_key'];
 			} else {
 				return any($rel['is_natural']) ? self::get_id_col($rel['model']):"id_".$rel_name;
 			}
@@ -618,6 +618,9 @@ namespace System\Model
 		}
 
 
+		/** Get all children of Database model
+		 * @returns array List of class names
+		 */
 		public static function get_all_children()
 		{
 			$all_classes = get_declared_classes();
@@ -635,6 +638,10 @@ namespace System\Model
 		}
 
 
+		/** Get definition of all model relations
+		 * @param string $model
+		 * @returns array
+		 */
 		public static function get_model_relations($model)
 		{
 			$relations = array();
@@ -652,13 +659,21 @@ namespace System\Model
 		}
 
 
+		/** Get definition of relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns array
+		 */
 		public static function get_rel_def($model, $rel)
 		{
 			if (isset($model::$has_many) && isset($model::$has_many[$rel])) {
+				!isset($model::$has_many[$rel]['name']) && $model::$has_many[$rel]['name'] = $rel;
 				return $model::$has_many[$rel];
 			} elseif (isset($model::$has_one) && isset($model::$has_one[$rel])) {
+				!isset($model::$has_one[$rel]['name']) && $model::$has_one[$rel]['name'] = $rel;
 				return $model::$has_one[$rel];
 			} elseif (isset($model::$belongs_to) && isset($model::$belongs_to[$rel])) {
+				!isset($model::$belongs_to[$rel]['name']) && $model::$belongs_to[$rel]['name'] = $rel;
 				return $model::$belongs_to[$rel];
 			} else throw new \System\Error\Database("Relation '".$rel."' does not exist.");
 		}
@@ -702,6 +717,14 @@ namespace System\Model
 		}
 
 
+		/** Save relation
+		 * @param string $model      Name of model
+		 * @param string $model_id   ID of object
+		 * @param string $rel_name   Name of relation
+		 * @param list   $ids_save   List of IDs to keep/save
+		 * @param list   $ids_delete List of IDs to delete
+		 * @returns  void
+		 */
 		private function relation_save($model, $model_id, $rel_name, array $ids_save, array $ids_delete)
 		{
 			if (isset($model::$has_many[$rel_name])) {
@@ -743,6 +766,11 @@ namespace System\Model
 		}
 
 
+		/** Assign and save relation by IDs
+		 * @param string $rel_name Name of relation
+		 * @param list   $ids_new  List of new IDs - others will be deleted
+		 * @returns $this
+		 */
 		public function assign_rel($rel_name, array $ids_new)
 		{
 			$model = get_class($this);
@@ -767,6 +795,10 @@ namespace System\Model
 		}
 
 
+		/** Override of constructor, adds id column, created_at and updated_at into attrs
+		 * @param array $update
+		 * @returns new object
+		 */
 		public function __construct(array $update = array())
 		{
 			$model = get_class($this);
@@ -787,6 +819,11 @@ namespace System\Model
 		}
 
 
+		/** Override of attr models get_attr, respects 'id' alias
+		 * @param string $model
+		 * @param string $attr
+		 * @returns mixed
+		 */
 		public static function get_attr($model, $attr)
 		{
 			if ($attr === 'id') {
@@ -808,6 +845,84 @@ namespace System\Model
 			} else {
 				return soprintf($pattern, $this);
 			}
+		}
+
+
+		/** Get all attribute names that point to system::location
+		 * @param string $model
+		 * @returns array
+		 */
+		public static function get_location_attrs($model)
+		{
+			$attrs = array();
+
+			if (isset($model::$belongs_to)) {
+				foreach ($model::$belongs_to as $attr=>$def) {
+					if ($def['model'] === 'System\\Location' || $def['model'] === '\\System\\Location') {
+						$attrs[] = $attr;
+					}
+				}
+			}
+
+			return $attrs;
+		}
+
+
+		/** Get options for model if defined
+		 * @param string $model
+		 * @param string $attr
+		 * @returns false|array
+		 */
+		public static function get_model_attr_options($model, $attr)
+		{
+			if (self::attr_exists($model, $attr)) {
+				if (isset($model::$attrs[$attr]['options'])) {
+					return $model::$attrs[$attr]['options'];
+				} else return false;
+			} else throw new \System\Error\Model(sprintf('Attr %s does not exist.', $attr));
+		}
+
+
+		/** Get belongs_to relation that is bound to has_many or has_one relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns false|array
+		 */
+		public static function get_rel_bound_to($model, $rel)
+		{
+			$def = self::get_rel_def($model, $rel);
+
+			if (isset($def['model']::$belongs_to)) {
+				$match = array();
+
+				foreach ($def['model']::$belongs_to as $rel_name=>$rel_def) {
+					if ($rel_def['model'] == $model) {
+						$match[] = $rel_name;
+					}
+				}
+
+				if (any($match)) {
+					if (count($match) === 1) {
+						return $match[0];
+					} else throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
+				} else return false;
+			} else throw new \System\Error\Model(sprintf('Model "%s" has no belongs_to relations.', $def['model']));
+		}
+
+
+		/** Get definition of relation bound to another relation
+		 * @param string $model
+		 * @param string $rel
+		 * @returns array
+		 */
+		public static function get_rel_bound_to_def($model, $rel)
+		{
+			$type = self::get_rel_type($model, $rel);
+
+			if ($target = self::get_rel_bound_to($model, $rel)) {
+				$def = self::get_rel_def($model, $rel);
+				return self::get_rel_def($def['model'], $target);
+			} else throw new \System\Error\Model(sprintf('Relation bound to "%s::%s::%s" was not found.', $model, $type, $rel));
 		}
 	}
 }
