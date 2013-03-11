@@ -98,14 +98,13 @@ namespace System
 				$page = new \System\Page($error_page);
 
 				\System\Output::set_opts(array(
-					"format"   => cfg("output", 'format_default'),
 					"title"    => $page->title,
 					"template" => $page->template,
 					"page"     => $page->seoname,
 				));
 
 				\System\Output::add_template(array(
-					"name" => $page->partial,
+					"name" => $error_page['partial'],
 					"locals" => array(
 						"desc" => $e,
 					)
@@ -117,8 +116,6 @@ namespace System
 			} catch (\Exception $e) {
 				if (!$ignore_next) {
 					self::catch_exception($e, true);
-				} else {
-					//~ v($e);
 				}
 			}
 

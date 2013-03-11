@@ -45,15 +45,15 @@ foreach ($back as $b) {
 
 		echo $b['function'].'()';
 
-		if (isset($b['args']) && any($b['args'])) {
-			echo NL;
-
-			foreach ($b['args'] as $key=>$arg) {
-				echo TAB.($key).':'.@var_export($arg, true);
-			}
-
-			echo NL;
-		}
+		//~ if (isset($b['args']) && any($b['args'])) {
+			//~ echo NL;
+//~
+			//~ foreach ($b['args'] as $key=>$arg) {
+				//~ echo TAB.($key).':'.@var_export($arg, true);
+			//~ }
+//~
+			//~ echo NL;
+		//~ }
 	}
 
 	echo NL;
