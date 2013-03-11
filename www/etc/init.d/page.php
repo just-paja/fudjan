@@ -18,6 +18,11 @@ if (System\Settings::is_this_first_run()) {
 		System\Output::init();
 		System\Page::init();
 
+		content_for('scripts', 'lib/functions');
+		content_for('scripts', 'lib/jquery');
+		content_for('scripts', 'pwf');
+		content_for('styles', 'pwf/elementary');
+
 		if (cfg('dev', 'debug')) {
 			System\Init::low_level_devel();
 		}

@@ -9,20 +9,17 @@ namespace System
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
 
-		const SCRIPTS_DIR_ESSENTIAL = '/share/scripts/essential';
-		const SCRIPTS_DIR_MODULES = '/share/scripts/modules';
+		const SCRIPTS_DIR = '/share/scripts';
 		const SCRIPTS_STRING_NOT_FOUND = 'v("Jaffascript module not found: %s");';
 
-		const STYLES_DIR_ESSENTIAL = '/share/styles/essential';
-		const STYLES_DIR_MODULES = '/share/styles/modules';
+		const STYLES_DIR = '/share/styles';
 		const STYLES_STRING_NOT_FOUND = '/* Style module not found: %s */';
 
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
 		const KEY_FOUND            = 'found';
 		const KEY_MISSING          = 'missing';
-		const KEY_DIR_ESSENTIAL    = 'essential';
-		const KEY_DIR_MODULES      = 'modules';
+		const KEY_DIR_FILES      = 'modules';
 		const KEY_DIR_CONTENT      = 'content';
 		const KEY_STRING_NOT_FOUND = 'not_found_string';
 		const KEY_POSTFIXES        = 'postfixes';
@@ -32,16 +29,14 @@ namespace System
 
 		private static $types = array(
 			self::TYPE_SCRIPTS => array(
-				self::KEY_DIR_ESSENTIAL    => self::SCRIPTS_DIR_ESSENTIAL,
-				self::KEY_DIR_MODULES      => self::SCRIPTS_DIR_MODULES,
+				self::KEY_DIR_FILES        => self::SCRIPTS_DIR,
 				self::KEY_STRING_NOT_FOUND => self::SCRIPTS_STRING_NOT_FOUND,
 				self::KEY_DIR_CONTENT      => 'text/javascript',
 				self::KEY_POSTFIXES        => array('js'),
 
 			),
 			self::TYPE_STYLES => array(
-				self::KEY_DIR_ESSENTIAL    => self::STYLES_DIR_ESSENTIAL,
-				self::KEY_DIR_MODULES      => self::STYLES_DIR_MODULES,
+				self::KEY_DIR_FILES        => self::STYLES_DIR,
 				self::KEY_STRING_NOT_FOUND => self::STYLES_STRING_NOT_FOUND,
 				self::KEY_DIR_CONTENT      => 'text/css',
 				self::KEY_POSTFIXES        => array('css'),
@@ -90,28 +85,13 @@ namespace System
 			$found = array();
 			$missing = array();
 
-			if (!in_array(self::SYMBOL_NOESS, $modules) && is_dir(ROOT.$info[self::KEY_DIR_ESSENTIAL])) {
-				$dir = opendir(ROOT.$info[self::KEY_DIR_ESSENTIAL]);
-				while ($f = readdir($dir)) {
-					if (strpos($f, ".") !== 0) {
-						$found[] = $f;
-					}
-				}
-
-				sort($found);
-
-				foreach ($found as &$f) {
-					$f = ROOT.$info[self::KEY_DIR_ESSENTIAL].'/'.$f;
-				}
-			}
-
-			if (is_dir(ROOT.$info[self::KEY_DIR_MODULES])) {
+			if (is_dir(ROOT.$info[self::KEY_DIR_FILES])) {
 				foreach ($modules as $module) {
 					if ($module !== self::SYMBOL_NOESS) {
 						$mod_found = false;
 
 						foreach ($info[self::KEY_POSTFIXES] as $postfix) {
-							if (file_exists($p = ROOT.$info[self::KEY_DIR_MODULES]."/".$module.'.'.$postfix)) {
+							if (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.'.$postfix)) {
 								$found[] = $p;
 								$mod_found = true;
 								break;
