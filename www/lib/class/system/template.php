@@ -94,13 +94,21 @@ namespace System
 
 		public static function scripts_out()
 		{
-			Output::content_for("head", '<script type="text/javascript" src="/share/scripts/'.Output::get_content_from("scripts").'"></script>');
+			$cont = Output::get_content_from("scripts");
+
+			if (!is_null($cont)) {
+				Output::content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
+			}
 		}
 
 
 		public static function styles_out()
 		{
-			Output::content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.Output::get_content_from("styles").'" />');
+			$cont = Output::get_content_from("styles");
+
+			if (!is_null($cont)) {
+				Output::content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
+			}
 		}
 
 

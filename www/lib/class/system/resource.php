@@ -176,15 +176,19 @@ namespace System
 
 		public static function filter_output_content($type, &$content)
 		{
-			$content = array_unique($content);
-			$name = self::get_resource_list_name($content);
-			$file = self::get_resource_list_path($type, $name);
+			if (is_array($content)) {
+				if (any($content)) {
+					$content = array_unique($content);
+					$name = self::get_resource_list_name($content);
+					$file = self::get_resource_list_path($type, $name);
 
-			if (!file_exists($file)) {
-				\System\File::put($file, implode(NL, $content));
+					if (!file_exists($file)) {
+						\System\File::put($file, implode(NL, $content));
+					}
+
+					$content = self::get_resource_list_wget_name($type, $name);
+				} else $content = null;
 			}
-
-			$content = self::get_resource_list_wget_name($type, $name);
 		}
 
 
