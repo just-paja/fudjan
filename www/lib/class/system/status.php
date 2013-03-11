@@ -126,7 +126,7 @@ namespace System
 		public static function catch_error($number, $string, $file = null, $line = null, $context = array())
 		{
 			if (error_reporting()) {
-				self::catch_exception(new \System\Error\Code($string, $number, $file, $line));
+				self::catch_exception(new \System\Error\Code($string.' in "'.$file.':'.$line.'"'));
 			}
 		}
 
