@@ -28,6 +28,7 @@ namespace System\Form
 
 			if ($el->kind == 'select') {
 				$data['content'] = self::get_select_opts_html($el);
+				unset($data['options']);
 			}
 
 			if ($el->kind == 'button') {
@@ -241,13 +242,22 @@ namespace System\Form
 				));
 			}
 
-			foreach ($el->options as $label=>$opt) {
+			foreach ($el->options as $id=>$opt) {
+				if (is_object($opt)) {
+					if ($opt instanceof \System\Model\Attr) {
+						$label = $opt->get_name();
+						$id    = $opt->id;
+					} else throw new \System\Error\Form('Form options set passed as object must inherit System\Model\Attr');
+				} else {
+					$label = $opt;
+				}
+
 				$opts[] = \Tag::option(array(
 					"content"  => $label,
-					"value"    => $opt,
+					"value"    => $id,
 					"close"    => true,
 					"output"   => false,
-					"selected" => $el->value == $opt,
+					"selected" => $el->value == $id,
 				));
 			}
 
