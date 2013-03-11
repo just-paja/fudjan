@@ -78,7 +78,7 @@ namespace System
 		public function read_bz2($tar = false)
 		{
 			if($tar) $this->type = 'tar';
-			$this->data[$this->type] = \System\File::read(self::HEADER_BZ2.$this->path);
+			$this->data[$this->type] = file_get_contents(self::HEADER_BZ2.$this->path);
 
 			if ($this->data[$this->type] === false) {
 				throw new \System\Error\Format(sprintf(l('Cannot read bz2 archive "%s"'), $this->path));
