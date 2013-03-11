@@ -51,6 +51,8 @@ namespace System
 		 */
 		protected function construct()
 		{
+			content_for('styles', 'pwf/form');
+
 			!$this->method  && $this->method = 'post';
 			!$this->action  && $this->action = \System\Input::get('path');
 			!$this->id      && $this->id = self::get_generic_id();
