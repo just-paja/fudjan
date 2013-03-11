@@ -27,6 +27,8 @@ namespace System
 		const MAX_AGE = 86400;
 
 
+		private static $serial = null;
+
 		private static $types = array(
 			self::TYPE_SCRIPTS => array(
 				self::KEY_DIR_FILES        => self::SCRIPTS_DIR,
@@ -139,7 +141,7 @@ namespace System
 
 		public static function get_module_list($type, $name)
 		{
-			if ($list = \System\File::read(self::get_resource_list_path($type, $name))) {
+			if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)))) {
 				return explode("\n", $list);
 			} else return array();
 		}
@@ -182,7 +184,22 @@ namespace System
 				\System\File::put($file, implode(NL, $content));
 			}
 
-			$content = $name;
+			$content = self::get_resource_list_wget_name($type, $name);
+		}
+
+
+		public static function get_resource_list_wget_name($type, $name)
+		{
+			$postfix = self::get_type_postfix($type);
+			return $name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+		}
+
+
+		private static function get_type_postfix($type)
+		{
+			if (isset(self::$types[$type][self::KEY_POSTFIXES])) {
+				return first(self::$types[$type][self::KEY_POSTFIXES]);
+			} else return false;
 		}
 
 
@@ -195,6 +212,26 @@ namespace System
 		public static function get_resource_list_path($type, $name)
 		{
 			return ROOT.self::DIR_TMP.'/'.$type.'/'.$name.'.list';
+		}
+
+
+		public static function get_serial()
+		{
+			if (is_null(self::$serial)) {
+				if (cfg('dev', 'debug') && cfg('dev', 'disable-serial')) {
+					self::$serial = rand(0, PHP_INT_MAX);
+				} else {
+					self::$serial = cfg('cache', 'resource', 'serial');
+				}
+			}
+
+			return self::$serial;
+		}
+
+
+		public static function strip_serial($name)
+		{
+			return first(explode('.', $name));
 		}
 	}
 }

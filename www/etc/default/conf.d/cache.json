@@ -2,5 +2,8 @@
 	"memory":{
 		"enabled":false,
 		"driver":"runtime"
+	},
+	"resource":{
+		"serial":1
 	}
 }
