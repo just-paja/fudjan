@@ -7,7 +7,6 @@ namespace System
 		const DIR_LOGS = '/var/log';
 
 		private static $log_files = array();
-		public static $save_referer = true;
 
 
 		/** Write error into log file
@@ -103,12 +102,17 @@ namespace System
 					"page"     => $page->seoname,
 				));
 
+				if (is_null(\System\Output::get_format())) {
+					\System\Output::set_format(cfg('output', 'format_default'));
+				}
+
 				\System\Output::add_template(array(
 					"name" => $error_page['partial'],
 					"locals" => array(
 						"desc" => $e,
 					)
 				), \System\Template::DEFAULT_SLOT);
+
 
 				\System\Output::out();
 				self::report('error', $e);

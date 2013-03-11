@@ -4,8 +4,9 @@ namespace System
 {
 	abstract class Flow
 	{
-		const REDIRECT_LATER  = 1;
-		const REDIRECT_IMMEDIATELY = 2;
+		const REDIRECT_LATER         = 1;
+		const REDIRECT_IMMEDIATELY   = 2;
+		const REDIRECT_AFTER_MODULES = 3;
 
 		private static $queue = array();
 		private static $redirect = array();
@@ -41,35 +42,24 @@ namespace System
 			while (!empty(self::$queue)) {
 				$mod = array_shift(self::$queue);
 				$retval = $mod->make();
-				if($r = &self::$redirect[self::REDIRECT_LATER]) self::redirect_now($r);
+
+				if (any(self::$redirect[self::REDIRECT_LATER])) {
+					self::redirect_now($r);
+				}
 			}
-			self::save_referer();
+
+			if (any(self::$redirect[self::REDIRECT_AFTER_MODULES])) {
+
+			}
+
+			\System\Http::save_referer();
 		}
 
 
-		public static function redirect_now($r)
+		public static function redirect($url, $code, $when=self::REDIRECT_AFTER_MODULES)
 		{
-			self::save_referer();
-			session_write_close();
-
-			if (!\System\Status::on_cli()) {
-				header(\System\Http::get_header(any($r['code']) ? $r['code']:302));
-				header("Location:".$r['url']);
-			} else throw new \System\Error\Format(stprintf('Cannot redirect to "%s" while on console.', $r['url']));
-			exit;
-		}
-
-
-		public static function redirect($url, array $opts = array())
-		{
-			$r = array(
-				"url" => $url,
-				"status" => any($opts['status']) ? $opts['status']:'',
-				"when" => any($opts['when']) ? $opts['when']:self::REDIRECT_LATER
-			);
-
-			$opts['when'] == self::REDIRECT_IMMEDIATELY && self::redirect_now($r);
-			self::$redirect[$r['when']] = $r;
+			$when === self::REDIRECT_IMMEDIATELY && \System\Http::redirect($url, $code);
+			self::$redirect[$r['when']] = array("url" => $url, "code" => $code);
 		}
 
 
@@ -81,12 +71,6 @@ namespace System
 				}
 				self::run();
 			}
-		}
-
-
-		private static function save_referer()
-		{
-			if(!!Status::$save_referer) $_SESSION['yacms-referer'] = $_SERVER['REQUEST_URI'];
 		}
 
 

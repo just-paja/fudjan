@@ -226,8 +226,7 @@ namespace System
 				self::slot():
 				include(self::get_template('layout', $name));
 
-			self::content_for('output', ob_get_contents());
-			ob_end_clean();
+			self::content_for('output', ob_get_clean());
 
 			if (!\System\Status::on_cli()) {
 				self::send_headers();
@@ -246,7 +245,7 @@ namespace System
 		 */
 		public static function send_headers()
 		{
-			$format = Settings::get('output', 'format', self::$format);
+			$format = self::get_format(true);
 			header("Content-Type: $format;charset=utf-8");
 			header("Content-Encoding: gz");
 

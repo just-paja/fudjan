@@ -56,11 +56,11 @@ namespace
 
 
 	// Redirects
-	/** @alias System\Flow::redirect_now */
-	function redirect_now($url) { return System\Flow::redirect_now(array("url" => $url, "code" => 302)); }
+	/** @alias System\Http::redirect */
+	function redirect_now($url, $code=\System\Http::TEMPORARY_REDIRECT) { return System\Http::redirect($url, $code); }
 
 	/** @alias System\Flow::redirect */
-	function redirect($url, array $opts = array()) { return System\Flow::redirect($url, $opts); }
+	function redirect($url, $code=\System\Http::TEMPORARY_REDIRECT, $when = \System\Flow::REDIRECT_AFTER_MODULES) { return System\Flow::redirect($url, $code, $when); }
 
 
 	// Template

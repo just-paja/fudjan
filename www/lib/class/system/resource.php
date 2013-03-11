@@ -46,18 +46,29 @@ namespace System
 		);
 
 
+		/** Serve request
+		 * @returns void
+		 */
 		public static function request()
 		{
 			$info    = self::get_type_info(\System\Input::get('type'));
 			$modules = self::get_module_list($info['type'], \System\Input::get('modules'));
-			$files   = self::file_list($info[self::KEY_TYPE], $modules);
-			$content = self::get_content($info, $files);
 
-			self::send_header($info['type'], strlen($content));
-			echo $content;
+			if (any($modules)) {
+				$files   = self::file_list($info[self::KEY_TYPE], $modules);
+				$content = self::get_content($info, $files);
+
+				self::send_header($info['type'], strlen($content));
+				echo $content;
+			} else throw new \System\Error\NotFound();
 		}
 
 
+		/** Get content of requested files and minify it
+		 * @param array $info  Type info
+		 * @param list  $files List of files
+		 * @returns string
+		 */
 		private static function get_content(array $info, array $files)
 		{
 			if (!cfg('dev', 'debug') && file_exists($f = self::get_cache_path($info, $files[self::KEY_SUM]))) {
@@ -81,6 +92,11 @@ namespace System
 		}
 
 
+		/** Get list of available files from user input
+		 * @param string $type
+		 * @param list   $modules
+		 * @returns array
+		 */
 		public static function file_list($type, array $modules = array())
 		{
 			$info  = self::get_type_info($type);
@@ -115,30 +131,53 @@ namespace System
 		}
 
 
+		/** Get name of file to cache content in
+		 * @param array $info
+		 * @param string $sum
+		 * @returns string
+		 */
 		private static function get_cache_name(array $info, $sum)
 		{
 			return $info['type'].'/'.$sum.(any($info[self::KEY_POSTFIXES]) ? '.'.($info[self::KEY_POSTFIXES][0]):'');
 		}
 
 
+		/** Get path of caching file
+		 * @param array $info
+		 * @param string $sum
+		 * @returns string
+		 */
 		private static function get_cache_path(array $info, $sum)
 		{
 			return ROOT.self::DIR_TMP.'/'.self::get_cache_name($info, $sum);
 		}
 
 
+		/** Get md5 sum of modules
+		 * @param list $modules
+		 * @returns string
+		 */
 		private static function get_module_sum_from_list(array $modules)
 		{
 			return self::get_module_sum(implode(':', $modules));
 		}
 
 
+		/** Get md5 sum of module
+		 * @param string $str
+		 * @returns string
+		 */
 		private static function get_module_sum($str)
 		{
 			return md5($str);
 		}
 
 
+		/** Get list of modules from name passed from URL
+		 * @param string $type
+		 * @param string $name
+		 * @returns string
+		 */
 		public static function get_module_list($type, $name)
 		{
 			if (strpos($name, ':') === 0) {
@@ -146,9 +185,9 @@ namespace System
 				self::resource_list_save($type, $content);
 				$name = self::get_resource_list_name($content);
 
-				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name));
+				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name), \System\Http::MOVED_PERMANENTLY);
 			} else {
-				if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)))) {
+				if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)), true)) {
 					return explode("\n", $list);
 				} else return array();
 			}
