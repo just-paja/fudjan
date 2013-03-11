@@ -52,7 +52,7 @@ namespace System
 		public static function request()
 		{
 			$info    = self::get_type_info(\System\Input::get('type'));
-			$modules = self::module_list_from_str(\System\Input::get('modules'));
+			$modules = self::get_module_list($info['type'], \System\Input::get('modules'));
 			$files   = self::file_list($info[self::KEY_TYPE], $modules);
 			$content = self::get_content($info, $files);
 
@@ -157,9 +157,11 @@ namespace System
 		}
 
 
-		public static function module_list_from_str($str)
+		public static function get_module_list($type, $name)
 		{
-			return empty($str) ? array():explode(':', $str);
+			if ($list = \System\File::read(self::get_resource_list_path($type, $name))) {
+				return explode("\n", $list);
+			} else return array();
 		}
 
 
@@ -187,6 +189,32 @@ namespace System
 				header('Expires: '.date(\DateTime::RFC1123, time() + self::MAX_AGE + rand(0,60)));
 				header('Age: 0');
 			}
+		}
+
+
+		public static function filter_output_content($type, &$content)
+		{
+			$content = array_unique($content);
+			$name = self::get_resource_list_name($content);
+			$file = self::get_resource_list_path($type, $name);
+
+			if (!file_exists($file)) {
+				\System\File::put($file, implode(NL, $content));
+			}
+
+			$content = $name;
+		}
+
+
+		public static function get_resource_list_name(array $content)
+		{
+			return md5(implode(':', $content));
+		}
+
+
+		public static function get_resource_list_path($type, $name)
+		{
+			return ROOT.self::DIR_TMP.'/'.$type.'/'.$name.'.list';
 		}
 	}
 }
