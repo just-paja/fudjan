@@ -215,7 +215,7 @@ pwf.register('gps', function()
 					"other_params":'sensor=true',
 					"callback" : function(obj) {
 						return function() {
-							$.getScript('/share/scripts/noess:libs/jquery/gmap', function(obj) {
+							$.getScript('/share/scripts/:lib/jquery/gmap', function(obj) {
 								return function() {
 									obj.proceed();
 								}

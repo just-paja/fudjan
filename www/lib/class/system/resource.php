@@ -141,9 +141,17 @@ namespace System
 
 		public static function get_module_list($type, $name)
 		{
-			if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)))) {
-				return explode("\n", $list);
-			} else return array();
+			if (strpos($name, ':') === 0) {
+				$content = array_filter(explode(':', $name));
+				self::resource_list_save($type, $content);
+				$name = self::get_resource_list_name($content);
+
+				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name));
+			} else {
+				if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)))) {
+					return explode("\n", $list);
+				} else return array();
+			}
 		}
 
 
@@ -178,16 +186,22 @@ namespace System
 		{
 			if (is_array($content)) {
 				if (any($content)) {
-					$content = array_unique($content);
+					self::resource_list_save($type, $content);
 					$name = self::get_resource_list_name($content);
-					$file = self::get_resource_list_path($type, $name);
-
-					if (!file_exists($file)) {
-						\System\File::put($file, implode(NL, $content));
-					}
-
 					$content = self::get_resource_list_wget_name($type, $name);
 				} else $content = null;
+			}
+		}
+
+
+		private static function resource_list_save($type, &$content)
+		{
+			$content = array_unique($content);
+			$name = self::get_resource_list_name($content);
+			$file = self::get_resource_list_path($type, $name);
+
+			if (!file_exists($file)) {
+				\System\File::put($file, implode(NL, $content));
 			}
 		}
 
