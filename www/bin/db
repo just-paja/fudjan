@@ -177,6 +177,7 @@
 		 */
 		public static function backup($file = null)
 		{
+			\System\Init::full();
 			$params = CLIOptions::get('params');
 			if (isset($params[0])) {
 				$file = $params[0];
@@ -198,7 +199,9 @@
 		 */
 		public static function migrations()
 		{
+			\System\Init::full();
 			$params = CLIOptions::get('params');
+
 			if (empty($params)) {
 				$mig = System\Migration::get_new();
 				array_reverse($mig);
@@ -221,8 +224,8 @@
 		public static function migrate($backup = true)
 		{
 			\System\Init::full();
-
 			$params = CLIOptions::get('params');
+
 			if (empty($params)) {
 
 				$mig = System\Migration::get_new();
@@ -261,6 +264,7 @@
 		public static function drop()
 		{
 			\System\Init::full();
+
 			if (self::database_exists()) {
 
 				if (!CLIOptions::get('force')) {
