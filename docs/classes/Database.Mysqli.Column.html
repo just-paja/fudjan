@@ -1,0 +1,279 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \Database\Mysqli\Column</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: "><span class="description">__construct()
+        </span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_drop" title="drop :: "><span class="description">drop()
+        </span><pre>drop()</pre></a></li>
+<li class="method public "><a href="#method_exists" title="exists :: "><span class="description">exists()
+        </span><pre>exists()</pre></a></li>
+<li class="method public "><a href="#method_get_cfg" title="get_cfg :: "><span class="description">get_cfg()
+        </span><pre>get_cfg()</pre></a></li>
+<li class="method public "><a href="#method_get_save_query" title="get_save_query :: "><span class="description">get_save_query()
+        </span><pre>get_save_query()</pre></a></li>
+<li class="method public "><a href="#method_rename" title="rename :: "><span class="description">rename()
+        </span><pre>rename()</pre></a></li>
+<li class="method public "><a href="#method_save" title="save :: "><span class="description">save()
+        </span><pre>save()</pre></a></li>
+<li class="method public "><a href="#method_set_cfg" title="set_cfg :: "><span class="description">set_cfg()
+        </span><pre>set_cfg()</pre></a></li>
+<li class="method public "><a href="#method_table" title="table :: "><span class="description">table()
+        </span><pre>table()</pre></a></li>
+<li class="method public "><a href="#method_use_loaded_cfg" title="use_loaded_cfg :: "><span class="description">use_loaded_cfg()
+        </span><pre>use_loaded_cfg()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property_attr_names" title="$attr_names :: "><span class="description"></span><pre>$attr_names</pre></a></li>
+<li class="property private "><a href="#property_attrs" title="$attrs :: "><span class="description"></span><pre>$attrs</pre></a></li>
+<li class="property private "><a href="#property_cols_no_default" title="$cols_no_default :: "><span class="description"></span><pre>$cols_no_default</pre></a></li>
+<li class="property private "><a href="#property_complex_types" title="$complex_types :: "><span class="description"></span><pre>$complex_types</pre></a></li>
+<li class="property private "><a href="#property_default" title="$default :: "><span class="description"></span><pre>$default</pre></a></li>
+<li class="property private "><a href="#property_drop" title="$drop :: "><span class="description"></span><pre>$drop</pre></a></li>
+<li class="property private "><a href="#property_name" title="$name :: "><span class="description"></span><pre>$name</pre></a></li>
+<li class="property private "><a href="#property_renamed" title="$renamed :: "><span class="description"></span><pre>$renamed</pre></a></li>
+<li class="property private "><a href="#property_table" title="$table :: "><span class="description"></span><pre>$table</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\Database\Mysqli\Column"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/Database.html">Database</a></li>
+<li>
+<span class="divider">\</span><a href="../namespaces/Database.Mysqli.html">Mysqli</a>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/Database.Mysqli.Column.html">Column</a>
+</li>
+</ul>
+<div class="element class"><div class="details">
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>__construct()
+        </h2>
+<pre>__construct(\Database\Mysqli\Table $table, $name, array $cfg) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table</h4></div>
+<div class="subelement argument"><h4>$name</h4></div>
+<div class="subelement argument"><h4>$cfg</h4></div>
+</div></div>
+</div>
+<a id="method_drop"></a><div class="element clickable method public method_drop" data-toggle="collapse" data-target=".method_drop .collapse">
+<h2>drop()
+        </h2>
+<pre>drop() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_exists"></a><div class="element clickable method public method_exists" data-toggle="collapse" data-target=".method_exists .collapse">
+<h2>exists()
+        </h2>
+<pre>exists() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_get_cfg"></a><div class="element clickable method public method_get_cfg" data-toggle="collapse" data-target=".method_get_cfg .collapse">
+<h2>get_cfg()
+        </h2>
+<pre>get_cfg() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_get_save_query"></a><div class="element clickable method public method_get_save_query" data-toggle="collapse" data-target=".method_get_save_query .collapse">
+<h2>get_save_query()
+        </h2>
+<pre>get_save_query() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_rename"></a><div class="element clickable method public method_rename" data-toggle="collapse" data-target=".method_rename .collapse">
+<h2>rename()
+        </h2>
+<pre>rename($name) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$name</h4></div>
+</div></div>
+</div>
+<a id="method_save"></a><div class="element clickable method public method_save" data-toggle="collapse" data-target=".method_save .collapse">
+<h2>save()
+        </h2>
+<pre>save() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_set_cfg"></a><div class="element clickable method public method_set_cfg" data-toggle="collapse" data-target=".method_set_cfg .collapse">
+<h2>set_cfg()
+        </h2>
+<pre>set_cfg(array $cfg) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$cfg</h4></div>
+</div></div>
+</div>
+<a id="method_table"></a><div class="element clickable method public method_table" data-toggle="collapse" data-target=".method_table .collapse">
+<h2>table()
+        </h2>
+<pre>table() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_use_loaded_cfg"></a><div class="element clickable method public method_use_loaded_cfg" data-toggle="collapse" data-target=".method_use_loaded_cfg .collapse">
+<h2>use_loaded_cfg()
+        </h2>
+<pre>use_loaded_cfg($cfg) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$cfg</h4></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_attr_names"> </a><div class="element clickable property private property_attr_names" data-toggle="collapse" data-target=".property_attr_names .collapse">
+<h2></h2>
+<pre>$attr_names </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_attrs"> </a><div class="element clickable property private property_attrs" data-toggle="collapse" data-target=".property_attrs .collapse">
+<h2></h2>
+<pre>$attrs </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_cols_no_default"> </a><div class="element clickable property private property_cols_no_default" data-toggle="collapse" data-target=".property_cols_no_default .collapse">
+<h2></h2>
+<pre>$cols_no_default </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_complex_types"> </a><div class="element clickable property private property_complex_types" data-toggle="collapse" data-target=".property_complex_types .collapse">
+<h2></h2>
+<pre>$complex_types </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_default"> </a><div class="element clickable property private property_default" data-toggle="collapse" data-target=".property_default .collapse">
+<h2></h2>
+<pre>$default </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_drop"> </a><div class="element clickable property private property_drop" data-toggle="collapse" data-target=".property_drop .collapse">
+<h2></h2>
+<pre>$drop </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_name"> </a><div class="element clickable property private property_name" data-toggle="collapse" data-target=".property_name .collapse">
+<h2></h2>
+<pre>$name </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_renamed"> </a><div class="element clickable property private property_renamed" data-toggle="collapse" data-target=".property_renamed .collapse">
+<h2></h2>
+<pre>$renamed </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table"> </a><div class="element clickable property private property_table" data-toggle="collapse" data-target=".property_table .collapse">
+<h2></h2>
+<pre>$table </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div></div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+</div>
+</body>
+</html>

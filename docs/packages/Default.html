@@ -1,0 +1,702 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » Default</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/Default.html" title="Default"><i class="icon-folder-open"></i>Default</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-interface"></i> Interfaces</li>
+<li><a href="#DriverInterface" title="">DriverInterface</a></li>
+<li><a href="#Ifce" title="">Ifce</a></li>
+<li class="nav-header">
+<i class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#Structure" title="Container class that is responsible for handling database structure">Structure</a></li>
+<li><a href="#Column" title="">Column</a></li>
+<li><a href="#Database" title="">Database</a></li>
+<li><a href="#Table" title="">Table</a></li>
+<li><a href="#Relation" title="Attribute class ihnerited widely across pwf.">Relation</a></li>
+<li><a href="#Attr" title="Attribute class ihnerited widely across pwf.">Attr</a></li>
+<li><a href="#Flow" title="Class that manages modules in form of queue.">Flow</a></li>
+<li><a href="#Query" title="">Query</a></li>
+<li><a href="#SMS" title="">SMS</a></li>
+<li><a href="#Request" title="">Request</a></li>
+<li><a href="#Response" title="Attribute class ihnerited widely across pwf.">Response</a></li>
+<li><a href="#Init" title="">Init</a></li>
+<li><a href="#Loader" title="">Loader</a></li>
+<li><a href="#Mysqli" title="">Mysqli</a></li>
+<li><a href="#Result" title="">Result</a></li>
+<li><a href="#Text" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Text</a></li>
+<li><a href="#Tag" title="">Tag</a></li>
+<li><a href="#Archive" title="Handles archives.">Archive</a></li>
+<li><a href="#Text" title="Attribute class ihnerited widely across pwf.">Text</a></li>
+<li><a href="#Helper" title="">Helper</a></li>
+<li><a href="#Input" title="Attribute class ihnerited widely across pwf.">Input</a></li>
+<li><a href="#Element" title="Attribute class ihnerited widely across pwf.">Element</a></li>
+<li><a href="#Container" title="Attribute class ihnerited widely across pwf.">Container</a></li>
+<li><a href="#Label" title="Attribute class ihnerited widely across pwf.">Label</a></li>
+<li><a href="#DataBus" title="Handles communication among module instances">DataBus</a></li>
+<li><a href="#Output" title="">Output</a></li>
+<li><a href="#Settings" title="">Settings</a></li>
+<li><a href="#Error" title="">Error</a></li>
+<li><a href="#Input" title="">Input</a></li>
+<li><a href="#AccessDenied" title="">AccessDenied</a></li>
+<li><a href="#Connection" title="">Connection</a></li>
+<li><a href="#Format" title="">Format</a></li>
+<li><a href="#Argument" title="">Argument</a></li>
+<li><a href="#Database" title="">Database</a></li>
+<li><a href="#Config" title="">Config</a></li>
+<li><a href="#Code" title="">Code</a></li>
+<li><a href="#Form" title="">Form</a></li>
+<li><a href="#Model" title="">Model</a></li>
+<li><a href="#Development" title="">Development</a></li>
+<li><a href="#File" title="">File</a></li>
+<li><a href="#Wtf" title="">Wtf</a></li>
+<li><a href="#NotFound" title="">NotFound</a></li>
+<li><a href="#Permissions" title="">Permissions</a></li>
+<li><a href="#Database" title="Class responsible for managing database connections and common simple queries.">Database</a></li>
+<li><a href="#Http" title="">Http</a></li>
+<li><a href="#Cli" title="Container class encapsulating methods used on console">Cli</a></li>
+<li><a href="#Setup" title="">Setup</a></li>
+<li><a href="#Status" title="">Status</a></li>
+<li><a href="#Json" title="">Json</a></li>
+<li><a href="#Page" title="Attribute class ihnerited widely across pwf.">Page</a></li>
+<li><a href="#Minifier" title="">Minifier</a></li>
+<li><a href="#Message" title="">Message</a></li>
+<li><a href="#Locales" title="">Locales</a></li>
+<li><a href="#Apc" title="">Apc</a></li>
+<li><a href="#Runtime" title="">Runtime</a></li>
+<li><a href="#Gps" title="">Gps</a></li>
+<li><a href="#Form" title="Attribute class ihnerited widely across pwf.">Form</a></li>
+<li><a href="#Template" title="">Template</a></li>
+<li><a href="#Resource" title="">Resource</a></li>
+<li><a href="#Migration" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Migration</a></li>
+<li><a href="#Cache" title="Caching data using variety of drivers">Cache</a></li>
+<li><a href="#Contact" title="User contact model">Contact</a></li>
+<li><a href="#Group" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Group</a></li>
+<li><a href="#Info" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Info</a></li>
+<li><a href="#Setup" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Setup</a></li>
+<li><a href="#Category" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Category</a></li>
+<li><a href="#Variable" title="Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.">Variable</a></li>
+<li><a href="#Package" title="Santa package handling">Package</a></li>
+<li><a href="#Cli" title="CLI methods for santa">Cli</a></li>
+<li><a href="#Tag" title="">Tag</a></li>
+<li><a href="#Stag" title="">Stag</a></li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_YACMS_ENV" title="YACMS_ENV :: "><span class="description">YACMS_ENV</span><pre>YACMS_ENV</pre></a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li class="active"><a href="../packages/Default.html">Default</a></li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<div id="Ifce" class="element ajax clickable interface">
+<h1>Ifce<a href="../classes/System.Cache.Ifce.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Cache.Ifce.html" class="more">« More »</a>
+</div>
+<div id="DriverInterface" class="element ajax clickable interface">
+<h1>DriverInterface<a href="../classes/System.Database.Driver.DriverInterface.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Driver.DriverInterface.html" class="more">« More »</a>
+</div>
+<div id="Attr" class="element ajax clickable class">
+<h1>Attr<a href="../classes/Database.Attr.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Attr.html" class="more">« More »</a>
+</div>
+<div id="Column" class="element ajax clickable class">
+<h1>Column<a href="../classes/Database.Mysqli.Column.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Mysqli.Column.html" class="more">« More »</a>
+</div>
+<div id="Database" class="element ajax clickable class">
+<h1>Database<a href="../classes/Database.Mysqli.Database.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Mysqli.Database.html" class="more">« More »</a>
+</div>
+<div id="Table" class="element ajax clickable class">
+<h1>Table<a href="../classes/Database.Mysqli.Table.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Mysqli.Table.html" class="more">« More »</a>
+</div>
+<div id="Relation" class="element ajax clickable class">
+<h1>Relation<a href="../classes/Database.Relation.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Relation.html" class="more">« More »</a>
+</div>
+<div id="Structure" class="element ajax clickable class">
+<h1>Structure<a href="../classes/Database.Structure.html">¶</a>
+</h1>
+<p class="short_description">Container class that is responsible for handling database structure</p>
+<div class="details collapse"></div>
+<a href="../classes/Database.Structure.html" class="more">« More »</a>
+</div>
+<div id="Cli" class="element ajax clickable class">
+<h1>Cli<a href="../classes/Santa.Cli.html">¶</a>
+</h1>
+<p class="short_description">CLI methods for santa</p>
+<div class="details collapse"></div>
+<a href="../classes/Santa.Cli.html" class="more">« More »</a>
+</div>
+<div id="Package" class="element ajax clickable class">
+<h1>Package<a href="../classes/Santa.Package.html">¶</a>
+</h1>
+<p class="short_description">Santa package handling</p>
+<div class="details collapse"></div>
+<a href="../classes/Santa.Package.html" class="more">« More »</a>
+</div>
+<div id="Stag" class="element ajax clickable class">
+<h1>Stag<a href="../classes/Stag.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Stag.html" class="more">« More »</a>
+</div>
+<div id="Archive" class="element ajax clickable class">
+<h1>Archive<a href="../classes/System.Archive.html">¶</a>
+</h1>
+<p class="short_description">Handles archives.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Archive.html" class="more">« More »</a>
+</div>
+<div id="Cache" class="element ajax clickable class">
+<h1>Cache<a href="../classes/System.Cache.html">¶</a>
+</h1>
+<p class="short_description">Caching data using variety of drivers</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Cache.html" class="more">« More »</a>
+</div>
+<div id="Apc" class="element ajax clickable class">
+<h1>Apc<a href="../classes/System.Cache.Driver.Apc.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Cache.Driver.Apc.html" class="more">« More »</a>
+</div>
+<div id="Runtime" class="element ajax clickable class">
+<h1>Runtime<a href="../classes/System.Cache.Driver.Runtime.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Cache.Driver.Runtime.html" class="more">« More »</a>
+</div>
+<div id="Cli" class="element ajax clickable class">
+<h1>Cli<a href="../classes/System.Cli.html">¶</a>
+</h1>
+<p class="short_description">Container class encapsulating methods used on console</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Cli.html" class="more">« More »</a>
+</div>
+<div id="DataBus" class="element ajax clickable class">
+<h1>DataBus<a href="../classes/System.DataBus.html">¶</a>
+</h1>
+<p class="short_description">Handles communication among module instances</p>
+<div class="details collapse"></div>
+<a href="../classes/System.DataBus.html" class="more">« More »</a>
+</div>
+<div id="Database" class="element ajax clickable class">
+<h1>Database<a href="../classes/System.Database.html">¶</a>
+</h1>
+<p class="short_description">Class responsible for managing database connections and common simple queries.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.html" class="more">« More »</a>
+</div>
+<div id="Mysqli" class="element ajax clickable class">
+<h1>Mysqli<a href="../classes/System.Database.Driver.Mysqli.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Driver.Mysqli.html" class="more">« More »</a>
+</div>
+<div id="Result" class="element ajax clickable class">
+<h1>Result<a href="../classes/System.Database.Result.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Result.html" class="more">« More »</a>
+</div>
+<div id="Error" class="element ajax clickable class">
+<h1>Error<a href="../classes/System.Error.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.html" class="more">« More »</a>
+</div>
+<div id="AccessDenied" class="element ajax clickable class">
+<h1>AccessDenied<a href="../classes/System.Error.AccessDenied.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.AccessDenied.html" class="more">« More »</a>
+</div>
+<div id="Argument" class="element ajax clickable class">
+<h1>Argument<a href="../classes/System.Error.Argument.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Argument.html" class="more">« More »</a>
+</div>
+<div id="Code" class="element ajax clickable class">
+<h1>Code<a href="../classes/System.Error.Code.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Code.html" class="more">« More »</a>
+</div>
+<div id="Config" class="element ajax clickable class">
+<h1>Config<a href="../classes/System.Error.Config.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Config.html" class="more">« More »</a>
+</div>
+<div id="Connection" class="element ajax clickable class">
+<h1>Connection<a href="../classes/System.Error.Connection.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Connection.html" class="more">« More »</a>
+</div>
+<div id="Database" class="element ajax clickable class">
+<h1>Database<a href="../classes/System.Error.Database.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Database.html" class="more">« More »</a>
+</div>
+<div id="Development" class="element ajax clickable class">
+<h1>Development<a href="../classes/System.Error.Development.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Development.html" class="more">« More »</a>
+</div>
+<div id="File" class="element ajax clickable class">
+<h1>File<a href="../classes/System.Error.File.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.File.html" class="more">« More »</a>
+</div>
+<div id="Form" class="element ajax clickable class">
+<h1>Form<a href="../classes/System.Error.Form.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Form.html" class="more">« More »</a>
+</div>
+<div id="Format" class="element ajax clickable class">
+<h1>Format<a href="../classes/System.Error.Format.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Format.html" class="more">« More »</a>
+</div>
+<div id="Model" class="element ajax clickable class">
+<h1>Model<a href="../classes/System.Error.Model.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Model.html" class="more">« More »</a>
+</div>
+<div id="NotFound" class="element ajax clickable class">
+<h1>NotFound<a href="../classes/System.Error.NotFound.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.NotFound.html" class="more">« More »</a>
+</div>
+<div id="Permissions" class="element ajax clickable class">
+<h1>Permissions<a href="../classes/System.Error.Permissions.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Permissions.html" class="more">« More »</a>
+</div>
+<div id="Wtf" class="element ajax clickable class">
+<h1>Wtf<a href="../classes/System.Error.Wtf.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Wtf.html" class="more">« More »</a>
+</div>
+<div id="Flow" class="element ajax clickable class">
+<h1>Flow<a href="../classes/System.Flow.html">¶</a>
+</h1>
+<p class="short_description">Class that manages modules in form of queue.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Flow.html" class="more">« More »</a>
+</div>
+<div id="Form" class="element ajax clickable class">
+<h1>Form<a href="../classes/System.Form.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.html" class="more">« More »</a>
+</div>
+<div id="Container" class="element ajax clickable class">
+<h1>Container<a href="../classes/System.Form.Container.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Container.html" class="more">« More »</a>
+</div>
+<div id="Element" class="element ajax clickable class">
+<h1>Element<a href="../classes/System.Form.Element.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Element.html" class="more">« More »</a>
+</div>
+<div id="Helper" class="element ajax clickable class">
+<h1>Helper<a href="../classes/System.Form.Helper.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Helper.html" class="more">« More »</a>
+</div>
+<div id="Input" class="element ajax clickable class">
+<h1>Input<a href="../classes/System.Form.Input.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Input.html" class="more">« More »</a>
+</div>
+<div id="Label" class="element ajax clickable class">
+<h1>Label<a href="../classes/System.Form.Label.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Label.html" class="more">« More »</a>
+</div>
+<div id="Text" class="element ajax clickable class">
+<h1>Text<a href="../classes/System.Form.Text.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Form.Text.html" class="more">« More »</a>
+</div>
+<div id="Gps" class="element ajax clickable class">
+<h1>Gps<a href="../classes/System.Gps.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Gps.html" class="more">« More »</a>
+</div>
+<div id="Http" class="element ajax clickable class">
+<h1>Http<a href="../classes/System.Http.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Http.html" class="more">« More »</a>
+</div>
+<div id="Init" class="element ajax clickable class">
+<h1>Init<a href="../classes/System.Init.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Init.html" class="more">« More »</a>
+</div>
+<div id="Input" class="element ajax clickable class">
+<h1>Input<a href="../classes/System.Input.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Input.html" class="more">« More »</a>
+</div>
+<div id="Json" class="element ajax clickable class">
+<h1>Json<a href="../classes/System.Json.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Json.html" class="more">« More »</a>
+</div>
+<div id="Loader" class="element ajax clickable class">
+<h1>Loader<a href="../classes/System.Loader.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Loader.html" class="more">« More »</a>
+</div>
+<div id="Locales" class="element ajax clickable class">
+<h1>Locales<a href="../classes/System.Locales.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Locales.html" class="more">« More »</a>
+</div>
+<div id="Message" class="element ajax clickable class">
+<h1>Message<a href="../classes/System.Message.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Message.html" class="more">« More »</a>
+</div>
+<div id="Migration" class="element ajax clickable class">
+<h1>Migration<a href="../classes/System.Migration.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Migration.html" class="more">« More »</a>
+</div>
+<div id="Minifier" class="element ajax clickable class">
+<h1>Minifier<a href="../classes/System.Minifier.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Minifier.html" class="more">« More »</a>
+</div>
+<div id="Request" class="element ajax clickable class">
+<h1>Request<a href="../classes/System.Offcom.Request.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Offcom.Request.html" class="more">« More »</a>
+</div>
+<div id="Response" class="element ajax clickable class">
+<h1>Response<a href="../classes/System.Offcom.Response.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Offcom.Response.html" class="more">« More »</a>
+</div>
+<div id="SMS" class="element ajax clickable class">
+<h1>SMS<a href="../classes/System.Offcom.SMS.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Offcom.SMS.html" class="more">« More »</a>
+</div>
+<div id="Output" class="element ajax clickable class">
+<h1>Output<a href="../classes/System.Output.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Output.html" class="more">« More »</a>
+</div>
+<div id="Page" class="element ajax clickable class">
+<h1>Page<a href="../classes/System.Page.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Page.html" class="more">« More »</a>
+</div>
+<div id="Query" class="element ajax clickable class">
+<h1>Query<a href="../classes/System.Query.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Query.html" class="more">« More »</a>
+</div>
+<div id="Resource" class="element ajax clickable class">
+<h1>Resource<a href="../classes/System.Resource.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Resource.html" class="more">« More »</a>
+</div>
+<div id="Settings" class="element ajax clickable class">
+<h1>Settings<a href="../classes/System.Settings.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Settings.html" class="more">« More »</a>
+</div>
+<div id="Setup" class="element ajax clickable class">
+<h1>Setup<a href="../classes/System.Setup.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Setup.html" class="more">« More »</a>
+</div>
+<div id="Status" class="element ajax clickable class">
+<h1>Status<a href="../classes/System.Status.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Status.html" class="more">« More »</a>
+</div>
+<div id="Template" class="element ajax clickable class">
+<h1>Template<a href="../classes/System.Template.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Template.html" class="more">« More »</a>
+</div>
+<div id="Tag" class="element ajax clickable class">
+<h1>Tag<a href="../classes/System.Template.Tag.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Template.Tag.html" class="more">« More »</a>
+</div>
+<div id="Text" class="element ajax clickable class">
+<h1>Text<a href="../classes/System.Text.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Text.html" class="more">« More »</a>
+</div>
+<div id="Contact" class="element ajax clickable class">
+<h1>Contact<a href="../classes/System.User.Contact.html">¶</a>
+</h1>
+<p class="short_description">User contact model</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Contact.html" class="more">« More »</a>
+</div>
+<div id="Group" class="element ajax clickable class">
+<h1>Group<a href="../classes/System.User.Group.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Group.html" class="more">« More »</a>
+</div>
+<div id="Info" class="element ajax clickable class">
+<h1>Info<a href="../classes/System.User.Info.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Info.html" class="more">« More »</a>
+</div>
+<div id="Setup" class="element ajax clickable class">
+<h1>Setup<a href="../classes/System.User.Setup.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Setup.html" class="more">« More »</a>
+</div>
+<div id="Category" class="element ajax clickable class">
+<h1>Category<a href="../classes/System.User.Setup.Category.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Setup.Category.html" class="more">« More »</a>
+</div>
+<div id="Variable" class="element ajax clickable class">
+<h1>Variable<a href="../classes/System.User.Setup.Variable.html">¶</a>
+</h1>
+<p class="short_description">Simple database model that manages attributes, fetching and saving
+data and also database relations: belongs_to, has_one, has_many.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.User.Setup.Variable.html" class="more">« More »</a>
+</div>
+<div id="Tag" class="element ajax clickable class">
+<h1>Tag<a href="../classes/Tag.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Tag.html" class="more">« More »</a>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_YACMS_ENV"> </a><div class="element clickable constant  constant_YACMS_ENV" data-toggle="collapse" data-target=".constant_YACMS_ENV .collapse">
+<h2>YACMS_ENV</h2>
+<pre>YACMS_ENV </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:20+01:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,557 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \System\Template</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method_convert_value" title="convert_value :: "><span class="description">convert_value()
+        </span><pre>convert_value()</pre></a></li>
+<li class="method public "><a href="#method_format_date" title="format_date :: Format and translate datetime format"><span class="description">Format and translate datetime format</span><pre>format_date()</pre></a></li>
+<li class="method public "><a href="#method_get_color_container" title="get_color_container :: "><span class="description">get_color_container()
+        </span><pre>get_color_container()</pre></a></li>
+<li class="method public "><a href="#method_get_css_color" title="get_css_color :: "><span class="description">get_css_color()
+        </span><pre>get_css_color()</pre></a></li>
+<li class="method public "><a href="#method_get_filename" title="get_filename :: "><span class="description">get_filename()
+        </span><pre>get_filename()</pre></a></li>
+<li class="method public "><a href="#method_get_heading_level" title="get_heading_level :: "><span class="description">get_heading_level()
+        </span><pre>get_heading_level()</pre></a></li>
+<li class="method public "><a href="#method_get_icon_theme" title="get_icon_theme :: Get configured or default icon theme"><span class="description">Get configured or default icon theme</span><pre>get_icon_theme()</pre></a></li>
+<li class="method public "><a href="#method_get_name" title="get_name :: "><span class="description">get_name()
+        </span><pre>get_name()</pre></a></li>
+<li class="method public "><a href="#method_head_out" title="head_out :: "><span class="description">head_out()
+        </span><pre>head_out()</pre></a></li>
+<li class="method public "><a href="#method_heading" title="heading :: "><span class="description">heading()
+        </span><pre>heading()</pre></a></li>
+<li class="method public "><a href="#method_icon" title="icon :: "><span class="description">icon()
+        </span><pre>icon()</pre></a></li>
+<li class="method public "><a href="#method_icon_for" title="icon_for :: "><span class="description">icon_for()
+        </span><pre>icon_for()</pre></a></li>
+<li class="method public "><a href="#method_insert" title="insert :: "><span class="description">insert()
+        </span><pre>insert()</pre></a></li>
+<li class="method public "><a href="#method_label_for" title="label_for :: "><span class="description">label_for()
+        </span><pre>label_for()</pre></a></li>
+<li class="method public "><a href="#method_label_right_for" title="label_right_for :: "><span class="description">label_right_for()
+        </span><pre>label_right_for()</pre></a></li>
+<li class="method public "><a href="#method_label_text" title="label_text :: "><span class="description">label_text()
+        </span><pre>label_text()</pre></a></li>
+<li class="method public "><a href="#method_link_for" title="link_for :: "><span class="description">link_for()
+        </span><pre>link_for()</pre></a></li>
+<li class="method public "><a href="#method_meta_out" title="meta_out :: "><span class="description">meta_out()
+        </span><pre>meta_out()</pre></a></li>
+<li class="method public "><a href="#method_partial" title="partial :: "><span class="description">partial()
+        </span><pre>partial()</pre></a></li>
+<li class="method public "><a href="#method_scripts_out" title="scripts_out :: "><span class="description">scripts_out()
+        </span><pre>scripts_out()</pre></a></li>
+<li class="method public "><a href="#method_section_heading" title="section_heading :: "><span class="description">section_heading()
+        </span><pre>section_heading()</pre></a></li>
+<li class="method public "><a href="#method_set_heading_level" title="set_heading_level :: "><span class="description">set_heading_level()
+        </span><pre>set_heading_level()</pre></a></li>
+<li class="method public "><a href="#method_set_heading_section_level" title="set_heading_section_level :: "><span class="description">set_heading_section_level()
+        </span><pre>set_heading_section_level()</pre></a></li>
+<li class="method public "><a href="#method_styles_out" title="styles_out :: "><span class="description">styles_out()
+        </span><pre>styles_out()</pre></a></li>
+<li class="method public "><a href="#method_tag" title="tag :: "><span class="description">tag()
+        </span><pre>tag()</pre></a></li>
+<li class="method public "><a href="#method_title_out" title="title_out :: "><span class="description">title_out()
+        </span><pre>title_out()</pre></a></li>
+<li class="method public "><a href="#method_to_html" title="to_html :: Convert value to HTML parseable format"><span class="description">Convert value to HTML parseable format</span><pre>to_html()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property_default_time_format" title="$default_time_format :: "><span class="description"></span><pre>$default_time_format</pre></a></li>
+<li class="property private "><a href="#property_heading_level" title="$heading_level :: "><span class="description"></span><pre>$heading_level</pre></a></li>
+<li class="property private "><a href="#property_heading_section_level" title="$heading_section_level :: "><span class="description"></span><pre>$heading_section_level</pre></a></li>
+<li class="property private "><a href="#property_styles" title="$styles :: "><span class="description"></span><pre>$styles</pre></a></li>
+<li class="property private "><a href="#property_units" title="$units :: "><span class="description"></span><pre>$units</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul>
+<li class="constant  "><a href="#constant_CASE_LOWER" title="CASE_LOWER :: "><span class="description">CASE_LOWER</span><pre>CASE_LOWER</pre></a></li>
+<li class="constant  "><a href="#constant_CASE_UPPER" title="CASE_UPPER :: "><span class="description">CASE_UPPER</span><pre>CASE_UPPER</pre></a></li>
+<li class="constant  "><a href="#constant_DEFAULT_ICON_THEME" title="DEFAULT_ICON_THEME :: "><span class="description">DEFAULT_ICON_THEME</span><pre>DEFAULT_ICON_THEME</pre></a></li>
+<li class="constant  "><a href="#constant_DEFAULT_SLOT" title="DEFAULT_SLOT :: "><span class="description">DEFAULT_SLOT</span><pre>DEFAULT_SLOT</pre></a></li>
+<li class="constant  "><a href="#constant_DIR_ICONS" title="DIR_ICONS :: "><span class="description">DIR_ICONS</span><pre>DIR_ICONS</pre></a></li>
+<li class="constant  "><a href="#constant_PARTIALS_DIR" title="PARTIALS_DIR :: "><span class="description">PARTIALS_DIR</span><pre>PARTIALS_DIR</pre></a></li>
+<li class="constant  "><a href="#constant_TEMPLATES_DIR" title="TEMPLATES_DIR :: "><span class="description">TEMPLATES_DIR</span><pre>TEMPLATES_DIR</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\System\Template"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/System.html">System</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/System.Template.html">Template</a>
+</li>
+</ul>
+<div class="element class"><div class="details">
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_convert_value"></a><div class="element clickable method public method_convert_value" data-toggle="collapse" data-target=".method_convert_value .collapse">
+<h2>convert_value()
+        </h2>
+<pre>convert_value($type, $value) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$type</h4></div>
+<div class="subelement argument"><h4>$value</h4></div>
+</div></div>
+</div>
+<a id="method_format_date"></a><div class="element clickable method public method_format_date" data-toggle="collapse" data-target=".method_format_date .collapse">
+<h2>Format and translate datetime format</h2>
+<pre>format_date(mixed $date, string $format) : string</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$date</h4>
+<code>mixed</code>
+</div>
+<div class="subelement argument">
+<h4>$format</h4>
+<code>string</code><p>Format name</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_color_container"></a><div class="element clickable method public method_get_color_container" data-toggle="collapse" data-target=".method_get_color_container .collapse">
+<h2>get_color_container()
+        </h2>
+<pre>get_color_container($color) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$color</h4></div>
+</div></div>
+</div>
+<a id="method_get_css_color"></a><div class="element clickable method public method_get_css_color" data-toggle="collapse" data-target=".method_get_css_color .collapse">
+<h2>get_css_color()
+        </h2>
+<pre>get_css_color($color) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$color</h4></div>
+</div></div>
+</div>
+<a id="method_get_filename"></a><div class="element clickable method public method_get_filename" data-toggle="collapse" data-target=".method_get_filename .collapse">
+<h2>get_filename()
+        </h2>
+<pre>get_filename($name, $format, $lang) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$name</h4></div>
+<div class="subelement argument"><h4>$format</h4></div>
+<div class="subelement argument"><h4>$lang</h4></div>
+</div></div>
+</div>
+<a id="method_get_heading_level"></a><div class="element clickable method public method_get_heading_level" data-toggle="collapse" data-target=".method_get_heading_level .collapse">
+<h2>get_heading_level()
+        </h2>
+<pre>get_heading_level() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_get_icon_theme"></a><div class="element clickable method public method_get_icon_theme" data-toggle="collapse" data-target=".method_get_icon_theme .collapse">
+<h2>Get configured or default icon theme</h2>
+<pre>get_icon_theme() : string</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_name"></a><div class="element clickable method public method_get_name" data-toggle="collapse" data-target=".method_get_name .collapse">
+<h2>get_name()
+        </h2>
+<pre>get_name($name) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$name</h4></div>
+</div></div>
+</div>
+<a id="method_head_out"></a><div class="element clickable method public method_head_out" data-toggle="collapse" data-target=".method_head_out .collapse">
+<h2>head_out()
+        </h2>
+<pre>head_out() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_heading"></a><div class="element clickable method public method_heading" data-toggle="collapse" data-target=".method_heading .collapse">
+<h2>heading()
+        </h2>
+<pre>heading($label, $save_level, $level) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$save_level</h4></div>
+<div class="subelement argument"><h4>$level</h4></div>
+</div></div>
+</div>
+<a id="method_icon"></a><div class="element clickable method public method_icon" data-toggle="collapse" data-target=".method_icon .collapse">
+<h2>icon()
+        </h2>
+<pre>icon($icon, $size, array $attrs) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$icon</h4></div>
+<div class="subelement argument"><h4>$size</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_icon_for"></a><div class="element clickable method public method_icon_for" data-toggle="collapse" data-target=".method_icon_for .collapse">
+<h2>icon_for()
+        </h2>
+<pre>icon_for($icon, $size, $url, $label, $object) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$icon</h4></div>
+<div class="subelement argument"><h4>$size</h4></div>
+<div class="subelement argument"><h4>$url</h4></div>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$object</h4></div>
+</div></div>
+</div>
+<a id="method_insert"></a><div class="element clickable method public method_insert" data-toggle="collapse" data-target=".method_insert .collapse">
+<h2>insert()
+        </h2>
+<pre>insert($name, $locals, $slot) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$name</h4></div>
+<div class="subelement argument"><h4>$locals</h4></div>
+<div class="subelement argument"><h4>$slot</h4></div>
+</div></div>
+</div>
+<a id="method_label_for"></a><div class="element clickable method public method_label_for" data-toggle="collapse" data-target=".method_label_for .collapse">
+<h2>label_for()
+        </h2>
+<pre>label_for($icon, $size, $label, $url, $object) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$icon</h4></div>
+<div class="subelement argument"><h4>$size</h4></div>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$url</h4></div>
+<div class="subelement argument"><h4>$object</h4></div>
+</div></div>
+</div>
+<a id="method_label_right_for"></a><div class="element clickable method public method_label_right_for" data-toggle="collapse" data-target=".method_label_right_for .collapse">
+<h2>label_right_for()
+        </h2>
+<pre>label_right_for($icon, $size, $label, $url, $object) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$icon</h4></div>
+<div class="subelement argument"><h4>$size</h4></div>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$url</h4></div>
+<div class="subelement argument"><h4>$object</h4></div>
+</div></div>
+</div>
+<a id="method_label_text"></a><div class="element clickable method public method_label_text" data-toggle="collapse" data-target=".method_label_text .collapse">
+<h2>label_text()
+        </h2>
+<pre>label_text($label) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$label</h4></div>
+</div></div>
+</div>
+<a id="method_link_for"></a><div class="element clickable method public method_link_for" data-toggle="collapse" data-target=".method_link_for .collapse">
+<h2>link_for()
+        </h2>
+<pre>link_for($label, $url, $object) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$url</h4></div>
+<div class="subelement argument"><h4>$object</h4></div>
+</div></div>
+</div>
+<a id="method_meta_out"></a><div class="element clickable method public method_meta_out" data-toggle="collapse" data-target=".method_meta_out .collapse">
+<h2>meta_out()
+        </h2>
+<pre>meta_out() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_partial"></a><div class="element clickable method public method_partial" data-toggle="collapse" data-target=".method_partial .collapse">
+<h2>partial()
+        </h2>
+<pre>partial($name, array $locals) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$name</h4></div>
+<div class="subelement argument"><h4>$locals</h4></div>
+</div></div>
+</div>
+<a id="method_scripts_out"></a><div class="element clickable method public method_scripts_out" data-toggle="collapse" data-target=".method_scripts_out .collapse">
+<h2>scripts_out()
+        </h2>
+<pre>scripts_out() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_section_heading"></a><div class="element clickable method public method_section_heading" data-toggle="collapse" data-target=".method_section_heading .collapse">
+<h2>section_heading()
+        </h2>
+<pre>section_heading($label, $level) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$label</h4></div>
+<div class="subelement argument"><h4>$level</h4></div>
+</div></div>
+</div>
+<a id="method_set_heading_level"></a><div class="element clickable method public method_set_heading_level" data-toggle="collapse" data-target=".method_set_heading_level .collapse">
+<h2>set_heading_level()
+        </h2>
+<pre>set_heading_level($lvl) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$lvl</h4></div>
+</div></div>
+</div>
+<a id="method_set_heading_section_level"></a><div class="element clickable method public method_set_heading_section_level" data-toggle="collapse" data-target=".method_set_heading_section_level .collapse">
+<h2>set_heading_section_level()
+        </h2>
+<pre>set_heading_section_level($lvl) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$lvl</h4></div>
+</div></div>
+</div>
+<a id="method_styles_out"></a><div class="element clickable method public method_styles_out" data-toggle="collapse" data-target=".method_styles_out .collapse">
+<h2>styles_out()
+        </h2>
+<pre>styles_out() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_tag"></a><div class="element clickable method public method_tag" data-toggle="collapse" data-target=".method_tag .collapse">
+<h2>tag()
+        </h2>
+<pre>tag($tag, $content, array $attrs) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$tag</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_title_out"></a><div class="element clickable method public method_title_out" data-toggle="collapse" data-target=".method_title_out .collapse">
+<h2>title_out()
+        </h2>
+<pre>title_out() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_to_html"></a><div class="element clickable method public method_to_html" data-toggle="collapse" data-target=".method_to_html .collapse">
+<h2>Convert value to HTML parseable format</h2>
+<pre>to_html(mixed $value) : string</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_default_time_format"> </a><div class="element clickable property private property_default_time_format" data-toggle="collapse" data-target=".property_default_time_format .collapse">
+<h2></h2>
+<pre>$default_time_format </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_heading_level"> </a><div class="element clickable property private property_heading_level" data-toggle="collapse" data-target=".property_heading_level .collapse">
+<h2></h2>
+<pre>$heading_level </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_heading_section_level"> </a><div class="element clickable property private property_heading_section_level" data-toggle="collapse" data-target=".property_heading_section_level .collapse">
+<h2></h2>
+<pre>$heading_section_level </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_styles"> </a><div class="element clickable property private property_styles" data-toggle="collapse" data-target=".property_styles .collapse">
+<h2></h2>
+<pre>$styles </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_units"> </a><div class="element clickable property private property_units" data-toggle="collapse" data-target=".property_units .collapse">
+<h2></h2>
+<pre>$units </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_CASE_LOWER"> </a><div class="element clickable constant  constant_CASE_LOWER" data-toggle="collapse" data-target=".constant_CASE_LOWER .collapse">
+<h2>CASE_LOWER</h2>
+<pre>CASE_LOWER </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_CASE_UPPER"> </a><div class="element clickable constant  constant_CASE_UPPER" data-toggle="collapse" data-target=".constant_CASE_UPPER .collapse">
+<h2>CASE_UPPER</h2>
+<pre>CASE_UPPER </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_DEFAULT_ICON_THEME"> </a><div class="element clickable constant  constant_DEFAULT_ICON_THEME" data-toggle="collapse" data-target=".constant_DEFAULT_ICON_THEME .collapse">
+<h2>DEFAULT_ICON_THEME</h2>
+<pre>DEFAULT_ICON_THEME </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_DEFAULT_SLOT"> </a><div class="element clickable constant  constant_DEFAULT_SLOT" data-toggle="collapse" data-target=".constant_DEFAULT_SLOT .collapse">
+<h2>DEFAULT_SLOT</h2>
+<pre>DEFAULT_SLOT </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_DIR_ICONS"> </a><div class="element clickable constant  constant_DIR_ICONS" data-toggle="collapse" data-target=".constant_DIR_ICONS .collapse">
+<h2>DIR_ICONS</h2>
+<pre>DIR_ICONS </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_PARTIALS_DIR"> </a><div class="element clickable constant  constant_PARTIALS_DIR" data-toggle="collapse" data-target=".constant_PARTIALS_DIR .collapse">
+<h2>PARTIALS_DIR</h2>
+<pre>PARTIALS_DIR </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_TEMPLATES_DIR"> </a><div class="element clickable constant  constant_TEMPLATES_DIR" data-toggle="collapse" data-target=".constant_TEMPLATES_DIR .collapse">
+<h2>TEMPLATES_DIR</h2>
+<pre>TEMPLATES_DIR </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div></div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+</div>
+</body>
+</html>

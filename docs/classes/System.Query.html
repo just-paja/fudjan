@@ -1,0 +1,627 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \System\Query</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method___construct" title="__construct :: "><span class="description">__construct()
+        </span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_add_cols" title="add_cols :: "><span class="description">add_cols()
+        </span><pre>add_cols()</pre></a></li>
+<li class="method public "><a href="#method_add_insert_data" title="add_insert_data :: "><span class="description">add_insert_data()
+        </span><pre>add_insert_data()</pre></a></li>
+<li class="method public "><a href="#method_add_joins" title="add_joins :: "><span class="description">add_joins()
+        </span><pre>add_joins()</pre></a></li>
+<li class="method public "><a href="#method_add_opts" title="add_opts :: "><span class="description">add_opts()
+        </span><pre>add_opts()</pre></a></li>
+<li class="method public "><a href="#method_add_tables" title="add_tables :: "><span class="description">add_tables()
+        </span><pre>add_tables()</pre></a></li>
+<li class="method public "><a href="#method_assoc_with" title="assoc_with :: "><span class="description">assoc_with()
+        </span><pre>assoc_with()</pre></a></li>
+<li class="method public "><a href="#method_cancel_ignore" title="cancel_ignore :: "><span class="description">cancel_ignore()
+        </span><pre>cancel_ignore()</pre></a></li>
+<li class="method public "><a href="#method_count" title="count :: "><span class="description">count()
+        </span><pre>count()</pre></a></li>
+<li class="method public "><a href="#method_count_all" title="count_all :: "><span class="description">count_all()
+        </span><pre>count_all()</pre></a></li>
+<li class="method public "><a href="#method_delete" title="delete :: "><span class="description">delete()
+        </span><pre>delete()</pre></a></li>
+<li class="method public "><a href="#method_distinct" title="distinct :: "><span class="description">distinct()
+        </span><pre>distinct()</pre></a></li>
+<li class="method public "><a href="#method_fetch" title="fetch :: "><span class="description">fetch()
+        </span><pre>fetch()</pre></a></li>
+<li class="method public "><a href="#method_fetch_one" title="fetch_one :: "><span class="description">fetch_one()
+        </span><pre>fetch_one()</pre></a></li>
+<li class="method public "><a href="#method_first_val" title="first_val :: "><span class="description">first_val()
+        </span><pre>first_val()</pre></a></li>
+<li class="method public "><a href="#method_group_by" title="group_by :: "><span class="description">group_by()
+        </span><pre>group_by()</pre></a></li>
+<li class="method public "><a href="#method_has" title="has :: Filter models with certain has_many or has_one relation"><span class="description">Filter models with certain has_many or has_one relation</span><pre>has()</pre></a></li>
+<li class="method public "><a href="#method_ignore_query" title="ignore_query :: "><span class="description">ignore_query()
+        </span><pre>ignore_query()</pre></a></li>
+<li class="method public "><a href="#method_insert" title="insert :: "><span class="description">insert()
+        </span><pre>insert()</pre></a></li>
+<li class="method public "><a href="#method_join" title="join :: "><span class="description">join()
+        </span><pre>join()</pre></a></li>
+<li class="method public "><a href="#method_left_join" title="left_join :: "><span class="description">left_join()
+        </span><pre>left_join()</pre></a></li>
+<li class="method public "><a href="#method_paginate" title="paginate :: "><span class="description">paginate()
+        </span><pre>paginate()</pre></a></li>
+<li class="method public "><a href="#method_quick" title="quick :: "><span class="description">quick()
+        </span><pre>quick()</pre></a></li>
+<li class="method public "><a href="#method_reset_cols" title="reset_cols :: "><span class="description">reset_cols()
+        </span><pre>reset_cols()</pre></a></li>
+<li class="method public "><a href="#method_select" title="select :: "><span class="description">select()
+        </span><pre>select()</pre></a></li>
+<li class="method public "><a href="#method_simple_count" title="simple_count :: "><span class="description">simple_count()
+        </span><pre>simple_count()</pre></a></li>
+<li class="method public "><a href="#method_simple_delete" title="simple_delete :: "><span class="description">simple_delete()
+        </span><pre>simple_delete()</pre></a></li>
+<li class="method public "><a href="#method_sort_by" title="sort_by :: "><span class="description">sort_by()
+        </span><pre>sort_by()</pre></a></li>
+<li class="method public "><a href="#method_where" title="where :: "><span class="description">where()
+        </span><pre>where()</pre></a></li>
+<li class="method public "><a href="#method_where_in" title="where_in :: "><span class="description">where_in()
+        </span><pre>where_in()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="method private "><a href="#method_add_objects" title="add_objects :: "><span class="description">add_objects()
+        </span><pre>add_objects()</pre></a></li>
+<li class="method private "><a href="#method_prepare" title="prepare :: "><span class="description">prepare()
+        </span><pre>prepare()</pre></a></li>
+<li class="method private "><a href="#method_resolve_table_alias" title="resolve_table_alias :: "><span class="description">resolve_table_alias()
+        </span><pre>resolve_table_alias()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private "><a href="#property_assoc_with_model" title="$assoc_with_model :: "><span class="description"></span><pre>$assoc_with_model</pre></a></li>
+<li class="property private "><a href="#property_cols" title="$cols :: "><span class="description"></span><pre>$cols</pre></a></li>
+<li class="property private "><a href="#property_conds" title="$conds :: "><span class="description"></span><pre>$conds</pre></a></li>
+<li class="property private "><a href="#property_insert_data" title="$insert_data :: "><span class="description"></span><pre>$insert_data</pre></a></li>
+<li class="property private "><a href="#property_join_tables" title="$join_tables :: "><span class="description"></span><pre>$join_tables</pre></a></li>
+<li class="property private "><a href="#property_joins" title="$joins :: "><span class="description"></span><pre>$joins</pre></a></li>
+<li class="property private "><a href="#property_limits" title="$limits :: "><span class="description"></span><pre>$limits</pre></a></li>
+<li class="property private "><a href="#property_opts" title="$opts :: "><span class="description"></span><pre>$opts</pre></a></li>
+<li class="property private "><a href="#property_parsed" title="$parsed :: "><span class="description"></span><pre>$parsed</pre></a></li>
+<li class="property private "><a href="#property_queries" title="$queries :: "><span class="description"></span><pre>$queries</pre></a></li>
+<li class="property private "><a href="#property_return_first" title="$return_first :: "><span class="description"></span><pre>$return_first</pre></a></li>
+<li class="property private "><a href="#property_tables" title="$tables :: "><span class="description"></span><pre>$tables</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul><li class="constant  "><a href="#constant_NO_TABLE" title="NO_TABLE :: "><span class="description">NO_TABLE</span><pre>NO_TABLE</pre></a></li></ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\System\Query"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/System.html">System</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/System.Query.html">Query</a>
+</li>
+</ul>
+<div class="element class"><div class="details">
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>__construct()
+        </h2>
+<pre>__construct(array $opts) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$opts</h4></div>
+</div></div>
+</div>
+<a id="method_add_cols"></a><div class="element clickable method public method_add_cols" data-toggle="collapse" data-target=".method_add_cols .collapse">
+<h2>add_cols()
+        </h2>
+<pre>add_cols($objects, $table) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$objects</h4></div>
+<div class="subelement argument"><h4>$table</h4></div>
+</div></div>
+</div>
+<a id="method_add_insert_data"></a><div class="element clickable method public method_add_insert_data" data-toggle="collapse" data-target=".method_add_insert_data .collapse">
+<h2>add_insert_data()
+        </h2>
+<pre>add_insert_data(array $data) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$data</h4></div>
+</div></div>
+</div>
+<a id="method_add_joins"></a><div class="element clickable method public method_add_joins" data-toggle="collapse" data-target=".method_add_joins .collapse">
+<h2>add_joins()
+        </h2>
+<pre>add_joins(array $objects) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$objects</h4></div>
+</div></div>
+</div>
+<a id="method_add_opts"></a><div class="element clickable method public method_add_opts" data-toggle="collapse" data-target=".method_add_opts .collapse">
+<h2>add_opts()
+        </h2>
+<pre>add_opts(array $opts) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$opts</h4></div>
+</div></div>
+</div>
+<a id="method_add_tables"></a><div class="element clickable method public method_add_tables" data-toggle="collapse" data-target=".method_add_tables .collapse">
+<h2>add_tables()
+        </h2>
+<pre>add_tables($objects, $alias) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$objects</h4></div>
+<div class="subelement argument"><h4>$alias</h4></div>
+</div></div>
+</div>
+<a id="method_assoc_with"></a><div class="element clickable method public method_assoc_with" data-toggle="collapse" data-target=".method_assoc_with .collapse">
+<h2>assoc_with()
+        </h2>
+<pre>assoc_with($model) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
+<a id="method_cancel_ignore"></a><div class="element clickable method public method_cancel_ignore" data-toggle="collapse" data-target=".method_cancel_ignore .collapse">
+<h2>cancel_ignore()
+        </h2>
+<pre>cancel_ignore() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_count"></a><div class="element clickable method public method_count" data-toggle="collapse" data-target=".method_count .collapse">
+<h2>count()
+        </h2>
+<pre>count() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_count_all"></a><div class="element clickable method public method_count_all" data-toggle="collapse" data-target=".method_count_all .collapse">
+<h2>count_all()
+        </h2>
+<pre>count_all() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_delete"></a><div class="element clickable method public method_delete" data-toggle="collapse" data-target=".method_delete .collapse">
+<h2>delete()
+        </h2>
+<pre>delete() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_distinct"></a><div class="element clickable method public method_distinct" data-toggle="collapse" data-target=".method_distinct .collapse">
+<h2>distinct()
+        </h2>
+<pre>distinct() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_fetch"></a><div class="element clickable method public method_fetch" data-toggle="collapse" data-target=".method_fetch .collapse">
+<h2>fetch()
+        </h2>
+<pre>fetch($key, $value) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$key</h4></div>
+<div class="subelement argument"><h4>$value</h4></div>
+</div></div>
+</div>
+<a id="method_fetch_one"></a><div class="element clickable method public method_fetch_one" data-toggle="collapse" data-target=".method_fetch_one .collapse">
+<h2>fetch_one()
+        </h2>
+<pre>fetch_one() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_first_val"></a><div class="element clickable method public method_first_val" data-toggle="collapse" data-target=".method_first_val .collapse">
+<h2>first_val()
+        </h2>
+<pre>first_val(array $result) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$result</h4></div>
+</div></div>
+</div>
+<a id="method_group_by"></a><div class="element clickable method public method_group_by" data-toggle="collapse" data-target=".method_group_by .collapse">
+<h2>group_by()
+        </h2>
+<pre>group_by($str) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$str</h4></div>
+</div></div>
+</div>
+<a id="method_has"></a><div class="element clickable method public method_has" data-toggle="collapse" data-target=".method_has .collapse">
+<h2>Filter models with certain has_many or has_one relation</h2>
+<pre>has(array $relations) : <a href="../classes/System.Query.html">\System\Query</a></pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>fluent</th>
+<td>This method is part of a fluent interface and will return the same instance</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$relations</h4>
+<code>int[]</code><p>List of relations and IDs</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/System.Query.html">\System\Query</a></code></div>
+</div></div>
+</div>
+<a id="method_ignore_query"></a><div class="element clickable method public method_ignore_query" data-toggle="collapse" data-target=".method_ignore_query .collapse">
+<h2>ignore_query()
+        </h2>
+<pre>ignore_query($retval) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$retval</h4></div>
+</div></div>
+</div>
+<a id="method_insert"></a><div class="element clickable method public method_insert" data-toggle="collapse" data-target=".method_insert .collapse">
+<h2>insert()
+        </h2>
+<pre>insert($get_query) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$get_query</h4></div>
+</div></div>
+</div>
+<a id="method_join"></a><div class="element clickable method public method_join" data-toggle="collapse" data-target=".method_join .collapse">
+<h2>join()
+        </h2>
+<pre>join($table, $conds_str, $alias, $type) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table</h4></div>
+<div class="subelement argument"><h4>$conds_str</h4></div>
+<div class="subelement argument"><h4>$alias</h4></div>
+<div class="subelement argument"><h4>$type</h4></div>
+</div></div>
+</div>
+<a id="method_left_join"></a><div class="element clickable method public method_left_join" data-toggle="collapse" data-target=".method_left_join .collapse">
+<h2>left_join()
+        </h2>
+<pre>left_join($table, $conds, $alias) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$alias</h4></div>
+</div></div>
+</div>
+<a id="method_paginate"></a><div class="element clickable method public method_paginate" data-toggle="collapse" data-target=".method_paginate .collapse">
+<h2>paginate()
+        </h2>
+<pre>paginate($per_page, $page_offset) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$per_page</h4></div>
+<div class="subelement argument"><h4>$page_offset</h4></div>
+</div></div>
+</div>
+<a id="method_quick"></a><div class="element clickable method public method_quick" data-toggle="collapse" data-target=".method_quick .collapse">
+<h2>quick()
+        </h2>
+<pre>quick() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_reset_cols"></a><div class="element clickable method public method_reset_cols" data-toggle="collapse" data-target=".method_reset_cols .collapse">
+<h2>reset_cols()
+        </h2>
+<pre>reset_cols() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_select"></a><div class="element clickable method public method_select" data-toggle="collapse" data-target=".method_select .collapse">
+<h2>select()
+        </h2>
+<pre>select($get_query) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$get_query</h4></div>
+</div></div>
+</div>
+<a id="method_simple_count"></a><div class="element clickable method public method_simple_count" data-toggle="collapse" data-target=".method_simple_count .collapse">
+<h2>simple_count()
+        </h2>
+<pre>simple_count($table, array $cols, array $conds) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table</h4></div>
+<div class="subelement argument"><h4>$cols</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+</div></div>
+</div>
+<a id="method_simple_delete"></a><div class="element clickable method public method_simple_delete" data-toggle="collapse" data-target=".method_simple_delete .collapse">
+<h2>simple_delete()
+        </h2>
+<pre>simple_delete($from, array $conds) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$from</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+</div></div>
+</div>
+<a id="method_sort_by"></a><div class="element clickable method public method_sort_by" data-toggle="collapse" data-target=".method_sort_by .collapse">
+<h2>sort_by()
+        </h2>
+<pre>sort_by($cond) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$cond</h4></div>
+</div></div>
+</div>
+<a id="method_where"></a><div class="element clickable method public method_where" data-toggle="collapse" data-target=".method_where .collapse">
+<h2>where()
+        </h2>
+<pre>where(array $conds, $table_alias, $or) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$table_alias</h4></div>
+<div class="subelement argument"><h4>$or</h4></div>
+</div></div>
+</div>
+<a id="method_where_in"></a><div class="element clickable method public method_where_in" data-toggle="collapse" data-target=".method_where_in .collapse">
+<h2>where_in()
+        </h2>
+<pre>where_in($col, array $conds, $table_alias, $or) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$col</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$table_alias</h4></div>
+<div class="subelement argument"><h4>$or</h4></div>
+</div></div>
+</div>
+<a id="method_add_objects"></a><div class="element clickable method private method_add_objects" data-toggle="collapse" data-target=".method_add_objects .collapse">
+<h2>add_objects()
+        </h2>
+<pre>add_objects($objects, $where, $alias) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$objects</h4></div>
+<div class="subelement argument"><h4>$where</h4></div>
+<div class="subelement argument"><h4>$alias</h4></div>
+</div></div>
+</div>
+<a id="method_prepare"></a><div class="element clickable method private method_prepare" data-toggle="collapse" data-target=".method_prepare .collapse">
+<h2>prepare()
+        </h2>
+<pre>prepare($for) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$for</h4></div>
+</div></div>
+</div>
+<a id="method_resolve_table_alias"></a><div class="element clickable method private method_resolve_table_alias" data-toggle="collapse" data-target=".method_resolve_table_alias .collapse">
+<h2>resolve_table_alias()
+        </h2>
+<pre>resolve_table_alias($table_alias) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table_alias</h4></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_assoc_with_model"> </a><div class="element clickable property private property_assoc_with_model" data-toggle="collapse" data-target=".property_assoc_with_model .collapse">
+<h2></h2>
+<pre>$assoc_with_model </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_cols"> </a><div class="element clickable property private property_cols" data-toggle="collapse" data-target=".property_cols .collapse">
+<h2></h2>
+<pre>$cols </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_conds"> </a><div class="element clickable property private property_conds" data-toggle="collapse" data-target=".property_conds .collapse">
+<h2></h2>
+<pre>$conds </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_insert_data"> </a><div class="element clickable property private property_insert_data" data-toggle="collapse" data-target=".property_insert_data .collapse">
+<h2></h2>
+<pre>$insert_data </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_join_tables"> </a><div class="element clickable property private property_join_tables" data-toggle="collapse" data-target=".property_join_tables .collapse">
+<h2></h2>
+<pre>$join_tables </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_joins"> </a><div class="element clickable property private property_joins" data-toggle="collapse" data-target=".property_joins .collapse">
+<h2></h2>
+<pre>$joins </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_limits"> </a><div class="element clickable property private property_limits" data-toggle="collapse" data-target=".property_limits .collapse">
+<h2></h2>
+<pre>$limits </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_opts"> </a><div class="element clickable property private property_opts" data-toggle="collapse" data-target=".property_opts .collapse">
+<h2></h2>
+<pre>$opts </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_parsed"> </a><div class="element clickable property private property_parsed" data-toggle="collapse" data-target=".property_parsed .collapse">
+<h2></h2>
+<pre>$parsed </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_queries"> </a><div class="element clickable property private property_queries" data-toggle="collapse" data-target=".property_queries .collapse">
+<h2></h2>
+<pre>$queries </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_return_first"> </a><div class="element clickable property private property_return_first" data-toggle="collapse" data-target=".property_return_first .collapse">
+<h2></h2>
+<pre>$return_first </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_tables"> </a><div class="element clickable property private property_tables" data-toggle="collapse" data-target=".property_tables .collapse">
+<h2></h2>
+<pre>$tables </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_NO_TABLE"> </a><div class="element clickable constant  constant_NO_TABLE" data-toggle="collapse" data-target=".constant_NO_TABLE .collapse">
+<h2>NO_TABLE</h2>
+<pre>NO_TABLE </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+</div></div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+</div>
+</body>
+</html>

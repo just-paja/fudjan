@@ -1,0 +1,1951 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \System\Model\Color</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public inherited"><a href="#method___construct" title="__construct :: Override of constructor, adds id column, created_at and updated_at into attrs"><span class="description">Override of constructor, adds id column, created_at and updated_at into attrs</span><pre>__construct()</pre></a></li>
+<li class="method public inherited"><a href="#method___get" title="__get :: Attribute getter"><span class="description">Attribute getter</span><pre>__get()</pre></a></li>
+<li class="method public inherited"><a href="#method___set" title="__set :: Attribute handler, setter"><span class="description">Attribute handler, setter</span><pre>__set()</pre></a></li>
+<li class="method public inherited"><a href="#method_add_callback" title="add_callback :: Add a callback function to some action"><span class="description">Add a callback function to some action</span><pre>add_callback()</pre></a></li>
+<li class="method public inherited"><a href="#method_assign_rel" title="assign_rel :: Assign and save relation by IDs"><span class="description">Assign and save relation by IDs</span><pre>assign_rel()</pre></a></li>
+<li class="method public inherited"><a href="#method_attr_exists" title="attr_exists :: Does attribute of a model exist"><span class="description">Does attribute of a model exist</span><pre>attr_exists()</pre></a></li>
+<li class="method public inherited"><a href="#method_attr_is_rel" title="attr_is_rel :: Is model attribute of type relation?"><span class="description">Is model attribute of type relation?</span><pre>attr_is_rel()</pre></a></li>
+<li class="method public inherited"><a href="#method_attr_required" title="attr_required :: Is attribute required"><span class="description">Is attribute required</span><pre>attr_required()</pre></a></li>
+<li class="method public inherited"><a href="#method_changed" title="changed :: "><span class="description">changed()
+        </span><pre>changed()</pre></a></li>
+<li class="method public inherited"><a href="#method_convert_attr_val" title="convert_attr_val :: Prepare data of a kind to be saved, mostly conversions"><span class="description">Prepare data of a kind to be saved, mostly conversions</span><pre>convert_attr_val()</pre></a></li>
+<li class="method public inherited"><a href="#method_count_all" title="count_all :: "><span class="description">count_all()
+        </span><pre>count_all()</pre></a></li>
+<li class="method public inherited"><a href="#method_create" title="create :: "><span class="description">create()
+        </span><pre>create()</pre></a></li>
+<li class="method public inherited"><a href="#method_drop" title="drop :: Delete object from database"><span class="description">Delete object from database</span><pre>drop()</pre></a></li>
+<li class="method public inherited"><a href="#method_find" title="find :: Find model by ID or set of IDs"><span class="description">Find model by ID or set of IDs</span><pre>find()</pre></a></li>
+<li class="method public inherited"><a href="#method_gen_seoname" title="gen_seoname :: Replace bad characters and generate seoname from string"><span class="description">Replace bad characters and generate seoname from string</span><pre>gen_seoname()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_all" title="get_all :: "><span class="description">get_all()
+        </span><pre>get_all()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_all_children" title="get_all_children :: Get all children of Database model"><span class="description">Get all children of Database model</span><pre>get_all_children()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr" title="get_attr :: Override of attr models get_attr, respects 'id' alias"><span class="description">Override of attr models get_attr, respects 'id' alias</span><pre>get_attr()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_def" title="get_attr_def :: Gets definition of model attributes"><span class="description">Gets definition of model attributes</span><pre>get_attr_def()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_desc" title="get_attr_desc :: "><span class="description">get_attr_desc()
+        </span><pre>get_attr_desc()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_name" title="get_attr_name :: "><span class="description">get_attr_name()
+        </span><pre>get_attr_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_name_from_belongs_to_rel" title="get_attr_name_from_belongs_to_rel :: "><span class="description">get_attr_name_from_belongs_to_rel()
+        </span><pre>get_attr_name_from_belongs_to_rel()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_type" title="get_attr_type :: Get type of attribute"><span class="description">Get type of attribute</span><pre>get_attr_type()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attr_value" title="get_attr_value :: "><span class="description">get_attr_value()
+        </span><pre>get_attr_value()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_attrs" title="get_attrs :: Join all attributes into single array (helper)"><span class="description">Join all attributes into single array (helper)</span><pre>get_attrs()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_bilinear_table_name" title="get_bilinear_table_name :: "><span class="description">get_bilinear_table_name()
+        </span><pre>get_bilinear_table_name()</pre></a></li>
+<li class="method public "><a href="#method_get_color" title="get_color :: Get color"><span class="description">Get color</span><pre>get_color()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_data" title="get_data :: Get all object data"><span class="description">Get all object data</span><pre>get_data()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_first" title="get_first :: "><span class="description">get_first()
+        </span><pre>get_first()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_id_col" title="get_id_col :: Get name of ID column"><span class="description">Get name of ID column</span><pre>get_id_col()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_location_attrs" title="get_location_attrs :: Get all attribute names that point to system::location"><span class="description">Get all attribute names that point to system::location</span><pre>get_location_attrs()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_attr_desc" title="get_model_attr_desc :: "><span class="description">get_model_attr_desc()
+        </span><pre>get_model_attr_desc()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_attr_list" title="get_model_attr_list :: "><span class="description">get_model_attr_list()
+        </span><pre>get_model_attr_list()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_attr_name" title="get_model_attr_name :: "><span class="description">get_model_attr_name()
+        </span><pre>get_model_attr_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_attr_options" title="get_model_attr_options :: Get options for model if defined"><span class="description">Get options for model if defined</span><pre>get_model_attr_options()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_attrs" title="get_model_attrs :: "><span class="description">get_model_attrs()
+        </span><pre>get_model_attrs()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_name" title="get_model_name :: "><span class="description">get_model_name()
+        </span><pre>get_model_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_model_relations" title="get_model_relations :: Get definition of all model relations"><span class="description">Get definition of all model relations</span><pre>get_model_relations()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_name" title="get_name :: Unified name getter"><span class="description">Unified name getter</span><pre>get_name()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_opts" title="get_opts :: Get all public non-attribute data from object"><span class="description">Get all public non-attribute data from object</span><pre>get_opts()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_quick_conds" title="get_quick_conds :: Get generic conditions for BasicModel"><span class="description">Get generic conditions for BasicModel</span><pre>get_quick_conds()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_rel" title="get_rel :: Get relation data"><span class="description">Get relation data</span><pre>get_rel()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_rel_bound_to" title="get_rel_bound_to :: Get belongs_to relation that is bound to has_many or has_one relation"><span class="description">Get belongs_to relation that is bound to has_many or has_one relation</span><pre>get_rel_bound_to()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_rel_bound_to_def" title="get_rel_bound_to_def :: Get definition of relation bound to another relation"><span class="description">Get definition of relation bound to another relation</span><pre>get_rel_bound_to_def()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_rel_def" title="get_rel_def :: Get definition of relation"><span class="description">Get definition of relation</span><pre>get_rel_def()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_rel_type" title="get_rel_type :: Get type of model relation"><span class="description">Get type of model relation</span><pre>get_rel_type()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_seoid" title="get_seoid :: Returns model ID from URL"><span class="description">Returns model ID from URL</span><pre>get_seoid()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_seoname" title="get_seoname :: Get generic seoname of instance"><span class="description">Get generic seoname of instance</span><pre>get_seoname()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_table" title="get_table :: Get name of associated table"><span class="description">Get name of associated table</span><pre>get_table()</pre></a></li>
+<li class="method public inherited"><a href="#method_has_attr" title="has_attr :: Instance version of model_attr_exist"><span class="description">Instance version of model_attr_exist</span><pre>has_attr()</pre></a></li>
+<li class="method public inherited"><a href="#method_is_model_belongs_to_id" title="is_model_belongs_to_id :: "><span class="description">is_model_belongs_to_id()
+        </span><pre>is_model_belongs_to_id()</pre></a></li>
+<li class="method public inherited"><a href="#method_is_new" title="is_new :: Does object have an id?"><span class="description">Does object have an id?</span><pre>is_new()</pre></a></li>
+<li class="method public inherited"><a href="#method_reload" title="reload :: Reload object from database"><span class="description">Reload object from database</span><pre>reload()</pre></a></li>
+<li class="method public inherited"><a href="#method_run_tasks" title="run_tasks :: Run callbacks"><span class="description">Run callbacks</span><pre>run_tasks()</pre></a></li>
+<li class="method public inherited"><a href="#method_save" title="save :: Create or update object in database"><span class="description">Create or update object in database</span><pre>save()</pre></a></li>
+<li class="method public inherited"><a href="#method_update_attrs" title="update_attrs :: Update attributes and distribute all data into object containers"><span class="description">Update attributes and distribute all data into object containers</span><pre>update_attrs()</pre></a></li>
+<li class="method public inherited"><a href="#method_update_check" title="update_check :: Check all attributes and figure out if object is ready to be saved"><span class="description">Check all attributes and figure out if object is ready to be saved</span><pre>update_check()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul><li class="method protected inherited"><a href="#method_prepare_data" title="prepare_data :: Prepare data to be saved (ReJSON)"><span class="description">Prepare data to be saved (ReJSON)</span><pre>prepare_data()</pre></a></li></ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul><li class="method private inherited"><a href="#method_relation_save" title="relation_save :: Save relation"><span class="description">Save relation</span><pre>relation_save()</pre></a></li></ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="property protected inherited"><a href="#property_attr_types" title="$attr_types :: List of allowed attribute types"><span class="description"></span><pre>$attr_types</pre></a></li>
+<li class="property protected inherited"><a href="#property_belongs_to" title="$belongs_to :: Model belongs_to relations"><span class="description"></span><pre>$belongs_to</pre></a></li>
+<li class="property protected inherited"><a href="#property_data" title="$data :: Real attribute data"><span class="description"></span><pre>$data</pre></a></li>
+<li class="property protected inherited"><a href="#property_has_many" title="$has_many :: Model has_many relations"><span class="description"></span><pre>$has_many</pre></a></li>
+<li class="property protected inherited"><a href="#property_has_one" title="$has_one :: Model has_one relations"><span class="description"></span><pre>$has_one</pre></a></li>
+<li class="property protected inherited"><a href="#property_id_col" title="$id_col :: Mode ID column name"><span class="description"></span><pre>$id_col</pre></a></li>
+<li class="property protected inherited"><a href="#property_id_cols_generated" title="$id_cols_generated :: ID columns generated by model name"><span class="description"></span><pre>$id_cols_generated</pre></a></li>
+<li class="property protected inherited"><a href="#property_merged_attrs" title="$merged_attrs :: Swap for attributes merged from related models"><span class="description"></span><pre>$merged_attrs</pre></a></li>
+<li class="property protected inherited"><a href="#property_obj_attrs" title="$obj_attrs :: Registered object handlers"><span class="description"></span><pre>$obj_attrs</pre></a></li>
+<li class="property protected inherited"><a href="#property_opts" title="$opts :: Secondary data passed to object"><span class="description"></span><pre>$opts</pre></a></li>
+<li class="property protected inherited"><a href="#property_relation_types" title="$relation_types :: Allowed model relation types"><span class="description"></span><pre>$relation_types</pre></a></li>
+<li class="property protected inherited"><a href="#property_table" title="$table :: "><span class="description"></span><pre>$table</pre></a></li>
+<li class="property protected inherited"><a href="#property_tables_generated" title="$tables_generated :: Table names generated by model name"><span class="description"></span><pre>$tables_generated</pre></a></li>
+</ul>
+</li>
+<li class="nav-header private">» Private
+                    <ul>
+<li class="property private inherited"><a href="#property_bad_chars" title="$bad_chars :: Seoname conflicting characters"><span class="description"></span><pre>$bad_chars</pre></a></li>
+<li class="property private inherited"><a href="#property_callbacks" title="$callbacks :: "><span class="description"></span><pre>$callbacks</pre></a></li>
+<li class="property private inherited"><a href="#property_good_chars" title="$good_chars :: Seoname replace characters"><span class="description"></span><pre>$good_chars</pre></a></li>
+<li class="property private inherited"><a href="#property_quick_conds" title="$quick_conds :: Detault conditions for get_all"><span class="description"></span><pre>$quick_conds</pre></a></li>
+<li class="property private inherited"><a href="#property_strictly_bad_chars" title="$strictly_bad_chars :: Seoname conflicting characters, strict mode"><span class="description"></span><pre>$strictly_bad_chars</pre></a></li>
+<li class="property private inherited"><a href="#property_strictly_good_chars" title="$strictly_good_chars :: "><span class="description"></span><pre>$strictly_good_chars</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-constant"></i> Constants
+                    <ul>
+<li class="constant  inherited"><a href="#constant_AFTER_DELETE" title="AFTER_DELETE :: "><span class="description">AFTER_DELETE</span><pre>AFTER_DELETE</pre></a></li>
+<li class="constant  inherited"><a href="#constant_AFTER_SAVE" title="AFTER_SAVE :: "><span class="description">AFTER_SAVE</span><pre>AFTER_SAVE</pre></a></li>
+<li class="constant  inherited"><a href="#constant_BEFORE_DELETE" title="BEFORE_DELETE :: "><span class="description">BEFORE_DELETE</span><pre>BEFORE_DELETE</pre></a></li>
+<li class="constant  inherited"><a href="#constant_BEFORE_SAVE" title="BEFORE_SAVE :: "><span class="description">BEFORE_SAVE</span><pre>BEFORE_SAVE</pre></a></li>
+<li class="constant  inherited"><a href="#constant_REL_BELONGS_TO" title="REL_BELONGS_TO :: "><span class="description">REL_BELONGS_TO</span><pre>REL_BELONGS_TO</pre></a></li>
+<li class="constant  inherited"><a href="#constant_REL_HAS_MANY" title="REL_HAS_MANY :: "><span class="description">REL_HAS_MANY</span><pre>REL_HAS_MANY</pre></a></li>
+<li class="constant  inherited"><a href="#constant_REL_HAS_ONE" title="REL_HAS_ONE :: "><span class="description">REL_HAS_ONE</span><pre>REL_HAS_ONE</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\System\Model\Color"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/System.html">System</a></li>
+<li>
+<span class="divider">\</span><a href="../namespaces/System.Model.html">Model</a>
+</li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/System.Model.Color.html">Color</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">Standartized model for colors.</p>
+<div class="details">
+<div class="long_description"><p>Used when you give user color options.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/system.models.html">system</a></td>
+</tr>
+<tr>
+<th>subpackage</th>
+<td>models</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
+<h2>Override of constructor, adds id column, created_at and updated_at into attrs</h2>
+<pre>__construct(array $update) : \System\Model\new</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::__construct()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$update</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\System\Model\new</code>object</div>
+</div></div>
+</div>
+<a id="method___get"></a><div class="element clickable method public method___get" data-toggle="collapse" data-target=".method___get .collapse">
+<h2>Attribute getter</h2>
+<pre>__get($attr) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::__get()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attr</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method___set"></a><div class="element clickable method public method___set" data-toggle="collapse" data-target=".method___set .collapse">
+<h2>Attribute handler, setter</h2>
+<pre>__set(string $name, mixed $value) : \System\Model\BasicModel</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::__set()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>Attribute handler</p></div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code><p>Value to be set</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\Model\BasicModel</code></div>
+</div></div>
+</div>
+<a id="method_add_callback"></a><div class="element clickable method public method_add_callback" data-toggle="collapse" data-target=".method_add_callback .collapse">
+<h2>Add a callback function to some action</h2>
+<pre>add_callback(string $trigger, \System\Model\Closure $lambda) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::add_callback()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::add_callback()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$trigger</h4>
+<code>string</code><p>One of triggers</p></div>
+<div class="subelement argument">
+<h4>$lambda</h4>
+<code>\System\Model\Closure</code><p>Instance of closure</p></div>
+</div></div>
+</div>
+<a id="method_assign_rel"></a><div class="element clickable method public method_assign_rel" data-toggle="collapse" data-target=".method_assign_rel .collapse">
+<h2>Assign and save relation by IDs</h2>
+<pre>assign_rel(string $rel_name, array $ids_new) : <a href="../classes/System.Model.Color.html">\System\Model\Color</a></pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::assign_rel()</td>
+</tr>
+<tr>
+<th>fluent</th>
+<td>This method is part of a fluent interface and will return the same instance</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$rel_name</h4>
+<code>string</code><p>Name of relation</p></div>
+<div class="subelement argument">
+<h4>$ids_new</h4>
+<code>\System\Model\list</code><p>List of new IDs - others will be deleted</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code><a href="../classes/System.Model.Color.html">\System\Model\Color</a></code></div>
+</div></div>
+</div>
+<a id="method_attr_exists"></a><div class="element clickable method public method_attr_exists" data-toggle="collapse" data-target=".method_attr_exists .collapse">
+<h2>Does attribute of a model exist</h2>
+<pre>attr_exists(string $model, string $attr) : bool</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::attr_exists()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code>True if exists</div>
+</div></div>
+</div>
+<a id="method_attr_is_rel"></a><div class="element clickable method public method_attr_is_rel" data-toggle="collapse" data-target=".method_attr_is_rel .collapse">
+<h2>Is model attribute of type relation?</h2>
+<pre>attr_is_rel(mixed $model, string $attr) : bool</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::attr_is_rel()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>mixed</code><p>Class or instance of desired model</p></div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code><p>Name of atribute</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_attr_required"></a><div class="element clickable method public method_attr_required" data-toggle="collapse" data-target=".method_attr_required .collapse">
+<h2>Is attribute required</h2>
+<pre>attr_required(string $attr) : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::attr_required()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::attr_required()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::attr_required()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_changed"></a><div class="element clickable method public method_changed" data-toggle="collapse" data-target=".method_changed .collapse">
+<h2>changed()
+        </h2>
+<pre>changed($status) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::changed()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::changed()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::changed()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$status</h4></div>
+</div></div>
+</div>
+<a id="method_convert_attr_val"></a><div class="element clickable method public method_convert_attr_val" data-toggle="collapse" data-target=".method_convert_attr_val .collapse">
+<h2>Prepare data of a kind to be saved, mostly conversions</h2>
+<pre>convert_attr_val($model, $attr, $val) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::convert_attr_val()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::convert_attr_val()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::convert_attr_val()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$attr</h4></div>
+<div class="subelement argument"><h4>$val</h4></div>
+</div></div>
+</div>
+<a id="method_count_all"></a><div class="element clickable method public method_count_all" data-toggle="collapse" data-target=".method_count_all .collapse">
+<h2>count_all()
+        </h2>
+<pre>count_all($model, array $conds, array $opts) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::count_all()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$opts</h4></div>
+</div></div>
+</div>
+<a id="method_create"></a><div class="element clickable method public method_create" data-toggle="collapse" data-target=".method_create .collapse">
+<h2>create()
+        </h2>
+<pre>create($model, array $attrs) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::create()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_drop"></a><div class="element clickable method public method_drop" data-toggle="collapse" data-target=".method_drop .collapse">
+<h2>Delete object from database</h2>
+<pre>drop() : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::drop()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_find"></a><div class="element clickable method public method_find" data-toggle="collapse" data-target=".method_find .collapse">
+<h2>Find model by ID or set of IDs</h2>
+<pre>find(string $model, int | array $ids, bool $force_list) : <a href="../classes/System.Model.Color.html">\System\Model\Color</a> | array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::find()</td>
+</tr>
+<tr>
+<th>fluent</th>
+<td>This method is part of a fluent interface and will return the same instance</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code><p>Class name of desired model</p></div>
+<div class="subelement argument">
+<h4>$ids</h4>
+<code>int</code><code>array</code><p>ID or list of IDs to look for</p></div>
+<div class="subelement argument">
+<h4>$force_list</h4>
+<code>bool</code><p>Returns array even if single result</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code><a href="../classes/System.Model.Color.html">\System\Model\Color</a></code><code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_gen_seoname"></a><div class="element clickable method public method_gen_seoname" data-toggle="collapse" data-target=".method_gen_seoname .collapse">
+<h2>Replace bad characters and generate seoname from string</h2>
+<pre>gen_seoname(string $str, bool $strict) : string</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::gen_seoname()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$str</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$strict</h4>
+<code>bool</code><p>Replace even dashes</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_all"></a><div class="element clickable method public method_get_all" data-toggle="collapse" data-target=".method_get_all .collapse">
+<h2>get_all()
+        </h2>
+<pre>get_all($model, array $conds, array $opts, array $joins) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_all()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$opts</h4></div>
+<div class="subelement argument"><h4>$joins</h4></div>
+</div></div>
+</div>
+<a id="method_get_all_children"></a><div class="element clickable method public method_get_all_children" data-toggle="collapse" data-target=".method_get_all_children .collapse">
+<h2>Get all children of Database model</h2>
+<pre>get_all_children() : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_all_children()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of class names</div>
+</div></div>
+</div>
+<a id="method_get_attr"></a><div class="element clickable method public method_get_attr" data-toggle="collapse" data-target=".method_get_attr .collapse">
+<h2>Override of attr models get_attr, respects 'id' alias</h2>
+<pre>get_attr(string $model, string $attr) : mixed</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_get_attr_def"></a><div class="element clickable method public method_get_attr_def" data-toggle="collapse" data-target=".method_get_attr_def .collapse">
+<h2>Gets definition of model attributes</h2>
+<pre>get_attr_def($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attr_def()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attr_def()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_def()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
+<a id="method_get_attr_desc"></a><div class="element clickable method public method_get_attr_desc" data-toggle="collapse" data-target=".method_get_attr_desc .collapse">
+<h2>get_attr_desc()
+        </h2>
+<pre>get_attr_desc($attr) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attr_desc()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attr_desc()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_desc()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_get_attr_name"></a><div class="element clickable method public method_get_attr_name" data-toggle="collapse" data-target=".method_get_attr_name .collapse">
+<h2>get_attr_name()
+        </h2>
+<pre>get_attr_name($attr) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attr_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attr_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_name()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_get_attr_name_from_belongs_to_rel"></a><div class="element clickable method public method_get_attr_name_from_belongs_to_rel" data-toggle="collapse" data-target=".method_get_attr_name_from_belongs_to_rel .collapse">
+<h2>get_attr_name_from_belongs_to_rel()
+        </h2>
+<pre>get_attr_name_from_belongs_to_rel($rel_name, $rel) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_name_from_belongs_to_rel()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$rel_name</h4></div>
+<div class="subelement argument"><h4>$rel</h4></div>
+</div></div>
+</div>
+<a id="method_get_attr_type"></a><div class="element clickable method public method_get_attr_type" data-toggle="collapse" data-target=".method_get_attr_type .collapse">
+<h2>Get type of attribute</h2>
+<pre>get_attr_type(string $model, string $attr) : mixed</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attr_type()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attr_type()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_type()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code><p>Name of model class</p></div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code><p>Name of attribute</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Type of attribute (string) or false on failure</div>
+</div></div>
+</div>
+<a id="method_get_attr_value"></a><div class="element clickable method public method_get_attr_value" data-toggle="collapse" data-target=".method_get_attr_value .collapse">
+<h2>get_attr_value()
+        </h2>
+<pre>get_attr_value($attr) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attr_value()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attr_value()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attr_value()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_get_attrs"></a><div class="element clickable method public method_get_attrs" data-toggle="collapse" data-target=".method_get_attrs .collapse">
+<h2>Join all attributes into single array (helper)</h2>
+<pre>get_attrs($attrs) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_attrs()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attrs</h4></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>List of attributes</div>
+</div></div>
+</div>
+<a id="method_get_bilinear_table_name"></a><div class="element clickable method public method_get_bilinear_table_name" data-toggle="collapse" data-target=".method_get_bilinear_table_name .collapse">
+<h2>get_bilinear_table_name()
+        </h2>
+<pre>get_bilinear_table_name($model, array $rel_attrs) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_bilinear_table_name()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$rel_attrs</h4></div>
+</div></div>
+</div>
+<a id="method_get_color"></a><div class="element clickable method public method_get_color" data-toggle="collapse" data-target=".method_get_color .collapse">
+<h2>Get color</h2>
+<pre>get_color() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_data"></a><div class="element clickable method public method_get_data" data-toggle="collapse" data-target=".method_get_data .collapse">
+<h2>Get all object data</h2>
+<pre>get_data() : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_data()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_data()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_data()</td>
+</tr>
+</table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Data ray</div>
+</div></div>
+</div>
+<a id="method_get_first"></a><div class="element clickable method public method_get_first" data-toggle="collapse" data-target=".method_get_first .collapse">
+<h2>get_first()
+        </h2>
+<pre>get_first($model, array $conds, array $opts) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_first()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$conds</h4></div>
+<div class="subelement argument"><h4>$opts</h4></div>
+</div></div>
+</div>
+<a id="method_get_id_col"></a><div class="element clickable method public method_get_id_col" data-toggle="collapse" data-target=".method_get_id_col .collapse">
+<h2>Get name of ID column</h2>
+<pre>get_id_col($model) : string</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_id_col()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_location_attrs"></a><div class="element clickable method public method_get_location_attrs" data-toggle="collapse" data-target=".method_get_location_attrs .collapse">
+<h2>Get all attribute names that point to system::location</h2>
+<pre>get_location_attrs(string $model) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_location_attrs()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_model_attr_desc"></a><div class="element clickable method public method_get_model_attr_desc" data-toggle="collapse" data-target=".method_get_model_attr_desc .collapse">
+<h2>get_model_attr_desc()
+        </h2>
+<pre>get_model_attr_desc($model, $attr) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_model_attr_desc()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_model_attr_desc()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_attr_desc()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_get_model_attr_list"></a><div class="element clickable method public method_get_model_attr_list" data-toggle="collapse" data-target=".method_get_model_attr_list .collapse">
+<h2>get_model_attr_list()
+        </h2>
+<pre>get_model_attr_list($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_attr_list()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
+<a id="method_get_model_attr_name"></a><div class="element clickable method public method_get_model_attr_name" data-toggle="collapse" data-target=".method_get_model_attr_name .collapse">
+<h2>get_model_attr_name()
+        </h2>
+<pre>get_model_attr_name($model, $attr) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_model_attr_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_model_attr_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_attr_name()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_get_model_attr_options"></a><div class="element clickable method public method_get_model_attr_options" data-toggle="collapse" data-target=".method_get_model_attr_options .collapse">
+<h2>Get options for model if defined</h2>
+<pre>get_model_attr_options(string $model, string $attr) : false | array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_attr_options()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>false</code><code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_get_model_attrs"></a><div class="element clickable method public method_get_model_attrs" data-toggle="collapse" data-target=".method_get_model_attrs .collapse">
+<h2>get_model_attrs()
+        </h2>
+<pre>get_model_attrs($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_model_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_model_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_attrs()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
+<a id="method_get_model_name"></a><div class="element clickable method public method_get_model_name" data-toggle="collapse" data-target=".method_get_model_name .collapse">
+<h2>get_model_name()
+        </h2>
+<pre>get_model_name($plural) </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_model_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_model_name()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_name()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$plural</h4></div>
+</div></div>
+</div>
+<a id="method_get_model_relations"></a><div class="element clickable method public method_get_model_relations" data-toggle="collapse" data-target=".method_get_model_relations .collapse">
+<h2>Get definition of all model relations</h2>
+<pre>get_model_relations(string $model) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_model_relations()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_name"></a><div class="element clickable method public method_get_name" data-toggle="collapse" data-target=".method_get_name .collapse">
+<h2>Unified name getter</h2>
+<pre>get_name(\System\Model\pattern $pattern) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_name()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$pattern</h4>
+<code>\System\Model\pattern</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_opts"></a><div class="element clickable method public method_get_opts" data-toggle="collapse" data-target=".method_get_opts .collapse">
+<h2>Get all public non-attribute data from object</h2>
+<pre>get_opts() : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::get_opts()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::get_opts()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_opts()</td>
+</tr>
+</table>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_quick_conds"></a><div class="element clickable method public method_get_quick_conds" data-toggle="collapse" data-target=".method_get_quick_conds .collapse">
+<h2>Get generic conditions for BasicModel</h2>
+<pre>get_quick_conds(mixed $model) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_quick_conds()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>mixed</code><p>Instance or class name of model</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Set of conditions</div>
+</div></div>
+</div>
+<a id="method_get_rel"></a><div class="element clickable method public method_get_rel" data-toggle="collapse" data-target=".method_get_rel .collapse">
+<h2>Get relation data</h2>
+<pre>get_rel(mixed $model, string $rel) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_rel()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>mixed</code><p>Instance or class name of model</p></div>
+<div class="subelement argument">
+<h4>$rel</h4>
+<code>string</code><p>Name of the relation</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>mixed</code>Relation data, usually array of BasicModels</div>
+</div></div>
+</div>
+<a id="method_get_rel_bound_to"></a><div class="element clickable method public method_get_rel_bound_to" data-toggle="collapse" data-target=".method_get_rel_bound_to .collapse">
+<h2>Get belongs_to relation that is bound to has_many or has_one relation</h2>
+<pre>get_rel_bound_to(string $model, string $rel) : false | array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_rel_bound_to()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$rel</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>false</code><code>array</code>
+</div>
+</div></div>
+</div>
+<a id="method_get_rel_bound_to_def"></a><div class="element clickable method public method_get_rel_bound_to_def" data-toggle="collapse" data-target=".method_get_rel_bound_to_def .collapse">
+<h2>Get definition of relation bound to another relation</h2>
+<pre>get_rel_bound_to_def(string $model, string $rel) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_rel_bound_to_def()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$rel</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_rel_def"></a><div class="element clickable method public method_get_rel_def" data-toggle="collapse" data-target=".method_get_rel_def .collapse">
+<h2>Get definition of relation</h2>
+<pre>get_rel_def(string $model, string $rel) : array</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_rel_def()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code>
+</div>
+<div class="subelement argument">
+<h4>$rel</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a id="method_get_rel_type"></a><div class="element clickable method public method_get_rel_type" data-toggle="collapse" data-target=".method_get_rel_type .collapse">
+<h2>Get type of model relation</h2>
+<pre>get_rel_type(mixed $model, string $attr) : \System\Model\string,</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_rel_type()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>mixed</code><p>Class or instance of desired model</p></div>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code><p>Name of relation</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\System\Model\string,</code>false on failure</div>
+</div></div>
+</div>
+<a id="method_get_seoid"></a><div class="element clickable method public method_get_seoid" data-toggle="collapse" data-target=".method_get_seoid .collapse">
+<h2>Returns model ID from URL</h2>
+<pre>get_seoid(string $str) : \System\Model\in</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_seoid()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$str</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\System\Model\in</code>ID</div>
+</div></div>
+</div>
+<a id="method_get_seoname"></a><div class="element clickable method public method_get_seoname" data-toggle="collapse" data-target=".method_get_seoname .collapse">
+<h2>Get generic seoname of instance</h2>
+<pre>get_seoname() : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_seoname()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_get_table"></a><div class="element clickable method public method_get_table" data-toggle="collapse" data-target=".method_get_table .collapse">
+<h2>Get name of associated table</h2>
+<pre>get_table($model) : string</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::get_table()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_has_attr"></a><div class="element clickable method public method_has_attr" data-toggle="collapse" data-target=".method_has_attr .collapse">
+<h2>Instance version of model_attr_exist</h2>
+<pre>has_attr(string $attr) : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::has_attr()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$attr</h4>
+<code>string</code><p>Name of attribute</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_is_model_belongs_to_id"></a><div class="element clickable method public method_is_model_belongs_to_id" data-toggle="collapse" data-target=".method_is_model_belongs_to_id .collapse">
+<h2>is_model_belongs_to_id()
+        </h2>
+<pre>is_model_belongs_to_id($model, $attr) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::is_model_belongs_to_id()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$attr</h4></div>
+</div></div>
+</div>
+<a id="method_is_new"></a><div class="element clickable method public method_is_new" data-toggle="collapse" data-target=".method_is_new .collapse">
+<h2>Does object have an id?</h2>
+<pre>is_new() : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::is_new()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_reload"></a><div class="element clickable method public method_reload" data-toggle="collapse" data-target=".method_reload .collapse">
+<h2>Reload object from database</h2>
+<pre>reload() : \System\Model\BasicModel</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::reload()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\Model\BasicModel</code></div>
+</div></div>
+</div>
+<a id="method_run_tasks"></a><div class="element clickable method public method_run_tasks" data-toggle="collapse" data-target=".method_run_tasks .collapse">
+<h2>Run callbacks</h2>
+<pre>run_tasks(array $trigger, array $args) : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::run_tasks()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::run_tasks()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$trigger</h4>
+<code>array</code><p>Set of callbacks</p></div>
+<div class="subelement argument"><h4>$args</h4></div>
+</div></div>
+</div>
+<a id="method_save"></a><div class="element clickable method public method_save" data-toggle="collapse" data-target=".method_save .collapse">
+<h2>Create or update object in database</h2>
+<pre>save() : \System\Model\BasicModel</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::save()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\Model\BasicModel</code></div>
+</div></div>
+</div>
+<a id="method_update_attrs"></a><div class="element clickable method public method_update_attrs" data-toggle="collapse" data-target=".method_update_attrs .collapse">
+<h2>Update attributes and distribute all data into object containers</h2>
+<pre>update_attrs(array $update) : \System\Model\BasicModel</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::update_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::update_attrs()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::update_attrs()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$update</h4>
+<code>array</code><p>Data</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\Model\BasicModel</code></div>
+</div></div>
+</div>
+<a id="method_update_check"></a><div class="element clickable method public method_update_check" data-toggle="collapse" data-target=".method_update_check .collapse">
+<h2>Check all attributes and figure out if object is ready to be saved</h2>
+<pre>update_check() : bool</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::update_check()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>bool</code>True if all ok</div>
+</div></div>
+</div>
+<a id="method_prepare_data"></a><div class="element clickable method protected method_prepare_data" data-toggle="collapse" data-target=".method_prepare_data .collapse">
+<h2>Prepare data to be saved (ReJSON)</h2>
+<pre>prepare_data($model, array $data) : void</pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::prepare_data()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$data</h4></div>
+</div></div>
+</div>
+<a id="method_relation_save"></a><div class="element clickable method private method_relation_save" data-toggle="collapse" data-target=".method_relation_save .collapse">
+<h2>Save relation</h2>
+<pre>relation_save(string $model, string $model_id, string $rel_name, array $ids_save, array $ids_delete) : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::relation_save()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$model</h4>
+<code>string</code><p>Name of model</p></div>
+<div class="subelement argument">
+<h4>$model_id</h4>
+<code>string</code><p>ID of object</p></div>
+<div class="subelement argument">
+<h4>$rel_name</h4>
+<code>string</code><p>Name of relation</p></div>
+<div class="subelement argument">
+<h4>$ids_save</h4>
+<code>\System\Model\list</code><p>List of IDs to keep/save</p>
+</div>
+<div class="subelement argument">
+<h4>$ids_delete</h4>
+<code>\System\Model\list</code><p>List of IDs to delete</p></div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_attr_types"> </a><div class="element clickable property protected property_attr_types" data-toggle="collapse" data-target=".property_attr_types .collapse">
+<h2></h2>
+<pre>$attr_types </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::$$attr_types</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$attr_types</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$attr_types</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_belongs_to"> </a><div class="element clickable property protected property_belongs_to" data-toggle="collapse" data-target=".property_belongs_to .collapse">
+<h2></h2>
+<pre>$belongs_to </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$belongs_to</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_data"> </a><div class="element clickable property protected property_data" data-toggle="collapse" data-target=".property_data .collapse">
+<h2></h2>
+<pre>$data </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::$$data</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$data</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$data</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_has_many"> </a><div class="element clickable property protected property_has_many" data-toggle="collapse" data-target=".property_has_many .collapse">
+<h2></h2>
+<pre>$has_many </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$has_many</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_has_one"> </a><div class="element clickable property protected property_has_one" data-toggle="collapse" data-target=".property_has_one .collapse">
+<h2></h2>
+<pre>$has_one </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$has_one</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_id_col"> </a><div class="element clickable property protected property_id_col" data-toggle="collapse" data-target=".property_id_col .collapse">
+<h2></h2>
+<pre>$id_col </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$id_col</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_id_cols_generated"> </a><div class="element clickable property protected property_id_cols_generated" data-toggle="collapse" data-target=".property_id_cols_generated .collapse">
+<h2></h2>
+<pre>$id_cols_generated </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$id_cols_generated</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_merged_attrs"> </a><div class="element clickable property protected property_merged_attrs" data-toggle="collapse" data-target=".property_merged_attrs .collapse">
+<h2></h2>
+<pre>$merged_attrs </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::$$merged_attrs</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$merged_attrs</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$merged_attrs</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_obj_attrs"> </a><div class="element clickable property protected property_obj_attrs" data-toggle="collapse" data-target=".property_obj_attrs .collapse">
+<h2></h2>
+<pre>$obj_attrs </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::$$obj_attrs</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$obj_attrs</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$obj_attrs</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_opts"> </a><div class="element clickable property protected property_opts" data-toggle="collapse" data-target=".property_opts .collapse">
+<h2></h2>
+<pre>$opts </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::$$opts</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$opts</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$opts</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_relation_types"> </a><div class="element clickable property protected property_relation_types" data-toggle="collapse" data-target=".property_relation_types .collapse">
+<h2></h2>
+<pre>$relation_types </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$relation_types</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_table"> </a><div class="element clickable property protected property_table" data-toggle="collapse" data-target=".property_table .collapse">
+<h2></h2>
+<pre>$table </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>type</th>
+<td>string Model table name</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$table</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_tables_generated"> </a><div class="element clickable property protected property_tables_generated" data-toggle="collapse" data-target=".property_tables_generated .collapse">
+<h2></h2>
+<pre>$tables_generated </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$tables_generated</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_bad_chars"> </a><div class="element clickable property private property_bad_chars" data-toggle="collapse" data-target=".property_bad_chars .collapse">
+<h2></h2>
+<pre>$bad_chars </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$bad_chars</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_callbacks"> </a><div class="element clickable property private property_callbacks" data-toggle="collapse" data-target=".property_callbacks .collapse">
+<h2></h2>
+<pre>$callbacks </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::$$callbacks</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$callbacks</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_good_chars"> </a><div class="element clickable property private property_good_chars" data-toggle="collapse" data-target=".property_good_chars .collapse">
+<h2></h2>
+<pre>$good_chars </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$good_chars</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_quick_conds"> </a><div class="element clickable property private property_quick_conds" data-toggle="collapse" data-target=".property_quick_conds .collapse">
+<h2></h2>
+<pre>$quick_conds </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$quick_conds</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_strictly_bad_chars"> </a><div class="element clickable property private property_strictly_bad_chars" data-toggle="collapse" data-target=".property_strictly_bad_chars .collapse">
+<h2></h2>
+<pre>$strictly_bad_chars </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$strictly_bad_chars</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_strictly_good_chars"> </a><div class="element clickable property private property_strictly_good_chars" data-toggle="collapse" data-target=".property_strictly_good_chars .collapse">
+<h2></h2>
+<pre>$strictly_good_chars </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>type</th>
+<td>Seoname replace characters, strict mode</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::$$strictly_good_chars</td>
+</tr>
+</table>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_AFTER_DELETE"> </a><div class="element clickable constant  constant_AFTER_DELETE" data-toggle="collapse" data-target=".constant_AFTER_DELETE .collapse">
+<h2>AFTER_DELETE</h2>
+<pre>AFTER_DELETE </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::AFTER_DELETE</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::AFTER_DELETE</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="constant_AFTER_SAVE"> </a><div class="element clickable constant  constant_AFTER_SAVE" data-toggle="collapse" data-target=".constant_AFTER_SAVE .collapse">
+<h2>AFTER_SAVE</h2>
+<pre>AFTER_SAVE </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::AFTER_SAVE</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::AFTER_SAVE</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="constant_BEFORE_DELETE"> </a><div class="element clickable constant  constant_BEFORE_DELETE" data-toggle="collapse" data-target=".constant_BEFORE_DELETE .collapse">
+<h2>BEFORE_DELETE</h2>
+<pre>BEFORE_DELETE </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::BEFORE_DELETE</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::BEFORE_DELETE</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="constant_BEFORE_SAVE"> </a><div class="element clickable constant  constant_BEFORE_SAVE" data-toggle="collapse" data-target=".constant_BEFORE_SAVE .collapse">
+<h2>BEFORE_SAVE</h2>
+<pre>BEFORE_SAVE </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::BEFORE_SAVE</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::BEFORE_SAVE</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="constant_REL_BELONGS_TO"> </a><div class="element clickable constant  constant_REL_BELONGS_TO" data-toggle="collapse" data-target=".constant_REL_BELONGS_TO .collapse">
+<h2>REL_BELONGS_TO</h2>
+<pre>REL_BELONGS_TO </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::REL_BELONGS_TO</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_REL_HAS_MANY"> </a><div class="element clickable constant  constant_REL_HAS_MANY" data-toggle="collapse" data-target=".constant_REL_HAS_MANY .collapse">
+<h2>REL_HAS_MANY</h2>
+<pre>REL_HAS_MANY </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::REL_HAS_MANY</td>
+</tr></table>
+</div></div>
+</div>
+<a id="constant_REL_HAS_ONE"> </a><div class="element clickable constant  constant_REL_HAS_ONE" data-toggle="collapse" data-target=".constant_REL_HAS_ONE .collapse">
+<h2>REL_HAS_ONE</h2>
+<pre>REL_HAS_ONE </pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::REL_HAS_ONE</td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+</div>
+</body>
+</html>

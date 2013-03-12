@@ -1,0 +1,306 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>phpDocumentor » \YacmsCLIOptions</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">phpDocumentor</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Namespaces</a></li>
+<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
+<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
+<li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
+<li><a>Packages</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
+<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
+<li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">776</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">3</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">2</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods
+                    <ul>
+<li class="method public "><a href="#method_command_exists" title="command_exists :: Does command exist?"><span class="description">Does command exist?</span><pre>command_exists()</pre></a></li>
+<li class="method public "><a href="#method_command_needs_the_force" title="command_needs_the_force :: Does command need --force options to be invoked?"><span class="description">Does command need --force options to be invoked?</span><pre>command_needs_the_force()</pre></a></li>
+<li class="method public "><a href="#method_get" title="get :: Public getter"><span class="description">Public getter</span><pre>get()</pre></a></li>
+<li class="method public "><a href="#method_get_commands_list" title="get_commands_list :: Get list of available commands"><span class="description">Get list of available commands</span><pre>get_commands_list()</pre></a></li>
+<li class="method public "><a href="#method_get_con_width" title="get_con_width :: Get console width (for decoration) in chars"><span class="description">Get console width (for decoration) in chars</span><pre>get_con_width()</pre></a></li>
+<li class="method public "><a href="#method_get_env" title="get_env :: Environment getter-wrapper"><span class="description">Environment getter-wrapper</span><pre>get_env()</pre></a></li>
+<li class="method public "><a href="#method_parse_options" title="parse_options :: Parse CLI arguments into options"><span class="description">Parse CLI arguments into options</span><pre>parse_options()</pre></a></li>
+<li class="method public "><a href="#method_set" title="set :: Setter pro options"><span class="description">Setter pro options</span><pre>set()</pre></a></li>
+<li class="method public "><a href="#method_usage" title="usage :: Display usage"><span class="description">Display usage</span><pre>usage()</pre></a></li>
+</ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties
+                    <ul></ul>
+</li>
+<li class="nav-header protected">» Protected
+                    <ul>
+<li class="property protected "><a href="#property_commands" title="$commands :: Command list container"><span class="description"></span><pre>$commands</pre></a></li>
+<li class="property protected "><a href="#property_con_width" title="$con_width :: Console width"><span class="description"></span><pre>$con_width</pre></a></li>
+<li class="property protected "><a href="#property_env" title="$env :: Predefined environment"><span class="description"></span><pre>$env</pre></a></li>
+<li class="property protected "><a href="#property_forced_commands" title="$forced_commands :: Commands that need The Force"><span class="description"></span><pre>$forced_commands</pre></a></li>
+<li class="property protected "><a href="#property_info" title="$info :: Script information"><span class="description"></span><pre>$info</pre></a></li>
+<li class="property protected "><a href="#property_opts" title="$opts :: Options container"><span class="description"></span><pre>$opts</pre></a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="span8">
+<a id="\YacmsCLIOptions"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/YacmsCLIOptions.html">YacmsCLIOptions</a>
+</li>
+</ul>
+<div class="element class">
+<p class="short_description">Container class for commands and options</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/core.html">core</a></td>
+</tr></table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_command_exists"></a><div class="element clickable method public method_command_exists" data-toggle="collapse" data-target=".method_command_exists .collapse">
+<h2>Does command exist?</h2>
+<pre>command_exists(string $cmd) : bool</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cmd</h4>
+<code>string</code><p>Name of command</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_command_needs_the_force"></a><div class="element clickable method public method_command_needs_the_force" data-toggle="collapse" data-target=".method_command_needs_the_force .collapse">
+<h2>Does command need --force options to be invoked?</h2>
+<pre>command_needs_the_force(string $cmd) : bool</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$cmd</h4>
+<code>string</code><p>Name of command</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="method_get"></a><div class="element clickable method public method_get" data-toggle="collapse" data-target=".method_get .collapse">
+<h2>Public getter</h2>
+<pre>get(string $opt, bool $stfu) : mixed</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$opt</h4>
+<code>string</code><p>Option to get</p></div>
+<div class="subelement argument">
+<h4>$stfu</h4>
+<code>bool</code><p>Shut the fuck up</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_get_commands_list"></a><div class="element clickable method public method_get_commands_list" data-toggle="collapse" data-target=".method_get_commands_list .collapse">
+<h2>Get list of available commands</h2>
+<pre>get_commands_list() : array</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>Set of commands</div>
+</div></div>
+</div>
+<a id="method_get_con_width"></a><div class="element clickable method public method_get_con_width" data-toggle="collapse" data-target=".method_get_con_width .collapse">
+<h2>Get console width (for decoration) in chars</h2>
+<pre>get_con_width() : int</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>int</code>Console width</div>
+</div></div>
+</div>
+<a id="method_get_env"></a><div class="element clickable method public method_get_env" data-toggle="collapse" data-target=".method_get_env .collapse">
+<h2>Environment getter-wrapper</h2>
+<pre>get_env() : string</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="method_parse_options"></a><div class="element clickable method public method_parse_options" data-toggle="collapse" data-target=".method_parse_options .collapse">
+<h2>Parse CLI arguments into options</h2>
+<pre>parse_options() : void</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_set"></a><div class="element clickable method public method_set" data-toggle="collapse" data-target=".method_set .collapse">
+<h2>Setter pro options</h2>
+<pre>set(string $opt, mixed $val) : mixed</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$opt</h4>
+<code>string</code><p>Option to save</p></div>
+<div class="subelement argument">
+<h4>$val</h4>
+<code>mixed</code><p>Value to save</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>mixed</code></div>
+</div></div>
+</div>
+<a id="method_usage"></a><div class="element clickable method public method_usage" data-toggle="collapse" data-target=".method_usage .collapse">
+<h2>Display usage</h2>
+<pre>usage() : void</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a id="property_commands"> </a><div class="element clickable property protected property_commands" data-toggle="collapse" data-target=".property_commands .collapse">
+<h2></h2>
+<pre>$commands </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_con_width"> </a><div class="element clickable property protected property_con_width" data-toggle="collapse" data-target=".property_con_width .collapse">
+<h2></h2>
+<pre>$con_width </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_env"> </a><div class="element clickable property protected property_env" data-toggle="collapse" data-target=".property_env .collapse">
+<h2></h2>
+<pre>$env </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_forced_commands"> </a><div class="element clickable property protected property_forced_commands" data-toggle="collapse" data-target=".property_forced_commands .collapse">
+<h2></h2>
+<pre>$forced_commands </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_info"> </a><div class="element clickable property protected property_info" data-toggle="collapse" data-target=".property_info .collapse">
+<h2></h2>
+<pre>$info </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_opts"> </a><div class="element clickable property protected property_opts" data-toggle="collapse" data-target=".property_opts .collapse">
+<h2></h2>
+<pre>$opts </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>param</th>
+<td></td>
+</tr></table>
+</div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
+            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+</div>
+</body>
+</html>
