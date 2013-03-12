@@ -29,7 +29,7 @@ namespace System
 
 
 		/** Class init
-		 * @returns void
+		 * @return void
 		 */
 		public static function init()
 		{
@@ -38,7 +38,7 @@ namespace System
 
 
 		/** Set output title
-		 * @returns void
+		 * @return void
 		 */
 		public static function set_title()
 		{
@@ -50,7 +50,7 @@ namespace System
 
 		/** Get title
 		 * @param bool $last
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_title($last = false)
 		{
@@ -62,7 +62,7 @@ namespace System
 
 		/** Set layout template
 		 * @param string $temp
-		 * @returns void
+		 * @return void
 		 */
 		public static function set_template($temp)
 		{
@@ -96,7 +96,7 @@ namespace System
 
 		/** Get output format
 		 * @param bool $mime Get mime-type
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_format($mime = false)
 		{
@@ -108,7 +108,7 @@ namespace System
 		/** Add template into queue
 		 * @param array $template
 		 * @param string $slot
-		 * @returns void
+		 * @return void
 		 */
 		public static function add_template($template, $slot)
 		{
@@ -123,7 +123,7 @@ namespace System
 
 		/** Output templates in a slot
 		 * @param string $name
-		 * @returns void
+		 * @return void
 		 */
 		public static function slot($name = \System\Template::DEFAULT_SLOT)
 		{
@@ -144,7 +144,7 @@ namespace System
 
 
 		/** Introduce pwf name and version
-		 * @returns string
+		 * @return string
 		 */
 		public static function introduce()
 		{
@@ -194,7 +194,7 @@ namespace System
 
 
 		/** Include all remaining templates in queue
-		 * @returns void
+		 * @return void
 		 */
 		public static function yield()
 		{
@@ -209,7 +209,7 @@ namespace System
 
 
 		/** Initiate output
-		 * @returns void
+		 * @return void
 		 */
 		public static function out()
 		{
@@ -241,7 +241,7 @@ namespace System
 
 
 		/** Send HTTP headers
-		 * @returns void
+		 * @return void
 		 */
 		public static function send_headers()
 		{
@@ -274,7 +274,7 @@ namespace System
 
 		/** Get content from location
 		 * @param string $place
-		 * @returns string
+		 * @return string
 		 */
 		public static function &get_content_from($place)
 		{

@@ -1,7 +1,12 @@
 <?
 
+/** Santa package handling
+ * @package santa
+ */
 namespace Santa
 {
+	/** Santa package handling
+	 */
 	class Package extends \System\Model\Attr
 	{
 		const DIR_TMP = '/var/tmp';
@@ -12,16 +17,30 @@ namespace Santa
 		const URL_SOURCE = 'pwf.scourge.cz/';
 		const PATH_BIN = '/www/bin';
 
+		/** Loaded tree of santa packages
+		 * @param array
+		 * @todo Rewrite so that whole tree is not loaded into RAM
+		 */
 		static private $tree = array();
-		static private $meta = array();
+
+		/** Model attributes
+		 * @param array
+		 */
 		static protected $attrs = array(
 			"string"   => array('name', 'category', 'name_short', 'desc', 'branch', 'version', 'homepage'),
 			"bool"     => array('installed', 'downloaded', 'extracted'),
 		);
 
+		/** Package available versions
+		 * @param array
+		 */
 		private $available = array();
 
 
+		/** Public constructor
+		 * @param array $dataray Dictionary of values
+		 * @return $this
+		 */
 		public function __construct(array $dataray)
 		{
 			parent::__construct($dataray);
@@ -42,6 +61,9 @@ namespace Santa
 		}
 
 
+		/** Is package installed in system?
+		 * @return bool
+		 */
 		public function is_installed()
 		{
 			$dir_meta = $this->get_meta_dir();
@@ -145,6 +167,7 @@ namespace Santa
 
 
 		/** Get whole tree of package list
+		 * @param bool $force Force reload of tree
 		 * @return array
 		 */
 		private static function load_tree($force = false)
@@ -229,6 +252,10 @@ namespace Santa
 		}
 
 
+		/** Does package exist
+		 * @param string $name
+		 * @return bool
+		 */
 		public static function exists($name)
 		{
 			self::load_tree();
@@ -249,6 +276,8 @@ namespace Santa
 					}
 				}
 			}
+
+			return false;
 		}
 
 		/** Get path to temporary directory of package
@@ -287,6 +316,9 @@ namespace Santa
 		}
 
 
+		/** Get path to package file
+		 * @return string
+		 */
 		public function get_file_path()
 		{
 			return ROOT.self::DIR_TMP.'/'.$this->get_file_name();
@@ -316,7 +348,7 @@ namespace Santa
 		}
 
 
-		/* Download package into predefined space
+		/** Download package into predefined space
 		 * @return bool False on failure
 		 */
 		public function download()
@@ -400,10 +432,9 @@ namespace Santa
 
 
 		/** Add version to list of available
-		 * @param string branch
-		 * @param string version
+		 * @param array $versions
 		 */
-		public function add_available($versions)
+		public function add_available(array $versions)
 		{
 			foreach ($versions as $ver) {
 				$this->available[] = $ver['branch'].'/'.$ver['name'];
@@ -412,6 +443,7 @@ namespace Santa
 
 
 		/** Is there any update for this package
+		 * @param bool $keep_branch Update in the same branch
 		 * @return bool
 		 */
 		public function is_available_for_update($keep_branch = true)
@@ -430,6 +462,7 @@ namespace Santa
 
 
 		/** Install package
+		 * @return bool False on failure
 		 */
 		public function install()
 		{
@@ -452,6 +485,9 @@ namespace Santa
 
 
 		/** Browse all dirs and copy files into install dir
+		 * @param string $dir  Unpacked package directory
+		 * @param string $root Local root to install package
+		 * @param array  &$bad Reference to save bad files into
 		 * @return void
 		 */
 		private static function install_recursive($dir, $root, &$bad)
@@ -525,7 +561,7 @@ namespace Santa
 
 
 		/** Get list of available updates
-		 * @param  bool  $keep_branch Should updates keep branch that is installed?
+		 * @param null|string $branch Use this branch to install package from
 		 * @return array
 		 */
 		public static function get_update_list($branch = null)
@@ -543,6 +579,9 @@ namespace Santa
 		}
 
 
+		/** Get full name of package - category/name
+		 * @return string
+		 */
 		public function get_full_name()
 		{
 			return $this->category.'/'.$this->name;

@@ -71,7 +71,8 @@ namespace System
 		}
 
 
-		/** Alias to create simple input type
+		/**
+		 * Alias to create simple input type
 		 * @param string $name Name of called method
 		 * @param array  $args Arguments to the function
 		 */
@@ -97,7 +98,7 @@ namespace System
 
 
 		/** Lookup commited data in input class
-		 * @returns void
+		 * @return void
 		 */
 		protected function take_data_from_input()
 		{
@@ -125,7 +126,7 @@ namespace System
 
 		/** Get value of input by name
 		 * @param array $attrs Input attributes
-		 * @returns mixed
+		 * @return mixed
 		 */
 		protected function get_input_value($attrs)
 		{
@@ -166,7 +167,7 @@ namespace System
 
 
 		/** Get generic ID for this form
-		 * @returns string
+		 * @return string
 		 */
 		protected function get_generic_id()
 		{
@@ -176,7 +177,7 @@ namespace System
 
 		/** Add object to forms' set of objects
 		 * @param System\Form\Element $element
-		 * @returns void
+		 * @return void
 		 */
 		protected function &add_object(\System\Form\Element $element)
 		{
@@ -212,7 +213,7 @@ namespace System
 
 
 		/** Stop rendering form element container
-		 * @returns void
+		 * @return void
 		 */
 		public function group_end()
 		{
@@ -222,7 +223,7 @@ namespace System
 
 		/** Check if form container is on, start it otherwise
 		 * @param string $type
-		 * @returns void
+		 * @return void
 		 */
 		public function check_rendering_group($type)
 		{
@@ -235,7 +236,7 @@ namespace System
 
 
 		/** Get generic object name
-		 * @returns string
+		 * @return string
 		 */
 		public function gen_obj_name($type)
 		{
@@ -244,7 +245,7 @@ namespace System
 
 
 		/** Is the form ready for processing
-		 * @returns bool
+		 * @return bool
 		 */
 		public function passed()
 		{
@@ -276,7 +277,7 @@ namespace System
 
 
 		/** Check if tab group has started, start it if not
-		 * @returns $this
+		 * @return $this
 		 */
 		public function tab_group_check()
 		{
@@ -289,7 +290,7 @@ namespace System
 
 
 		/** Start groupping tabs into a group
-		 * @returns $this
+		 * @return $this
 		 */
 		public function tab_group_start()
 		{
@@ -305,7 +306,7 @@ namespace System
 
 
 		/** Stop groupping tabs into a group
-		 * @returns $this
+		 * @return $this
 		 */
 		public function tab_group_end()
 		{
@@ -318,7 +319,7 @@ namespace System
 		/** Start groupping input containers into tab
 		 * @param string $label Tab label
 		 * @param string $name  Tab name, usefull for JS calls
-		 * @returns $this
+		 * @return $this
 		 */
 		public function tab($label, $name = null)
 		{
@@ -343,7 +344,7 @@ namespace System
 
 
 		/** Stop grouping inputs into current tab
-		 * @returns $this
+		 * @return $this
 		 */
 		public function tab_end()
 		{
@@ -354,7 +355,7 @@ namespace System
 
 		/** Add input
 		 * @param array $attrs
-		 * @returns System\Form\Input
+		 * @return System\Form\Input
 		 */
 		public function input(array $attrs)
 		{
@@ -410,7 +411,7 @@ namespace System
 
 		/** Get additional inputs for image input
 		 * @param array $attrs
-		 * @returns array Set of input attrs
+		 * @return array Set of input attrs
 		*/
 		private function get_image_input_tools(array $attrs)
 		{
@@ -781,7 +782,7 @@ namespace System
 		/** Render form or add form to processing
 		 * @param System\Module $obj    Module to render the form in
 		 * @param array         $locals Extra local data
-		 * @returns mixed
+		 * @return mixed
 		 */
 		public function out(\System\Module $obj = NULL, array $locals = array())
 		{
@@ -814,7 +815,7 @@ namespace System
 
 
 		/** Set default form prefix
-		 * @returns string
+		 * @return string
 		 */
 		protected function setup_prefix()
 		{
@@ -885,7 +886,7 @@ namespace System
 
 		/** Get field type from model attr type
 		 * @param string $attr_type
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_field_type($attr_type)
 		{

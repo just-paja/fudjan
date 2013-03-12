@@ -6,7 +6,7 @@ namespace System
 	{
 		/** Read JSON from file on path
 		 * @param string $path
-		 * @returns array|false
+		 * @return array|false
 		 */
 		public static function read($path, $silent = false)
 		{

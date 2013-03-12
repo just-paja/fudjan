@@ -43,7 +43,7 @@ namespace System
 
 
 		/** Get (and find if none) current page
-		 * @returns System\Page|false
+		 * @return System\Page|false
 		 */
 		public static function get_current()
 		{
@@ -65,7 +65,7 @@ namespace System
 
 
 		/** Parse page path
-		 * @returns void
+		 * @return void
 		 */
 		private static function parse_path()
 		{
@@ -82,7 +82,7 @@ namespace System
 		/** Fetch page model from the tree
 		 * @param mixed $path
 		 * @param bool  $add_modules Add modules to the flow imediately?
-		 * @returns System\Page|false
+		 * @return System\Page|false
 		 */
 		public static function fetch_page($search_path = null, $add_modules = true)
 		{
@@ -111,7 +111,7 @@ namespace System
 		/** Browse page tree and fetch requested path
 		 * @param &array $tree
 		 * @param  array $path
-		 * @returns &array|false
+		 * @return &array|false
 		 */
 		public static function browse_tree(&$tree, array $path, $return_anchor = true)
 		{
@@ -164,7 +164,7 @@ namespace System
 
 
 		/** Get page metadata
-		 * @returns array
+		 * @return array
 		 */
 		public function get_meta()
 		{
@@ -180,7 +180,7 @@ namespace System
 
 
 		/** Add modules from current page into flow
-		 * @returns System\Page
+		 * @return System\Page
 		 */
 		public function add_modules()
 		{
@@ -195,7 +195,7 @@ namespace System
 
 		/** Update and save page modules
 		 * @param array $modules
-		 * @returns bool
+		 * @return bool
 		 */
 		function update_modules(array $modules)
 		{
@@ -209,7 +209,7 @@ namespace System
 
 
 		/** Return page path
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_path()
 		{
@@ -222,7 +222,7 @@ namespace System
 
 
 		/** Get path as array
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_path_list()
 		{
@@ -231,7 +231,7 @@ namespace System
 
 
 		/** Get variables from parsed page path
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_path_variables()
 		{
@@ -257,7 +257,7 @@ namespace System
 
 
 		/** Is the page readable?
-		 * @returns bool
+		 * @return bool
 		 */
 		public function is_readable()
 		{

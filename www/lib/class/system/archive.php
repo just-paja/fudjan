@@ -2,6 +2,8 @@
 
 namespace System
 {
+	/** Handles archives.
+	 */
 	class Archive
 	{
 		/*

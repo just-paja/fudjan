@@ -153,7 +153,7 @@ namespace System
 
 		/** Filter models with certain has_many or has_one relation
 		 * @param int[] $relations List of relations and IDs
-		 * @returns $this
+		 * @return $this
 		 */
 		public function has(array $relations)
 		{

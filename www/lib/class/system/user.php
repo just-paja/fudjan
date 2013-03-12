@@ -1,7 +1,17 @@
 <?
 
+/** System users
+ * @package system
+ * @subpackage users
+ */
 namespace System
 {
+	/** System user database model with user groups, permissions and contacts
+	 * @uses \System\User\Group
+	 * @uses \System\User\Contact
+	 * @package system
+	 * @subpackage users
+	 */
 	class User extends Model\Database
 	{
 		static protected $required = array('login');
@@ -22,11 +32,14 @@ namespace System
 			"contacts" => array("model" => '\System\User\Contact')
 		);
 
+		/** Current user is placed here */
 		static private $current_user;
+
+		/** Rights are cached here, within the object */
 		private $rights;
 
 		/** Get current active user
-		 * @returns System\User
+		 * @return System\User
 		 */
 		public static function get_active()
 		{
@@ -46,7 +59,7 @@ namespace System
 
 
 		/** Create guest user
-		 * @returns System\User
+		 * @return System\User
 		 */
 		private static function create_guest()
 		{
@@ -55,7 +68,7 @@ namespace System
 
 
 		/** Is anyone logged in?
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function logged_in()
 		{
@@ -67,9 +80,9 @@ namespace System
 
 
 		/** Login selected user
-		 * @param System\User $user
-		 * @param string      $password
-		 * @returns bool
+		 * @param self   $user
+		 * @param string $password
+		 * @return bool
 		 */
 		public static function login(self $user, $password)
 		{
@@ -80,8 +93,8 @@ namespace System
 
 
 		/** Create user session
-		 * @param System\User $user
-		 * @returns bool
+		 * @param self $user
+		 * @return bool
 		 */
 		private static function create_session(self $user)
 		{
@@ -94,7 +107,7 @@ namespace System
 
 
 		/** Logout current active user
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function logout()
 		{
@@ -105,7 +118,7 @@ namespace System
 
 		/** Get full user name
 		 * @param string $pattern Format of the name
-		 * @returns string
+		 * @return string
 		 */
 		public function get_name($pattern = null)
 		{
@@ -114,7 +127,7 @@ namespace System
 
 
 		/** Get all users permissions
-		 * @returns array Set of permissions (System\User\Perm)
+		 * @return array Set of permissions (System\User\Perm)
 		 */
 		public function get_rights()
 		{
@@ -141,7 +154,7 @@ namespace System
 
 		/** Has user right to do action
 		 * @param string $to
-		 * @returns bool
+		 * @return bool
 		 */
 		public function has_right($to)
 		{
@@ -155,7 +168,7 @@ namespace System
 
 		/** Static version of System\User::has_right for current user
 		 * @param string $what
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function has_right_to($what)
 		{
@@ -164,7 +177,7 @@ namespace System
 
 
 		/** Is active user root?
-		 * @returns bool
+		 * @return bool
 		 */
 		public function is_root()
 		{
@@ -173,7 +186,7 @@ namespace System
 
 
 		/** Get all available ways to send notifications
-		 * @returns string[] Set of ways
+		 * @return string[] Set of ways
 		 */
 		public function get_mailer_types()
 		{
@@ -182,7 +195,7 @@ namespace System
 
 
 		/** Wrapper for delete - forbids deleting root user
-		 * @returns bool
+		 * @return bool
 		 */
 		public function delete()
 		{
@@ -191,7 +204,7 @@ namespace System
 
 
 		/** Wrapper for parent::seoname()
-		 * @returns string
+		 * @return string
 		 */
 		public function get_seoname()
 		{
@@ -201,7 +214,7 @@ namespace System
 
 
 		/** Get IDs of all system groups
-		 * @returns int[] Set of group IDs
+		 * @return int[] Set of group IDs
 		 */
 		function get_group_ids()
 		{
@@ -210,7 +223,7 @@ namespace System
 
 
 		/** Get all user settings
-		 * @returns array
+		 * @return array
 		 */
 		function get_setup()
 		{
@@ -223,7 +236,7 @@ namespace System
 
 
 		/** Get all user flags - some system behavior changes
-		 * @returns string Space separated flags
+		 * @return string Space separated flags
 		 */
 		public static function get_flags()
 		{
@@ -235,7 +248,7 @@ namespace System
 
 		/** Generate random password
 		 * @param int $len
-		 * @returns string
+		 * @return string
 		 */
 		public static function gen_passwd($len = 12)
 		{

@@ -1,9 +1,18 @@
 <?
 
+/** Locations, GPS application
+ * @package system
+ * @subpackage media
+ */
 namespace System
 {
+	/** Saves address, gps coordinates and provides Google Map functions
+	 * @package system
+	 * @subpackage media
+	 */
 	class Location extends \System\Model\Database
 	{
+		/** Model attributes */
 		protected static $attrs = array(
 			"name" => array("varchar", "is_unique" => true),
 			"addr" => array("varchar"),
@@ -13,6 +22,7 @@ namespace System
 		);
 
 
+		/** Model relations */
 		protected static $belongs_to = array(
 			"user" => array("model" => '\System\User'),
 		);
@@ -22,7 +32,7 @@ namespace System
 		 * @param int $w Width
 		 * @param int $h Height
 		 * @param string $type
-		 * @returns string
+		 * @return string
 		 */
 		public function map($w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
 		{
@@ -31,7 +41,7 @@ namespace System
 
 
 		/** Get link to the Google Maps
-		 * @returns string
+		 * @return string
 		 */
 		public function map_link()
 		{
@@ -43,7 +53,7 @@ namespace System
 		 * @param int $w Width
 		 * @param int $h Height
 		 * @param string $type
-		 * @returns string
+		 * @return string
 		 */
 		public function map_html($w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
 		{

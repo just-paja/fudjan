@@ -1,7 +1,16 @@
 <?
 
+/** Email handling
+ * @package system
+ * @subpackage offcom
+ */
 namespace System\Offcom
 {
+	/** E-mail handling class
+	 * @package system
+	 * @subpackage offcom
+	 * @uses System\Model\Attr
+	 */
 	class Mail extends \System\Model\Attr
 	{
 		const STATUS_SENT    = 1;
@@ -21,6 +30,7 @@ namespace System\Offcom
 		);
 
 
+		/** Headers that must be sent */
 		protected static $default_headers = array(
 			"Content-Type" => 'text/plain; charset=utf-8',
 		);
@@ -31,7 +41,7 @@ namespace System\Offcom
 		 * @param string $message Text message encoded in UTF-8
 		 * @param array  $rcpt    Recipients in nice format
 		 * @param string $from    E-mail address of sender in nice format
-		 * @returns new self
+		 * @return new self
 		 */
 		public static function create($subject, $message, array $rcpt, $from = null)
 		{
@@ -54,7 +64,7 @@ namespace System\Offcom
 		 * @param string $message Text message encoded in UTF-8
 		 * @param array  $rcpt    Recipients in nice format
 		 * @param string $from    E-mail address of sender in nice format
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function post($subject, $message, array $rcpt, $from = null)
 		{
@@ -64,7 +74,7 @@ namespace System\Offcom
 
 
 		/** Get set of default e-mail headers
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_default_headers()
 		{
@@ -77,7 +87,7 @@ namespace System\Offcom
 
 
 		/** Get sender or default sender if not set
-		 * @returns string
+		 * @return string
 		 */
 		public function get_sender()
 		{
@@ -86,7 +96,7 @@ namespace System\Offcom
 
 
 		/** Validate e-mail before sending
-		 * @returns bool
+		 * @return bool
 		 */
 		private function validate()
 		{
@@ -104,6 +114,9 @@ namespace System\Offcom
 		}
 
 
+		/** Get subject encoded with base64 and UTF-8
+		 * @return string
+		 */
 		private function get_encoded_subject()
 		{
 			return '=?UTF-8?B?'.base64_encode($this->subject).'?=';
@@ -111,7 +124,7 @@ namespace System\Offcom
 
 
 		/** Send email message object
-		 * @returns int
+		 * @return int
 		 */
 		public function send()
 		{
@@ -151,7 +164,7 @@ namespace System\Offcom
 		/** Validate email address against RFC 2822
 		 * @param string $email
 		 * @param bool   $strict
-		 * @returns bool
+		 * @return bool
 		 */
 		private static function isAddrValid($email, $strict = false)
 		{

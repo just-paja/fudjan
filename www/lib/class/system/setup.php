@@ -185,7 +185,7 @@ namespace System
 
 
 		/** There are no pages in page tree. Inform the user.
-		 * @returns void
+		 * @return void
 		 */
 		private static function no_pages()
 		{
@@ -196,7 +196,7 @@ namespace System
 
 
 		/** Lock installer from running again
-		 * @returns void
+		 * @return void
 		 */
 		protected static function lock()
 		{
@@ -205,7 +205,7 @@ namespace System
 
 
 		/** Print out "install complete" message and exit
-		 * @returns void
+		 * @return void
 		 */
 		protected static function finish()
 		{

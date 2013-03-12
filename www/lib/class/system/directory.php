@@ -1,7 +1,16 @@
 <?
 
+/** Directory handling
+ * @package system
+ * @subpackage files
+ */
 namespace System
 {
+	/** Container class that handles directory functions. Throws pwf native
+	 * errors. You are encouraged to use this class for directory operations.
+	 * @package system
+	 * @subpackage files
+	 */
 	abstract class Directory
 	{
 		const MOD_DEFAULT = 0775;
@@ -55,6 +64,12 @@ namespace System
 		}
 
 
+		/** Find all files in path
+		 * @param string  $path   Path where the search will occur
+		 * @param array  &$files  File list will be put there
+		 * @param string  $regexp Files will be filtered using this regular expression
+		 * @return list
+		 */
 		public static function find_all_files($path, &$files = array(), $regexp = null)
 		{
 			$dir = opendir($path);
@@ -72,6 +87,12 @@ namespace System
 		}
 
 
+		/** Simplified find function that just returns list of files
+		 * @param string  $path   Path where the search will occur
+		 * @param array  &$files  File list will be put there
+		 * @param string  $regexp Files will be filtered using this regular expression
+		 * @return list
+		 */
 		public static function find($path, $regexp = null)
 		{
 			$files = array();

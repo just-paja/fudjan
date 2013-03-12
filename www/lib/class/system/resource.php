@@ -47,7 +47,7 @@ namespace System
 
 
 		/** Serve request
-		 * @returns void
+		 * @return void
 		 */
 		public static function request()
 		{
@@ -67,7 +67,7 @@ namespace System
 		/** Get content of requested files and minify it
 		 * @param array $info  Type info
 		 * @param list  $files List of files
-		 * @returns string
+		 * @return string
 		 */
 		private static function get_content(array $info, array $files)
 		{
@@ -95,7 +95,7 @@ namespace System
 		/** Get list of available files from user input
 		 * @param string $type
 		 * @param list   $modules
-		 * @returns array
+		 * @return array
 		 */
 		public static function file_list($type, array $modules = array())
 		{
@@ -134,7 +134,7 @@ namespace System
 		/** Get name of file to cache content in
 		 * @param array $info
 		 * @param string $sum
-		 * @returns string
+		 * @return string
 		 */
 		private static function get_cache_name(array $info, $sum)
 		{
@@ -145,7 +145,7 @@ namespace System
 		/** Get path of caching file
 		 * @param array $info
 		 * @param string $sum
-		 * @returns string
+		 * @return string
 		 */
 		private static function get_cache_path(array $info, $sum)
 		{
@@ -155,7 +155,7 @@ namespace System
 
 		/** Get md5 sum of modules
 		 * @param list $modules
-		 * @returns string
+		 * @return string
 		 */
 		private static function get_module_sum_from_list(array $modules)
 		{
@@ -165,7 +165,7 @@ namespace System
 
 		/** Get md5 sum of module
 		 * @param string $str
-		 * @returns string
+		 * @return string
 		 */
 		private static function get_module_sum($str)
 		{
@@ -176,7 +176,7 @@ namespace System
 		/** Get list of modules from name passed from URL
 		 * @param string $type
 		 * @param string $name
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_module_list($type, $name)
 		{

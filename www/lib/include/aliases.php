@@ -1,5 +1,8 @@
 <?
 
+/** Function aliases that make life easier
+ * @package core
+ */
 namespace
 {
 	// Tag class total alias, put it into root namespace

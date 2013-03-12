@@ -1,5 +1,9 @@
 <?
 
+/** Actions that are done on regular page init
+ * @package init
+ */
+
 System\Init::basic();
 
 if (System\Settings::is_this_first_run()) {

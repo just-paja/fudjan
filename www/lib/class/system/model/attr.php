@@ -1,15 +1,27 @@
 <?
 
+/** Attribute handling
+ * @package system
+ * @subpackage models
+ */
 namespace System\Model
 {
+	/** Attribute class ihnerited widely across pwf. Gives child classes
+	 * ability to store attribute data in defined type and convert these
+	 * attribute types among others. This model will be your favourite.
+	 * @package system
+	 * @subpackage models
+	 */
 	abstract class Attr
 	{
-		// Object data
+		/** Real attribute data */
 		protected $data = array();
+
+		/** Secondary data passed to object */
 		protected $opts = array();
 
 
-		// List of allowed attribute types
+		/** List of allowed attribute types */
 		protected static $attr_types = array(
 			'bool',
 			'int',
@@ -26,16 +38,16 @@ namespace System\Model
 			'list',
 		);
 
-		// Registered object handlers
+		/** Registered object handlers */
 		static protected $obj_attrs = array('image');
 
-		// Swap for attributes merged from related models
+		/** Swap for attributes merged from related models */
 		static protected $merged_attrs = array();
 
 
 		/** Public constructor
 		 * @param array $dataray Set of data used by object
-		 * @returns BasicModel
+		 * @return BasicModel
 		 */
 		public function __construct(array $dataray = array())
 		{
@@ -59,7 +71,7 @@ namespace System\Model
 
 		/** Attribute getter
 		 * @param string $name
-		 * @returns mixed
+		 * @return mixed
 		 */
 		public function __get($attr)
 		{
@@ -78,7 +90,7 @@ namespace System\Model
 		/** Attribute setter
 		 * @param string $name
 		 * @param mixed  $value
-		 * @returns BasicModel
+		 * @return BasicModel
 		 */
 		public function __set($attr, $value)
 		{
@@ -104,7 +116,7 @@ namespace System\Model
 
 
 		/** Get all object data
-		 * @returns array Data ray
+		 * @return array Data ray
 		 */
 		public function get_data()
 		{
@@ -113,7 +125,7 @@ namespace System\Model
 
 
 		/** Get all public non-attribute data from object
-		 * @returns array
+		 * @return array
 		 */
 		public function get_opts()
 		{
@@ -123,7 +135,7 @@ namespace System\Model
 
 		/** Update attributes and distribute all data into object containers
 		 * @param array $update Data
-		 * @returns BasicModel
+		 * @return BasicModel
 		 */
 		public function update_attrs(array $update)
 		{
@@ -138,7 +150,7 @@ namespace System\Model
 		/** Does attribute exist
 		 * @param string $model Class name of desired model
 		 * @param string $attr  Name of attribute
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function attr_exists($model, $attr)
 		{
@@ -148,7 +160,7 @@ namespace System\Model
 
 		/** Instance version of model_attr_exist
 		 * @param string $attr Name of attribute
-		 * @returns bool
+		 * @return bool
 		 */
 		public function has_attr($attr)
 		{
@@ -158,7 +170,7 @@ namespace System\Model
 
 		/** Is attribute required
 		 * @param string $attr
-		 * @returns bool
+		 * @return bool
 		 */
 		public function attr_required($attr)
 		{
@@ -169,7 +181,7 @@ namespace System\Model
 
 		/* Get list of model attributes
 		 * @param string $model Name of model class
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_model_attr_list($model)
 		{
@@ -185,7 +197,7 @@ namespace System\Model
 
 		/* Get list of model attributes
 		 * @param string $model Name of model class
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_model_attrs($model)
 		{
@@ -219,7 +231,7 @@ namespace System\Model
 		/** Get type of attribute
 		 * @param string $model Name of model class
 		 * @param string $attr  Name of attribute
-		 * @returns mixed Type of attribute (string) or false on failure
+		 * @return mixed Type of attribute (string) or false on failure
 		 */
 		public static function get_attr_type($model, $attr)
 		{

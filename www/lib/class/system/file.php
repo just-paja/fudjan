@@ -1,7 +1,17 @@
 <?
 
+/** File handling
+ * @package system
+ * @subpackage files
+ */
 namespace System
 {
+	/** File handling class
+	 * @package system
+	 * @subpackage files
+	 * @property $attrs
+	 * @property $require
+	 */
 	class File extends Model\Attr
 	{
 		const DIR = '/var/files';
@@ -9,9 +19,10 @@ namespace System
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
 
-		// setup operations directory
+		/** Limit operations to this directory base */
 		private static $operations = self::TMP_DIR;
 
+		/** File attrmodel attributes */
 		static protected $attrs = array(
 			"filename"  => array('varchar'),
 			"dirpath"   => array('varchar'),
@@ -20,18 +31,11 @@ namespace System
 			"tmp_name"  => array('varchar'),
 			"size"      => array('int'),
 		);
-		static protected $required = array();
-		static protected $instances = array();
-
-		private $content;
 
 
-		function __destruct()
-		{
-			//~ $this->remove();
-		}
-
-
+		/** Clear tmp directory
+		 * @return void
+		 */
 		public static function clear_tmp()
 		{
 			self::remove_directory(ROOT.self::TMP_DIR);
@@ -39,6 +43,10 @@ namespace System
 		}
 
 
+		/** Remove directory and files within
+		 * @param string $dir
+		 * @return void
+		 */
 		public static function remove_directory($dir)
 		{
 			if(strpos('..', $dir) === false){
@@ -58,20 +66,13 @@ namespace System
 		}
 
 
-		public static function access_dir($dir)
-		{
-			if(strpos($dir, ROOT.'/var') !== false){
-				$path = array_filter(explode('/', $dir));
-				$dp = '';
-				foreach($path as $p){
-					$dp .= '/'.$p;
-					if(!is_dir($dp)) mkdir($dp);
-				}
-			}
-			return $dir;
-		}
-
-
+		/** Fetch file from remote URL
+		 * @param string $url URL of file
+		 * @param string $dir Directory to save file
+		 * @return self
+		 * @throws System\Error\File
+		 * @throws System\Error\Connection
+		 */
 		static function fetch($url, $dir = null)
 		{
 			$u = explode('/', $url);
@@ -86,8 +87,9 @@ namespace System
 					$dir = ROOT.self::TMP_DIR;
 				}
 
+				\System\Directory::check($dir);
 				$magic = strtoupper(gen_random_string(10));
-				$tmp_name = self::access_dir($dir).'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
+				$tmp_name = $dir.'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
 
 				if (!file_put_contents($tmp_name, $data->content, LOCK_EX)) {
 					throw new \System\Error\File(sprintf('Could not temporarily save fetched file into "%s".', $tmp_name));
@@ -98,12 +100,20 @@ namespace System
 		}
 
 
+		/** Get temporary path of file
+		 * @return string
+		 */
 		public function get_tmp_url()
 		{
 			return $this->__get('tmp_name');
 		}
 
 
+		/** Move file to another location
+		 * @param string $where   Destination
+		 * @param bool   $use_tmp
+		 * @return $this;
+		 */
 		public function move($where, $use_tmp = false)
 		{
 			$op = $use_tmp ? $this->__get('tmp_name'):$this->__get('dirpath').'/'.$this->__get('filename');
@@ -111,13 +121,18 @@ namespace System
 			if (file_exists($np)) {
 				unlink($np);
 			}
+
 			if (!rename($op, $np)) {
 				$this->errors[] = 'move-failed';
 			}
+
 			return $this;
 		}
 
 
+		/** Remove file from filesystem
+		 * @return $this
+		 */
 		public function remove()
 		{
 			unlink($this->tmp_name);
@@ -125,12 +140,21 @@ namespace System
 		}
 
 
+		/** Save file into path
+		 * @param string $where Destination
+		 * @return $this
+		 */
 		public function save($where)
 		{
 			return $this->move($where, true);
 		}
 
 
+		/** Remove postfix from file name
+		 * @param string $name Name of file
+		 * @param bool   $all  Return all postfixes
+		 * @return string New name
+		 */
 		public static function remove_postfix($name, $all = false)
 		{
 			$temp = explode('.', $name);
@@ -142,12 +166,25 @@ namespace System
 		}
 
 
+		/** Save file content
+		 * @param string $filepath
+		 * @param string $content
+		 * @param int    $mode
+		 * @return bool
+		 */
 		public static function save_content($filepath, $content, $mode = self::MOD_DEFAULT)
 		{
 			return self::put($filepath, $content, $mode);
 		}
 
 
+		/** Put string data into file
+		 * @param string $path
+		 * @param string $content
+		 * @param int    $mode
+		 * @throws System\Error\Permissions
+		 * @return bool
+		 */
 		public static function put($path, $content, $mode = null)
 		{
 			if (\System\Directory::check($d = dirname($path)) && (($ex = file_exists($path)) || is_writable($d))) {
@@ -173,6 +210,13 @@ namespace System
 		}
 
 
+		/** Read file data
+		 * @param string $path
+		 * @param bool   $silent
+		 * @throws System\Error\File
+		 * @throws System\Error\Permissions
+		 * @return string
+		 */
 		public static function read($path, $silent = false)
 		{
 			if (\System\Directory::check(dirname($path)) && file_exists($path)) {

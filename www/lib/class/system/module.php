@@ -1,18 +1,44 @@
 <?
 
+/** Modules
+ * @package system
+ */
 namespace System
 {
+	/** System queue module class - represents controller
+	 * @package system
+	 * @property string $id      ID of module
+	 * @property string $path    Module path eg. 'system/partial'
+	 * @property array  $locals  Local data for module
+	 * @property array  $parents List of parent IDs
+	 */
 	class Module
 	{
 		const BASE_DIR = '/lib/module';
-		static private $instances;
+
+		/** Count of used module instances
+		 * @param int
+		 */
+		static private $instance_count = 0;
+
+		/** Locals that are forced to be of array
+		 * @param array
+		 */
 		static private $array_forced_locals = array("conds", "opts");
+
+		/** Attributes of modules */
 		private $id, $path, $locals, $slot, $parents;
 
 
+		/** Public constructor
+		 * @param string $module  Path to module
+		 * @param array  $locals  Local data for module
+		 * @param array  $parents List of parent IDs
+		 * @return $this
+		 */
 		public function __construct($module, $locals = array(), $parents = array())
 		{
-			self::$instances ++;
+			self::$instance_count ++;
 			$this->path = '/'.$module;
 			$this->locals = $locals;
 			$this->parents = $parents;
@@ -28,7 +54,7 @@ namespace System
 
 
 		/** Get local path to module
-		 * @returns string
+		 * @return string
 		 */
 		public function get_path()
 		{
@@ -37,7 +63,7 @@ namespace System
 
 
 		/** Get module name
-		 * @returns string
+		 * @return string
 		 */
 		public function get_name()
 		{
@@ -46,7 +72,7 @@ namespace System
 
 
 		/** Get module id unique on a page
-		 * @returns string
+		 * @return string
 		 */
 		public function get_id()
 		{
@@ -55,7 +81,7 @@ namespace System
 
 
 		/** Run module
-		 * @returns void
+		 * @return void
 		 */
 		public function make()
 		{
@@ -124,7 +150,7 @@ namespace System
 
 		/** Require variable input. Throws exception if variable was not defined in local variable set.
 		 * @param string $var_name
-		 * @returns
+		 * @return
 		 */
 		public function req($var_name)
 		{
@@ -137,7 +163,7 @@ namespace System
 		/** Insert template into output queue
 		 * @param string $name  Template name begining at /lib/template/partial
 		 * @param array $locals Local variables for the template
-		 * @returns void
+		 * @return void
 		 */
 		public function template($name, array $locals = array())
 		{
@@ -161,7 +187,7 @@ namespace System
 		 */
 		static public function get_new_id()
 		{
-			return 'noname-'.self::$instances;
+			return 'noname-'.self::$instance_count;
 		}
 
 
@@ -202,7 +228,7 @@ namespace System
 
 		/** Evaluate conditions if the module can be used
 		 * @param array $conds
-		 * @returns bool
+		 * @return bool
 		 */
 		public static function eval_conds(array $conds)
 		{

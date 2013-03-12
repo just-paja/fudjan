@@ -1,5 +1,9 @@
 <?
 
+/** Load pwf essentials.
+ * @package init
+ */
+
 ob_implicit_flush(false);
 
 /** Find system class package and include it or lookup develop files. You can

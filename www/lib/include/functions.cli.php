@@ -1,9 +1,15 @@
 <?
 
-/* Output to STDOUT
+/** Command line interface common function
+ * @TODO Move into CLI class
+ * @package core
+ */
+
+/** Output to STDOUT
  * @param string $str    String to print
  * @param bool   $break  Print carriage return
- * @return void;
+ * @param bool   $return Return the value if true
+ * @return void
  */
 function out($str = '', $break = true, $return = false) {
 	$str = $str.($break ? NL:'');
@@ -11,10 +17,11 @@ function out($str = '', $break = true, $return = false) {
 }
 
 
-/* Output to STDOUT if verbose
+/** Output to STDOUT if verbose
  * @param string $str    String to print
  * @param bool   $break  Print carriage return
- * @return void;
+ * @param bool   $return Return the value if true
+ * @return void
  */
 function vout($str = '', $break = true, $return = false) {
 	if (CLIOptions::get('verbose')) {
@@ -24,7 +31,8 @@ function vout($str = '', $break = true, $return = false) {
 }
 
 
-/* Print heading separator to STDOUT
+/** Print heading separator to STDOUT
+ * @param bool $return Return the value if true
  * @return void
  */
 function sep($return = false) {
@@ -39,6 +47,12 @@ function sep($return = false) {
 
 
 /** Print a set of paired keys and values
+ * @param array  $list      Dictionary of values
+ * @param bool   $semicolon Add semicolon after keys
+ * @param int    $margin    Left margin of the list in char count
+ * @param bool   $return    Return the value if true
+ * @param string $key_color Color of keys
+ * @param bool   $purge     Skip empty values
  * @return void
  */
 function out_flist(array $list, $semicolon = true, $margin = 0, $return = false, $key_color = 'normal', $purge = false) {
@@ -69,8 +83,10 @@ function out_flist(array $list, $semicolon = true, $margin = 0, $return = false,
 }
 
 
-/* Kill sNLipt with return code
- * @returns int Return code
+/** Kill script with return code
+ * @param string $str  Message to be printed
+ * @param int    $code Exit status
+ * @return int Return code
  */
 function give_up($str, $code = 1) {
 	echo $str.NL;
@@ -78,10 +94,10 @@ function give_up($str, $code = 1) {
 }
 
 
-/* Read from user input
+/** Read from user input
  * @param string Info for user input
  * @param bool   Are we inputing password?
- * @returns string
+ * @return string
  */
 function read($str, $pass = false) {
 	out($str, false);
@@ -91,11 +107,23 @@ function read($str, $pass = false) {
 }
 
 
+/** Translate string containing something like 'yes' into bool
+ * @param string $str
+ * @return bool
+ */
 function is_yes($str) {
 	return in_array(strtolower($str), array("yes", "y", "1", "a"));
 }
 
 
+/** Show progress bar on cli
+ * @param int    $done       Count of items, that are done
+ * @param int    $total      Total count of items
+ * @param int    $size       Width of progress bar in chars
+ * @param string $done_msg   Message that will be printed on finish
+ * @param string $static_msg Message that will be printed during the process
+ * @return void
+ */
 function show_progress_cli($done, $total, $size=30, $done_msg = "Finished in %d seconds", $static_msg = '') {
 
 	static $start_time;
@@ -141,5 +169,4 @@ function show_progress_cli($done, $total, $size=30, $done_msg = "Finished in %d 
 			out(sprintf($done_msg, number_format($elapsed)));
 		}
 	}
-
 }

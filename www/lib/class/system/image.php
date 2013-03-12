@@ -1,7 +1,15 @@
 <?
 
+/** Image handling
+ * @package system
+ * @subpackage media
+ */
 namespace System
 {
+	/** Image handling class
+	 * @package system
+	 * @subpackage media
+	 */
 	class Image extends Model\Attr
 	{
 		const DIR = '/var/images';
@@ -10,8 +18,14 @@ namespace System
 		const FILE_BAD_THUMB = '/share/pixmaps/pwf/bad_thumb.jpg';
 		const IMG_JPEG_OLD = 3;
 
+		/** Instance used for bad thumbs
+		 * @param null|self
+		 */
 		private static $bad_thumb = null;
 
+		/** Available image formats
+		 * @param array
+		 */
 		public static $gd_formats = array(
 			IMG_GIF  => "gif",
 			IMG_JPG  => "jpg",
@@ -19,6 +33,7 @@ namespace System
 			IMG_PNG  => "png",
 		);
 
+		/** Image attributes */
 		static protected $attrs = array(
 			"width"         => array('int'),
 			"height"        => array('int'),
@@ -37,6 +52,9 @@ namespace System
 		);
 
 
+		/** Get wrapper that reads dimensions or filesize on request
+		 * @param string $attr
+		 */
 		public function __get($attr)
 		{
 			if ($attr == 'width' || $attr == 'height') {
@@ -51,6 +69,9 @@ namespace System
 		}
 
 
+		/** Read image dimensions from image file
+		 * @return void
+		 */
 		private function read_dimensions()
 		{
 			if (($info = self::get_image_size($this->get_path(true))) !== false && $info[0] !== false) {
@@ -61,12 +82,18 @@ namespace System
 		}
 
 
+		/** Get size of image in format %dx%d
+		 * @return string
+		 */
 		public function get_size()
 		{
 			return $this->width.'x'.$this->height;
 		}
 
 
+		/** Get image format
+		 * @return int
+		 */
 		public function get_format()
 		{
 			$this->read_dimensions();
@@ -74,12 +101,21 @@ namespace System
 		}
 
 
+		/** Is valid image format
+		 * @return bool
+		 */
 		public function is_image()
 		{
 			return !is_null($this->get_format());
 		}
 
 
+		/** Get image thumb url
+		 * @param int  $width  Desired width
+		 * @param int  $height Desired height
+		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
+		 * @return string
+		 */
 		public function thumb($width, $height = null, $crop = true)
 		{
 			if ($this->check_thumb($width, $height, $crop)) {
@@ -92,6 +128,13 @@ namespace System
 		}
 
 
+		/** Check if thumb already exists
+		 * @param int  $width  Desired width
+		 * @param int  $height Desired height
+		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
+		 * @param bool $gen    Generate image if it does not exist
+		 * @return bool
+		 */
 		private function check_thumb($width = null, $height = null, $crop = true, $gen = true)
 		{
 			return
@@ -100,6 +143,12 @@ namespace System
 		}
 
 
+		/** Get path of thumb according to size
+		 * @param int  $width  Desired width
+		 * @param int  $height Desired height
+		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
+		 * @return string
+		 */
 		private function get_thumb_path($width = null, $height = null, $crop = true)
 		{
 			$name = $this->get_file_hash();
@@ -107,6 +156,9 @@ namespace System
 		}
 
 
+		/** Get md5 sum of file content
+		 * @return string
+		 */
 		private function get_file_hash()
 		{
 			if (!$this->file_hash && file_exists($this->get_path(true))) {
@@ -117,6 +169,12 @@ namespace System
 		}
 
 
+		/** Create miniature of image
+		 * @param int  $width  Desired width
+		 * @param int  $height Desired height
+		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
+		 * return bool
+		 */
 		private function make_thumb($width, $height, $crop = true)
 		{
 			if (extension_loaded('imagemagick')) {
@@ -129,19 +187,29 @@ namespace System
 		}
 
 
+		/** Get size of image
+		 * @param string $path
+		 * @return array
+		 */
 		public static function get_image_size($path)
 		{
 			return (array) @getimagesize($path);
 		}
 
 
+		/** Create image instance from JSON
+		 * @param string $json
+		 */
 		public static function from_json($json)
 		{
 			return new self(json_decode($json, true));
 		}
 
 
-		// absolute path or http (not implemented)
+		/** Create image instance from path. Absolute path or http are not implemented
+		 * @param string $path
+		 * $return self|false False on failure
+		 */
 		public static function from_path($path)
 		{
 			if (file_exists($path)|| file_exists($path = ROOT.$path)) {
@@ -159,6 +227,7 @@ namespace System
 
 
 		/** Create new empty image
+		 * @return self
 		 */
 		public static function from_scratch()
 		{
@@ -182,6 +251,10 @@ namespace System
 		}
 
 
+		/** Save image
+		 * @param string $path
+		 * @return bool
+		 */
 		public function save($path = null)
 		{
 			if ($this->cache && $this->allow_save) {
@@ -205,18 +278,30 @@ namespace System
 		}
 
 
+		/** Generate image name from sum of image head and other attributes
+		 * @return string
+		 */
 		private function gen_name()
 		{
 			return md5(\System\File::read($this->get_path(true), false, NULL, -1, 2048).'-'.intval($this->file_size).'-'.intval($this->width).'x'.intval($this->height)).'.'.self::get_suffix($this->format);
 		}
 
 
+		/** Get suffix for format
+		 * @param int $gd_format
+		 * @return string Format suffix
+		 */
 		public static function get_suffix($gd_format)
 		{
 			return self::$gd_formats[$gd_format];
 		}
 
 
+		/** Generate bad thumbnail path
+		 * @param int $width
+		 * @param int $height
+		 * @return string
+		 */
 		private static function gen_bad_thumb($width = null, $height = null)
 		{
 			if (is_null(self::$bad_thumb)) {
@@ -229,6 +314,10 @@ namespace System
 		}
 
 
+		/** Checkout if image dir exists and is writeable
+		 * @param string $path
+		 * @return string Path to write to
+		 */
 		private static function prepare_image_dir($path)
 		{
 			$p = dirname($path);
@@ -249,6 +338,13 @@ namespace System
 		}
 
 
+		/** Generate thumb using GD library
+		 * @param self $obj  Instance of image
+		 * @param int  $w    Width
+		 * @param int  $h    Height
+		 * @param bool $crop Crop
+		 * @return bool
+		 */
 		public static function gen_thumb(self $obj, $w, $h, $crop = true)
 		{
 			$path = $obj->get_path(true);
@@ -331,18 +427,28 @@ namespace System
 		}
 
 
+		/** Can image be saved?
+		 * @return bool
+		 */
 		public function allow_save()
 		{
 			return $this->allow_save;
 		}
 
 
+		/** Is image supposed to be deleted?
+		 * @return bool
+		 */
 		public function is_to_be_deleted()
 		{
 			return $this->to_be_deleted;
 		}
 
 
+		/** Get path of image
+		 * @param bool $with_root Include root in path of image
+		 * @return bool
+		 */
 		public function get_path($with_root = false)
 		{
 			$path = str_replace(ROOT, '', $this->file_path);
@@ -350,6 +456,10 @@ namespace System
 		}
 
 
+		/** Update attributes
+		 * @param array $dataray
+		 * @return $this
+		 */
 		public function update_attrs(array $dataray)
 		{
 			parent::update_attrs($dataray);
@@ -373,6 +483,9 @@ namespace System
 		}
 
 
+		/** Cache uploaded image in filesystem
+		 * @return $this
+		 */
 		public function cache()
 		{
 			$tmp_path = ROOT.self::DIR_TMP.'/'.$this->get_file_hash().'.'.self::get_suffix($this->get_format());

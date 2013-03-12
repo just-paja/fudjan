@@ -17,7 +17,7 @@ namespace System
 
 
 		/** Class init
-		 * @returns void
+		 * @return void
 		 */
 		public static function init()
 		{
@@ -29,7 +29,7 @@ namespace System
 
 
 		/** Get list of all loaded locale files
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_loaded_files()
 		{
@@ -38,7 +38,7 @@ namespace System
 
 
 		/** Set locale by configured language
-		 * @returns void
+		 * @return void
 		 */
 		private static function set_locale()
 		{
@@ -57,7 +57,7 @@ namespace System
 		/** Get locale module data
 		 * @param string      $str        Callstring
 		 * @param null|string $force_lang Use this language
-		 * @returns mixed
+		 * @return mixed
 		 */
 		public static function get($str, $force_lang = NULL)
 		{
@@ -76,7 +76,7 @@ namespace System
 
 		/** Get all loaded messages for language
 		 * @param string $lang
-		 * @returns array
+		 * @return array
 		 */
 		public static function get_all_messages($lang = null)
 		{
@@ -87,7 +87,7 @@ namespace System
 		/** Translate string
 		 * @param string      $str
 		 * @param null|string $force_lang
-		 * @returns string
+		 * @return string
 		 */
 		public static function translate($str, $force_lang = NULL)
 		{
@@ -100,7 +100,7 @@ namespace System
 		/** Translate and replace arguments if necessary
 		 * @param string $str
 		 * @param array  $data Data to replace
-		 * @returns string
+		 * @return string
 		 */
 		public static function translate_and_replace($str, array $data)
 		{
@@ -112,7 +112,7 @@ namespace System
 		/** Load module
 		 * @param string $module
 		 * @param null|string $force_lang
-		 * @returns void
+		 * @return void
 		 */
 		private static function load($module, $force_lang = NULL)
 		{
@@ -157,7 +157,7 @@ namespace System
 
 		/** Set locale environment
 		 * @param string $lang
-		 * @returns string Resulted language
+		 * @return string Resulted language
 		 */
 		static function set_lang($lang)
 		{
@@ -227,7 +227,7 @@ namespace System
 
 		/** Calculate binary length of UTF-8 string
 		 * @param string $str
-		 * @returns int
+		 * @return int
 		 */
 		public static function strlen_binary($str)
 		{

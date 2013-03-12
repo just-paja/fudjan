@@ -1,7 +1,11 @@
 <?
 
+/** @package system
+ */
 namespace System
 {
+	/** Container class encapsulating methods used on console
+	 */
 	abstract class Cli
 	{
 		private static $width = 60;

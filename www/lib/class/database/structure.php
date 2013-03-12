@@ -1,7 +1,12 @@
 <?
 
+/** Database structure handling
+ * @package database
+ */
 namespace Database
 {
+	/** Container class that is responsible for handling database structure
+	 */
 	abstract class Structure
 	{
 		public static function get_default_config()

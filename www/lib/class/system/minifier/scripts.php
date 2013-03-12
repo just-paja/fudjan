@@ -34,7 +34,8 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * @package    JShrink
+ * @package    system
+ * @subpackage resources
  * @author     Robert Hafner <tedivm@tedivm.com>
  * @copyright  2009-2012 Robert Hafner <tedivm@tedivm.com>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
@@ -44,68 +45,53 @@
 
 namespace System\Minifier
 {
-	/**
-	 * Minifier
+	/** JavaScript Minifier
 	 *
 	 * Usage - Minifier::minify($js);
 	 * Usage - Minifier::minify($js, $options);
 	 * Usage - Minifier::minify($js, array('flaggedComments' => false));
 	 *
-	 * @package	JShrink
-	 * @author	Robert Hafner <tedivm@tedivm.com>
-	 * @license	http://www.opensource.org/licenses/bsd-license.php  BSD License
+	 * @package    system
+	 * @subpackage resources
+	 * @author     Robert Hafner <tedivm@tedivm.com>
+	 * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
 	 */
 	class Scripts
 	{
-		/**
-		 * The input javascript to be minified.
-		 *
+		/** The input javascript to be minified.
 		 * @var string
 		 */
 		protected $input;
 
-		/**
-		 * The location of the character (in the input string) that is next to be
-			 * processed.
-		 *
+		/** The location of the character (in the input string) that is next to be processed.
 		 * @var int
 		 */
 		protected $index = 0;
 
-		/**
-		 * The first of the characters currently being looked at.
-		 *
+		/** The first of the characters currently being looked at.
 		 * @var string
 		 */
 		protected $a = '';
 
 
-		/**
-		 * The next character being looked at (after a);
-		 *
+		/** The next character being looked at (after a);
 		 * @var string
 		 */
 		protected $b = '';
 
-		/**
-		 * This character is only active when certain look ahead actions take place.
-		 *
+		/** This character is only active when certain look ahead actions take place.
 		 *  @var string
 		 */
 		protected $c;
 
-		/**
-		 * Contains the options for the current minification process.
-		 *
+		/** Contains the options for the current minification process.
 		 * @var array
 		 */
 		protected $options;
 
-		/**
-		 * Contains the default options for minification. This array is merged with
-			 * the one passed in by the user to create the request specific set of
-			 * options (stored in the $options attribute).
-		 *
+		/** Contains the default options for minification. This array is merged with
+		 * the one passed in by the user to create the request specific set of
+		 * options (stored in the $options attribute).
 		 * @var array
 		 */
 		static protected $defaultOptions = array('flaggedComments' => false);
@@ -117,10 +103,11 @@ namespace System\Minifier
 		 */
 		static protected $jshrink;
 
-		/**
-		 * Minifier::minify takes a string containing javascript and removes
-			 * unneeded characters in order to shrink the code without altering it's
-			 * functionality.
+		/** Minifier::minify takes a string containing javascript and removes
+		 * unneeded characters in order to shrink the code without altering it's
+		 * functionality.
+		 * @param string $js JavaScript content
+		 * @param array $options
 		 */
 		static public function minify($js, $options = array())
 		{
@@ -366,10 +353,9 @@ namespace System\Minifier
 			return $char;
 		}
 
-		/**
-		 * Pushes the index ahead to the next instance of the supplied string. If it
-			 * is found the first character of the string is returned.
-		 *
+		/** Pushes the index ahead to the next instance of the supplied string. If it
+		 * is found the first character of the string is returned.
+		 * @param string $string
 		 * @return string|false Returns the first character of the string or false.
 		 */
 		protected function getNext($string)
@@ -458,9 +444,8 @@ namespace System\Minifier
 			unset($this->options);
 		}
 
-		/**
-		 * Checks to see if a character is alphanumeric.
-		 *
+		/** Checks to see if a character is alphanumeric.
+		 * @param string $char
 		 * @return bool
 		 */
 		static protected function isAlphaNumeric($char)

@@ -551,7 +551,7 @@
 
 		/* Prepared search statement
 		 * @param string $like String to match with
-		 * @returns array      Set of matches migrations
+		 * @return array      Set of matches migrations
 		 */
 		private static function find_migrations($like)
 		{

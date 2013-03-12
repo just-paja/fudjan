@@ -18,7 +18,7 @@ namespace System
 
 		/** Get latitude
 		 * @param float $val Set latitude to this val
-		 * @returns float
+		 * @return float
 		 */
 		public function lat($val = null)
 		{
@@ -29,7 +29,7 @@ namespace System
 
 		/** Get longitude
 		 * @param float $val Set longitude to this val
-		 * @returns float
+		 * @return float
 		 */
 		public function lng($val = null)
 		{
@@ -39,7 +39,7 @@ namespace System
 
 
 		/* Get formatted latitude
-		 * @returns string
+		 * @return string
 		 */
 		public function latf()
 		{
@@ -48,7 +48,7 @@ namespace System
 
 
 		/* Get formatted longitude
-		 * @returns string
+		 * @return string
 		 */
 		public function lngf()
 		{
@@ -57,7 +57,7 @@ namespace System
 
 
 		/* Format float value
-		 * @returns string
+		 * @return string
 		 */
 		private function format($num)
 		{
@@ -66,7 +66,7 @@ namespace System
 
 
 		/* Get formatted gps coordinates
-		 * @returns string
+		 * @return string
 		 */
 		public function gps()
 		{
@@ -75,7 +75,7 @@ namespace System
 
 
 		/* Convert object data to JSON
-		 * @returns string
+		 * @return string
 		 */
 		public function to_json()
 		{
@@ -84,7 +84,7 @@ namespace System
 
 
 		/* Convert object data to SQL format
-		 * @returns string
+		 * @return string
 		 */
 		public function to_sql()
 		{
@@ -94,7 +94,7 @@ namespace System
 
 
 		/* Get object data
-		 * @returns array
+		 * @return array
 		 */
 		public function get_data()
 		{
@@ -105,7 +105,7 @@ namespace System
 		/* Create object from separate coordinates
 		 * @param float $lat
 		 * @param float $lng
-		 * @returns self
+		 * @return self
 		 */
 		public static function from_latlng($lat, $lng)
 		{
@@ -115,7 +115,7 @@ namespace System
 
 		/* Create object from json data
 		 * @param string $str
-		 * @returns self
+		 * @return self
 		 */
 		public static function from_json($str)
 		{
@@ -125,7 +125,7 @@ namespace System
 
 		/* Create object from SQL format
 		 * @param string $sql
-		 * @returns self
+		 * @return self
 		 */
 		public static function from_sql($str)
 		{
@@ -138,7 +138,7 @@ namespace System
 
 		/* Create object from data
 		 * @param array $data
-		 * @returns self
+		 * @return self
 		 */
 		public static function from_array(array $data)
 		{
@@ -161,7 +161,7 @@ namespace System
 
 
 		/** Get link to the Google Maps
-		 * @returns string
+		 * @return string
 		 */
 		public function map_link()
 		{

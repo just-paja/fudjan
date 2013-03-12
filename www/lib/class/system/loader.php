@@ -9,7 +9,7 @@ namespace System
 
 
 		/** Load all available classes
-		 * @returns void
+		 * @return void
 		 */
 		public static function load_all()
 		{
@@ -26,7 +26,7 @@ namespace System
 		/** Get filesystem representation of class name
 		 * @param string $class_name
 		 * @todo Rewrite not using regexps
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_class_file_name($class_name, $with_suffix = false)
 		{
@@ -36,7 +36,7 @@ namespace System
 
 		/** Get class name in link format from model format
 		 * @param string $model
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_link_from_model($model)
 		{
@@ -46,7 +46,7 @@ namespace System
 
 		/** Get class name in link format from standart format
 		 * @param string $model
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_link_from_class($model)
 		{
@@ -56,7 +56,7 @@ namespace System
 
 		/** Get class name from model format
 		 * @param string $model
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_class_from_model($model)
 		{
@@ -67,7 +67,7 @@ namespace System
 		/** Get class translation from class format
 		 * @param string $class_name Class name in class format
 		 * @param bool   $plural     Return plural
-		 * @returns string
+		 * @return string
 		 */
 		public static function get_class_trans($class_name, $plural = false)
 		{

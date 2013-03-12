@@ -1,10 +1,13 @@
 <?
 
+/** Functions that are not to be categorized under class
+ * @package core
+ */
 namespace
 {
 	/** Does variable contain something?
 	 * @param &array $var
-	 * @returns bool
+	 * @return bool
 	 */
 	function any(&$var)
 	{
@@ -14,7 +17,7 @@ namespace
 
 	/** Returns first item from array
 	 * @param array $array
-	 * @returns mixed
+	 * @return mixed
 	 */
 	function first(array $array)
 	{
@@ -24,7 +27,7 @@ namespace
 
 	/** Returns last item from array
 	 * @param array $array
-	 * @returns mixed
+	 * @return mixed
 	 */
 	function last(array $array)
 	{
@@ -34,7 +37,7 @@ namespace
 
 	/** Returns first key in array
 	 * @param array $array
-	 * @returns string
+	 * @return string
 	 */
 	function first_key(array $array)
 	{
@@ -44,9 +47,10 @@ namespace
 
 
 	/** Clear url slashes
-	 * @returns string
+	 * @param string|array $url
+	 * @return string
 	 */
-	function clear_url($url, $mode=null)
+	function clear_url($url)
 	{
 		if(!is_array($url)) $url = explode('/', $url);
 		return implode('/', $url);
@@ -54,17 +58,18 @@ namespace
 
 
 	/** Reference wrapper for clear_url
-	 * @returns void
+	 * @param string $url
+	 * @return void
 	 */
-	function clear_this_url(&$url, $mode=null)
+	function clear_this_url(&$url)
 	{
-		$url = clear_url($url, $mode);
+		$url = clear_url($url);
 	}
 
 
 	/** Get class path
 	 * @param array $members
-	 * @returns string
+	 * @return string
 	 */
 	function members_to_path(array $members)
 	{
@@ -73,7 +78,7 @@ namespace
 
 
 	/** Dump function - displays debug info on all arguments
-	 * @returns void
+	 * @return void
 	 */
 	function v()
 	{
@@ -107,7 +112,7 @@ namespace
 
 	/** Generate random string
 	 * @param int $length
-	 * @returns string
+	 * @return string
 	 */
 	function gen_random_string($length = 64)
 	{
@@ -172,7 +177,7 @@ namespace
 	 * @param mixed $func_keys Function to pair keys
 	 * @param mixed $func_data Function to pair data
 	 * @param array $data
-	 * @returns array
+	 * @return array
 	 */
 	function collect_pair($func_keys, $func_data, array $data)
 	{
@@ -247,9 +252,9 @@ namespace
 
 
 	/** Make all first letters uppercase
-	 * @param string $str
-	 * @param string $separator
-	 * @param string $separator replacement
+	 * @param string $str         Make all first letters in string capital
+	 * @param string $separator   Separator to distinct words
+	 * @param string $replacement Glue
 	 */
 	function ucfirsts($str, $separator = '-', $replacement = ' ')
 	{
@@ -262,8 +267,9 @@ namespace
 
 
 	/** Change first letter case into whatever
-	 * @param string $string
+	 * @param string $str
 	 * @param int    $case   String case from System\Template
+	 * @return string
 	 */
 	function cflc($str, $case = System\Template::CASE_UPPER)
 	{
@@ -280,9 +286,10 @@ namespace
 
 	/** Reads contents of directory
 	 * @param string $dir
-	 * @param &array $files
-	 * @param &array $directories
-	 * @param &array $used
+	 * @param array $files
+	 * @param array $directories
+	 * @param array $used
+	 * @deprecated Replaced by System\Directory::find
 	 * @return void
 	 */
 	function read_dir_contents($dir, array &$files = array(), array &$directories = array(), array &$used = array())
@@ -311,7 +318,7 @@ namespace
 
 	/** Generate hash of a password
 	 * @param string $str
-	 * @returns string
+	 * @return string
 	 */
 	function hash_passwd($str)
 	{

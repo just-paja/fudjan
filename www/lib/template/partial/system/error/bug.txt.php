@@ -1,5 +1,10 @@
 <?
 
+/** This page is displayed on error
+ * @format TXT
+ * @package errors
+ */
+
 try {
 	$generator = System\Output::introduce();
 } catch(Exception $e) { $generator = 'pwf-unknown'; }

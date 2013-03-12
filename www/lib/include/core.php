@@ -1,6 +1,13 @@
 <?
 
-// Class autoloader
+/** Real core of pwf
+ * @package core
+ */
+
+/** Class autoloader
+ * @param string $class_name
+ * @return void
+ */
 function __autoload($class_name)
 {
 	$found = false;

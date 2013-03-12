@@ -253,7 +253,7 @@ namespace System
 		/** Format and translate datetime format
 		 * @param mixed  $date
 		 * @param string $format Format name
-		 * @returns string
+		 * @return string
 		 */
 		public static function format_date($date, $format = 'std')
 		{
@@ -334,7 +334,7 @@ namespace System
 
 		/** Convert value to HTML parseable format
 		 * @param mixed $value
-		 * @returns string
+		 * @return string
 		 */
 		public static function to_html($value)
 		{

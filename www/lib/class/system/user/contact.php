@@ -1,7 +1,13 @@
 <?
 
+/** User contacts
+ * @package system
+ * @subpackage users
+ */
 namespace System\User
 {
+	/** User contact model
+	 */
 	class Contact extends \System\Model\Database
 	{
 		const STD_EMAIL   = 1;

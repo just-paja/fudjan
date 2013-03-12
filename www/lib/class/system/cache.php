@@ -2,6 +2,9 @@
 
 namespace System
 {
+	/** Caching data using variety of drivers
+	 * @uses \System\Cache\Driver
+	 */
 	abstract class Cache
 	{
 		const TTL_DEFAULT = 3600;

@@ -2,6 +2,8 @@
 
 /** Script to handle icon paths according to system settings. Outputs raw image
  * data of the icon or default
+ * @package    system
+ * @subpackage resources
  */
 
 define("ROOT", realpath(__DIR__.'/../../'));

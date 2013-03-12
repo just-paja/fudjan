@@ -1,7 +1,16 @@
 <?
 
+/** Model callback handling
+ * @package system
+ * @subpackage models
+ */
 namespace System\Model
 {
+	/** Gives child classes ability to use callbacks. Very useful if you do
+	 * something every time befor or after saving object into database
+	 * @package system
+	 * @subpackage models
+	 */
 	abstract class Callback extends Attr
 	{
 		// Model callbacks
@@ -41,7 +50,7 @@ namespace System\Model
 
 		/** Run callbacks
 		 * @param array Set of callbacks
-		 * @returns void
+		 * @return void
 		 */
 		public function run_tasks($trigger, array $args = array())
 		{

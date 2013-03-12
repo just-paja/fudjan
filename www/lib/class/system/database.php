@@ -2,6 +2,9 @@
 
 namespace System
 {
+	/** Class responsible for managing database connections and common simple queries.
+	 * @uses \System\Settings
+	 */
 	abstract class Database
 	{
 		const DIR_INITIAL_DATA = '/etc/database/data.d';

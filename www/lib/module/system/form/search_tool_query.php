@@ -1,5 +1,9 @@
 <?
 
+/** Module used to search database and return data in JSON. Used by autosearch
+ * @TODO Must rewrite for security reasons
+ * @package modules
+ */
 System\Output::set_format('json');
 cfgs(array('dev', 'debug'), false);
 
