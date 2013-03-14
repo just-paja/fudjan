@@ -1,0 +1,126 @@
+.status {
+	position:fixed;
+	left:0;
+	top:0;
+	z-index:10000;
+	font-size:16px;
+	font-family:OpenSans, DroidSans, Arial;
+}
+
+.status-dump {
+	position:fixed;
+	display:none;
+	right:0;
+	top:0;
+	width:210px;
+	height:100%;
+	background:#282828;
+	border-left:1px solid #383838;
+	color:#e0e0e0;
+	z-index:100000;
+}
+
+.status-dump-inner {
+}
+
+.status-dump .bar-menu li {
+	display:block;
+}
+
+
+#devbar .open {
+	position:fixed;
+	right:0;
+	top:32px;
+	display:block;
+	background:url(/share/icons/32/pwf/actions/debug) center center no-repeat;;
+	width:32px;
+	height:32px;
+	cursor:pointer;
+}
+
+.status-dump .bar-menu li a {
+	display:block;
+	padding:10px 25px;
+	overflow:hidden;
+	border-bottom:1px solid #333;
+	color:#e0e0e0;
+	text-decoration:none;
+}
+
+.status-dump .bar-menu li a:hover {
+	background:#630B63
+}
+
+.status-dump .bar-menu li a .label,
+.status-dump .bar-menu li a .text
+{
+	display:block;
+}
+
+.status-dump .bar-menu li a .text {
+	font-size:12px;
+	color:#999;
+}
+
+.status h1,
+.status h2,
+.status h3,
+.status h4
+{
+	margin:0;
+	font-weight:normal;
+}
+
+.status .panel {
+	position:fixed;
+	left:0;
+	top:0;
+	width:100%;
+	height:100%;
+	background:#eeeeee;
+	display:none;
+}
+
+.status .info-inner {
+	margin-right:275px;
+	padding:20px;
+}
+
+
+.status .info .title {
+	background:#630b63;
+	padding:15px 20px;
+	margin-right:210px;
+	color:#fff;
+	position:relative;
+}
+
+.status .info .close {
+	position:absolute;
+	right:20px;
+	top:18px;
+	cursor:pointer;
+}
+
+.status table,
+.status table td,
+.status table th
+{
+	border:1px solid #ccc;
+	border-collapse:collapse;
+}
+
+.status table td,
+.status table th
+{
+	padding:4px 10px;
+	text-align:left;
+	font-size:14px;
+}
+
+.status table td:first-child,
+.status table th:first-child
+{
+	text-align:right;
+}

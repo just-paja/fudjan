@@ -1,0 +1,13 @@
+{
+	"dump_bar_hide":"Skrýt &raquo;",
+	"dump_bar_exec_time":"Čas výpočtu",
+	"dump_bar_exec_time_val":"%ss",
+	"dump_bar_packages":"Nainstalované balíčky",
+	"dump_bar_sql":"SQL",
+	"dump_bar_query_count":"%s dotazů",
+	"dump_bar_server_vars":"Proměnné serveru",
+	"dump_bar_input_data":"Vstupní data",
+	"dump_bar_input_data_count":"%s proměnných",
+	"dump_bar_key":"Klíč",
+	"dump_bar_value":"Hodnota"
+}

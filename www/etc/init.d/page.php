@@ -29,6 +29,9 @@ if (System\Settings::is_this_first_run()) {
 
 		if (cfg('dev', 'debug')) {
 			System\Init::low_level_devel();
+			content_for('styles', 'pwf/devbar');
+			content_for('scripts', 'pwf/storage');
+			content_for('scripts', 'pwf/devbar');
 		}
 
 		if (!(($page = System\Page::get_current()) instanceof System\Page)) {
