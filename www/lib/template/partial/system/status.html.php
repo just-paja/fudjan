@@ -12,6 +12,14 @@ if (!defined('H_STATUS_DUMP')) {
 			)))));
 			Tag::tbody();
 				foreach ($values as $key=>$value) {
+					if (is_array($value)) {
+						$value = var_export($value, true);
+					}
+
+					if (is_object($value)) {
+						$value = 'Instance of '.get_class($value);
+					}
+
 					Tag::tr(array("content" => array(
 						Stag::td(array("content" => $key)),
 						Stag::td(array("content" => $value)),
