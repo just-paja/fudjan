@@ -82,7 +82,7 @@
 	"attr_system_location_addr":"Adresa",
 	"attr_system_location_gps":"GPS lokace",
 	"attr_system_location_desc":"Popis",
-	"attr_system_location_url":"Adresa webu",
+	"attr_system_location_site":"Adresa webu",
 
 
 	"page_not_found":"Stránka nenalezena",

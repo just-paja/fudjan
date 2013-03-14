@@ -17,8 +17,8 @@ namespace System
 			"name" => array("varchar", "is_unique" => true),
 			"addr" => array("varchar"),
 			"gps"  => array("point"),
-			"desc" => array("text"),
-			"site" => array("url"),
+			"desc" => array("text", "default" => ''),
+			"site" => array("url", "default" => ''),
 		);
 
 
