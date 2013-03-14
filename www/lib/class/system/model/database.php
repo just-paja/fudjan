@@ -717,16 +717,17 @@ namespace System\Model
 
 
 		/* Get list of model attributes
-		 * @param string $model Name of model class
+		 * @param string $model      Name of model class
+		 * @param bool   $sql_format Format names to sql
 		 * @return array
 		 */
-		public static function get_model_attr_list($model)
+		public static function get_model_attr_list($model, $sql_format = true)
 		{
 			$attrs = array(self::get_id_col($model));
 
 			foreach ($model::$attrs as $attr=>$def) {
 				if (empty($def['is_fake'])) {
-					if ($def[0] === 'point') {
+					if ($sql_format && $def[0] === 'point') {
 						$attrs[$attr] = 'AsWKT('.$attr.')';
 					} else {
 						if ($attr != self::get_id_col($model)) {
