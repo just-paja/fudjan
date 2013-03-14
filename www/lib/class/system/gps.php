@@ -167,5 +167,18 @@ namespace System
 		{
 			return 'http://maps.google.com/maps?q='.$this->gps();
 		}
+
+
+		/** Convert gps coordinates to html
+		 * @param int $w
+		 * @param int $h
+		 * @param int $type
+		 * @return string
+		 */
+		public function to_html($w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
+		{
+			return \Stag::img(array("src" => $this->map($w, $h, $type), "alt" => ''));
+		}
+
 	}
 }
