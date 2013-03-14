@@ -242,7 +242,10 @@ namespace System
 
 			if ($debug) {
 				self::add_template(array("name" => 'system/status'), Template::DEFAULT_SLOT);
+				content_for('styles', 'pwf/elementary');
 				content_for('styles', 'pwf/devbar');
+				content_for('scripts', 'lib/jquery');
+				content_for('scripts', 'pwf');
 				content_for('scripts', 'pwf/storage');
 				content_for('scripts', 'pwf/devbar');
 			}
