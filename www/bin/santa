@@ -183,6 +183,7 @@
 		 */
 		public static function files()
 		{
+			\System\Init::basic();
 			$params = CLIOptions::get('params');
 			$files = Santa\Package::get_all_installed_files();
 			$prefix = isset($params[0]) ? $params[0]:'';
