@@ -13,6 +13,7 @@ namespace System
 		private static $instances = array();
 		private static $default_instance;
 		private static $queries = 0;
+		private static $query_record = array();
 
 		public static function init()
 		{
@@ -54,8 +55,21 @@ namespace System
 		public static function query($query, $db_ident = null)
 		{
 			if (($db = self::get_db($db_ident)) !== null) {
+				$start = microtime(true);
 				$res = $db->query($query);
 				self::$queries ++;
+
+				if (cfg('dev', 'debug')) {
+					$trace = debug_backtrace();
+					$tres  = count($trace > 2) ? 2:1;
+
+					self::$query_record[] = array(
+						"trace" => $trace[$tres],
+						"time"  => microtime(true) - $start,
+						"query" => $query,
+					);
+				}
+
 				return $res;
 			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
@@ -222,6 +236,12 @@ namespace System
 		{
 			$dblist = cfg('database', 'list');
 			return isset($dblist[$db_ident]);
+		}
+
+
+		public static function get_query_record()
+		{
+			return self::$query_record;
 		}
 	}
 }

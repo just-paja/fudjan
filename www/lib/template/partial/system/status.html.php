@@ -71,7 +71,29 @@ if (!defined('H_STATUS_DUMP')) {
 		</div>
 		<div class="panel" id="status-sql">
 			<div class="title"><?=heading(l('dump_bar_sql'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner"><?=l('not_implemented')?></div>
+			<div class="info-inner sql">
+				<? $total = 0.0; ?>
+				<ul class="plain">
+					<? foreach (\System\Database::get_query_record() as $q) {
+						Tag::li(array("content" => array(
+								Stag::div(array("class" => 'info', "content" => array(
+									Stag::div(array("class" => 'file', "content" => t('dump_query_file', $q['trace']['file'], $q['trace']['line']))),
+									Stag::div(array("class" => 'time', "content" => t('dump_query_execution_time', round($q['time'], 9)))),
+								))),
+								Stag::pre(array("content" =>
+									str_replace(
+										array(',', ' FROM', 'SELECT '),
+										array(',<br>  ', 'FROM', 'SELECT<br>  '),
+									$q['query']))),
+							)
+						));
+
+						$total += $q['time'];
+					} ?>
+				</ul>
+
+				<?=t('dump_query_total_execution_time', round($total, 9))?>
+			</div>
 		</div>
 		<div class="panel" id="status-server">
 			<div class="title"><?=heading(l('dump_bar_server_vars'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>

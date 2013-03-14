@@ -85,6 +85,7 @@
 	background:#eeeeee;
 	display:none;
 	color:#000;
+	overflow:auto;
 }
 
 .status .info-inner {
@@ -128,4 +129,22 @@
 .status table th:first-child
 {
 	text-align:right;
+}
+
+
+.status .sql li {
+	border:1px solid #ccc;
+	padding:20px;
+	background:#fff;
+	border-radius:5px;
+	margin:0 0 10px;
+}
+
+.status .sql .info {
+	margin:0 0 10px;
+}
+
+.status .sql pre {
+	font-size:12px;
+	margin:0;
 }
