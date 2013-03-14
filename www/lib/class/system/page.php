@@ -213,7 +213,7 @@ namespace System
 		 */
 		public static function get_path()
 		{
-			if (self::get_current()) {
+			if (self::$current) {
 				return self::get_current()->path;
 			} else {
 				return '/'.implode('/', self::$path).(count(self::$path) > 0 ? '/':'');

@@ -42,8 +42,10 @@ namespace System
 		 */
 		public static function set_title()
 		{
+			self::$title = array();
 			foreach (func_get_args() as $title) {
-				self::$title[] = l($title);
+				try { $title = l($title); } catch (\System\Error $e) {}
+				self::$title[] = $title;
 			}
 		}
 
@@ -56,7 +58,7 @@ namespace System
 		{
 			return $last ?
 				end(self::$title):
-				implode(Settings::get('default', 'title_separator'), array_reverse(array_filter(self::$title)));
+				implode(' :: ', array_reverse(array_filter(self::$title)));
 		}
 
 
@@ -101,7 +103,15 @@ namespace System
 		public static function get_format($mime = false)
 		{
 			php_sapi_name() == 'cli' && self::set_format('txt');
-			return $mime ? Settings::get('output', 'format', self::$format):self::$format;
+			if ($mime) {
+				try {
+					return cfg('output', 'format', self::$format);
+				} catch (\System\Error $e) {
+					return 'unknown mime type';
+				}
+			} else {
+				return self::$format;
+			}
 		}
 
 
@@ -127,7 +137,13 @@ namespace System
 		 */
 		public static function slot($name = \System\Template::DEFAULT_SLOT)
 		{
-			if (Settings::get('dev', 'debug')) {
+			try {
+				$debug = cfg('dev', 'debug');
+			} catch(\System\Error $e) {
+				$debug = true;
+			}
+
+			if ($debug) {
 				echo '<!--Slot: "'.$name.'"-->';
 			}
 
@@ -137,6 +153,7 @@ namespace System
 						Template::set_heading_level($template['locals']['heading-level']);
 						Template::set_heading_section_level($template['locals']['heading-level']);
 					}
+
 					Template::partial($template['name'], $template['locals']);
 				}
 			}
@@ -148,7 +165,11 @@ namespace System
 		 */
 		public static function introduce()
 		{
-			return Settings::get('own', 'short_name')." ".Settings::get('own', 'version');
+			try {
+				return cfg('own', 'short_name')." ".cfg('own', 'version');
+			} catch(\System\Error $e) {
+				return 'pwf unknown version';
+			}
 		}
 
 
@@ -213,14 +234,23 @@ namespace System
 		 */
 		public static function out()
 		{
-			ksort(self::$templates);
-			ob_start();
-
-			if (Settings::get('dev', 'debug')) {
-				self::add_template(array("name" => 'system/status'), Template::DEFAULT_SLOT);
+			try {
+				$debug = cfg('dev', 'debug');
+			} catch(\System\Error $e) {
+				$debug = true;
 			}
 
+			if ($debug) {
+				self::add_template(array("name" => 'system/status'), Template::DEFAULT_SLOT);
+				content_for('styles', 'pwf/devbar');
+				content_for('scripts', 'pwf/storage');
+				content_for('scripts', 'pwf/devbar');
+			}
+
+			ksort(self::$templates);
 			$name = array_shift(self::$template);
+			self::$content['output'] = array();
+			ob_start();
 
 			is_null($name) ?
 				self::slot():
@@ -291,9 +321,7 @@ namespace System
 		 */
 		public static function content_from($place)
 		{
-			self::$content['output'][] = ob_get_contents();
-
-			ob_end_clean();
+			self::content_for('output', ob_get_clean());
 			self::$content['output'][] = &self::$content[$place];
 			ob_start();
 		}

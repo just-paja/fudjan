@@ -58,13 +58,8 @@ namespace System
 		public static function reload()
 		{
 			self::set_env();
-			$dir = @opendir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
-
-			if (!is_resource($dir)) {
-				\System\Directory::create($p);
-				self::reset();
-				$dir = opendir($p);
-			}
+			\System\Directory::check($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
+			$dir = opendir($p);
 
 			while ($file = readdir($dir)) {
 				if (preg_match(self::CONF_FILE_REGEXP, $file) && !is_dir($p."/".$file)) {
@@ -119,7 +114,7 @@ namespace System
 
 				if (is_file($p.'/'.$file)) {
 					copy($p.'/'.$file, $np);
-					chmod($np, 0664);
+					chmod($np, \System\File::MOD_DEFAULT);
 				}
 			}
 		}

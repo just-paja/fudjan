@@ -122,8 +122,8 @@ namespace System
 		{
 			self::meta_out();
 			self::title_out();
-			self::styles_out();
 			self::scripts_out();
+			self::styles_out();
 		}
 
 

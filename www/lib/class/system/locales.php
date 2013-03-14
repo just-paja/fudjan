@@ -91,7 +91,7 @@ namespace System
 		 */
 		public static function translate($str, $force_lang = NULL)
 		{
-			$lang = $force_lang ? $force_lang:self::get_lang();
+			$lang = is_null($force_lang) ? self::get_lang():$force_lang;
 			self::load_messages($lang);
 			return isset(self::$messages[self::$lang][self::KEY_MESSAGES][$str]) ? self::$messages[self::$lang][self::KEY_MESSAGES][$str]:$str;
 		}
@@ -145,12 +145,17 @@ namespace System
 			if (self::$lang) {
 				return self::$lang;
 			} else {
-				return self::set_lang(Input::get('lang') ?
-					(Input::get('lang')):
-					(isset($_SESSION['lang']) ?
-						$_SESSION['lang']:
-						cfg("locales", 'default_lang'))
-				);
+				if (Input::get('lang')) {
+					return self::set_lang(Input::get('lang'));
+				} elseif (any($_SESSION['lang'])) {
+					return $_SESSION['lang'];
+				} else {
+					try {
+						return cfg("locales", 'default_lang');
+					} catch (\System\Error $e) {
+						return self::LANG_DEFAULT;
+					}
+				}
 			}
 		}
 
@@ -217,7 +222,7 @@ namespace System
 		private static function load_messages($lang)
 		{
 			($d = !isset(self::$messages[$lang][self::KEY_MESSAGES])) && \System\Json::read_dist(
-				ROOT.self::DIR.'/'.self::get_lang().self::DIR_MESSAGES,
+				ROOT.self::DIR.'/'.$lang.self::DIR_MESSAGES,
 				self::$messages[$lang][self::KEY_MESSAGES],
 				false,
 				self::$files[$lang]

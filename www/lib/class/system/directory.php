@@ -56,7 +56,7 @@ namespace System
 		 */
 		public static function check($pathname, $create = true, $mode = self::MOD_DEFAULT)
 		{
-			if (!($action = is_dir($pathname))) {
+			if (!($action = is_dir($pathname)) && $create) {
 				$action = self::create($pathname, $mode);
 			}
 

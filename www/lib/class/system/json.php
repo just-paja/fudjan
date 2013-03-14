@@ -21,21 +21,23 @@ namespace System
 		 */
 		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false, &$files = array())
 		{
-			!$assoc_keys && ($temp = array());
-			$dir = opendir($dir_dist);
-			while ($f = readdir($dir)) {
-				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
-					list($mod) = explode(".", $f);
-					$json = (array) json_decode(\System\File::read($dir_dist.'/'.$f), true);
-					$files[] = str_replace(ROOT, '', $dir_dist.'/'.$f);
+			if (\System\Directory::check($dir_dist, false)) {
+				!$assoc_keys && ($temp = array());
+				$dir = opendir($dir_dist);
+				while ($f = readdir($dir)) {
+					if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
+						list($mod) = explode(".", $f);
+						$json = (array) json_decode(\System\File::read($dir_dist.'/'.$f), true);
+						$files[] = str_replace(ROOT, '', $dir_dist.'/'.$f);
 
-					if ($assoc_keys) {
-						$temp[$mod] = $json;
-					} else $temp = array_merge_recursive($temp, $json);
+						if ($assoc_keys) {
+							$temp[$mod] = $json;
+						} else $temp = array_merge_recursive($temp, $json);
+					}
 				}
-			}
-			closedir($dir);
-			return $temp;
+				closedir($dir);
+				return $temp;
+			} else throw new \System\Error\File(sprintf('Directory "%s" either does not exist or is not accessible.', $dir_dist));
 		}
 
 

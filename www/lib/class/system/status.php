@@ -69,11 +69,21 @@ namespace System
 
 		/** General exception handler - Catches exception and displays error
 		 * @param \Exception $e
+		 * @param bool $ignore_next Don't inwoke another call of catch_exception from within
 		 */
 		public static function catch_exception(\Exception $e, $ignore_next = false)
 		{
-			@ob_clean();
-			$errors = cfg('output', 'errors');
+			while (ob_get_level() > 0) {
+				ob_end_clean();
+			}
+
+			try {
+				$errors = cfg('output', 'errors');
+				$cfg_ok = true;
+			} catch(\System\Error $exc) {
+				$errors = array();
+				$cfg_ok = false;
+			}
 
 			if (!($e instanceof \System\Error)) {
 				$e = \System\Error::from_exception($e);
@@ -103,7 +113,13 @@ namespace System
 				));
 
 				if (is_null(\System\Output::get_format())) {
-					\System\Output::set_format(cfg('output', 'format_default'));
+					try {
+						$format_default = cfg('output', 'format_default');
+					} catch(\System\Error $exc) {
+						$format_default = 'html';
+					}
+
+					\System\Output::set_format($format_default);
 				}
 
 				\System\Output::add_template(array(
@@ -117,9 +133,9 @@ namespace System
 				\System\Output::out();
 				self::report('error', $e);
 
-			} catch (\Exception $e) {
-				if (!$ignore_next) {
-					self::catch_exception($e, true);
+			} catch (\Exception $exc) {
+				if ($cfg_ok && !$ignore_next) {
+					self::catch_exception($exc, true);
 				}
 			}
 

@@ -71,7 +71,13 @@ namespace System
 		 */
 		private static function get_content(array $info, array $files)
 		{
-			if (!cfg('dev', 'debug') && file_exists($f = self::get_cache_path($info, $files[self::KEY_SUM]))) {
+			try {
+				$debug = cfg('dev', 'debug');
+			} catch(\System\Error $e) {
+				$debug = true;
+			}
+
+			if (!$debug && file_exists($f = self::get_cache_path($info, $files[self::KEY_SUM]))) {
 				$content = \System\File::read($f);
 			} else {
 				ob_start();
@@ -212,7 +218,13 @@ namespace System
 			header('Content-Type: '.$info['content']);
 			header('Content-Length: '.$length);
 
-			if (!cfg('dev', 'debug')) {
+			try {
+				$debug = cfg('dev', 'debug');
+			} catch(\System\Error $e) {
+				$debug = true;
+			}
+
+			if (!$debug) {
 				header("Pragma: public,max-age=".self::MAX_AGE);
 				header('Cache-Control: public');
 				header('Expires: '.date(\DateTime::RFC1123, time() + self::MAX_AGE + rand(0,60)));
@@ -275,7 +287,13 @@ namespace System
 		public static function get_serial()
 		{
 			if (is_null(self::$serial)) {
-				if (cfg('dev', 'debug') && cfg('dev', 'disable-serial')) {
+				try {
+					$debug = cfg('dev', 'debug') && cfg('dev', 'disable-serial');
+				} catch(\System\Error $e) {
+					$debug = true;
+				}
+
+				if ($debug) {
 					self::$serial = rand(0, PHP_INT_MAX);
 				} else {
 					self::$serial = cfg('cache', 'resource', 'serial');
