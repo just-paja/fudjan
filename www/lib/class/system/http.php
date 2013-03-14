@@ -4,6 +4,7 @@ namespace System
 {
 	class Http
 	{
+		const NO_RESPONSE           = 0;
 		const OK                    = 200;
 		const MOVED_PERMANENTLY     = 301;
 		const FOUND                 = 302;

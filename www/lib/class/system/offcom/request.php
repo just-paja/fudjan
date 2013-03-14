@@ -19,17 +19,12 @@ namespace System\Offcom
 				$content = curl_exec($ch);
 				$content = explode("\r\n\r\n", $content, 2);
 
-				$dataray = array(
-					"headers" => null,
-					"content" => null,
-					"status"  => null,
-				);
-
-				$dataray['status'] = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+				$dataray = array("status"  => curl_getinfo($ch, CURLINFO_HTTP_CODE));
 				curl_close($ch);
 
-				if ($dataray['status'] === 403) throw new \System\Error\Offcom(sprintf('Access to URL "%s" was denied', $url]));
-				if ($dataray['status'] === 404) throw new \System\Error\Offcom(sprintf('Requested URL "%s" was not found', $url]));
+				if ($dataray['status'] === \System\Http::NO_RESPONSE) throw new \System\Error\Connection(sprintf('Remote server was not found for URL "%s".', $url));
+				if ($dataray['status'] === \System\Http::FORBIDDEN) throw new \System\Error\Offcom(sprintf('Access to URL "%s" was denied', $url));
+				if ($dataray['status'] === \System\Http::PAGE_NOT_FOUND) throw new \System\Error\Offcom(sprintf('Requested URL "%s" was not found', $url));
 
 				isset($content[0]) && $dataray['headers'] = $content[0];
 				isset($content[1]) && $dataray['content'] = $content[1];
