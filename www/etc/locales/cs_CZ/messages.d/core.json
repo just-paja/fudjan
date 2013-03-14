@@ -48,6 +48,12 @@
 	"attr_system_user_groups":"Uživatelské skupiny",
 	"attr_system_user_contacts":"Kontakty",
 
+	"model_system_user_group":"Uživatelská skupina",
+	"model_system_user_group_plural":"Uživatelské skupiny",
+	"attr_system_user_group_name":"Název skupiny",
+	"attr_system_user_group_count_users":"Počet uživatelů",
+
+
 	"model_system_text":"Statický text",
 	"model_system_text_plural":"Statické texty",
 	"attr_system_text_name":"Titulek textu",
