@@ -20,6 +20,10 @@ if (!defined('H_STATUS_DUMP')) {
 						$value = 'Instance of '.get_class($value);
 					}
 
+					if (is_null($value)) {
+						$value = 'NULL';
+					}
+
 					Tag::tr(array("content" => array(
 						Stag::td(array("content" => $key)),
 						Stag::td(array("content" => $value)),
