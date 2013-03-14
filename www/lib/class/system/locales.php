@@ -93,7 +93,7 @@ namespace System
 		{
 			$lang = is_null($force_lang) ? self::get_lang():$force_lang;
 			self::load_messages($lang);
-			return isset(self::$messages[self::$lang][self::KEY_MESSAGES][$str]) ? self::$messages[self::$lang][self::KEY_MESSAGES][$str]:$str;
+			return isset(self::$messages[$lang][self::KEY_MESSAGES][$str]) ? self::$messages[$lang][self::KEY_MESSAGES][$str]:$str;
 		}
 
 
