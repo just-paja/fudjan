@@ -60,10 +60,10 @@ namespace
 
 	// Redirects
 	/** @alias System\Http::redirect */
-	function redirect_now($url, $code=\System\Http::TEMPORARY_REDIRECT) { return System\Http::redirect($url, $code); }
+	function redirect_now($url, $code=\System\Http::FOUND) { return System\Http::redirect($url, $code); }
 
 	/** @alias System\Flow::redirect */
-	function redirect($url, $code=\System\Http::TEMPORARY_REDIRECT, $when = \System\Flow::REDIRECT_AFTER_MODULES) { return System\Flow::redirect($url, $code, $when); }
+	function redirect($url, $code=\System\Http::FOUND, $when = \System\Flow::REDIRECT_AFTER_MODULES) { return System\Flow::redirect($url, $code, $when); }
 
 
 	// Template

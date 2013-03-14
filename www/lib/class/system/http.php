@@ -34,7 +34,7 @@ namespace System
 		}
 
 
-		public static function redirect($url, $code=self::TEMPORARY_REDIRECT)
+		public static function redirect($url, $code=self::FOUND)
 		{
 			if (!\System\Status::on_cli()) {
 				self::save_referer();

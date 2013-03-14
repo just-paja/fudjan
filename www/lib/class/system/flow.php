@@ -76,12 +76,14 @@ namespace System
 				$retval = $mod->make();
 
 				if (any(self::$redirect[self::REDIRECT_LATER])) {
-					self::redirect_now($r);
+					$r = &self::$redirect[self::REDIRECT_LATER];
+					\System\Http::redirect($r['url'], $r['code']);
 				}
 			}
 
 			if (any(self::$redirect[self::REDIRECT_AFTER_MODULES])) {
-
+				$r = &self::$redirect[self::REDIRECT_AFTER_MODULES];
+				\System\Http::redirect($r['url'], $r['code']);
 			}
 
 			\System\Http::save_referer();
@@ -94,10 +96,10 @@ namespace System
 		 * @param int    $when When to redirect, one of (\System\Flow::REDIRECT_LATER,\System\Flow::REDIRECT_AFTER_MODULES,\System\Flow::REDIRECT_NOW)
 		 * @return void
 		 */
-		public static function redirect($url, $code, $when=self::REDIRECT_AFTER_MODULES)
+		public static function redirect($url, $code=\System\Http::FOUND, $when=self::REDIRECT_AFTER_MODULES)
 		{
 			$when === self::REDIRECT_IMMEDIATELY && \System\Http::redirect($url, $code);
-			self::$redirect[$r['when']] = array("url" => $url, "code" => $code);
+			self::$redirect[$when] = array("url" => $url, "code" => $code);
 		}
 
 
