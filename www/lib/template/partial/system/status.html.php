@@ -61,8 +61,18 @@ if (!defined('H_STATUS_DUMP')) {
 	</div>
 
 	<div class="info">
-		<div class="panel" id="status-time"></div>
-		<div class="panel" id="status-sql"></div>
+		<div class="panel" id="status-time">
+			<div class="title"><?=heading(l('dump_bar_exec_time'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
+			<div class="info-inner"><?=l('not_implemented')?></div>
+		</div>
+		<div class="panel" id="status-packages">
+			<div class="title"><?=heading(l('dump_bar_packages'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
+			<div class="info-inner"><?=l('not_implemented')?></div>
+		</div>
+		<div class="panel" id="status-sql">
+			<div class="title"><?=heading(l('dump_bar_sql'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
+			<div class="info-inner"><?=l('not_implemented')?></div>
+		</div>
 		<div class="panel" id="status-server">
 			<div class="title"><?=heading(l('dump_bar_server_vars'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
 			<div class="info-inner">
