@@ -230,27 +230,45 @@ pwf.register('datetime_picker', function()
 					this.el('input').attr('value', '');
 				} else {
 					var
-						yrs = date.getUTCFullYear() + '',
-						mon = (date.getUTCMonth() + 1) + '',
-						day = date.getUTCDate() + '',
-						hrs = date.getUTCHours() + '',
-						min = date.getUTCMinutes() + '',
-						sec = date.getUTCSeconds() + '';
+						valid = true,
+						str = {
+							"yrs":date.getUTCFullYear() + '',
+							"mon":(date.getUTCMonth() + 1) + '',
+							"day":date.getUTCDate() + '',
+							"hrs":date.getUTCHours() + '',
+							"min":date.getUTCMinutes() + '',
+							"sec":date.getUTCSeconds() + ''
+						};
 
-					this.el('input_date').val(day + '.' + mon + '.' + yrs);
+					for (var i in str) {
+						if (isNaN(str[i])) {
+							valid = false;
+							break;
+						}
+					}
 
-					(mon.length <= 1) && (mon = '0' + mon);
-					(day.length <= 1) && (day = '0' + day);
-					(hrs.length <= 1) && (hrs = '0' + hrs);
-					(min.length <= 1) && (min = '0' + min);
-					(sec.length <= 1) && (sec = '0' + sec);
+					if (valid) {
+						this.el('input_date').val(str.day + '.' + str.mon + '.' + str.yrs);
 
-					(skip !== 'hrs') && this.el('input_hours').val(hrs);
-					(skip !== 'min') && this.el('input_minutes').val(min);
-					(skip !== 'sec') && this.el('input_seconds').val(sec);
+						(str.mon.length <= 1) && (str.mon = '0' + str.mon);
+						(str.day.length <= 1) && (str.day = '0' + str.day);
+						(str.hrs.length <= 1) && (str.hrs = '0' + str.hrs);
+						(str.min.length <= 1) && (str.min = '0' + str.min);
+						(str.sec.length <= 1) && (str.sec = '0' + str.sec);
 
-					var val = yrs + '-' + mon + '-' + day + 'T' + hrs + ':' + min + ':' + sec + '+00:00';
-					this.el('input').attr('value', val);
+						(skip !== 'hrs') && this.el('input_hours').val(str.hrs);
+						(skip !== 'min') && this.el('input_minutes').val(str.min);
+						(skip !== 'sec') && this.el('input_seconds').val(str.sec);
+
+						var val = str.yrs + '-' + str.mon + '-' + str.day + 'T' + str.hrs + ':' + str.min + ':' + str.sec + '+00:00';
+						this.el('input').attr('value', val);
+					} else {
+						this.el('input_date').val('');
+						this.el('input_hours').val('');
+						this.el('input_minutes').val('');
+						this.el('input_seconds').val('');
+						this.el('input').val('');
+					}
 					return this;
 				}
 			};
