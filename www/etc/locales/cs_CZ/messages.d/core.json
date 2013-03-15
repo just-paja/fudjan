@@ -1,4 +1,7 @@
 {
+	"yes":"ano",
+	"no":"ne",
+
 	"form_image_input_action":"Operace s obrázkem",
 	"form_image_input_none":"Žádný obrázek",
 	"form_image_input_keep":"Ponechat stávající",
