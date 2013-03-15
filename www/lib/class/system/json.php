@@ -14,19 +14,20 @@ namespace System
 
 
 		/** JSON error safe string decode
-		 * @param string $str
+		 * @param string $str    String to be parsed
+		 * @param bool   $silent Don't throw any error exceptions
 		 * @returns mixed
 		 */
-		public static function decode($str)
+		public static function decode($str, $silent = false)
 		{
-			$str = json_decode($str, true);
+			$json = json_decode($str, true);
 
 			/// Skipping this error as if nothing happened on production. The application will not failexit, although there will be no data.
-			if (($err = json_last_error()) !== JSON_ERROR_NONE && cfg('dev', 'debug')) {
-				throw new \System\Error\Format(self::get_error($err));
+			if (!$silent && ($err = json_last_error()) !== JSON_ERROR_NONE && cfg('dev', 'debug')) {
+				throw new \System\Error\Format(self::get_error($err), $str);
 			}
 
-			return $str;
+			return $json;
 		}
 
 

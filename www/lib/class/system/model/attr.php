@@ -341,7 +341,7 @@ namespace System\Model
 							$val = str_replace("\\", "", $val);
 							if (is_array($val)) {
 								$val = new \System\Image($val);
-							} elseif ($j = \System\Json::decode($val)) {
+							} elseif ($j = \System\Json::decode($val, true)) {
 								$val = \System\Image::from_json($val);
 							} elseif($val) {
 								$val = \System\Image::from_path($val);
