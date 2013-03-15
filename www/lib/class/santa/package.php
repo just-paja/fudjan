@@ -182,7 +182,7 @@ namespace Santa
 				} else {
 					$data = \System\Offcom\Request::get('http://'.self::URL_SOURCE.'/package-sync/');
 					if ($data->ok()) {
-						$tmp = json_decode($data->content, true);
+						$tmp = \System\Json::decode($data->content, true);
 						self::$tree = $tmp['tree'];
 						self::check_tree_dir();
 						\System\File::put(ROOT.self::DIR_TMP_TREE.'/tree.json', json_encode(self::$tree));

@@ -134,7 +134,7 @@ namespace System
 			$set = &self::get($path, true);
 			foreach ($set as &$var) {
 				if (preg_match("/^json\:/", $var)) {
-					$var = json_decode(substr($var, 5), true);
+					$var = \System\Json::decode(substr($var, 5));
 				}
 			}
 		}

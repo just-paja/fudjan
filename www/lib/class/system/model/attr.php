@@ -341,7 +341,7 @@ namespace System\Model
 							$val = str_replace("\\", "", $val);
 							if (is_array($val)) {
 								$val = new \System\Image($val);
-							} elseif ($j = json_decode($val, true)) {
+							} elseif ($j = \System\Json::decode($val)) {
 								$val = \System\Image::from_json($val);
 							} elseif($val) {
 								$val = \System\Image::from_path($val);
@@ -360,7 +360,7 @@ namespace System\Model
 				case 'json':
 				{
 					if (any($val) && is_string($val)) {
-						$val = array_filter((array) json_decode($val, true));
+						$val = array_filter((array) \System\Json::decode($val));
 					}
 					break;
 				}

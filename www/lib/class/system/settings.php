@@ -65,7 +65,7 @@ namespace System
 				if (preg_match(self::CONF_FILE_REGEXP, $file) && !is_dir($p."/".$file)) {
 					$d = explode(".", $file);
 					array_pop($d);
-					self::$conf[implode(null, $d)] = json_decode(\System\File::read($p."/".$file), true);
+					self::$conf[implode(null, $d)] = \System\Json::read($p."/".$file);
 				}
 			}
 
@@ -76,8 +76,7 @@ namespace System
 			while ($f = readdir($dir)) {
 				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 					$key = substr($f, 0, strpos($f, "."));
-					self::$conf['pages'][$key] = json_decode(\System\File::read($p.'/'.$f), true);
-
+					self::$conf['pages'][$key] = \System\Json::read($p.'/'.$f);
 				}
 			}
 
@@ -132,9 +131,6 @@ namespace System
 		private static function cache()
 		{
 			$conf = self::$conf;
-			foreach ($conf as &$c) {
-				unset($c['datatype_schema']);
-			}
 
 			if (!is_dir(dirname(self::get_cache_filename()))) {
 				\System\Directory::create(dirname(self::get_cache_filename()), 0770);

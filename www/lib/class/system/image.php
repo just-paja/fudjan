@@ -202,7 +202,7 @@ namespace System
 		 */
 		public static function from_json($json)
 		{
-			return new self(json_decode($json, true));
+			return new self(\System\Json::decode($json));
 		}
 
 

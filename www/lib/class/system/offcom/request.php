@@ -36,7 +36,7 @@ namespace System\Offcom
 
 
 		static function json($url) {
-			return json_decode(self::get($url), true);
+			return \System\Json::decode(self::get($url), true);
 		}
 	}
 }
