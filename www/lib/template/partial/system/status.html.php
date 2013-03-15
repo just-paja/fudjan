@@ -5,12 +5,13 @@ if (!defined('H_STATUS_DUMP')) {
 
 	function dump_table(array $values)
 	{
-		Tag::table();
-			Tag::thead(array("content" => Stag::tr(array("content" => array(
+		$str = '';
+		$str .= Stag::table();
+			$str .= Stag::thead(array("content" => Stag::tr(array("content" => array(
 				Stag::th(array("content" => l('dump_bar_key'))),
 				Stag::th(array("content" => l('dump_bar_value'))),
 			)))));
-			Tag::tbody();
+			$str .= Stag::tbody();
 				foreach ($values as $key=>$value) {
 					if (is_array($value)) {
 						$value = var_export($value, true);
@@ -24,18 +25,20 @@ if (!defined('H_STATUS_DUMP')) {
 						$value = 'NULL';
 					}
 
-					Tag::tr(array("content" => array(
+					$str .= Stag::tr(array("content" => array(
 						Stag::td(array("content" => $key)),
 						Stag::td(array("content" => $value)),
 					)));
 				}
-			Tag::close('tbody');
-		Tag::close('table');
+			$str .= Stag::close('tbody');
+		$str .= Tag::close('table');
+
+		return $str;
 	}
 }
 
 ?>
-<div class="status" id="devbar">
+<div class="status devbar">
 	<div class="status-dump">
 		<div class="status-dump-inner">
 			<ul class="bar-menu plain">
@@ -65,25 +68,42 @@ if (!defined('H_STATUS_DUMP')) {
 	</div>
 
 	<div class="info">
-		<div class="panel" id="status-time">
-			<div class="title"><?=heading(l('dump_bar_exec_time'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner"><?=l('not_implemented')?></div>
-		</div>
-		<div class="panel" id="status-packages">
-			<div class="title"><?=heading(l('dump_bar_packages'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner"><?=l('not_implemented')?></div>
-		</div>
-		<div class="panel" id="status-sql">
-			<div class="title"><?=heading(l('dump_bar_sql'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner sql">
-				<? $total = 0.0; ?>
-				<ul class="plain">
-					<? foreach (\System\Database::get_query_record() as $q) {
+		<?
+
+		echo div('panel', array(
+				div('title', array(
+					heading(l('dump_bar_exec_time'), true, 2),
+					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				)),
+				div('info-inner', div('info-padding', l('not_implemented'))),
+			), 'status-time');
+
+		echo div('panel', array(
+				div('title', array(
+					heading(l('dump_bar_packages'), true, 2),
+					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				)),
+				div('info-inner', div('info-padding', l('not_implemented'))),
+			), 'status-packages');
+
+		echo div('panel', null, 'status-sql');
+			echo div('title', array(
+				heading(l('dump_bar_packages'), true, 2),
+				link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+			));
+			echo div(array('info-inner', 'sql'));
+				echo div('info-padding');
+
+				$total = 0.0;
+
+				echo ul('plain');
+
+					foreach (\System\Database::get_query_record() as $q) {
 						Tag::li(array("content" => array(
-								Stag::div(array("class" => 'info', "content" => array(
-									Stag::div(array("class" => 'file', "content" => t('dump_query_file', $q['trace']['file'], $q['trace']['line']))),
-									Stag::div(array("class" => 'time', "content" => t('dump_query_execution_time', round($q['time'], 9)))),
-								))),
+								div('info', array(
+									div('file', t('dump_query_file', $q['trace']['file'], $q['trace']['line'])),
+									div('time', t('dump_query_execution_time', round($q['time'], 9))),
+								)),
 								Stag::pre(array("content" =>
 									str_replace(
 										array(',', ' FROM', 'SELECT '),
@@ -93,25 +113,47 @@ if (!defined('H_STATUS_DUMP')) {
 						));
 
 						$total += $q['time'];
-					} ?>
-				</ul>
+					}
 
-				<?=t('dump_query_total_execution_time', round($total, 9))?>
-			</div>
-		</div>
-		<div class="panel" id="status-server">
-			<div class="title"><?=heading(l('dump_bar_server_vars'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner">
-				<?=dump_table($_SERVER)?>
-			</div>
-		</div>
-		<div class="panel" id="status-input">
-			<div class="title"><?=heading(l('dump_bar_input_data'), true, 2)?><a class="close"><?=icon('pwf/actions/turn-off', 24)?></a></div>
-			<div class="info-inner">
-				<?=dump_table(System\Input::get())?>
-				<?=dump_table($_COOKIE)?>
-				<?=dump_table($_SESSION)?>
-			</div>
-		</div>
+				close('ul');
+
+				echo div('total', t('dump_query_total_execution_time', round($total, 9)));
+			close('div');
+		close('div');
+		close('div');
+
+		echo div('panel', array(
+				div('title', array(
+					heading(l('dump_bar_server_vars'), true, 2),
+					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				)),
+				div('info-inner', div('info-padding', dump_table($_SERVER))),
+			), 'status-server');
+
+
+		echo div('panel', array(
+				div('title', array(
+					heading(l('dump_bar_input_data'), true, 2),
+					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				)),
+				div('info-inner', div('info-padding', array(
+					div('datadump', array(
+						heading(l('dump_bar_input_data_get_post'), true, 3),
+						dump_table(System\Input::get()),
+					)),
+
+					div('datadump', array(
+						heading(l('dump_bar_input_data_cookies'), true, 3),
+						dump_table($_COOKIE),
+					)),
+
+					div('datadump', array(
+						heading(l('dump_bar_input_data_session'), true, 3),
+						dump_table($_SESSION),
+					)),
+				))),
+			), 'status-input');
+
+		?>
 	</div>
 </div>

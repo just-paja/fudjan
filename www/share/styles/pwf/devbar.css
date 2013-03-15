@@ -1,8 +1,5 @@
-#devbar {
+.devbar {
 	display:block;
-}
-
-.status {
 	position:fixed;
 	left:0;
 	top:0;
@@ -24,15 +21,12 @@
 	z-index:100000;
 }
 
-.status-dump-inner {
-}
-
 .status-dump .bar-menu li {
 	display:block;
 }
 
 
-#devbar .open {
+.devbar .open {
 	position:fixed;
 	right:0;
 	top:32px;
@@ -67,16 +61,16 @@
 	color:#999;
 }
 
-.status h1,
-.status h2,
-.status h3,
-.status h4
+.devbar h1,
+.devbar h2,
+.devbar h3,
+.devbar h4
 {
 	margin:0;
 	font-weight:normal;
 }
 
-.status .panel {
+.devbar .panel {
 	position:fixed;
 	left:0;
 	top:0;
@@ -85,54 +79,65 @@
 	background:#eeeeee;
 	display:none;
 	color:#000;
+	overflow:hidden;
+}
+
+.devbar .info-inner {
+	padding:0 20px;
 	overflow:auto;
+	position:absolute;
+	top:57px;
+	bottom:0;
+	left:0;
+	right:210px;
 }
 
-.status .info-inner {
-	margin-right:275px;
-	padding:20px;
+.devbar .info-padding {
+	padding:20px 0;
 }
 
-
-.status .info .title {
+.devbar .info .title {
 	background:#630b63;
 	padding:15px 20px;
-	margin-right:210px;
 	color:#fff;
-	position:relative;
+	position:absolute;
+	left:0;
+	top:0;
+	right:210px;
+	height:27px;
 }
 
-.status .info .close {
+.devbar .info .close {
 	position:absolute;
 	right:20px;
 	top:18px;
 	cursor:pointer;
 }
 
-.status table,
-.status table td,
-.status table th
+.devbar table,
+.devbar table td,
+.devbar table th
 {
 	border:1px solid #ccc;
 	border-collapse:collapse;
 }
 
-.status table td,
-.status table th
+.devbar table td,
+.devbar table th
 {
 	padding:4px 10px;
 	text-align:left;
 	font-size:14px;
 }
 
-.status table td:first-child,
-.status table th:first-child
+.devbar table td:first-child,
+.devbar table th:first-child
 {
 	text-align:right;
 }
 
 
-.status .sql li {
+.devbar .sql li {
 	border:1px solid #ccc;
 	padding:20px;
 	background:#fff;
@@ -140,11 +145,19 @@
 	margin:0 0 10px;
 }
 
-.status .sql .info {
+.devbar .sql .info {
 	margin:0 0 10px;
 }
 
-.status .sql pre {
+.devbar .sql pre {
 	font-size:12px;
 	margin:0;
+}
+
+.devbar .datadump {
+	margin:10px 0;
+}
+
+.devbar .datadump h3 {
+	margin-bottom:10px;
 }

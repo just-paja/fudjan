@@ -14,14 +14,23 @@ pwf.register('devbar', function()
 
 	this.is_ready = function()
 	{
-		return $('#devbar').length >= 1;
+		return $('.devbar').length >= 1;
 	};
 
 
 	this.find_and_bind = function()
 	{
-		var cont = $('#devbar');
-		var open = $('<span class="devbar open"></span>');
+		var cont = $('.devbar');
+
+		for (var i = 0; i < cont.length; i++) {
+			this.bind($(cont[i]));
+		}
+	};
+
+
+	this.bind = function(cont)
+	{
+		var open = $('<span class="open"></span>');
 		var panels = cont.find('.info .panel');
 		var context = {"cont":cont};
 
@@ -31,7 +40,7 @@ pwf.register('devbar', function()
 			var panel = $(panels[i]);
 			var id = panel.attr('id');
 			var menu = cont.find('.status-dump .bar-menu a.panel-'+id);
-			var context_panel = {"panel":panel, "menu":menu};
+			var context_panel = {"cont":cont, "panel":panel, "menu":menu};
 
 			panel.find('.close').bind('click', context_panel, callback_hide_panel);
 			menu.bind('click', context_panel, callback_show_panel);
@@ -47,15 +56,15 @@ pwf.register('devbar', function()
 	};
 
 
-	var all_panels = function()
+	var all_panels = function(cont)
 	{
-		return $('#devbar .info .panel');
+		return cont.find('.info .panel');
 	};
 
 
-	var all_menu_items = function()
+	var all_menu_items = function(cont)
 	{
-		return $('#devbar .bar-menu li a');
+		return cont.find('.bar-menu li a');
 	};
 
 
@@ -64,8 +73,8 @@ pwf.register('devbar', function()
 		e.preventDefault();
 		e.stopPropagation();
 
-		$('#devbar .status-dump, #devbar .info').show();
-		$('#devbar .open').hide();
+		e.data.cont.find('.status-dump, .info').show();
+		e.data.cont.find('.open').hide();
 		pwf.storage.store('devbar', 'shown');
 	};
 
@@ -75,11 +84,11 @@ pwf.register('devbar', function()
 		e.preventDefault();
 		e.stopPropagation();
 
-		all_panels().hide();
-		all_menu_items().removeClass('selected');
+		all_panels(e.data.cont).hide();
+		all_menu_items(e.data.cont).removeClass('selected');
 
-		$('#devbar .status-dump, #devbar .info').hide();
-		$('#devbar .open').show();
+		e.data.cont.find('.status-dump, .info').hide();
+		e.data.cont.find('.open').show();
 		pwf.storage.store('devbar', 'hidden');
 	};
 
@@ -89,8 +98,8 @@ pwf.register('devbar', function()
 		e.preventDefault();
 		e.stopPropagation();
 
-		all_panels().hide();
-		all_menu_items().removeClass('selected');
+		all_panels(e.data.cont).hide();
+		all_menu_items(e.data.cont).removeClass('selected');
 
 		e.data.panel.show();
 		e.data.menu.addClass('selected');
