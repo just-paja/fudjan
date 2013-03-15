@@ -8,7 +8,10 @@ namespace
 	// Tag class total alias, put it into root namespace
 	class Tag extends System\Template\Tag {}
 
-	// Silent tag class
+	/** Silent tag class
+	 * @package core
+	 * @subpackage aliases
+	 */
 	class Stag extends Tag {
 		public static function __callStatic($name, $args)
 		{
@@ -17,6 +20,47 @@ namespace
 			return parent::tag($name, $attrs);
 		}
 	}
+
+
+	function close($tagname)
+	{
+		return Tag::close($tagname);
+	}
+
+
+	/** Div tag alias
+	 * @param string|array $class   Classname passed to the div
+	 * @param string|array $content Content rendered inside div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function div($class, $content = null, $id = null)
+	{
+		return Tag::tag('div', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
+	/** UL tag alias
+	 * @param string|array $class   Classname passed to the div
+	 * @param string|array $content Content rendered inside div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function ul($class, $content = null, $id = null)
+	{
+		return Tag::tag('ul', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
 
 	// BasicModel & ExtModel aliases
 	/** @alias System\Model\Database::get_all */
