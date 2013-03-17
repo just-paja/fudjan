@@ -719,7 +719,7 @@ namespace System
 				}
 
 				if ($this->submited) {
-					unset($this->data_commited[$attrs['name'].'_file']);
+					unset($this->data_commited[$attrs['name'].'_file'], $this->data_commited[$attrs['name'].'_action']);
 				}
 
 				$this->data_commited[$attrs['name']] = $value;

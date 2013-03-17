@@ -106,7 +106,7 @@ namespace System
 		 */
 		public function is_image()
 		{
-			return !is_null($this->get_format());
+			return !is_null($f = $this->get_format()) && $f;
 		}
 
 
@@ -488,15 +488,17 @@ namespace System
 		 */
 		public function cache()
 		{
-			$tmp_path = ROOT.self::DIR_TMP.'/'.$this->get_file_hash().'.'.self::get_suffix($this->get_format());
-			if (@copy($this->get_path(true), $tmp_path)) {
-				$this->file_path = str_replace(ROOT, '', $tmp_path);
-				$this->tmp = false;
-				$this->cache = true;
-			} else throw new \System\Error\File(
-				sprintf('Copying image from "%s" to "%s" failed while caching!', $this->get_path(true), $tmp_path),
-				'Please check your permissions and disk space'
-			);
+			if ($this->is_image()) {
+				$tmp_path = ROOT.self::DIR_TMP.'/'.$this->get_file_hash().'.'.self::get_suffix($this->get_format());
+				if (@copy($this->get_path(true), $tmp_path)) {
+					$this->file_path = str_replace(ROOT, '', $tmp_path);
+					$this->tmp = false;
+					$this->cache = true;
+				} else throw new \System\Error\File(
+					sprintf('Copying image from "%s" to "%s" failed while caching!', $this->get_path(true), $tmp_path),
+					'Please check your permissions and disk space'
+				);
+			}
 
 			return $this;
 		}
