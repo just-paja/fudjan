@@ -115,7 +115,12 @@ namespace System
 						$mod_found = false;
 
 						foreach ($info[self::KEY_POSTFIXES] as $postfix) {
-							if (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.'.$postfix)) {
+							if (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.list')) {
+								$list = self::file_list($type, array_map('trim', array_filter(explode("\n", \System\File::read($p)))));
+								$found = array_merge($found, $list[self::KEY_FOUND]);
+								$missing = array_merge($missing, $list[self::KEY_MISSING]);
+								$mod_found = true;
+							} elseif (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.'.$postfix)) {
 								$found[] = $p;
 								$mod_found = true;
 								break;
