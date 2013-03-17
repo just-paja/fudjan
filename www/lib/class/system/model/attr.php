@@ -311,13 +311,15 @@ namespace System\Model
 
 				case 'datetime':
 				{
-					if (!isset($attr_data['is_null']) || !$attr_data['is_null']) {
-						if (is_null($val)) {
-							$val = new \DateTime();
+					$is_null = !isset($attr_data['is_null']) || !$attr_data['is_null'];
+
+					if (!($val instanceof \DateTime)) {
+						if (any($val)) {
+							$val = new \DateTime($val);
 						}
 
-						if (!($val instanceof \DateTime)) {
-							$val = new \DateTime($val);
+						if (!$is_null && !$val) {
+							$val = new \DateTime();
 						}
 					}
 					break;
