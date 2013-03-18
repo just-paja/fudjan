@@ -39,7 +39,7 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 		cd '.$path['dir-data'].';
 		tar -xf '.$path['file-tar'].';
 		cd '.$pkg['dir-src'].';
-		git log > '.$path['dir-meta'].'/changelog;
+		git log --pretty=oneline > '.$path['dir-meta'].'/changelog;
 		cd '.$path['dir-data'].';
 		echo '.$info['project-name'].   ' > '.$path['file-version'].';
 		echo '.$info['project-desc'].   ' >> '.$path['file-version'].';
