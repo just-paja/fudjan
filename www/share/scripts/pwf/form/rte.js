@@ -46,7 +46,7 @@ pwf.register('rte', function() {
 		var content = $('<div class="rte_content"></div>');
 		var html = el.html();
 
-		content.html(html.length ? html:'Enter text');
+		content.html(html.length ? html.replace(/\&amp;/g, '&').replace(/\&lt;/g, '<').replace(/\&gt;/g, '>'):'Enter text');
 		container.append(el);
 		container.append(controls);
 		container.append(content);
@@ -54,9 +54,6 @@ pwf.register('rte', function() {
 		el.hide();
 
 		content.bind('click', {"txt":el, "controls":controls}, callback_activate);
-		//~ content.bind('focusout', {"txt":el, "controls":controls}, function(e) {
-			//~ editor.deactivate($(this));
-		//~ });
 	};
 
 
@@ -73,7 +70,7 @@ pwf.register('rte', function() {
 		// Update node when editor commands are applied
 		editor.bind('changed', function(txt) {
 			return function() {
-				txt.text(editor.content());
+				txt.text(editor.content().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'));
 			};
 		}(e.data.txt));
 	};
