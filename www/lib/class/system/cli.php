@@ -75,12 +75,14 @@ namespace System
 
 		public static function get_width()
 		{
+			self::checkout_console_size();
 			return self::$width;
 		}
 
 
 		public static function get_height()
 		{
+			self::checkout_console_size();
 			return self::$height;
 		}
 
@@ -92,6 +94,76 @@ namespace System
 			}
 
 			return !$banned;
+		}
+
+
+		/** Show progress bar on cli
+		 * @param int    $done       Count of items, that are done
+		 * @param int    $total      Total count of items
+		 * @param int    $size       Width of progress bar in chars
+		 * @param string $done_msg   Message that will be printed on finish
+		 * @param string $static_msg Message that will be printed during the process
+		 * @return void
+		 */
+		public static function progress($done, $total, $msg = '', $msglen = null)
+		{
+			if ($done <= $total) {
+				$size   = self::get_width();
+				$msglen = is_null($msglen) ? strlen($msg):$msglen;
+				$psize  = $size - $msglen - 12;
+
+				$perc = (double) ($done/$total);
+				$bar  = floor($perc*$psize);
+
+				$status_bar = "\r  [";
+				$status_bar .= str_repeat("=", $bar);
+
+				if ($bar < $psize) {
+					$status_bar .= ">";
+					$status_bar .= str_repeat(" ", $psize - $bar -1);
+				} else {
+					$status_bar.="=";
+				}
+
+				$disp = number_format($perc*100, 0);
+				$status_bar .= "] $disp%";
+
+				$left = $total - $done;
+				$status_bar.= ": ".$msg;
+				$status_bar .= str_repeat(' ', $size - strlen($status_bar));
+
+				echo $status_bar;
+				flush();
+
+				if($done == $total) {
+					out();
+				}
+			}
+		}
+
+
+		/** Iterate action over set of items and display progress
+		 * @param array   $items  Set of items
+		 * @param Closure $lambda Action to perform
+		 * @return void
+		 */
+		public static function do_over(array $items, \Closure $lambda)
+		{
+			$total  = count($items);
+			$x      = 0;
+			$msglen = 15;
+
+			foreach ($items as $msg=>$item) {
+				if (($m = strlen($msg)) > $msglen) {
+					$msglen = $m;
+				}
+			}
+
+			foreach ($items as $msg=>$item) {
+				self::progress($x++, $total, $msg, $msglen);
+				$lambda($msg, $item);
+				self::progress($x, $total, $msg, $msglen);
+			}
 		}
 	}
 }
