@@ -897,7 +897,7 @@ namespace System
 			} elseif ($attr_type === 'bool') {
 				$type = 'checkbox';
 			} elseif ($attr_type === 'text') {
-				$type = 'textarea';
+				$type = 'rte';
 			} else {
 				$type = 'text';
 			}

@@ -88,6 +88,7 @@ namespace System\Form
 		protected function construct()
 		{
 			if ($this->type === 'rte') {
+				content_for('styles', 'pwf/form/rte');
 				content_for('scripts', 'pwf/lib/rte');
 				$this->class = array_merge((array) $this->class, array('rte'));
 				$this->type = 'textarea';
