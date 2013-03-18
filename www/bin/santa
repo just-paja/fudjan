@@ -51,6 +51,7 @@
 
 			self::$commands = array(
 				"broken"    => 'List all ya-files that have been changed since install',
+				"browse"    => 'Get list of all available packages',
 				"files"     => array(
 					'single' => "List all installed files",
 					'prefix' => "List all installed files with prefix",
@@ -59,12 +60,15 @@
 					'packages' => "Install packages"
 				),
 				"installed" => 'Get list of installed ya-packages',
-				"browse"    => 'Get list of all available packages',
+				"repo"      => 'Get list of available configured repositories',
+				"sync"      => array(
+					"single" => 'Reload package list from all repositories',
+					"repo repo"   => 'Reload package list from selected repositories'
+				),
 				"updates"   => array(
 					'single' => "Get list of available stable versions",
 					'branch' => "Get list of available versions from this branch",
 				),
-				"update"    => ' Force reload package list',
 				"upgrade"   => array(
 					'single'   => "Upgrade all packages to the latest version",
 					'packages' => "Upgrade packages",
@@ -86,16 +90,69 @@
 
 	abstract class CLICommands extends YacmsCLICommands
 	{
+		public static function repo()
+		{
+			System\Init::basic();
+			out_flist(System\Santa::get_repo_list());
+		}
+
+
+		public static function sync()
+		{
+			\System\Init::Basic();
+			$list = \System\Santa::get_repo_list();
+			$sync = array();
+			$params = YacmsCLIOptions::get('params');
+
+			if (any($params)) {
+				foreach ($params as $param) {
+					if (isset($list[$param])) {
+						$sync[$param] = $list[$param];
+					} else give_up(sprintf('Repository is not configured: %s', $param));
+				}
+			} else {
+				$sync = $list;
+			}
+
+			out('Syncing local tree with remote repositories');
+			\System\Cli::do_over($sync, function($repo, $url) {
+				\System\Santa::sync_from($repo);
+			});
+
+			vout();
+			self::updates();
+		}
+
+
 		/** Get list of all installed ya-packages
 		 * @return void
 		 */
 		public static function installed()
 		{
-			System\Init::basic();
-			$packages = Santa\Package::get_all_installed();
+			\System\Init::basic();
+			$packages = \System\Santa::get_all_installed();
 			self::print_packages($packages);
-			out(sprintf(l('Installed %s packages.'), count($packages)));
+			out(sprintf(l('Found %s installed packages.'), count($packages)));
 		}
+
+
+		/** Connect to mothership and check for new code
+		 * @return array Set of updates
+		 */
+		public static function updates()
+		{
+			\System\Init::Basic();
+			$updates = System\Santa::get_update_list();
+
+			if (any($updates)) {
+				out(sprintf(l('Updates available: %s'), count($updates)));
+
+				self::print_packages($updates);
+			} else {
+				vout('No updates found');
+			}
+		}
+
 
 
 		/** Get list of all available packages
@@ -104,23 +161,7 @@
 		public static function browse()
 		{
 			System\Init::basic();
-			$categories = Santa\Package::get_tree();
-			$packages = array();
-
-			foreach ($categories as $cname => $category) {
-				foreach ($category as $package_name=>$pkg) {
-					$packages[$package_name] = new Santa\Package(array(
-						"name" => $package_name,
-						"category" => $cname,
-						"desc" => $pkg['project_desc'],
-						"homepage" => isset($pkg['project_homepage']) ? $pkg['project_homepage']:'',
-						"available" => array(),
-					));
-
-					$packages[$package_name]->add_available($pkg['versions']);
-				}
-			}
-
+			$packages = System\Santa::get_all();
 			self::print_packages($packages);
 		}
 
@@ -132,47 +173,53 @@
 		{
 			foreach($packages as $pkg) {
 				$available = $pkg->get_available();
+				$print = array(
+					'Description'        => $pkg->desc,
+					'Homepage'           => $pkg->homepage,
+					'Installed version'  => $pkg->is_installed() ? $pkg->get_installed_version():'',
+				);
 
-				foreach ($available as &$ver) {
-					list($branch, $version) = explode('/', $ver);
+				$versions = array();
 
-					if ($branch == 'testing') {
-						$gray = true;
-					}
+				foreach ($available as $version) {
+					$ver  = &$versions[$version->repo][];
+					$gray = $version->branch != 'stable' && $version->branch != 'unstable';
+					$ver_str = $version->name;
 
-					if ($pkg->installed && $branch != System\Cli::term_remove_color('testing')) {
-						$status = Santa\Package::greater_version_than(System\Cli::term_remove_color($version), $pkg->version);
+					if ($pkg->is_installed() && $version->branch != System\Cli::term_remove_color('testing')) {
+						$status = \System\Santa::greater_version_than($version->name, $pkg->get_installed_version());
 						$color = 'normal';
 
 						if ($status === true) $color = 'light_green';
 						if ($status === false) $color = 'red';
 
-						$version = System\Cli::term_color($version, $color);
+						$ver_str = System\Cli::term_color($version->name, $color);
 					}
 
-					$ver = $branch.'/'.$version;
+					$ver = $ver_str.'-'.$version->branch;
 
 					if ($gray) {
 						$ver = System\Cli::term_color($ver, 'gray');
 					}
 				}
 
+				foreach ($versions as $repo=>$packages) {
+					if (any($packages)) {
+						$print[sprintf('%s versions', ucfirst($repo))] = implode(', ', $packages);
+					}
+				}
+
 				unset($ver);
 				$status = '';
 
-				if ($pkg->installed) {
+				if ($pkg->is_installed()) {
 					$status = System\Cli::term_color('I', 'light_green');
 				} else {
 					$status = System\Cli::term_color('-', 'green');
 				}
 
 				out('['.$status.'] '.$pkg->get_full_name());
-				out_flist(array(
-					'Description'        => $pkg->desc,
-					'Installed version'  => $pkg->installed ? $pkg->branch.'/'.$pkg->version:'',
-					'Available versions' => empty($available) ? 'none':implode(', ', $available),
-					'Homepage'           => $pkg->homepage,
-				), true, 4, false, 'green', true);
+				out_flist($print, true, 4, false, 'green', true);
 				out();
 			}
 		}
@@ -228,27 +275,6 @@
 				}
 			}
 		}
-
-
-		/** Connect to mothership and check for new code
-		 * @return array Set of updates
-		 */
-		public static function updates()
-		{
-			System\Init::Full();
-			$params = CLIOptions::get('params');
-			$branch = isset($params[0]) ? $params[0]:null;
-			$updates = Santa\Package::get_update_list($branch);
-
-			if (any($updates)) {
-				out(sprintf(l('Updates available: %s'), count($updates)));
-
-				self::print_packages($updates);
-			} else {
-				vout($branch ? l('No updates found in branch "'.$branch.'"'):l('No updates found'));
-			}
-		}
-
 
 		/** Update the system
 		 * @return array Set of updates
@@ -338,20 +364,6 @@
 				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
 
 			} else out(l('Please input package name or use --help'));
-		}
-
-
-		/** Force reload package tree
-		 * @return void
-		 */
-		public static function update()
-		{
-			System\Init::Basic();
-			vout(sprintf(l('Fetching package tree from "%s" ..'), Santa\Package::URL_SOURCE));
-			Santa\Package::reload_tree();
-
-			vout();
-			self::updates();
 		}
 
 

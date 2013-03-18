@@ -3,7 +3,7 @@
 /** CLI methods for Santa
  * @package santa
  */
-namespace Santa
+namespace System\Santa
 {
 	/** CLI methods for santa
 	 */
