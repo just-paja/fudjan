@@ -1,7 +1,7 @@
 pwf.register('rte', function() {
 
 	var ready = false;
-	var selectors = ['textarea'];
+	var selectors = ['textarea.rte'];
 	var editor = null;
 
 	this.init = function()

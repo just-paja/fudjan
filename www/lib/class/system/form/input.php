@@ -22,6 +22,7 @@ namespace System\Form
 			"autocomplete" => array('bool'),
 			"value"        => array('mixed'),
 			"options"      => array('array'),
+			"class"        => array('array'),
 
 			// Search tool specific
 			"model"    => array("varchar"),
@@ -86,6 +87,12 @@ namespace System\Form
 
 		protected function construct()
 		{
+			if ($this->type === 'rte') {
+				content_for('scripts', 'pwf/lib/rte');
+				$this->class = array_merge((array) $this->class, array('rte'));
+				$this->type = 'textarea';
+			}
+
 			!$this->type && self::get_default_type();
 			!$this->kind && self::get_default_kind();
 			$this->kind = in_array($this->type, self::$kinds) ? $this->type:self::get_default_kind();
