@@ -184,17 +184,6 @@ namespace System
 		}
 
 
-		/** There are no pages in page tree. Inform the user.
-		 * @return void
-		 */
-		private static function no_pages()
-		{
-			echo '<h1>'.l('There are no routes').'</h1>';
-			echo '<p>'.l('Setup has detected that there are no pages. Please define some pages using godmode utility or manually in file "/etc/conf.d/pages.json".').'</p>';
-			echo '<p>'.l('It is recommended to checkout santa package manager first to download some addons. Also - did you create database yet?').'</p>';
-		}
-
-
 		/** Lock installer from running again
 		 * @return void
 		 */

@@ -58,13 +58,5 @@ if (System\Settings::is_this_first_run()) {
 		System\Output::out();
 		System\Message::dequeue_all();
 
-	} else {
-
-		System\Setup::init();
-		System\Setup::set_step('no_pages');
-		System\Output::init();
-		System\Output::set_format('html');
-		System\Output::out();
-
-	}
+	} else throw new \System\Error\Config('There are no routes.', sprintf('Add some routes to the pages file located in "%s".', ROOT.\System\Settings::DIR_CONF_ALL));
 }
