@@ -367,6 +367,10 @@ namespace System
 				return number_format($value, 5);
 			}
 
+			if (gettype($value) == 'string') {
+				return htmlspecialchars_decode($value);
+			}
+
 			return $value;
 		}
 	}
