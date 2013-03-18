@@ -1,15 +1,23 @@
 <?
 
+/** @package system
+ */
 namespace System
 {
+	/** Input class. Manages get and post data inputs by escaping them and storing them
+	 * @package system
+	 * @property array $input
+	 */
 	abstract class Input
 	{
-		const EXEC_DIR = "/lib/exec";
-		static $input;
-		static $exec_status = array();
+		/** @type Input storage */
+		private static $input;
 
 
-		static function init()
+		/** Public init
+		 * @return void
+		 */
+		public static function init()
 		{
 			foreach ($_FILES as $var=>$cont) {
 				if (isset($cont['name']) && is_array($cont['name'])) {
@@ -41,7 +49,12 @@ namespace System
 		}
 
 
-		static function get()
+		/** Get input data
+		 * @usage get(path, path, path, ..)
+		 * @param array|string $path Path of input
+		 * @return mixed
+		 */
+		public static function get($path = null)
 		{
 			if (!func_num_args()) return self::$input;
 			$path = func_get_args();
@@ -65,7 +78,11 @@ namespace System
 		}
 
 
-		static function secure($str)
+		/** Escape input
+		 * @param string $str
+		 * @return string
+		 */
+		public static function secure($str)
 		{
 			$bad = array("'", "`", "\"");
 			$good = array("&#39;", "&#96;", "&quot;");
@@ -74,7 +91,11 @@ namespace System
 		}
 
 
-		static function get_by_prefix($prefix)
+		/** Get data with key, that starts with specific prefix
+		 * @param string $prefix
+		 * @return array
+		 */
+		public static function get_by_prefix($prefix)
 		{
 			$data = array();
 			foreach (self::$input as $k=>&$v) {
@@ -85,7 +106,12 @@ namespace System
 		}
 
 
-		static function add(array $path, $what)
+		/** Add data into input class. No matter why.
+		 * @param array $path
+		 * @param mixed $what
+		 * @return void
+		 */
+		public static function add(array $path, $what)
 		{
 			$iter = &self::$input;
 			foreach($path as $arg){
@@ -96,50 +122,10 @@ namespace System
 		}
 
 
-		static function exec()
-		{
-			if (any(self::$input['exec'])) {
-				self::rebool(self::get('bools'));
-				foreach (self::$input['exec'] as $e) {
-					$file = ROOT.self::EXEC_DIR.'/'.str_replace('..', '', $e).'.php';
-					self::$exec_status[$e] = file_exists($file) ? !!include($file):false;
-				}
-			}
-			return self::exec_check();
-		}
-
-
-		static function exec_check()
-		{
-			foreach (self::$exec_status as $stat) {
-				if ($stat !== true) { return false; }
-			}
-			return true;
-		}
-
-
-		static function rebool($what)
-		{
-			$vars = explode(':', $what);
-			foreach ($vars as $var) {
-				$path = explode('[', str_replace(']', '', $var));
-				$v = &self::get($path, true);
-				$v = !!$v;
-			}
-		}
-
-
-		static function rejson(array $path)
-		{
-			$set = &self::get($path, true);
-			foreach ($set as &$var) {
-				if (preg_match("/^json\:/", $var)) {
-					$var = \System\Json::decode(substr($var, 5));
-				}
-			}
-		}
-
-
+		/** Strip slashes if magic quotes are on
+		 * @param array &$data
+		 * @return void
+		 */
 		private static function fix_input(array &$data)
 		{
 			if (get_magic_quotes_gpc()) {
