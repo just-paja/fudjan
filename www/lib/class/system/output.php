@@ -143,7 +143,7 @@ namespace System
 				$debug = true;
 			}
 
-			if ($debug) {
+			if ($debug && !\System\Status::on_cli()) {
 				echo '<!--Slot: "'.$name.'"-->';
 			}
 
