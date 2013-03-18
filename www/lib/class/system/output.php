@@ -278,12 +278,14 @@ namespace System
 		 */
 		public static function send_headers()
 		{
-			$format = self::get_format(true);
-			header("Content-Type: $format;charset=utf-8");
-			header("Content-Encoding: gz");
+			if (!headers_sent()) {
+				$format = self::get_format(true);
+				header("Content-Type: $format;charset=utf-8");
+				header("Content-Encoding: gz");
 
-			foreach (self::$content["headers"] as $name => $content) {
-				header(ucfirst($name).": ".$content);
+				foreach (self::$content["headers"] as $name => $content) {
+					header(ucfirst($name).": ".$content);
+				}
 			}
 		}
 
