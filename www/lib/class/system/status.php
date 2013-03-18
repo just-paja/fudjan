@@ -100,7 +100,7 @@ namespace System
 			}
 
 			if (!self::on_cli()) {
-				header($e->get_http_status());
+				content_for('headers', $e->get_http_status());
 			}
 
 			try {
@@ -129,14 +129,12 @@ namespace System
 					)
 				), \System\Template::DEFAULT_SLOT);
 
-
 				\System\Output::out();
 				self::report('error', $e);
 
 			} catch (\Exception $exc) {
-				if ($cfg_ok && !$ignore_next) {
-					self::catch_exception($exc, true);
-				}
+				require_once ROOT.'/lib/template/pwf/errors/fatal.html.php';
+				exit(1);
 			}
 
 			exit(1);
