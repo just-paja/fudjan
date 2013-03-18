@@ -219,7 +219,9 @@ namespace System
 		 */
 		public static function yield()
 		{
-			foreach (self::$template as $name) {
+			while (any(self::$template)) {
+				$name = array_shift(self::$template);
+
 				if (file_exists($f = self::get_template('layout', $name))) {
 					include($f);
 				} else {
