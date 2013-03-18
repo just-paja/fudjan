@@ -166,6 +166,26 @@ namespace System
 		}
 
 
+		public static function find($name)
+		{
+			$packages = self::get_all();
+			$catg = '';
+
+			if (strpos($name, '/') !== false) {
+				list($catg, $name) = explode('/', $name);
+			}
+
+			foreach ($packages as $pkg) {
+				$match_name = empty($name) || strpos($pkg->name, $name) !== false;
+				$match_catg = empty($catg) || strpos($pkg->category, $catg) !== false;
+
+				if ($match_name && $match_catg && (any($name) || any($catg))) {
+					return $pkg;
+				}
+			}
+		}
+
+
 		/** Create package by passing path with metadata
 		 * @param string
 		 */
@@ -186,34 +206,6 @@ namespace System
 
 				return $pkg;
 			} else throw new \System\Error\File(sprintf(l('Cannot load package metadata from directory "%s"'), $path));
-		}
-
-
-		/** Create package using only its' name
-		 * @param string $name
-		 */
-		public static function from_name($name)
-		{
-			self::load_tree();
-			$category = '';
-
-			if (strpos($name, '/') > 0) {
-				list($category, $name) = explode('/', $name, 2);
-			}
-
-			foreach (self::$tree as $branch) {
-				if ($category && any($branch[$name])) {
-					return new self($branch[$name]);
-				} else {
-					foreach ($branch as $category) {
-						if (any($category[$name])) {
-							return new self($category[$name]);
-						}
-					}
-				}
-			}
-
-			return false;
 		}
 
 

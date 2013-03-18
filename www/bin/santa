@@ -154,7 +154,6 @@
 		}
 
 
-
 		/** Get list of all available packages
 		 * @return void
 		 */
@@ -163,6 +162,42 @@
 			System\Init::basic();
 			$packages = System\Santa::get_all();
 			self::print_packages($packages);
+		}
+
+
+		/** Install a set of packages
+		 * @return void
+		 */
+		public static function install()
+		{
+			System\Init::Basic();
+			$params = YacmsCLIOptions::get('params');
+
+			if (any($params)) {
+				$packages = array();
+				foreach ($params as $pkg_name) {
+					if ($pkg = \System\Santa::find($pkg_name)) {
+						$packages[] = $pkg;
+					} else {
+						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
+						break;
+					}
+				}
+
+				out(l('Following packages will be installed: '));
+
+				foreach ($packages as $pkg) {
+					$latest = explode('/', $pkg->get_latest_version());
+				}
+
+				out();
+				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
+					self::hard_install($packages);
+				}
+
+				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
+
+			} else out(l('Please input package name or use --help'));
 		}
 
 
@@ -328,43 +363,6 @@
 
 		}
 
-
-		/** Install a set of packages
-		 * @return void
-		 */
-		public static function install()
-		{
-			System\Init::Full();
-			$params = YacmsCLIOptions::get('params');
-			if (any($params)) {
-				$packages = array();
-				foreach ($params as $pkg_name) {
-					if (($pkg = Santa\Package::from_name($pkg_name)) instanceof Santa\Package) {
-						$packages[] = $pkg;
-					} else {
-						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
-						break;
-					}
-				}
-
-				out(l('Following packages will be installed: '));
-
-				foreach ($packages as $pkg) {
-					list($branch, $ver) = explode('/', $pkg->latest_version());
-					$pkg->version = $ver;
-					$pkg->branch = $branch;
-					out('  '.$pkg->name.'-'.$ver.($branch == 'stable' ? '':System\Cli::term_color(' ('.$branch.')', 'gray')));
-				}
-
-				out();
-				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
-					self::hard_install($packages);
-				}
-
-				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
-
-			} else out(l('Please input package name or use --help'));
-		}
 
 
 		/** Install a set of packages
