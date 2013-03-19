@@ -34,16 +34,16 @@ abstract class Compiler
 			);
 
 			self::$path = array(
-				"output"        => self::$package['dir-output'].'/'.self::$name.'-'.self::$version.(self::$package['branch'] === 'master' ? '':'.'.self::$package['branch']).'.tar.bz2',
+				"output"        => self::$package['dir-output'].'/'.self::$name.'-'.self::$version.(self::$package['branch'] === 'master' ? '':'-'.self::$package['branch']).'.tar.bz2',
 				"output-dir"    => self::$package['dir-output'],
-				"output-temp"   => self::$package['dir-output'].'/'.self::$name.'-'.self::$version.(self::$package['branch'] === 'master' ? '':'.'.self::$package['branch']).'.tar',
+				"output-temp"   => self::$package['dir-output'].'/'.self::$name.'-'.self::$version.(self::$package['branch'] === 'master' ? '':'-'.self::$package['branch']).'.tar',
 				"dir-temp"      => self::$package['dir-output'].'/'.self::$name.'-temp',
 			);
 
 			self::$path = array_merge(self::$path, array(
 				"dir-data"      => self::$path['dir-temp'].'/temp/data',
 				"dir-meta"      => self::$path['dir-temp'].'/temp/meta',
-				"file-tar"      => self::$path['dir-temp'].'/temp/tmp'.(self::$package['branch'] === 'master' ? '':'.'.self::$package['branch']).'.tar',
+				"file-tar"      => self::$path['dir-temp'].'/temp/tmp'.(self::$package['branch'] === 'master' ? '':'-'.self::$package['branch']).'.tar',
 				"file-version"  => self::$path['dir-temp'].'/temp/meta/version',
 				"file-checksum" => self::$path['dir-temp'].'/temp/meta/checksum',
 			));
