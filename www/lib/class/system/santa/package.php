@@ -11,7 +11,6 @@ namespace System\Santa
 	{
 		const DIR_TMP = '/var/tmp';
 		const DIR_META = '/etc/current';
-		const PKG_FORMAT = 'tar.bz2';
 		const PATH_BIN = '/www/bin';
 
 		/** Model attributes
@@ -29,38 +28,78 @@ namespace System\Santa
 
 
 		private $versions = array();
+		private $installed_meta = array();
 		private $installed_version;
 
 
+		/** Is any version of package installed?
+		 * @return bool
+		 */
 		public function is_installed()
 		{
-			return file_exists(ROOT.self::DIR_META.'/'.$this->category.'/'.$this->name.'/version');
+			return file_exists($this->get_version_file());
 		}
 
 
-		public function is_downloaded()
-		{
-			return file_exists($this->get_file_path());
-		}
-
-
-		public function is_extracted()
-		{
-			return is_dir($dir_tmp = $this->get_tmp_dir()) && file_exists($dir_tmp.'/meta/checksum');
-		}
-
-
+		/** Get installed version
+		 * @return string
+		 */
 		public function get_installed_version()
 		{
-			if (empty($this->installed_version)) {
-				$info = explode("\n", \System\File::read(ROOT.self::DIR_META.'/'.$this->category.'/'.$this->name.'/version'));
-				$this->installed_version = $info[5];
+			if ($this->is_installed() && empty($this->installed_version)) {
+				$meta = $this->get_installed_meta();
+				$this->installed_version = $this->get_version($meta['origin'], $meta['version'], $meta['branch']);
 			}
 
 			return $this->installed_version;
 		}
 
 
+		public function get_installed_meta()
+		{
+			if ($this->is_installed() && empty($this->installed_meta)) {
+				$this->installed_meta = \System\Json::read($this->get_version_file());
+			}
+
+			return $this->installed_meta;
+		}
+
+
+		/** Get path to temporary directory of package
+		 * @return string
+		 */
+		public function get_meta_dir()
+		{
+			return ROOT.self::DIR_META.'/'.$this->get_full_name();
+		}
+
+
+		public function get_version_file()
+		{
+			return $this->get_meta_dir().'/version';
+		}
+
+
+		public function get_version($repo, $ver, $branch)
+		{
+			$v = new \System\Santa\Package\Version(array(
+				"repo"    => $repo,
+				"name"    => $ver,
+				"branch"  => $branch,
+				"package" => $this->get_full_name(),
+			));
+
+			$v->set_package($this);
+			return $v;
+		}
+
+
+		/** Add exact version to available
+		 * @param string $repo
+		 * @param string $ver
+		 * @param string $branch
+		 * @return void
+		 */
 		public function add_version($repo, $ver, $branch)
 		{
 			$str = $repo.'-'.$ver.'-'.$branch;
@@ -72,58 +111,18 @@ namespace System\Santa
 					"branch"  => $branch,
 					"package" => $this->get_full_name(),
 				));
+
+				$this->versions[$str]->set_package($this);
 			}
 		}
 
 
+		/** Get full name of the package
+		 * @return string
+		 */
 		public function get_full_name()
 		{
 			return $this->category.'/'.$this->name;
-		}
-
-
-		/** Get path to temporary directory of package
-		 * @return string
-		 */
-		private function get_tmp_dir()
-		{
-			return ROOT.self::DIR_TMP.'/'.$this->get_package_name();
-		}
-
-
-		/** Get path to temporary directory of package
-		 * @return string
-		 */
-		private function get_meta_dir()
-		{
-			return ROOT.self::DIR_META.'/'.$this->get_full_name();
-		}
-
-
-		/** Get name and version of package
-		 * @return string
-		 */
-		public function get_package_name()
-		{
-			return str_replace('/', '_', $this->get_full_name()).'-'.$this->version;
-		}
-
-
-		/** Get file name of a package
-		 * @return string
-		 */
-		public function get_file_name()
-		{
-			return $this->get_package_name().'.'.self::PKG_FORMAT;
-		}
-
-
-		/** Get path to package file
-		 * @return string
-		 */
-		public function get_file_path()
-		{
-			return ROOT.self::DIR_TMP.'/'.$this->get_file_name();
 		}
 
 
@@ -147,68 +146,6 @@ namespace System\Santa
 				}
 				return !!(empty($bad)) ? true:$bad;
 			} else throw new \System\Error\Santa(sprintf('Could not find checksum file for package "%s%".', $this->get_package_name()));
-		}
-
-
-		/** Download package into predefined space
-		 * @return bool False on failure
-		 */
-		public function download()
-		{
-			if (!$this->downloaded) {
-				$url = 'http://'.self::URL_SOURCE.'var/packages/'.$this->category.'/'.$this->name.'/'.$this->name.'-'.$this->version.'.tar.bz2';
-				$data = \System\Offcom\Request::get($url);
-
-				if ($data->ok()) {
-					$this->downloaded = \System\File::put($this->get_file_path(), $data->content);
-				} else throw new \System\Error\Connection(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
-			}
-
-			return $this->downloaded;
-		}
-
-
-		/** Extract package into tmp dir
-		 * @return bool false on failure
-		 */
-		public function extract()
-		{
-			if (!$this->extracted) {
-				$this->download();
-				$ar = \System\Archive::from('bz2', $this->get_file_path(), true)->extract($this->get_tmp_dir());
-				$this->extracted = true;
-			}
-
-			return $this->extracted;
-		}
-
-
-		/** Return all files installed by YaCMS
-		 * @return array Set of file paths
-		 */
-		public function get_file_manifest()
-		{
-			if ($this->is_installed()) {
-				$p = $this->get_meta_dir();
-			} else {
-				!$this->extracted && $this->extract();
-				$p = $this->get_tmp_dir();
-			}
-
-			$manifest = array();
-			if (file_exists($f = $p.'/checksum')) {
-				$files = file($f);
-
-				foreach ($files as $file) {
-					list($checksum, $path) = explode('  ', trim($file));
-					$manifest[] = array(
-						"checksum" => $checksum,
-						"path" => '/'.$path,
-					);
-				}
-			}
-
-			return $manifest;
 		}
 
 
@@ -248,62 +185,16 @@ namespace System\Santa
 		 */
 		public function is_available_for_update()
 		{
-			foreach ($this->get_available() as $ver) {
-				if (\System\Santa::greater_version_than($ver->name, $this->get_installed_version())) {
-					return true;
+			if ($this->is_installed()) {
+
+				foreach ($this->get_available() as $ver) {
+					if ($ver->greater_than($this->get_installed_version())) {
+						return true;
+					}
 				}
 			}
 
 			return false;
-		}
-
-
-		/** Install package
-		 * @return bool False on failure
-		 */
-		public function install()
-		{
-			$this->extract();
-			$bad = array();
-			$tdir = $this->get_tmp_dir();
-			self::install_recursive($tdir.'/data', $tdir.'/data', $bad);
-
-			@mkdir(ROOT.self::DIR_META.'/'.$this->name, 0777, true);
-			rename($tdir.'/meta/checksum',  ROOT.self::DIR_META.'/'.$this->name.'/checksum');
-			rename($tdir.'/meta/changelog', ROOT.self::DIR_META.'/'.$this->name.'/changelog');
-			rename($tdir.'/meta/version',   ROOT.self::DIR_META.'/'.$this->name.'/version');
-
-			if ($this->name == 'core/yawf') {
-				copy(ROOT.self::DIR_META.'/'.$this->name.'/version', ROOT.self::DIR_META.'/version');
-			}
-
-			return !!(empty($bad)) ? true:$bad;
-		}
-
-
-		/** Browse all dirs and copy files into install dir
-		 * @param string $dir  Unpacked package directory
-		 * @param string $root Local root to install package
-		 * @param array  &$bad Reference to save bad files into
-		 * @return void
-		 */
-		private static function install_recursive($dir, $root, &$bad)
-		{
-			$dp = opendir($dir);
-			while ($f = readdir($dp)) {
-				if (!in_array($f, array('.', '..'))) {
-					if (is_dir($dir.'/'.$f)) {
-						if (!is_dir($newdir = str_replace($root, ROOT, $dir).'/'.$f)) {
-							mkdir($newdir, 0777, true);
-						}
-						self::install_recursive($dir.'/'.$f, $root, $bad);
-					} else {
-						if (!copy($dir.'/'.$f, $nf = str_replace($root, ROOT, $dir).'/'.$f)) {
-							$bad[] = str_replace(ROOT, NULL, $nf);
-						}
-					}
-				}
-			}
 		}
 
 
@@ -339,17 +230,15 @@ namespace System\Santa
 
 
 		/** Get latest version of package
-		 * @return string
+		 * @return System\Santa\Package\Version
 		 */
-		public function latest_version()
+		public function get_latest_version()
 		{
-			return;
 			$versions = $this->get_available();
-			$latest = '';
+			$latest   = null;
 
 			foreach ($versions as $version) {
-				list($branch, $ver) = explode('/', $version);
-				if (self::greater_version_than($version, $latest)) {
+				if (is_null($latest) || $latest->greater_than($version)) {
 					$latest = $version;
 				}
 			}

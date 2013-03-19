@@ -14,6 +14,7 @@ namespace System
 	{
 		const CACHE_MAX = 2592000;
 		const DIR_TREE  = '/var/cache/santa';
+		const DIR_TMP = '/var/tmp/santa';
 
 		/** Loaded tree of santa packages
 		 * @param array
@@ -246,33 +247,10 @@ namespace System
 			$files = array();
 
 			foreach ($packages as $pkg) {
-				$files = array_merge($files, $pkg->get_file_manifest());
+				$files = array_merge($files, $pkg->get_installed_version()->get_file_manifest());
 			}
 
 			return $files;
-		}
-
-
-
-		/** Compare two versions
-		 * @param string $a
-		 * @param string $b
-		 * @return bool|int 0 if equal
-		 */
-		public static function greater_version_than($a, $b)
-		{
-			$a = array_map('intval', explode('.', $a));
-			$b = array_map('intval', explode('.', $b));
-
-			foreach ($a as $num) {
-				if ($a > $b) {
-					return true;
-				} elseif ($a < $b) {
-					return false;
-				}
-			}
-
-			return 0;
 		}
 
 
@@ -295,7 +273,5 @@ namespace System
 			self::load_tree();
 			return array_keys(self::$tree);
 		}
-
-
 	}
 }
