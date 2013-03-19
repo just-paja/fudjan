@@ -35,16 +35,21 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 	exec('cd "'.$pkg['dir-src'].'"; git archive --format tar '.$pkg['branch'].' > '.$path['file-tar']);
 
 	$make->progress(50, 100);
+
+	$pkg_info = array(
+		"name"    => $info['package-category'].'/'.$info['project-name'],
+		"project" => $info['project-desc'],
+		"version" => $info['package-version'],
+		"branch"  => $pkg['branch'],
+	);
+
 	exec('
 		cd '.$path['dir-data'].';
 		tar -xf '.$path['file-tar'].';
 		cd '.$pkg['dir-src'].';
 		git log --pretty=oneline > '.$path['dir-meta'].'/changelog;
 		cd '.$path['dir-data'].';
-		echo '.$info['project-name'].   ' > '.$path['file-version'].';
-		echo '.$info['project-desc'].   ' >> '.$path['file-version'].';
-		echo '.$info['package-version'].' >> '.$path['file-version'].';
-		echo '.$info['package-category'].'/'.$info['package-name'].' >> '.$path['file-version'].';
+		echo \''.json_encode($pkg_info).'\' > '.$path['file-version'].';
 		rm '.$path['file-tar'].';
 	');
 
