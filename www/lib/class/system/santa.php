@@ -116,6 +116,7 @@ namespace System
 									"name"      => $package_name,
 									"repo"      => $repo,
 									"category"  => $cname,
+									"project"   => $pkg_data['project'],
 									"desc"      => $pkg_data['desc'],
 									"homepage"  => isset($pkg_data['homepage']) ? $pkg_data['homepage']:'',
 									"available" => array(),

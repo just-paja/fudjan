@@ -244,8 +244,6 @@
 			foreach($packages as $pkg) {
 				$available = $pkg->get_available();
 				$print = array(
-					'Description'        => $pkg->desc,
-					'Homepage'           => $pkg->homepage,
 					'Installed version'  => $pkg->is_installed() ? $pkg->get_installed_version()->name():'',
 				);
 
@@ -277,6 +275,10 @@
 						$print[sprintf('%s versions', ucfirst($repo))] = implode(', ', $packages);
 					}
 				}
+
+				$print['Project Name'] = $pkg->project;
+				$print['Homepage']     = $pkg->homepage;
+				$print['Description']  = $pkg->desc;
 
 				unset($ver);
 				$status = '';
