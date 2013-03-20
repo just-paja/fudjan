@@ -61,7 +61,7 @@ namespace System
 				"output"  => false,
 				"class"   => 'location_map',
 				"href"    => $this->map_link(),
-				"content" => $this->to_html()
+				"content" => $this->to_html($w, $h, $type)
 			));
 		}
 
