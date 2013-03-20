@@ -131,7 +131,7 @@ namespace System\Santa\Package
 			$tdir = $this->get_tmp_dir();
 			$deprecated = array();
 
-			if ($ver = $this->get_installed_version()) {
+			if ($ver = $this->pkg()->get_installed_version()) {
 				$deprecated = $this->get_deprecated_files($ver);
 			}
 
@@ -164,7 +164,7 @@ namespace System\Santa\Package
 			$manifest_other = $ver->get_file_manifest();
 			$deprecated = array();
 
-			foreach $manifest_other as $file_other) {
+			foreach ($manifest_other as $file_other) {
 				foreach ($manifest_this as $file_this) {
 					if ($file_this['path'] == $file_other['path']) {
 						$found = true;
@@ -222,16 +222,23 @@ namespace System\Santa\Package
 		 */
 		public static function greater_version_than($a, $b)
 		{
+			if ($a == 'unknown') return false;
+			if ($b == 'unknown') return true;
+
 			$a = array_map('intval', explode('.', $a));
 			$b = array_map('intval', explode('.', $b));
 
-			foreach ($a as $key=>$num) {
+			foreach (array(0,1,2) as $key) {
+				!isset($a[$key]) && $a[$key] = 0;
+				!isset($b[$key]) && $b[$key] = 0;
+
 				if ($a[$key] > $b[$key]) {
 					return true;
 				} elseif ($a[$key] < $b[$key]) {
 					return false;
 				}
 			}
+
 
 			return null;
 		}
