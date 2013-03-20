@@ -166,7 +166,7 @@ namespace System
 		public static function introduce()
 		{
 			try {
-				return cfg('own', 'short_name')." ".cfg('own', 'version');
+				return cfg('own', 'name')." ".cfg('own', 'version');
 			} catch(\System\Error $e) {
 				return 'pwf unknown version';
 			}

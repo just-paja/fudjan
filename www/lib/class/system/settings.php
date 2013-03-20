@@ -16,13 +16,12 @@ namespace System
 		private static $no_pages = false;
 
 		private static $version_default = array(
-			'pwf',
-			'Purple Web Framework',
-			'unknown version',
-			'pwf',
-			'master',
+			"name"    => "pwf",
+			"project" => "Purple Web Framework",
+			"version" => "unknown",
+			"branch"  => "local",
+			"origin"  => "local",
 		);
-
 
 		// Data
 		private static $conf = array();
@@ -80,22 +79,13 @@ namespace System
 				}
 			}
 
-			$version_path = ROOT.self::FILE_VERSION;
-
-			if (file_exists($version_path)) {
-				$cfg = explode("\n", \System\File::read($version_path));
+			if (file_exists($version_path = ROOT.self::FILE_VERSION)) {
+				$cfg = \System\Json::read($version_path);
 			} else {
-				\System\File::put($version_path, implode("\n", $cfg = self::$version_default));
+				\System\Json::put($version_path, $cfg = self::$version_default);
 			}
 
-			self::$conf['own'] = array(
-				'short_name' => $cfg[0],
-				'name'       => $cfg[1],
-				'version'    => $cfg[2],
-				'package'    => $cfg[3],
-				'branch'     => any($cfg[4]) ? $cfg[4]:'master',
-			);
-
+			self::$conf['own'] = $cfg;
 			ksort(self::$conf);
 			Status::report('info', "Settings reloaded");
 		}
