@@ -99,5 +99,29 @@ namespace System
 			self::find_all_files($path, $files, $regexp);
 			return $files;
 		}
+
+
+		/** Remove directory and files within
+		 * @param string $path
+		 * @return void
+		 */
+		public static function remove($path)
+		{
+			if (strpos('..', $path) === false) {
+				if (is_dir($path)) {
+					$dp = opendir($path);
+
+					while ($f = readdir($dp)) {
+						if (strpos($f, '.') !== 0) {
+							is_dir($path.'/'.$f) ?
+								self::remove_directory($path.'/'.$f):
+								unlink($path.'/'.$f);
+						}
+					}
+
+					rmdir($path);
+				}
+			}
+		}
 	}
 }
