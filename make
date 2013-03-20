@@ -38,7 +38,8 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 
 	$pkg_info = array(
 		"name"    => $info['package-category'].'/'.$info['project-name'],
-		"project" => $info['project-desc'],
+		"project" => $info['project-name'],
+		"desc"    => $info['project-desc'],
 		"version" => $info['package-version'],
 		"branch"  => $pkg['branch'],
 	);

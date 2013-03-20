@@ -2,6 +2,6 @@
 	"package-branch":"testing",
 	"package-category":"core",
 	"package-name":"pwf",
-	"project-name":"PWF",
-	"project-desc":"Purple Web Framework"
+	"project-name":"Purple Web Framework",
+	"project-desc":"Web framework that utilizes modules"
 }
