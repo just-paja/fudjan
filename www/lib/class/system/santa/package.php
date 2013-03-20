@@ -207,7 +207,13 @@ namespace System\Santa
 			$latest   = null;
 
 			foreach ($versions as $version) {
-				if (is_null($latest) || $version->greater_than($latest)) {
+				$greater  = false;
+
+				if (is_null($latest) || ($greater = $version->greater_than($latest))) {
+					$latest = $version;
+				}
+
+				if (is_null($greater) && $latest->branch) {
 					$latest = $version;
 				}
 			}
