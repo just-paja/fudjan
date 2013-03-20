@@ -129,8 +129,11 @@ namespace System
 				$status_bar .= "] $disp%";
 
 				$left = $total - $done;
-				$status_bar.= ": ".$msg;
-				$status_bar .= str_repeat(' ', $size - strlen($status_bar));
+				$status_bar .= ": ".$msg;
+
+				if (($blank = $size - strlen($status_bar)) > 0) {
+					$status_bar .= str_repeat(' ', $blank);
+				}
 
 				echo $status_bar;
 				flush();
@@ -147,21 +150,30 @@ namespace System
 		 * @param Closure $lambda Action to perform
 		 * @return void
 		 */
-		public static function do_over(array $items, \Closure $lambda)
+		public static function do_over(array $items, \Closure $lambda, $message = null)
 		{
 			$total  = count($items);
 			$x      = 0;
 			$msglen = 15;
 
-			foreach ($items as $msg=>$item) {
-				if (($m = strlen($msg)) > $msglen) {
-					$msglen = $m;
+			if (is_null($message)) {
+				foreach ($items as $msg=>$item) {
+					if (($m = strlen($msg)) > $msglen) {
+						$msglen = $m;
+					}
 				}
+			} else {
+				$msglen = strlen($message);
 			}
 
+			// Right margin
+			$msglen += 2;
+
 			foreach ($items as $msg=>$item) {
+				$msg = is_null($message) ? $msg:$message;
+
 				self::progress($x++, $total, $msg, $msglen);
-				$lambda($msg, $item);
+				$lambda($msg, $item, $items);
 				self::progress($x, $total, $msg, $msglen);
 			}
 		}
