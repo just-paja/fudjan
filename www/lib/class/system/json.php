@@ -41,6 +41,17 @@ namespace System
 		}
 
 
+		/** Put data formatted in JSON to path
+		 * @param string $path
+		 * @param mixed  $json
+		 * @return bool
+		 */
+		public static function put($path, $json)
+		{
+			return \System\File::put($path, json_encode($json));
+		}
+
+
 		/** Read all JSON files in dir and return content
 		 * @param string $dir_dist Path to directory
 		 * @param &array $temp     Variable to write in
