@@ -135,6 +135,29 @@ namespace System
 			return $packages;
 		}
 
+
+		public static function search(array $params)
+		{
+			$packages = array();
+			$all = self::get_all();
+
+			foreach ($all as $pkg) {
+				foreach ($params as $param) {
+					$pass = preg_match('/'.$param.'/', $pkg->name) || preg_match('/'.$param.'/', $pkg->desc);
+
+					if (!$pass) {
+						break;
+					}
+				}
+
+				if ($pass) {
+					$packages[] = $pkg;
+				}
+			}
+
+			return $packages;
+		}
+
 		/** Get list of all installed packages
 		 * @return array
 		 */

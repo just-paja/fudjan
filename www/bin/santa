@@ -64,6 +64,9 @@
 				),
 				"installed" => 'Get list of installed ya-packages',
 				"repo"      => 'Get list of available configured repositories',
+				"search"      => array(
+					"name" => 'Lookup package with simillar name',
+				),
 				"sync"      => array(
 					"single" => 'Reload package list from all repositories',
 					"repo repo"   => 'Reload package list from selected repositories'
@@ -176,6 +179,24 @@
 
 			self::print_packages($packages);
 		}
+
+
+		public static function search()
+		{
+			\System\Init::Basic();
+			$params = YacmsCLIOptions::get('params');
+
+			if (any($params)) {
+				$packages = System\Santa::search($params);
+
+				if (any($packages)) {
+					self::print_packages($packages);
+				} else {
+					out('No packages were found.');
+				}
+			} else give_up('Please input at least one parameter of search.');
+		}
+
 
 
 		/** Install a set of packages
