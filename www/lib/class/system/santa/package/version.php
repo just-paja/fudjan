@@ -5,6 +5,7 @@ namespace System\Santa\Package
 	class Version extends \System\Model\Attr
 	{
 		const PKG_FORMAT = 'tar.bz2';
+		const DIR_META   = '/meta';
 
 		protected static $attrs = array(
 			"name"    => array('varchar'),
@@ -22,7 +23,8 @@ namespace System\Santa\Package
 			$meta = $this->pkg()->get_installed_meta();
 
 			return
-				$meta['origin']  == $this->repo   &&
+				$this->pkg()->is_installed()      &&
+				(!isset($meta['origin']) || $meta['origin'] == $this->repo) &&
 				$meta['branch']  == $this->branch &&
 				$meta['version'] == $this->name;
 		}
@@ -78,7 +80,7 @@ namespace System\Santa\Package
 
 		public function full_package_name()
 		{
-			return $this->repo.'-'.$this->package_name();
+			return ($this->repo ? $this->repo.'-':'').$this->package_name();
 		}
 
 
@@ -255,8 +257,26 @@ namespace System\Santa\Package
 		 */
 		public function get_package_path()
 		{
-			return ROOT.\System\Santa::DIR_TMP.'/'.$this->full_package_name().'.'.self::PKG_FORMAT;
+			return ROOT.\System\Santa::DIR_TMP.'/'.$this->full_package_name();
 		}
 
+
+		public function get_meta()
+		{
+			if ($this->is_installed()) {
+				return $this->pkg()->get_installed_meta();
+			} else {
+				$this->extract();
+				$meta_path = $this->get_tmp_dir().self::DIR_META;
+				$meta = array(
+					"version"   => \System\Json::read($meta_path.'/version'),
+					"checksum"  => \System\File::read($meta_path.'/checksum'),
+					"changelog" => \System\File::read($meta_path.'/changelog'),
+				);
+
+				$meta['version']['origin'] = $this->repo ? $this->repo:'';
+				return $meta;
+			}
+		}
 	}
 }
