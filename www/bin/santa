@@ -254,7 +254,7 @@
 			foreach($packages as $pkg) {
 				$available = $pkg->get_available();
 				$print = array(
-					'Installed version'  => $pkg->is_installed() ? $pkg->get_installed_version()->name():'',
+					'Installed version'  => $pkg->is_installed() ? System\Cli::term_color($pkg->get_installed_version()->name(), 'yellow'):'',
 				);
 
 				$versions = array();
@@ -264,11 +264,17 @@
 					$gray = $version->branch != 'stable' && $version->branch != 'unstable';
 
 					if ($pkg->is_installed() && $version->branch != System\Cli::term_remove_color('testing')) {
-						$status = $version->greater_than($pkg->get_installed_version());
+						$installed = $pkg->get_installed_version();
+						$status = $version->greater_than($installed);
 						$color = 'normal';
 
 						if ($status === true) $color = 'light_green';
 						if ($status === false) $color = 'red';
+
+						if (is_null($status) && $version->repo == $installed->repo) {
+							$gray = false;
+							$color = 'yellow';
+						}
 
 						$ver = System\Cli::term_color($version->short_name(), $color);
 					} else {
@@ -293,10 +299,9 @@
 
 				unset($ver);
 				$status = '';
-
 				if ($pkg->is_installed()) {
 					$status = System\Cli::term_color('I', 'light_green');
-				} if ($pkg->is_available_for_update()) {
+				} elseif ($pkg->is_available_for_update()) {
 					$status = System\Cli::term_color('U', 'light_green');
 				} else {
 					$status = System\Cli::term_color('-', 'green');
@@ -429,45 +434,19 @@
 		 */
 		public static function upgrade()
 		{
-			System\Init::Full();
-			$params = YacmsCLIOptions::get('params');
-			$latest = YacmsCLIOptions::get('force');
+			System\Init::basic();
+			$packages = \System\Santa::get_update_list();
+			$updates  = array();
 
-			if (any($params)) {
-				if ($latest) {
-					out('Warning: selecting newest versions including testing branch. You should consider staying on one package branch, preferrably stable!');
-					out();
-				}
-
-				$updates = array();
-				foreach ($params as $pkg_name) {
-					if (($pkg = Santa\Package::from_name($pkg_name)) instanceof Santa\Package) {
-						if ($pkg->is_available_for_update(!$latest)) {
-							$updates[] = $pkg;
-						}
-					} else {
-						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
-						exit(1);
-					}
-				}
-			} else {
-				$updates = Santa\Package::get_update_list(!$latest);
+			foreach ($packages as $pkg) {
+				$updates[] = $pkg->get_latest_version();
 			}
 
 			if (any($updates)) {
-				out(l('Following packages will be upgraded:'));
-				foreach ($updates as $pkg) {
-					$old_branch = Santa\Cli::get_branch_color_text($pkg->branch.'/'.$pkg->version, $pkg->branch);
-					list($newb, $newv) = explode('/', $new = $pkg->latest_version());
-					$new_branch = Santa\Cli::get_branch_color_text($new, $newb);
-					out(' ['.Santa\Cli::get_branch_color_text('U', $newb).'] '.$pkg->get_full_name().' ('.$old_branch.' -> '.$new_branch.')');
-					out();
+				self::print_package_changes($updates, 'install');
+				out();
 
-					$pkg->branch = $newb;
-					$pkg->version = $newv;
-				}
-
-				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
+				if ($proceed = is_yes(read('Do you wish to proceed? ['.System\Cli::term_color('Yes', 'light_green').'/'.System\Cli::term_color('No', 'light_red').'] '))) {
 					self::hard_install($updates);
 				}
 

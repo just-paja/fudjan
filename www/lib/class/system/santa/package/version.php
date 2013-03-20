@@ -185,7 +185,7 @@ namespace System\Santa\Package
 		/** Compare two versions
 		 * @param string $a
 		 * @param string $b
-		 * @return bool|int 0 if equal
+		 * @return bool|null Null if equal
 		 */
 		public static function greater_version_than($a, $b)
 		{
