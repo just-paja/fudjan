@@ -100,7 +100,7 @@ namespace System\Santa\Package
 				$p = $this->pkg()->get_meta_dir();
 			} else {
 				!$this->is_extracted() && $this->extract();
-				$p = $this->get_tmp_dir();
+				$p = $this->get_tmp_dir().self::DIR_META;
 			}
 
 			$manifest = array();
@@ -129,16 +129,19 @@ namespace System\Santa\Package
 			$this->extract();
 			$bad = array();
 			$tdir = $this->get_tmp_dir();
+
 			self::install_recursive($tdir.'/data', $tdir.'/data', $bad);
+			\System\Directory::check($this->pkg()->get_meta_dir());
+			rename($tdir.'/meta/checksum',  $this->pkg()->get_meta_dir().'/checksum');
+			rename($tdir.'/meta/changelog', $this->pkg()->get_meta_dir().'/changelog');
 
-			@mkdir(ROOT.self::DIR_META.'/'.$this->name, 0777, true);
-			rename($tdir.'/meta/checksum',  ROOT.self::DIR_META.'/'.$this->name.'/checksum');
-			rename($tdir.'/meta/changelog', ROOT.self::DIR_META.'/'.$this->name.'/changelog');
-			rename($tdir.'/meta/version',   ROOT.self::DIR_META.'/'.$this->name.'/version');
-
-			if ($this->name == 'core/yawf') {
-				copy(ROOT.self::DIR_META.'/'.$this->name.'/version', ROOT.self::DIR_META.'/version');
-			}
+			\System\Json::put($this->pkg()->get_meta_dir().'/version', array(
+				"name"    => $this->pkg()->name,
+				"project" => $this->pkg()->project,
+				"version" => $this->name,
+				"branch"  => $this->branch,
+				"origin"  => $this->repo,
+			));
 
 			return !!(empty($bad)) ? true:$bad;
 		}
@@ -147,19 +150,18 @@ namespace System\Santa\Package
 
 		/** Browse all dirs and copy files into install dir
 		 * @param string $dir  Unpacked package directory
-		 * @param string $root Local root to install package
+		 * @param string $root Package root, that passes to the next function calls
 		 * @param array  &$bad Reference to save bad files into
 		 * @return void
 		 */
 		private static function install_recursive($dir, $root, &$bad)
 		{
 			$dp = opendir($dir);
+
 			while ($f = readdir($dp)) {
-				if (!in_array($f, array('.', '..'))) {
+				if (strpos($f, '.') !== 0) {
 					if (is_dir($dir.'/'.$f)) {
-						if (!is_dir($newdir = str_replace($root, ROOT, $dir).'/'.$f)) {
-							mkdir($newdir, 0777, true);
-						}
+						\System\Directory::check($newdir = str_replace($root, ROOT, $dir).'/'.$f);
 						self::install_recursive($dir.'/'.$f, $root, $bad);
 					} else {
 						if (!copy($dir.'/'.$f, $nf = str_replace($root, ROOT, $dir).'/'.$f)) {
@@ -176,7 +178,7 @@ namespace System\Santa\Package
 		 */
 		public function greater_than(self $version)
 		{
-			return self::greater_version_than($version->name, $this->name);
+			return self::greater_version_than($this->name, $version->name);
 		}
 
 
@@ -223,7 +225,7 @@ namespace System\Santa\Package
 				$this->extracted = true;
 			}
 
-			return $this->extracted;
+			return $this->is_extracted();
 		}
 
 
@@ -277,6 +279,100 @@ namespace System\Santa\Package
 				$meta['version']['origin'] = $this->repo ? $this->repo:'';
 				return $meta;
 			}
+		}
+
+
+
+
+		/** Check if package files don't conflict any other
+		 * @return array Conflict
+		 */
+		public function check_files()
+		{
+			$installed = self::get_all_installed();
+			$my_files = $this->get_file_manifest();
+			$blocks = array();
+
+			foreach ($installed as $pkg) {
+				if ($pkg->name != $this->name) {
+					$current_files = $pkg->get_file_manifest();
+					foreach ($my_files as $mf) {
+						foreach ($current_files as $cf) {
+							if ($mf['path'] == $cf['path']) {
+								$blocks[] = array(
+									"path" => $mf['path'],
+									"old"  => $cf['checksum'],
+									"new"  => $cf['checksum'],
+									"package" => $pkg->name.'-'.$pkg->version,
+								);
+							}
+						}
+					}
+				}
+			}
+
+			return $blocks;
+		}
+
+
+		public function get_file_conflicts(array $packages)
+		{
+			$result = array();
+
+			foreach ($packages as $ver) {
+				if ($conflict = $this->get_file_conflicts_for($ver)) {
+					$result = array_merge($result, $conflict);
+				}
+			}
+
+			return any($result) ? $result:false;
+		}
+
+
+		public function get_file_conflicts_for(self $ver)
+		{
+			$result = array();
+
+			if ($this->pkg()->get_full_name() != $ver->pkg()->get_full_name()) {
+				$files_this  = $this->get_file_manifest();
+				$files_other = $ver->get_file_manifest();
+
+				foreach ($files_this as $file_this) {
+					foreach ($files_other as $file_other) {
+						if ($file_this['path'] == $file_other['path']) {
+							$result[] = array(
+								"package" => $ver->full_name(),
+								"file"    => $file_this['path'],
+							);
+						}
+					}
+				}
+			}
+
+			return any($result) ? $result:false;
+		}
+
+
+		public function clear_tmp()
+		{
+			\System\File::remove_directory($this->get_tmp_dir());
+			unlink($this->get_package_path());
+		}
+
+
+		public function remove()
+		{
+			$manifest = $this->get_file_manifest();
+
+			foreach ($manifest as $file) {
+				if (file_exists($f = ROOT.$file['path'])) {
+					unlink($f);
+				}
+			}
+
+			\System\Directory::remove($this->pkg()->get_meta_dir());
+
+			return $this->is_installed();
 		}
 	}
 }

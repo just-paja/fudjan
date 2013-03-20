@@ -63,6 +63,9 @@
 					'packages' => "Install packages"
 				),
 				"installed" => 'Get list of installed ya-packages',
+				"remove"    => array(
+					"package" => 'Remove package from system',
+				),
 				"repo"      => 'Get list of available configured repositories',
 				"search"      => array(
 					"name" => 'Lookup package with simillar name',
@@ -232,8 +235,8 @@
 						self::print_package_changes($install, 'install');
 
 						out();
-						if ($proceed = is_yes(read('Do you wish to proceed? ['.System\Cli::term_color('Yes', 'light_green').'/'.System\Cli::term_color('No', 'light_red').']'))) {
-							self::hard_install($packages);
+						if ($proceed = is_yes(read('Do you wish to proceed? ['.System\Cli::term_color('Yes', 'light_green').'/'.System\Cli::term_color('No', 'light_red').'] '))) {
+							self::hard_install($install);
 						}
 
 						\System\Router::update_rewrite();
@@ -355,6 +358,36 @@
 		}
 
 
+		public static function remove()
+		{
+			\System\Init::basic();
+			$params = array_filter(array_unique(YacmsCLIOptions::get('params')));
+
+			if (any($params)) {
+				foreach ($params as $pkg_name) {
+					if ($pkg = \System\Santa::find($pkg_name)) {
+						if ($pkg->is_installed()) {
+							$packages[$pkg->get_full_name()] = $pkg->get_installed_version();
+						} else give_up(sprintf('Package "%s" is not installed.', $pkg->get_full_name()));
+					} else give_up(sprintf('Package "%s" was not found.', $pkg_name));
+				}
+
+				if (any($packages)) {
+					self::print_package_changes($packages, 'remove');
+					out();
+
+					if ($proceed = is_yes(read('Do you wish to proceed? ['.System\Cli::term_color('Yes', 'light_green').'/'.System\Cli::term_color('No', 'light_red').'] '))) {
+						\System\Cli::do_over($packages, function($key, $pkg) {
+							$pkg->remove();
+						});
+
+						out();
+						out(sprintf('Removed %d packages.', count($packages)));
+					}
+				}
+			} else give_up('Please select some packages to be removed.');
+		}
+
 		/** Generate .gitignore and print it into STDOUT
 		 * @return void
 		 */
@@ -389,6 +422,7 @@
 				}
 			}
 		}
+
 
 		/** Update the system
 		 * @return array Set of updates
@@ -445,86 +479,48 @@
 
 
 		/** Install a set of packages
+		 * @param array $packages
 		 */
 		private static function hard_install(array $packages)
 		{
-			System\Init::Basic();
-			out(l('Installing packages ..'));
+			out('Installing packages ..');
 			$total = count($packages);
 
-			$msg = 'Downloading packages';
-			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			foreach ($packages as $key=>$pkg) {
-				$pkg->download();
-
-				if (!$pkg->downloaded) {
-					out(sprintf(l('Failed to download package %s'), $pkg->name));
-					exit(3);
-				}
-
-				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
-
-			$msg = 'Extracting packages';
-			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			foreach ($packages as $key=>$pkg) {
-				$pkg->extract();
-
-				if (!$pkg->extracted) {
-					out(sprintf(l('Failed to extract package %s'), $pkg->name));
-					exit(2);
-				}
-
-				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
+			//~ $msg = ;
+			\System\Cli::do_over($packages, function($key, $pkg) {
+				$pkg->download() || give_up(sprintf('Failed to download package "%s"', $pkg->full_name));
+			}, 'Downloading packages ..       ');
 
 
-			$msg = 'Checking for file conflicts';
-			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			foreach ($packages as $key=>$pkg) {
-				$result = $pkg->check_files();
+			\System\Cli::do_over($packages, function($key, $pkg) {
+				$pkg->extract() || give_up(sprintf('Failed to extract package %s', $pkg->full_name()));
+			}, 'Extracting packages ..        ');
 
-				if (any($result)) {
-					out_flist(array(
-						"Path"    => $result['path'],
-						"Package" => $result['package'],
-						"Old"     => $result['old'],
-						"New"     => $result['new'],
-					));
+			\System\Cli::do_over($packages, function($key, $pkg, $packages) {
+				if ($result = $pkg->get_file_conflicts(\System\Santa::get_all_installed_versions())) {
+					out();
+					out();
+					out(sprintf('Found %s file conflicts for package %s:', \System\Cli::term_color(count($result), 'light_red'), \System\Cli::term_color($pkg->full_name(), 'light_red')));
+
+					foreach ($result as $file) {
+						out('  '.$file['package'].': '.$file['file']);
+					}
+
 					exit(1);
 				}
+			}, 'Checking for file conflicts ..');
 
-				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
 
-			$msg = 'Installing packages';
-			show_progress_cli(0, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			foreach ($packages as $key=>$pkg) {
+			\System\Cli::do_over($packages, function($key, $pkg) {
 				$pkg->install();
-				show_progress_cli($key+1, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
+			}, 'Installing packages ..        ');
 
-			$msg = 'Cleaning temporary files';
-			show_progress_cli(0, 100, YacmsCLIOptions::get_con_width(), '', $msg);
-			$files = array();
-			$dirs  = array();
-			read_dir_contents(ROOT.'/var/tmp', $files, $dirs);
-			$total = count($dirs) + count($files);
-			$x=0;
+			\System\Cli::do_over($packages, function($key, $pkg) {
+				$pkg->clear_tmp();
+			}, 'Cleaning temporary files ..   ');
 
-			foreach ($files as $file) {
-				unlink($file);
-				show_progress_cli($x++, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
-
-			foreach ($dirs as $file) {
-				rmdir($file);
-				show_progress_cli($x++, $total, YacmsCLIOptions::get_con_width(), '', $msg);
-			}
-
-			show_progress_cli($total, $total, YacmsCLIOptions::get_con_width(), '', $msg);
 			out();
-			out('Done.');
+			out(sprintf('Installed %d packages.', count($packages)));
 		}
 	}
 

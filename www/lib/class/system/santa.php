@@ -313,5 +313,18 @@ namespace System
 
 			return \System\Santa\Package\Version::greater_version_than($b, $a);
 		}
+
+
+		public static function get_all_installed_versions()
+		{
+			$packages = self::get_all_installed();
+			$versions = array();
+
+			foreach ($packages as $pkg) {
+				$versions[] = $pkg->get_installed_version();
+			}
+
+			return $versions;
+		}
 	}
 }

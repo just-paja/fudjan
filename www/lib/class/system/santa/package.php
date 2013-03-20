@@ -198,37 +198,6 @@ namespace System\Santa
 		}
 
 
-		/** Check if package files don't conflict any other
-		 * @return array Conflict
-		 */
-		public function check_files()
-		{
-			$installed = self::get_all_installed();
-			$my_files = $this->get_file_manifest();
-			$blocks = array();
-
-			foreach ($installed as $pkg) {
-				if ($pkg->name != $this->name) {
-					$current_files = $pkg->get_file_manifest();
-					foreach ($my_files as $mf) {
-						foreach ($current_files as $cf) {
-							if ($mf['path'] == $cf['path']) {
-								$blocks[] = array(
-									"path" => $mf['path'],
-									"old"  => $cf['checksum'],
-									"new"  => $cf['checksum'],
-									"package" => $pkg->name.'-'.$pkg->version,
-								);
-							}
-						}
-					}
-				}
-			}
-
-			return $blocks;
-		}
-
-
 		/** Get latest version of package
 		 * @return System\Santa\Package\Version
 		 */
@@ -238,12 +207,22 @@ namespace System\Santa
 			$latest   = null;
 
 			foreach ($versions as $version) {
-				if (is_null($latest) || $latest->greater_than($version)) {
+				if (is_null($latest) || $version->greater_than($latest)) {
 					$latest = $version;
 				}
 			}
 
 			return $latest;
+		}
+
+
+		public function remove()
+		{
+			if ($this->is_installed()) {
+				$this->get_installed_version()->remove();
+			}
+
+			return !$this->is_installed();
 		}
 	}
 }
