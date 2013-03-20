@@ -55,7 +55,7 @@ pwf.register('gps', function()
 		var inputs = el.find('input');
 		var binder = {
 			"container":el,
-			"location":el.parents('.input-location').length >= 1
+			"location":el.parents('.input-location, .model_edit_system_location').length >= 1
 		};
 
 		for (var i = 0; i < inputs.length; i++) {
@@ -77,7 +77,8 @@ pwf.register('gps', function()
 		}
 
 		if (binder.location) {
-			var loc_inputs = el.parents('.input-location').find('input');
+			var loc_inputs = el.parents('.input-location, .model_edit_system_location').find('input');
+
 			for (var i = 0; i < loc_inputs.length; i++) {
 				var input = $(loc_inputs[i]);
 
