@@ -51,7 +51,10 @@
 
 			self::$commands = array(
 				"broken"    => 'List all ya-files that have been changed since install',
-				"browse"    => 'Get list of all available packages',
+				"browse"    => array(
+					'single'     => 'Get list of all available packages',
+					'categories' => 'Browse category from these categories only',
+				),
 				"files"     => array(
 					'single' => "List all installed files",
 					'prefix' => "List all installed files with prefix",
@@ -72,7 +75,6 @@
 				"upgrade"   => array(
 					'single'   => "Upgrade all packages to the latest version",
 					'packages' => "Upgrade packages",
-//					'version'  => "Update to this version. Format: branch/version or branch/latest",
 				),
 			);
 
@@ -81,8 +83,7 @@
 				"head" =>
 					'Santa package manager'.NL.
 					'Internal package manager for YaWF system'.NL,
-
-				"foot" => 'Santa will always skip upgrades from testing branch. It will also suggest upgrades only from packages\' branch'.NL,
+				"foot" => 'Did you know you can have your own package repoitory for Santa?'.NL,
 			);
 		}
 	}
@@ -160,7 +161,19 @@
 		public static function browse()
 		{
 			System\Init::basic();
-			$packages = System\Santa::get_all();
+			$params = YacmsCLIOptions::get('params');
+			$params = array_filter(array_unique($params));
+
+			if (any($params)) {
+				$packages = array();
+
+				foreach ($params as $param) {
+					$packages = array_merge($packages, System\Santa::get_all($param));
+				}
+			} else {
+				$packages = System\Santa::get_all();
+			}
+
 			self::print_packages($packages);
 		}
 

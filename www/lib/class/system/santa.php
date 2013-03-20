@@ -94,36 +94,40 @@ namespace System
 
 
 		/** Get list of all packages and versions
+		 * @param string $from_category Get packages only from this category
 		 * @return array
 		 */
-		public static function get_all()
+		public static function get_all($from_category = null)
 		{
 			$packages = array();
 			$tree = self::get_tree();
 
 			foreach ($tree as $repo => $pkg_list) {
 				foreach ($pkg_list as $cname => $category) {
-					foreach ($category as $package_name=>$pkg_data) {
-						$str = $cname.'/'.$package_name;
 
-						if (any($packages[$str])) {
-							$pkg = &$packages[$str];
-						} else {
-							$pkg = new \System\Santa\Package(array(
-								"name"      => $package_name,
-								"repo"      => $repo,
-								"category"  => $cname,
-								"desc"      => $pkg_data['desc'],
-								"homepage"  => isset($pkg_data['homepage']) ? $pkg_data['homepage']:'',
-								"available" => array(),
-							));
+					if (is_null($from_category) || $from_category == $cname) {
+						foreach ($category as $package_name=>$pkg_data) {
+							$str = $cname.'/'.$package_name;
+
+							if (any($packages[$str])) {
+								$pkg = &$packages[$str];
+							} else {
+								$pkg = new \System\Santa\Package(array(
+									"name"      => $package_name,
+									"repo"      => $repo,
+									"category"  => $cname,
+									"desc"      => $pkg_data['desc'],
+									"homepage"  => isset($pkg_data['homepage']) ? $pkg_data['homepage']:'',
+									"available" => array(),
+								));
+							}
+
+							foreach ($pkg_data['versions'] as $ver) {
+								$pkg->add_version($repo, $ver['name'], $ver['branch']);
+							}
+
+							$packages[$str] = $pkg;
 						}
-
-						foreach ($pkg_data['versions'] as $ver) {
-							$pkg->add_version($repo, $ver['name'], $ver['branch']);
-						}
-
-						$packages[$str] = $pkg;
 					}
 				}
 			}
