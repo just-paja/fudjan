@@ -176,7 +176,7 @@ namespace System\Santa\Package
 		 */
 		public function greater_than(self $version)
 		{
-			return self::greater_version_than($this->name, $version->name);
+			return self::greater_version_than($version->name, $this->name);
 		}
 
 

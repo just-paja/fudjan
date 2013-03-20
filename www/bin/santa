@@ -209,30 +209,37 @@
 
 			if (any($params)) {
 				$packages = array();
+				$install  = array();
+
 				foreach ($params as $pkg_name) {
 					if ($pkg = \System\Santa::find($pkg_name)) {
 						$packages[] = $pkg;
 					} else {
-						out(sprintf(l('Package "%s" does not exist.'), $pkg_name));
+						give_up(sprintf('Package "%s" does not exist.', $pkg_name));
 						break;
 					}
 				}
 
-				out(l('Following packages will be installed: '));
+				if (any($packages)) {
+					foreach ($packages as $pkg) {
+						$latest = $pkg->get_latest_version();
+						if ($latest) {
+							$install[] = $latest;
+						} else give_up(sprintf('No version is available for package "%s".', $pkg->get_full_name()));
+					}
 
-				foreach ($packages as $pkg) {
-					$latest = $pkg->get_latest_version();
-					v($latest);
-				}
+					if (any($install)) {
+						self::print_package_changes($install, 'install');
 
-				out();
-				if ($proceed = is_yes(read('Do you wish to proceed? '))) {
-					self::hard_install($packages);
-				}
+						out();
+						if ($proceed = is_yes(read('Do you wish to proceed? ['.System\Cli::term_color('Yes', 'light_green').'/'.System\Cli::term_color('No', 'light_red').']'))) {
+							self::hard_install($packages);
+						}
 
-				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
-
-			} else out(l('Please input package name or use --help'));
+						\System\Router::update_rewrite();
+					}
+				} else give_up('No valid packages were found to install.');
+			} else out('Please input package name or use --help');
 		}
 
 
@@ -270,7 +277,8 @@
 					}
 				}
 
-				foreach ($versions as $repo=>$packages) {
+				foreach ($versions as $repo => $packages) {
+					usort($packages, array('\System\Santa', 'sort_packages_version_helper'));
 					if (any($packages)) {
 						$print[sprintf('%s versions', ucfirst($repo))] = implode(', ', $packages);
 					}
@@ -297,6 +305,39 @@
 			}
 		}
 
+
+		private static function print_package_changes(array $packages, $action)
+		{
+			out('Following package changes will be made:');
+
+			foreach ($packages as $ver) {
+				$status = System\Cli::term_color('?', 'red');
+
+				if ($action == 'install') {
+					if ($ver->pkg()->is_installed()) {
+						if ($ver->is_installed()) {
+							$status = System\Cli::term_color('R', 'yellow');
+						} else {
+							$ver_installed = $ver->pkg()->get_installed_version();
+
+							if ($ver->greater_than($ver_installed)) {
+								$status = System\Cli::term_color('U', 'light_green');
+							} else {
+								$status = System\Cli::term_color('D', 'light_red');
+							}
+						}
+					} else {
+						$status = System\Cli::term_color('N', 'light_green');
+					}
+				}
+
+				if ($action == 'remove') {
+					$status = System\Cli::term_color('C', 'light_red');
+				}
+
+				out('  ['.$status.'] '.$ver->full_name());
+			}
+		}
 
 		/** Generate .gitignore and print it into STDOUT
 		 * @return void

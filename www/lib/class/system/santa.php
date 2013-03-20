@@ -301,5 +301,17 @@ namespace System
 			self::load_tree();
 			return array_keys(self::$tree);
 		}
+
+
+		public static function sort_packages_version_helper($a, $b)
+		{
+			$a = explode('-', $a);
+			$b = explode('-', $b);
+
+			$a = $a[0];
+			$b = $b[0];
+
+			return \System\Santa\Package\Version::greater_version_than($b, $a);
+		}
 	}
 }
