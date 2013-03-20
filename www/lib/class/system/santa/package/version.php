@@ -129,6 +129,11 @@ namespace System\Santa\Package
 			$this->extract();
 			$bad = array();
 			$tdir = $this->get_tmp_dir();
+			$deprecated = array();
+
+			if ($ver = $this->get_installed_version()) {
+				$deprecated = $this->get_deprecated_files($ver);
+			}
 
 			self::install_recursive($tdir.'/data', $tdir.'/data', $bad);
 			\System\Directory::check($this->pkg()->get_meta_dir());
@@ -143,9 +148,37 @@ namespace System\Santa\Package
 				"origin"  => $this->repo,
 			));
 
+			foreach ($deprecated as $file) {
+				if (file_exists($p = ROOT.$file)) {
+					unlink($p);
+				}
+			}
+
 			return !!(empty($bad)) ? true:$bad;
 		}
 
+
+		public function get_deprecated_files(self $ver)
+		{
+			$manifest_this  = $this->get_file_manifest();
+			$manifest_other = $ver->get_file_manifest();
+			$deprecated = array();
+
+			foreach $manifest_other as $file_other) {
+				foreach ($manifest_this as $file_this) {
+					if ($file_this['path'] == $file_other['path']) {
+						$found = true;
+						break;
+					}
+				}
+
+				if (!$found) {
+					$deprecated[] = $file_other['path'];
+				}
+			}
+
+			return $deprecated;
+		}
 
 
 		/** Browse all dirs and copy files into install dir
