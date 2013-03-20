@@ -269,7 +269,7 @@
 						$color = 'normal';
 
 						if ($status === true) $color = 'light_green';
-						if ($status === false) $color = 'red';
+						if ($status === false) $color = 'gray';
 
 						if (is_null($status) && $version->repo == $installed->repo) {
 							$gray = false;
