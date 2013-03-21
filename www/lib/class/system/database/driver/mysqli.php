@@ -2,7 +2,7 @@
 
 namespace System\Database\Driver
 {
-	class Mysqli implements DriverInterface
+	class Mysqli implements \System\Database\Driver\Ifce
 	{
 		const ERROR_ACCESS_DENIED = 1045;
 		const ERROR_DUPLICATE_ENTRY = 1062;
@@ -121,32 +121,14 @@ namespace System\Database\Driver
 				throw new \System\Error\Database(mysqli_error($this->connection), mysqli_errno($this->connection), $sql);
 			}
 
-			return new \System\Database\Result($res);
+			return new \System\Database\Driver\MysqliResult($res);
 		}
 
 
 		public function count($sql)
 		{
 			$result = $this->query($sql);
-			return \System\Query::first_val($result->fetch());
-		}
-
-
-		/** Retrieves information about the most recently executed query.
-		 * @return array
-		 */
-		public function get_info()
-		{
-			$res = array();
-			preg_match_all('#(.+?): +(\d+) *#', mysqli_info($this->connection), $matches, PREG_SET_ORDER);
-
-			if (!preg_last_error()) {
-				foreach ($matches as $m) {
-					$res[$m[1]] = (int) $m[2];
-				}
-			}
-
-			return $res;
+			return \System\Database\Query::first_val($result->fetch());
 		}
 
 
@@ -206,33 +188,6 @@ namespace System\Database\Driver
 			return is_resource($this->connection) ? $this->connection : NULL;
 		}
 
-
-		/** Encodes data for use in a SQL statement.
-		 * @param  mixed     value
-		 * @param  string    type
-		 * @return string    encoded value
-		 * @throws InvalidArgumentException
-		 */
-		public function escape($value, $type)
-		{
-			switch ($type) {
-				case \System\Database::TYPE_TEXT:
-					if (!is_resource($this->connection)) {
-						throw new \System\Error\Database('Lost connection to server.');
-					}
-					return "'" . mysql_real_escape_string($value, $this->connection) . "'";
-
-				case \System\Database::TYPE_BINARY:
-					if (!is_resource($this->connection)) {
-						throw new \System\Error\Database('Lost connection to server.');
-					}
-					return "_binary'" . mysql_real_escape_string($value, $this->connection) . "'";
-
-				case \System\Database::TYPE_IDENTIFIER: return '`' . str_replace('`', '``', $value) . '`';
-
-				default: throw new \System\Error\Argument('Unsupported type: '.$type);
-			}
-		}
 
 		public function escape_string($value)
 		{

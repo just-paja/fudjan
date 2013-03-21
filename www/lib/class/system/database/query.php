@@ -1,6 +1,6 @@
 <?
 
-namespace System
+namespace System\Database
 {
 	class Query
 	{
@@ -282,7 +282,7 @@ namespace System
 				(!empty($this->conds) ? " WHERE ".implode(' AND ', $this->conds):null);
 
 			self::$queries ++;
-			return Database::count($sql);
+			return \System\Database::count($sql);
 		}
 
 
@@ -316,7 +316,7 @@ namespace System
 
 			//dump($sql);
 			self::$queries ++;
-			return $get_query ? $sql:Database::query($sql);
+			return $get_query ? $sql:\System\Database::query($sql);
 		}
 
 
@@ -336,7 +336,7 @@ namespace System
 				$d = array();
 				foreach ($this->cols as $table) {
 					foreach ($table as $col) {
-						Database::escape($row[$col]);
+						\System\Database::escape($row[$col]);
 						$d[] = $row[$col];
 					}
 				}
@@ -348,7 +348,7 @@ namespace System
 
 				//dump($sql);
 				self::$queries ++;
-				return $get_query ? $sql:Database::query($sql);
+				return $get_query ? $sql:\System\Database::query($sql);
 			} else {
 				return false;
 			}
@@ -360,7 +360,7 @@ namespace System
 			$this->prepare('delete');
 			self::$queries ++;
 
-			return Database::query($sql =
+			return \System\Database::query($sql =
 				"DELETE FROM ".implode(',', (array) $this->parsed['tables']).
 				"\nWHERE ".implode(' AND ', $this->conds)
 			);

@@ -170,7 +170,7 @@ namespace System\Model
 				$opts['order-by'] = "`t0`.`order` ASC";
 			}
 
-			$helper = new \System\Query(
+			$helper = new \System\Database\Query(
 				array(
 					"table" => self::get_table($model),
 					"cols"  => self::get_model_attr_list($model),
@@ -588,7 +588,7 @@ namespace System\Model
 		public function drop()
 		{
 			$model = get_class($this);
-			return \System\Query::simple_delete(self::get_table($model), array(self::get_id_col($model) => $this->id));
+			return \System\Database\Query::simple_delete(self::get_table($model), array(self::get_id_col($model) => $this->id));
 		}
 
 
@@ -783,7 +783,7 @@ namespace System\Model
 					$ids_delete = array_filter($ids_delete);
 
 					if (any($ids_delete)) {
-						$q1 = new \System\Query(array("table" => $table_name));
+						$q1 = new \System\Database\Query(array("table" => $table_name));
 						$q1
 							->where(array($id_col => $model_id), $table_name)
 							->where_in($foreign_key, $ids_delete, $table_name)
@@ -791,7 +791,7 @@ namespace System\Model
 					}
 
 					if (any($ids_save)) {
-						$q2 = new \System\Query(array("table" => $table_name, "cols" => array($id_col, $foreign_key)));
+						$q2 = new \System\Database\Query(array("table" => $table_name, "cols" => array($id_col, $foreign_key)));
 
 						foreach ($ids_save as $id) {
 							$q2->add_insert_data(array($foreign_key => $id, $id_col => $model_id));

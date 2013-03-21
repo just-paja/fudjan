@@ -53,7 +53,7 @@ if (!defined('H_STATUS_DUMP')) {
 				</a></li>
 				<li><a class="panel-status-sql" href="#status-sql">
 					<span class="label"><?=l('dump_bar_sql')?></span>
-					<span class="text"><?=t('dump_bar_query_count', System\Query::count_all())?></span>
+					<span class="text"><?=t('dump_bar_query_count', System\Database\Query::count_all())?></span>
 				</a></li>
 				<li><a class="panel-status-server" href="#status-server">
 					<span class="label"><?=l('dump_bar_server_vars')?></span>
