@@ -28,7 +28,13 @@ namespace System\Database\Driver
 				}
 			}
 
-			$this->first && $result = $result[0];
+			if ($this->first) {
+				if (isset($result[0])) {
+					$result = $result[0];
+				} else {
+					$result = false;
+				}
+			}
 			return $result;
 		}
 
