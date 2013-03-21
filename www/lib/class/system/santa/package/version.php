@@ -247,7 +247,7 @@ namespace System\Santa\Package
 		/** Get path to temporary directory of package
 		 * @return string
 		 */
-		private function get_tmp_dir()
+		public function get_tmp_dir()
 		{
 			return ROOT.\System\Santa::DIR_TMP.'/'.$this->full_package_name().'-unpacked';
 		}
