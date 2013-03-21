@@ -1,6 +1,6 @@
 <?
 
-namespace Database
+namespace Helper\Database
 {
 	class Attr extends \System\Model\Attr
 	{
@@ -34,7 +34,7 @@ namespace Database
 		{
 			$result = array();
 			$attrs  = $model::get_attr_def($model);
-			$relations = \Database\Relation::get_from_model($model);
+			$relations = \Helper\Database\Relation::get_from_model($model);
 			$id_col = $model::get_id_col($model);
 
 			$result[$id_col] = self::from_def($id_col, array(

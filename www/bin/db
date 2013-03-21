@@ -643,7 +643,7 @@
 			show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), $msg_done, $msg_work);
 			foreach ($models as $model) {
 				show_progress_cli($x, $total, YacmsCLIOptions::get_con_width(), $msg_done, $model);
-				\Database\Structure::sync_model($model);
+				\Helper\Database\Structure::sync_model($model);
 				$x++;
 			}
 			show_progress_cli($total, $total, YacmsCLIOptions::get_con_width(), $msg_done, $msg_work);

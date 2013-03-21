@@ -1,6 +1,6 @@
 <?
 
-namespace Database\Mysqli
+namespace Helper\Database\Mysqli
 {
 	class Table
 	{
@@ -10,7 +10,7 @@ namespace Database\Mysqli
 		private $comment = '';
 
 
-		public function __construct(\Database\Mysqli\Database &$db, $name)
+		public function __construct(\Helper\Database\Mysqli\Database &$db, $name)
 		{
 			$this->name = $name;
 			$this->db = $db;
@@ -119,7 +119,7 @@ namespace Database\Mysqli
 		}
 
 
-		public function add_attr(\Database\Attr $attr)
+		public function add_attr(\Helper\Database\Attr $attr)
 		{
 			return $this->add_column($attr->name, $attr->get_data());
 		}

@@ -1,6 +1,6 @@
 <?
 
-namespace Database
+namespace Helper\Database
 {
 	class Relation extends \System\Model\Attr
 	{

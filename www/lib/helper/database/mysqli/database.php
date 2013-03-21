@@ -1,6 +1,6 @@
 <?
 
-namespace Database\Mysqli
+namespace Helper\Database\Mysqli
 {
 	class Database
 	{
@@ -25,7 +25,7 @@ namespace Database\Mysqli
 
 		public function get_table($name)
 		{
-			$drv = '\\Database\\Mysqli\\Table';
+			$drv = '\\Helper\\Database\\Mysqli\\Table';
 			return new $drv($this, $name);
 		}
 
@@ -40,6 +40,5 @@ namespace Database\Mysqli
 		{
 			return $this->cfg['database'];
 		}
-
 	}
 }

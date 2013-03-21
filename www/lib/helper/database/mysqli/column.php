@@ -1,6 +1,6 @@
 <?
 
-namespace Database\Mysqli
+namespace Helper\Database\Mysqli
 {
 	class Column
 	{
@@ -39,7 +39,7 @@ namespace Database\Mysqli
 		private $default = array();
 
 
-		public function __construct(\Database\Mysqli\Table $table, $name, array $cfg = array())
+		public function __construct(\Helper\Database\Mysqli\Table $table, $name, array $cfg = array())
 		{
 			$this->table = $table;
 			$this->name  = $name;
