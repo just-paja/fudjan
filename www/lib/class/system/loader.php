@@ -73,5 +73,15 @@ namespace System
 		{
 			return l('model_'.self::get_link_from_class($class_name).($plural ? '_plural':''));
 		}
+
+
+		/** Get class name in model format from class format
+		 * @param string $class_name
+		 * @return string
+		 */
+		public static function get_model_from_class($class_name)
+		{
+			return ucfirsts($class_name, '\\', '::');
+		}
 	}
 }
