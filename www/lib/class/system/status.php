@@ -122,6 +122,10 @@ namespace System
 					\System\Output::set_format($format_default);
 				}
 
+				if (!isset($error_page['partial'])) {
+					$error_page['partial'] = 'system/error/bug';
+				}
+
 				\System\Output::add_template(array(
 					"name" => $error_page['partial'],
 					"locals" => array(
