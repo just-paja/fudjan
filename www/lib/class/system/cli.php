@@ -64,7 +64,7 @@ namespace System
 
 		public static function checkout_console_size()
 		{
-			preg_match_all("/rows.([0-9]+);.columns.([0-9]+);/", strtolower(exec('stty -a |grep columns')), $output);
+			preg_match_all("/rows.([0-9]+);.columns.([0-9]+);/", strtolower(exec('stty -a 2> /dev/null | grep columns')), $output);
 
 			if (sizeof($output) == 3) {
 				self::$width = $output[2][0];
@@ -110,7 +110,7 @@ namespace System
 			if ($done <= $total) {
 				$size   = self::get_width();
 				$msglen = is_null($msglen) ? strlen($msg):$msglen;
-				$psize  = $size - $msglen - 12;
+				$psize  = abs($size - $msglen - 12);
 
 				$perc = (double) ($done/$total);
 				$bar  = floor($perc*$psize);
