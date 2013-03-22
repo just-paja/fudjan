@@ -67,8 +67,8 @@ namespace System
 			preg_match_all("/rows.([0-9]+);.columns.([0-9]+);/", strtolower(exec('stty -a 2> /dev/null | grep columns')), $output);
 
 			if (sizeof($output) == 3) {
-				self::$width = $output[2][0];
-				self::$height = $output[1][0];
+				self::$width = def($output[2][0], 0);
+				self::$height = def($output[1][0], 0);
 			}
 		}
 

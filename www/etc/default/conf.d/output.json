@@ -11,11 +11,13 @@
 	"errors":{
 		"not_found":{
 			"title":"core_page_not_found",
-			"template":["pwf/errors/layout", "pwf/errors/404"]
+			"template":["pwf/errors/layout"],
+			"partial":"system/error/404"
 		},
 		"access_denied":{
 			"title":"core_access_denied",
-			"template":["pwf/errors/layout", "pwf/errors/403"]
+			"template":["pwf/errors/layout"],
+			"partial":"system/error/403"
 		}
 	}
 
