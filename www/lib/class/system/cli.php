@@ -150,11 +150,11 @@ namespace System
 		 * @param Closure $lambda Action to perform
 		 * @return void
 		 */
-		public static function do_over(array $items, \Closure $lambda, $message = null)
+		public static function do_over(array $items, \Closure $lambda, $message = null, array $extra = array())
 		{
 			$total  = count($items);
 			$x      = 0;
-			$msglen = 15;
+			$msglen = 35;
 
 			if (is_null($message)) {
 				foreach ($items as $msg=>$item) {
@@ -163,7 +163,9 @@ namespace System
 					}
 				}
 			} else {
-				$msglen = strlen($message);
+				if (($m = strlen($message)) > $msglen) {
+					$msglen = strlen($message);
+				}
 			}
 
 			// Right margin
@@ -173,7 +175,7 @@ namespace System
 				$msg = is_null($message) ? $msg:$message;
 
 				self::progress($x++, $total, $msg, $msglen);
-				$lambda($msg, $item, $items);
+				$lambda($msg, $item, $extra);
 				self::progress($x, $total, $msg, $msglen);
 			}
 		}
