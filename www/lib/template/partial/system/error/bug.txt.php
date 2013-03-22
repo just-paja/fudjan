@@ -20,7 +20,13 @@ $back = $desc->get_backtrace();
 
 
 foreach ($exp as $ex) {
-	echo $ex;
+	if (is_array($ex)) {
+		foreach  ($ex as $e) {
+			echo NL.$e;
+		}
+	} else {
+		echo $ex;
+	}
 }
 
 echo NL;
