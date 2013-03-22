@@ -7,6 +7,7 @@ require_once ROOT.'/www/lib/include/constants.php';
 require_once ROOT.'/www/lib/include/functions.php';
 require_once ROOT.'/www/lib/include/functions.cli.php';
 require_once ROOT.'/www/lib/class/system/cli.php';
+require_once ROOT.'/www/lib/class/system/directory.php';
 require_once ROOT.'/lib/class/compiler.php';
 require_once ROOT.'/lib/class/compiler/process.php';
 require_once ROOT.'/lib/class/pwf.php';
@@ -80,7 +81,6 @@ Compiler::process('checksum', 'Calculating package checksums', array(), function
 });
 
 
-
 // Pack it all together
 Compiler::process('archive', 'Creating package archive', array(), function($make, $data) {
 	$path = Compiler::get('path');
@@ -99,29 +99,11 @@ Compiler::process('archive', 'Creating package archive', array(), function($make
 Compiler::run('postprocess');
 
 
-
 // Clean temp files
 Compiler::process('clean', 'Cleaning workspace', array(), function($make, $data) {
-	$make->progress(0, 100);
+	out('Cleaning workspace ..');
 	$path = Compiler::get('path');
-	$files = array();
-	$dirs = array();
-
-	Compiler::read_dir($path['dir-temp'], $files, $dirs);
-	$total = count($files) + count($dirs);
-	$x = 1;
-
-	foreach ($files as $f) {
-		unlink($f);
-		$make->progress($x++, $total);
-	}
-
-	foreach ($dirs as $f) {
-		rmdir($f);
-		$make->progress($x++, $total);
-	}
-
-	rmdir($path['dir-temp']);
+	\System\Directory::remove($path['dir-temp']);
 	return true;
 });
 
@@ -135,3 +117,4 @@ out();
 foreach (Compiler::get('messages') as $msg) {
 	out($msg);
 }
+
