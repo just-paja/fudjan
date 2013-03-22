@@ -118,3 +118,4 @@ foreach (Compiler::get('messages') as $msg) {
 	out($msg);
 }
 
+exit(0);
