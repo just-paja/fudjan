@@ -112,9 +112,9 @@ namespace System
 					$dp = opendir($path);
 
 					while ($f = readdir($dp)) {
-						if (strpos($f, '.') !== 0) {
+						if ($f != '.' && $f != '..') {
 							is_dir($path.'/'.$f) ?
-								self::remove_directory($path.'/'.$f):
+								self::remove($path.'/'.$f):
 								unlink($path.'/'.$f);
 						}
 					}
