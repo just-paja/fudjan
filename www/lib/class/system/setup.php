@@ -57,8 +57,19 @@ namespace System
 				"required" => true,
 				"info"     => l('Type of database. You will most usually use MySQL here.'),
 				"options"  => array(
-					"MySQLi"      => 'mysqli',
-					"PostgreSQL" => 'postgre',
+					'mysqli' => "MySQLi",
+					"pdo"    => 'PDO',
+				),
+			));
+
+			$f->input(array(
+				"type"     => 'select',
+				"name"     => 'database_dbms',
+				"label"    => l('DBMS'),
+				"required" => true,
+				"info"     => l('Type of database. You can use only MySQL here.'),
+				"options"  => array(
+					'mysql' => "MySQL",
 				),
 			));
 
@@ -98,21 +109,6 @@ namespace System
 				"info"     => l('Password used to access database'),
 			));
 
-			$f->input(array(
-				"name"     => 'database_lazy',
-				"label"    => l('Lazy connect'),
-				"checked"  => true,
-				"type"     => 'checkbox',
-				"info"     => l('The database driver will not connect until a query is sent'),
-			));
-
-			$f->input(array(
-				"name"     => 'database_persistent',
-				"label"    => l('Persistent connection'),
-				"type"     => 'checkbox',
-				"info"     => l('The database driver will open a persistent connection'),
-			));
-
 			$f->submit('Save configuration');
 
 			if ($f->passed()) {
@@ -122,12 +118,11 @@ namespace System
 					"database" => array(
 						"ident"      => $d['database_ident'],
 						"driver"     => $d['database_driver'],
+						"dbms"       => $d['database_dbms'],
 						"database"   => $d['database_name'],
 						"host"       => $d['database_host'],
 						"username"   => $d['database_user'],
 						"password"   => $d['database_pass'],
-						"lazy"       => $d['database_lazy'],
-						"persistent" => $d['database_persistent'],
 					),
 					"seo" => array(
 						"title" => $d['name'],
