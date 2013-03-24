@@ -57,16 +57,9 @@ namespace System
 		public static function reload()
 		{
 			self::set_env();
-			\System\Directory::check($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env);
-			$dir = opendir($p);
+			self::check_env();
 
-			while ($file = readdir($dir)) {
-				if (preg_match(self::CONF_FILE_REGEXP, $file) && !is_dir($p."/".$file)) {
-					$d = explode(".", $file);
-					array_pop($d);
-					self::$conf[implode(null, $d)] = \System\Json::read($p."/".$file);
-				}
-			}
+			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, self::$conf, true);
 
 			self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
 			self::$no_pages = empty(self::$conf['pages']);
@@ -91,10 +84,21 @@ namespace System
 		}
 
 
+		public static function check_env()
+		{
+			if (!is_dir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env)) {
+				self::reset();
+			}
+		}
+
+
+		/** Reset settings to default
+		 * @return void
+		 */
 		public static function reset()
 		{
-			$p = ROOT.self::DIR_CONF_STATIC;
-			$dir = opendir($p);
+			\System\Directory::check(ROOT.self::DIR_CONF_DIST.'/'.self::$env);
+			$dir = opendir($p = ROOT.self::DIR_CONF_STATIC);
 
 			while ($file = readdir($dir)) {
 				if (is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
