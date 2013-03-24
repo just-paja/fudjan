@@ -80,8 +80,11 @@ namespace System
 		public static function meta_out()
 		{
 			Output::content_for("meta", array("name" => 'generator', "content" => Output::introduce()));
-			Output::content_for("meta", array("name" => 'generated-at', "content" => self::format_date(null, 'std')));
-			Output::content_for("meta", array("http-equiv" => 'content-type', "content" => Output::get_format(true).'; charset=utf-8'));
+			Output::content_for("meta", array("name" => 'content-type', "content" => Output::get_format(true).'; charset=utf-8'));
+
+			try {
+				Output::content_for("meta", array("name" => 'date', "content" => self::format_date(null, 'std')));
+			} catch(\Exception $e) {}
 
 			$meta = Output::get_content_from("meta");
 			foreach ($meta as $name=>$value) {
