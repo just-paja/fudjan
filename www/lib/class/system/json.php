@@ -22,8 +22,12 @@ namespace System
 		{
 			$json = json_decode($str, true);
 
+			try {
+				$debug = cfg('dev', 'debug');
+			} catch (\System\Error $e) { $debug = true; }
+
 			/// Skipping this error as if nothing happened on production. The application will not failexit, although there will be no data.
-			if (!$silent && ($err = json_last_error()) !== JSON_ERROR_NONE && cfg('dev', 'debug')) {
+			if (!$silent && ($err = json_last_error()) !== JSON_ERROR_NONE && $debug) {
 				throw new \System\Error\Format(self::get_error($err), $str);
 			}
 
