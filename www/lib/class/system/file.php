@@ -219,7 +219,7 @@ namespace System
 		 */
 		public static function read($path, $silent = false)
 		{
-			if (\System\Directory::check(dirname($path)) && file_exists($path)) {
+			if (\System\Directory::check(dirname($path), false) && file_exists($path)) {
 				if (is_readable($path)) {
 					return file_get_contents($path);
 				} else if (!$silent) throw new \System\Error\Permissions(sprintf('Failed to read file "%s". It is not readable.', $path));
