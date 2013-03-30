@@ -29,11 +29,24 @@ namespace System
 
 			if (is_array($pathname)) {
 				$current_dir = '';
+				$create = array();
 
-				foreach ($pathname as $dir) {
-					$current_dir .= '/'.$dir;
+				do {
+					$current_dir = implode('/', $pathname);
 
-					if (!is_dir($current_dir)) {
+					if (is_dir($current_dir)) {
+						break;
+					}
+
+					$create[] = array_pop($pathname);
+				} while (any($pathname));
+
+				if (any($create)) {
+					$create = array_reverse($create);
+					$current_dir = implode('/', $pathname);
+
+					foreach ($current_dir as $dir) {
+						$current_dir .= '/'.$dir;
 						$action = self::create($current_dir, $mode);
 					}
 				}
