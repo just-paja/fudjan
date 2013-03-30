@@ -23,7 +23,7 @@ namespace System
 		 */
 		public static function create($pathname, $mode = self::MOD_DEFAULT)
 		{
-			if (strpos($pathname, '/')) {
+			if (strpos($pathname, '/') !== false) {
 				$pathname = explode('/', $pathname);
 			}
 
@@ -45,9 +45,12 @@ namespace System
 					$create = array_reverse($create);
 					$current_dir = implode('/', $pathname);
 
-					foreach ($current_dir as $dir) {
+					foreach ($create as $dir) {
 						$current_dir .= '/'.$dir;
-						$action = self::create($current_dir, $mode);
+
+						if (!($action = @mkdir($current_dir, $mode))) {
+							throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $current_dir, $mode));
+						}
 					}
 				}
 			} else {
