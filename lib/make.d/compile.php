@@ -19,6 +19,8 @@ $result = Compiler::process('compile.classes', $msg, array(), function($make, $d
 		WORKING_DIR_CLASSES.'/model/attr.php',
 		WORKING_DIR_CLASSES.'/model/callback.php',
 		WORKING_DIR_CLASSES.'/model/database.php',
+		WORKING_DIR_CLASSES.'/error.php',
+		WORKING_DIR_CLASSES.'/error/file.php',
 	);
 	$dirs = array();
 
