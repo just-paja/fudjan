@@ -23,6 +23,7 @@ pwf.register('devbar', function()
 		var cont = $('.devbar');
 
 		for (var i = 0; i < cont.length; i++) {
+			$('body').append($('.devbar').remove());
 			this.bind($(cont[i]));
 		}
 	};
