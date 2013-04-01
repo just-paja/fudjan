@@ -167,6 +167,7 @@ namespace System\Santa\Package
 			$manifest_this  = $this->get_file_manifest();
 			$manifest_other = $ver->get_file_manifest();
 			$deprecated = array();
+			$found = false;
 
 			foreach ($manifest_other as $file_other) {
 				foreach ($manifest_this as $file_this) {
