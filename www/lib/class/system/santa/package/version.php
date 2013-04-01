@@ -112,7 +112,7 @@ namespace System\Santa\Package
 					$fp = explode('  ', trim($file));
 
 					if (count($fp) === 2) {
-						list($checksum, $path);
+						list($checksum, $path) = $fp;
 						$manifest[] = array(
 							"checksum" => $checksum,
 							"path" => '/'.$path,
