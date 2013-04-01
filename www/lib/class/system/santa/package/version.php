@@ -109,11 +109,15 @@ namespace System\Santa\Package
 				$files = file($f);
 
 				foreach ($files as $file) {
-					list($checksum, $path) = explode('  ', trim($file));
-					$manifest[] = array(
-						"checksum" => $checksum,
-						"path" => '/'.$path,
-					);
+					$fp = explode('  ', trim($file));
+
+					if (count($fp) === 2) {
+						list($checksum, $path);
+						$manifest[] = array(
+							"checksum" => $checksum,
+							"path" => '/'.$path,
+						);
+					}
 				}
 			}
 
