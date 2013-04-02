@@ -109,11 +109,15 @@ namespace System\Santa\Package
 				$files = file($f);
 
 				foreach ($files as $file) {
-					list($checksum, $path) = explode('  ', trim($file));
-					$manifest[] = array(
-						"checksum" => $checksum,
-						"path" => '/'.$path,
-					);
+					$fp = explode('  ', trim($file));
+
+					if (count($fp) === 2) {
+						list($checksum, $path) = $fp;
+						$manifest[] = array(
+							"checksum" => $checksum,
+							"path" => '/'.$path,
+						);
+					}
 				}
 			}
 
@@ -163,6 +167,7 @@ namespace System\Santa\Package
 			$manifest_this  = $this->get_file_manifest();
 			$manifest_other = $ver->get_file_manifest();
 			$deprecated = array();
+			$found = false;
 
 			foreach ($manifest_other as $file_other) {
 				foreach ($manifest_this as $file_this) {

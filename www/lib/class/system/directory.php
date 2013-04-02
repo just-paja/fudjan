@@ -23,18 +23,34 @@ namespace System
 		 */
 		public static function create($pathname, $mode = self::MOD_DEFAULT)
 		{
-			if (strpos($pathname, '/')) {
+			if (strpos($pathname, '/') !== false) {
 				$pathname = explode('/', $pathname);
 			}
 
 			if (is_array($pathname)) {
 				$current_dir = '';
+				$create = array();
 
-				foreach ($pathname as $dir) {
-					$current_dir .= '/'.$dir;
+				do {
+					$current_dir = implode('/', $pathname);
 
-					if (!is_dir($current_dir)) {
-						$action = self::create($current_dir, $mode);
+					if (is_dir($current_dir)) {
+						break;
+					}
+
+					$create[] = array_pop($pathname);
+				} while (any($pathname));
+
+				if (any($create)) {
+					$create = array_reverse($create);
+					$current_dir = implode('/', $pathname);
+
+					foreach ($create as $dir) {
+						$current_dir .= '/'.$dir;
+
+						if (!($action = @mkdir($current_dir, $mode))) {
+							throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $current_dir, $mode));
+						}
 					}
 				}
 			} else {
