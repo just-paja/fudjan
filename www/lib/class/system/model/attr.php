@@ -473,5 +473,17 @@ namespace System\Model
 				return $this->data[$attr];
 			}
 		}
+
+
+		public function to_json()
+		{
+			$data = $this->get_data();
+
+			foreach ($data as &$val) {
+				$val = \System\Template::to_json($val);
+			}
+
+			return json_encode($data);
+		}
 	}
 }
