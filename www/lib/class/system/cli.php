@@ -150,13 +150,13 @@ namespace System
 		 * @param Closure $lambda Action to perform
 		 * @return void
 		 */
-		public static function do_over(array $items, \Closure $lambda, $message = null, array $extra = array())
+		public static function do_over(array $items, \Closure $lambda, $message = null, array &$extra = array(), $silent = false)
 		{
 			$total  = count($items);
 			$x      = 0;
 			$msglen = 35;
 
-			if (is_null($message)) {
+			if (!$silent && is_null($message)) {
 				foreach ($items as $msg=>$item) {
 					if (($m = strlen($msg)) > $msglen) {
 						$msglen = $m;
@@ -174,9 +174,9 @@ namespace System
 			foreach ($items as $msg=>$item) {
 				$msg = is_null($message) ? $msg:$message;
 
-				self::progress($x++, $total, $msg, $msglen);
+				if (!$silent) self::progress($x++, $total, $msg, $msglen);
 				$lambda($msg, $item, $extra);
-				self::progress($x, $total, $msg, $msglen);
+				if (!$silent) self::progress($x, $total, $msg, $msglen);
 			}
 		}
 	}
