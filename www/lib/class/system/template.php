@@ -376,5 +376,24 @@ namespace System
 
 			return $value;
 		}
+
+
+
+		public static function to_json($value)
+		{
+			if (is_array($value)) {
+				return collect(array('this', 'to_json'), $value);
+			} else {
+				if (is_object($value) && method_exists($value, 'to_json')) {
+					return $value->to_json();
+				}
+
+				if ($value instanceof \DateTime) {
+					return format_date($value, 'sql');
+				}
+
+				return $value;
+			}
+		}
 	}
 }
