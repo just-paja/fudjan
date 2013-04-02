@@ -10,6 +10,9 @@ namespace System
 		const DEFAULT_OUT = "html";
 		const PREFIX_AJAX = "ajax-api";
 
+		const TEMPLATE_LAYOUT  = 'layout';
+		const TEMPLATE_PARTIAL = 'partial';
+
 		private static $format;
 		private static $template = array();
 		private static $title = array();
@@ -25,6 +28,7 @@ namespace System
 			"output" => array()
 		);
 
+		private static $templates_used = array();
 		private static $resource_filter = array('scripts', 'styles');
 
 
@@ -154,6 +158,7 @@ namespace System
 						Template::set_heading_section_level($template['locals']['heading-level']);
 					}
 
+					self::used(self::TEMPLATE_PARTIAL, $template['name'], $template['locals']);
 					Template::partial($template['name'], $template['locals']);
 				}
 			}
@@ -221,6 +226,7 @@ namespace System
 		{
 			while (any(self::$template)) {
 				$name = array_shift(self::$template);
+				self::used(self::TEMPLATE_LAYOUT, $name);
 
 				if (file_exists($f = self::get_template('layout', $name))) {
 					include($f);
@@ -254,6 +260,7 @@ namespace System
 
 			ksort(self::$templates);
 			$name = array_shift(self::$template);
+			self::used(self::TEMPLATE_LAYOUT, $name);
 			self::$content['output'] = array();
 			ob_start();
 
@@ -331,6 +338,34 @@ namespace System
 			self::content_for('output', ob_get_clean());
 			self::$content['output'][] = &self::$content[$place];
 			ob_start();
+		}
+
+
+		public static function count_templates()
+		{
+			$count = 0;
+
+			foreach (self::$templates as $slot=>$templates) {
+				$count += count($templates);
+			}
+
+			return $count;
+		}
+
+
+		public static function get_template_data()
+		{
+			return self::$templates_used;
+		}
+
+
+		private static function used($type, $name, $locals = null)
+		{
+			self::$templates_used[] = array(
+				"type"   => $type,
+				"name"   => $name,
+				"locals" => $locals,
+			);
 		}
 	}
 }

@@ -12,5 +12,7 @@
 	"dump_bar_value":"Hodnota",
 	"dump_query_file":"V souboru: %s:%s",
 	"dump_query_execution_time":"Doba běhu: %ss",
-	"dump_query_total_execution_time":"Celková doba běhu všech dotazů: %ss"
+	"dump_query_total_execution_time":"Celková doba běhu všech dotazů: %ss",
+	"dump_bar_output":"Výstup",
+	"dump_bar_template_count":"%d šablon"
 }
