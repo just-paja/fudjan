@@ -179,7 +179,7 @@ namespace System
 
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
-			Template::insert($name, $locals, def($this->locals['slot'], Template::DEFAULT_SLOT));
+			Template::insert($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
 		}
 
 
