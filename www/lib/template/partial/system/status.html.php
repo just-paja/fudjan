@@ -174,7 +174,7 @@ if (!defined('H_STATUS_DUMP')) {
 
 					foreach ($data as $row) {
 						echo div('datadump', array(
-							heading($row['name'].' ('.$row['type'].')', true, 3),
+							heading("'".$row['name']."'".' ('.$row['type'].')', true, 3),
 							any($row['locals']) ? dump_table($row['locals']):l('dump_bar_no_locals'),
 						));
 					}

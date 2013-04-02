@@ -14,5 +14,6 @@
 	"dump_query_execution_time":"Doba běhu: %ss",
 	"dump_query_total_execution_time":"Celková doba běhu všech dotazů: %ss",
 	"dump_bar_output":"Výstup",
-	"dump_bar_template_count":"%d šablon"
+	"dump_bar_template_count":"%d šablon",
+	"dump_bar_no_locals":"Žádné lokální proměnné"
 }
