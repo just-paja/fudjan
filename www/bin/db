@@ -56,10 +56,14 @@
 				"params"  => array(
 					"value" => array()
 				),
+				"json"    => array(
+					"short" => 'j',
+					"desc"  => 'Output in json. Works with db dump functions.',
+				),
 			);
 
 			self::$commands = array(
-				"backup" => array(
+				"dump" => array(
 					'single' => "Generate database backup to STDOUT",
 					'path'   => "Save backup into file"
 				),
@@ -175,22 +179,60 @@
 		 * @outputs a lot of crap
 		 * @return void
 		 */
-		public static function backup($file = null)
+		public static function dump($file = null)
 		{
 			\System\Init::full();
 			$params = CLIOptions::get('params');
-			if (isset($params[0])) {
+
+			if (is_null($file) && any($params)) {
 				$file = $params[0];
 			}
 
-			$cmd = self::assemble_mysql_command("mysqldump", true);
+			if (CLIOptions::get('json')) {
 
-			if (!is_null($file)) {
-				shell_exec("mkdir -m775 -p ".dirname($file));
-				$cmd .= " > ".$file;
+				\System\Loader::load_all();
+				$models = \System\Model\Database::get_all_children();
+				$data = array();
+
+				\System\Cli::do_over($models, function($key, $model, &$data) {
+					$objects = get_all($model)->fetch();
+
+					if (any($objects)) {
+						$json    = json_encode($model).':['.implode(',', \System\Template::to_json($objects)).']';
+						$data[] = $json;
+					}
+				}, null, $data, !is_null($file));
+
+				$json = "{".join(',', $data)."}";
+
+				if (is_null($file)) {
+					echo $json;
+				} else {
+					\System\File::put($file, $json);
+				}
+
+
+
+			} else {
+				if (isset($params[0])) {
+					$file = $params[0];
+				}
+
+				$cmd = self::assemble_mysql_command("mysqldump", true);
+
+				if (!is_null($file)) {
+					shell_exec("mkdir -m775 -p ".dirname($file));
+					$cmd .= " > ".$file;
+				}
+
+				passthru($cmd);
 			}
+		}
 
-			passthru($cmd);
+
+		public static function backup($file = null)
+		{
+			return self::dump($file);
 		}
 
 
@@ -351,7 +393,11 @@
 						self::database_create();
 					}
 
-					self::import_sql($params[0]);
+					if (CLIOptions::get('json')) {
+						self::import_json($params[0]);
+					} else {
+						self::import_sql($params[0]);
+					}
 					out("Database restored");
 
 				} else give_up("File not found!");
@@ -405,29 +451,39 @@
 			out("Injecting initial data ..");
 
 			foreach ($data as $data_set_name => $data_set_models) {
-				foreach ($data_set_models as $model => $data_set) {
+				self::seed_data($data_set_name, $data_set_models);
+			}
+		}
 
-					\System\Cli::do_over($data_set, function($key, $tdata, $extra) {
-						$tdata['is_new_object'] = true;
-						$model = $extra['model'];
 
-						$obj = new $model($tdata);
-						$obj->save();
+		private static function seed_data($data_set_name, $data_set_models)
+		{
+			\System\Init::full();
 
-						foreach ($tdata as $attr=>$val) {
-							if (is_array($val) && \System\Model\Database::attr_is_rel($model, $attr)) {
-								if (\System\Model\Database::get_rel_type($model, $attr) == 'has-many') {
-									$def = \System\Model\Database::get_rel_def($model, $attr);
+			foreach ($data_set_models as $model => $data_set) {
 
-									if (any($def['is_bilinear']) && any($def['is_master'])) {
-										unset($obj->$attr);
-										$obj->assign_rel($attr, $val);
-									}
+				$extra = array("model" => $model);
+
+				\System\Cli::do_over($data_set, function($key, $tdata, $extra) {
+					$tdata['is_new_object'] = true;
+					$model = $extra['model'];
+
+					$obj = new $model($tdata);
+					$obj->save();
+
+					foreach ($tdata as $attr=>$val) {
+						if (is_array($val) && \System\Model\Database::attr_is_rel($model, $attr)) {
+							if (\System\Model\Database::get_rel_type($model, $attr) == 'has-many') {
+								$def = \System\Model\Database::get_rel_def($model, $attr);
+
+								if (any($def['is_bilinear']) && any($def['is_master'])) {
+									unset($obj->$attr);
+									$obj->assign_rel($attr, $val);
 								}
 							}
 						}
-					}, $data_set_name.': '.\System\Loader::get_model_from_class($model), array("model" => $model));
-				}
+					}
+				}, $data_set_name.': '.\System\Loader::get_model_from_class($model), $extra);
 			}
 		}
 
@@ -600,6 +656,13 @@
 			if (file_exists($file)) {
 				shell_exec(self::assemble_mysql_command("mysql", true). " < ".$file);
 			} else give_up("File not found: ".$file);
+		}
+
+
+		private static function import_json($file)
+		{
+			$json = \System\Json::read($file);
+			self::seed_data($file, $json);
 		}
 
 
