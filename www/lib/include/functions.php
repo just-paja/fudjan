@@ -136,13 +136,23 @@ namespace
 	{
 		if (is_array($func)) {
 			if ($func[0] == 'this') {
+				$names = array();
 				array_shift($func);
-				foreach ($array as &$obj) {
+
+				foreach ($array as $key=>&$obj) {
 					$f = implode('::', $func);
-					$obj->$f();
+
+					if ($dont_assoc) {
+						$names[] = $obj->$f();
+					} else {
+						$names[$key] = $obj->$f();
+					}
 				}
+
+				return $names;
 			} elseif ($func[0] == 'attr') {
 				$names = array();
+
 				foreach ($array as &$obj) {
 					if (is_object($obj)) {
 						if ($dont_assoc) {
@@ -154,6 +164,7 @@ namespace
 						$names[] = $obj[$func[1]];
 					} else $names[] = $obj;
 				}
+
 				return $names;
 			} else {
 				return array_map($func, $array);
@@ -164,11 +175,14 @@ namespace
 			}
 		} else {
 			$names = array();
+
 			foreach ($array as $item) {
 				$names[] = $item[$func];
 			}
+
 			return $names;
 		}
+
 		return $array;
 	}
 
