@@ -390,7 +390,11 @@ namespace System\Model
 						} elseif (strpos($val, 'POINT(') === 0) {
 							$val = \System\Gps::from_sql($val);
 						} else {
-							$val = new \System\Gps();
+							if ($js = \System\Json::decode($val, true)) {
+								$val = \System\Gps::from_array($js);
+							} else {
+								$val = new \System\Gps();
+							}
 						}
 					}
 
