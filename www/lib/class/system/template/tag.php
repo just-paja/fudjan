@@ -65,7 +65,7 @@ namespace System\Template
 			$o = '<'.$name.self::html_attrs($name, (array) $attrs).'>';
 
 			if ($c = isset($attrs['content'])) {
-				$o .= is_array($attrs['content']) ? implode('', $attrs['content']):$attrs['content'];
+				$o .= \System\Template::to_html(is_array($attrs['content']) ? implode('', $attrs['content']):$attrs['content']);
 			}
 
 			if ((($c && !isset($attrs['close'])) || (isset($attrs['close']) && $attrs['close'])) && !in_array($name, self::$noclose_tags)) {
