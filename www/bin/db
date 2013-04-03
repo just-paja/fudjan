@@ -459,6 +459,7 @@
 		private static function seed_data($data_set_name, $data_set_models)
 		{
 			\System\Init::full();
+			define('DATA_SEED', true);
 
 			foreach ($data_set_models as $model => $data_set) {
 

@@ -343,6 +343,10 @@ namespace System\Model
 							$val = str_replace("\\", "", $val);
 							if (is_array($val)) {
 								$val = new \System\Image($val);
+
+								if (defined('DATA_SEED')) {
+									$val->allow_save = true;
+								}
 							} elseif ($j = \System\Json::decode($val, true)) {
 								$val = \System\Image::from_json($val);
 							} elseif($val) {
