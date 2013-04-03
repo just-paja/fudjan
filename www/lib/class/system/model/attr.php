@@ -330,7 +330,7 @@ namespace System\Model
 				{
 					if (!($val instanceof \System\Image)) {
 
-						if (is_array($val) && is_array($val['name'])) {
+						if (is_array($val) && isset($val['name']) && is_array($val['name'])) {
 							foreach ($val as &$d) {
 								if (is_array($d)) {
 									$d = reset($d);
