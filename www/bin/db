@@ -57,6 +57,7 @@
 					"value" => array()
 				),
 				"json"    => array(
+					"value" => false,
 					"short" => 'j',
 					"desc"  => 'Output in json. Works with db dump functions.',
 				),
