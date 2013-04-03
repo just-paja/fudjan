@@ -75,11 +75,12 @@ namespace System
 
 
 		/* Convert object data to JSON
+		 * @param bool $encode Return encoded string
 		 * @return string
 		 */
-		public function to_json()
+		public function to_json($encode = true)
 		{
-			return json_encode($this->get_data());
+			return $encode ? json_encode($this->get_data()):$this->get_data();
 		}
 
 

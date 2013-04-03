@@ -236,18 +236,21 @@ namespace System
 
 
 		/** Export image object to JSON
+		 * @param bool $encode Return encoded string
 		 * @return string
 		 */
-		public function to_json()
+		public function to_json($encode = true)
 		{
-			return json_encode(array(
+			$data = array(
 				"file_path" => $this->get_path(),
 				"file_name" => $this->file_name,
 				"file_size" => $this->file_size,
 				"file_hash" => $this->get_file_hash(),
 				"width"     => $this->width,
 				"height"    => $this->height,
-			));
+			);
+
+			return $encode ? json_encode($data):$data;
 		}
 
 

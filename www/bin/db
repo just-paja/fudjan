@@ -199,12 +199,11 @@
 					$objects = get_all($model)->fetch();
 
 					if (any($objects)) {
-						$json    = json_encode($model).':['.implode(',', \System\Template::to_json($objects)).']';
-						$data[] = $json;
+						$data[$model] = \System\Template::to_json($objects, false);
 					}
 				}, null, $data, !is_null($file));
 
-				$json = "{".join(',', $data)."}";
+				$json = json_encode($data);
 
 				if (is_null($file)) {
 					echo $json;

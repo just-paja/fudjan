@@ -378,20 +378,24 @@ namespace System
 		}
 
 
-
-		public static function to_json($value)
+		/** Convert known objects to JSON
+		 * @param mixed $value
+		 * @param bool [true] Encode into JSON string
+		 * @return array|string
+		 */
+		public static function to_json($value, $encode=true)
 		{
 			if (is_array($value)) {
 				$values = array();
 
 				foreach ($value as $key=>$item) {
-					$values[$key] = self::to_json($item);
+					$values[$key] = self::to_json($item, false);
 				}
 
-				return $values;
+				return $encode ? json_encode($values):$values;
 			} else {
 				if (is_object($value) && method_exists($value, 'to_json')) {
-					return $value->to_json();
+					return $value->to_json(false);
 				}
 
 				if ($value instanceof \DateTime) {

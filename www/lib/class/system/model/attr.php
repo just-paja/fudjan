@@ -390,11 +390,7 @@ namespace System\Model
 						} elseif (strpos($val, 'POINT(') === 0) {
 							$val = \System\Gps::from_sql($val);
 						} else {
-							if ($js = \System\Json::decode($val, true)) {
-								$val = \System\Gps::from_array($js);
-							} else {
-								$val = new \System\Gps();
-							}
+							$val = new \System\Gps();
 						}
 					}
 
@@ -479,15 +475,14 @@ namespace System\Model
 		}
 
 
-		public function to_json()
+		/** Encode object into json
+		 * @param bool [true] $encode Encode into JSON string
+		 * @return string|array
+		 */
+		public function to_json($encode=true)
 		{
-			$data = $this->get_data();
-
-			foreach ($data as &$val) {
-				$val = \System\Template::to_json($val);
-			}
-
-			return json_encode($data);
+			$data = \System\Template::to_json($this->get_data(), false);
+			return $encode ? \System\Template::to_json($data):$data;
 		}
 	}
 }
