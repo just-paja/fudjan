@@ -382,7 +382,13 @@ namespace System
 		public static function to_json($value)
 		{
 			if (is_array($value)) {
-				return collect(array('this', 'to_json'), $value);
+				$values = array();
+
+				foreach ($value as $key=>$item) {
+					$values[$key] = self::to_json($item);
+				}
+
+				return $values;
 			} else {
 				if (is_object($value) && method_exists($value, 'to_json')) {
 					return $value->to_json();
