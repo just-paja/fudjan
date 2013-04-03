@@ -105,15 +105,20 @@ namespace System
 			$this->data_commited = \System\Input::get_by_prefix($this->get_prefix());
 
 			if (isset($this->data_commited['data_hidden'])) {
-				$this->data_hidden = json_decode(htmlspecialchars_decode($this->data_commited['data_hidden']), true);
+				$this->data_hidden = \System\Json::decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
 
 				$tmp = array();
-				foreach ($this->data_hidden as $key=>$val) {
-					$tmp[$key] = $val;
+
+				if (is_array($this->data_hidden)) {
+					foreach ($this->data_hidden as $key=>$val) {
+						$tmp[$key] = $val;
+					}
 				}
 
-				foreach ($this->data_commited as $key=>$val) {
-					$tmp[$key] = $val;
+				if (is_array($this->data_commited)) {
+					foreach ($this->data_commited as $key=>$val) {
+						$tmp[$key] = $val;
+					}
 				}
 
 				$this->data_commited = $tmp;
