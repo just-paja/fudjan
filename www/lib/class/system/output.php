@@ -289,12 +289,17 @@ namespace System
 		{
 			if (!headers_sent()) {
 				$format = self::get_format(true);
-				header("Content-Type: $format;charset=utf-8");
-				header("Content-Encoding: gz");
 
 				foreach (self::$content["headers"] as $name => $content) {
-					header(ucfirst($name).": ".$content);
+					if (is_numeric($name)) {
+						header($content);
+					} else {
+						header(ucfirst($name).": ".$content);
+					}
 				}
+
+				header("Content-Type: $format;charset=utf-8");
+				header("Content-Encoding: gz");
 			}
 		}
 
