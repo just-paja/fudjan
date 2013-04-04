@@ -59,8 +59,13 @@ namespace System
 			self::set_env();
 			self::check_env();
 
-			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, self::$conf, true);
+			$default = array();
+			$conf = array();
 
+			\System\Json::read_dist(ROOT.self::DIR_CONF_STATIC, $default, true);
+			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
+
+			self::$conf = array_replace_recursive($default, $conf);
 			self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
 			self::$no_pages = empty(self::$conf['pages']);
 
@@ -98,18 +103,6 @@ namespace System
 		public static function reset()
 		{
 			\System\Directory::check(ROOT.self::DIR_CONF_DIST.'/'.self::$env);
-			$dir = opendir($p = ROOT.self::DIR_CONF_STATIC);
-
-			while ($file = readdir($dir)) {
-				if (is_file($np = ROOT.self::DIR_CONF_DIST.'/'.self::$env.'/'.$file)) {
-					unlink($np);
-				}
-
-				if (is_file($p.'/'.$file)) {
-					copy($p.'/'.$file, $np);
-					chmod($np, \System\File::MOD_DEFAULT);
-				}
-			}
 		}
 
 
