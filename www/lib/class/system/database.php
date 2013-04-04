@@ -24,7 +24,7 @@ namespace System
 				array(
 					"id" => 1,
 					"login" => "root",
-					"password" => "poklodp",
+					"password" => "poklop",
 					"nick" => "root",
 					"first_name" => "Super",
 					"last_name" => "User",
