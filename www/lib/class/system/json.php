@@ -57,8 +57,10 @@ namespace System
 
 
 		/** Read all JSON files in dir and return content
-		 * @param string $dir_dist Path to directory
-		 * @param &array $temp     Variable to write in
+		 * @param string $dir_dist   Path to directory
+		 * @param &array $temp       Variable to write in
+		 * @param bool   $assoc_keys Associate file names (without postifx) to data read
+		 * @param &array $files      Files that have been read during dist search
 		 * @return array
 		 */
 		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false, &$files = array())
