@@ -265,10 +265,12 @@ namespace System
 			if ($this->cache && $this->allow_save) {
 				if (!$path) {
 					$new_name = $this->gen_name();
-					$path = self::prepare_image_dir(ROOT.self::DIR.'/'.substr($new_name, 0, 4).'/'.$new_name);
+					$dir  = ROOT.self::DIR.'/'.substr($new_name, 0, 4);
+					$path = $dir.'/'.$new_name;
+					\System\Directory::check($dir);
 				}
 
-				self::prepare_image_dir($this->get_path(true));
+				\System\Directory::check(dirname($this->get_path(true)));
 				if (($this->src == 'copy' && $ok = copy($this->get_path(true), $path)) || $ok = rename($this->get_path(true), $path)) {
 					$this->file_path = $path;
 					$this->file_name = basename($this->get_path(true));
@@ -364,6 +366,8 @@ namespace System
 					}
 
 					if ($transparent) {
+						imagealphablending($th, false);
+						imagesavealpha($th, true);
 						return imagepng($th, $tpth);
 					} else {
 						return imagejpeg($th, $tpth, 99);
