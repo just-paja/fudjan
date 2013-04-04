@@ -121,7 +121,14 @@ namespace System
 			$p = $path;
 			$iter = &$tree;
 
+			$meta = cfg('output', 'meta_tags');
 			self::use_param("template", $iter, $params);
+			self::use_param("seoname", $iter, $params);
+			self::use_param("title", $iter, $params);
+
+			foreach ($meta as $tag) {
+				self::use_param($tag, $iter, $params);
+			}
 
 			while (!empty($p)) {
 				$page = array_shift($p);
@@ -147,6 +154,10 @@ namespace System
 					self::use_param("template", $iter, $params);
 					self::use_param("seoname", $iter, $params);
 					self::use_param("title", $iter, $params);
+
+					foreach ($meta as $tag) {
+						self::use_param($tag, $iter, $params);
+					}
 				}
 			}
 
