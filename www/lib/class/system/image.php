@@ -295,7 +295,9 @@ namespace System
 		 */
 		public static function get_suffix($gd_format)
 		{
-			return self::$gd_formats[$gd_format];
+			if (isset(self::$gd_formats[$gd_format])) {
+				return self::$gd_formats[$gd_format];
+			} else throw new \System\Error\Argument('Unknown image format.');
 		}
 
 
@@ -388,7 +390,7 @@ namespace System
 			}
 
 			if (!is_resource($im)) {
-				throw new \System\Error\File('Failed to open image "%s". File is not readable or format is not supported.');
+				throw new \System\Error\File(sprintf('Failed to open image "%s". File is not readable or format "%s" is not supported.', $path, self::get_suffix($format)));
 			}
 
 			return $im;
