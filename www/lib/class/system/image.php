@@ -58,7 +58,10 @@ namespace System
 		private function read_dimensions()
 		{
 			if (!$this->width || !$this->height || !$this->format || !$this->file_size) {
-				$this->file_size = filesize($this->get_path(true));
+
+				if (file_exists($p = $this->get_path(true))) {
+					$this->file_size = filesize($p);
+				}
 
 				if (($info = self::get_image_size($this->get_path(true))) !== false && $info[0] !== false) {
 					$this->width  = $info[0];
