@@ -666,7 +666,7 @@ namespace System\Model
 				if (is_subclass_of('\\'.$class, get_called_class())) {
 					$ref = new \ReflectionClass($class);
 					if (!$ref->isAbstract()) {
-						$child_classes[] = $class;
+						$child_classes[$class] = $class;
 					}
 				}
 			}
