@@ -158,11 +158,17 @@ namespace System
 		 */
 		public function has_right($to)
 		{
-			if (empty($this->rights)) {
-				$this->get_rights();
+			if ($to === '*') {
+				$has = cfg('site', 'modules', 'allow_by_default');
+			} else {
+				if (empty($this->rights)) {
+					$this->get_rights();
+				}
+
+				$has = array_key_exists($to, $this->rights);
 			}
 
-			return $this->login == 'root' || array_key_exists($to, $this->rights);
+			return $this->is_root() || $has;
 		}
 
 

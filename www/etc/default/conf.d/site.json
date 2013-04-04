@@ -2,5 +2,8 @@
 	"title":"PWF",
 	"password":{
 		"shield":"r934jt-l49dsgf"
+	},
+	"modules":{
+		"allow_by_default":true
 	}
 }

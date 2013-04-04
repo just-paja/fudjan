@@ -14,8 +14,5 @@
 			"last_name":"User",
 			"groups":[1,2]
 		}
-	],
-	"System\\User\\Perm":[
-		{ "id":1, "type":"module", "trigger":"*", "id_system_user_group":1, "id_author":1, "public":1 }
 	]
 }
