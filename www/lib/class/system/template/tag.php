@@ -5,7 +5,7 @@ namespace System\Template
 	abstract class Tag
 	{
 		private static $html_attrs = array(
-			'*' => array('class', 'id', 'onclick', 'onfocus', 'title'),
+			'*' => array('class', 'id', 'onclick', 'onfocus', 'title', 'style'),
 			'#inputs'   => array('onchange', 'onkeyup', 'name', 'value'),
 			'#source'   => array('src'),
 			'#links'    => array('href'),
