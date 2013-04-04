@@ -14,6 +14,25 @@ namespace System
 		private static $default_instance;
 		private static $queries = 0;
 		private static $query_record = array();
+		private static $initial_data = array(
+			"\\System\\User\\Group" => array(
+				array("id" => 1, "name" => "GodLike"),
+				array("id" => 2, "name" => "Administrátoři"),
+				array("id" => 3, "name" => "Uživatelé"),
+			),
+			"\\System\\User" => array(
+				array(
+					"id" => 1,
+					"login" => "root",
+					"password" => "poklodp",
+					"nick" => "root",
+					"first_name" => "Super",
+					"last_name" => "User",
+					"groups" => array(1, 2),
+				)
+			)
+		);
+
 
 		public static function init()
 		{
@@ -242,6 +261,35 @@ namespace System
 		public static function get_query_record()
 		{
 			return self::$query_record;
+		}
+
+
+		public static function seed_initial_data()
+		{
+			foreach (self::$initial_data as $model=>$objects) {
+				foreach ($objects as $data_set) {
+					if (isset($data_set['password'])) {
+						$data_set['password'] = hash_passwd($data_set['password']);
+					}
+
+					$data_set['is_new_object'] = true;
+					$obj = new $model($data_set);
+					$obj->save();
+
+					foreach ($data_set as $attr=>$val) {
+						if (is_array($val) && \System\Model\Database::attr_is_rel($model, $attr)) {
+							if (\System\Model\Database::get_rel_type($model, $attr) == 'has-many') {
+								$def = \System\Model\Database::get_rel_def($model, $attr);
+
+								if (any($def['is_bilinear']) && any($def['is_master'])) {
+									unset($obj->$attr);
+									$obj->assign_rel($attr, $val);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 }
