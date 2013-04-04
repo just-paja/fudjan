@@ -52,32 +52,19 @@ namespace System
 		);
 
 
-		/** Get wrapper that reads dimensions or filesize on request
-		 * @param string $attr
-		 */
-		public function __get($attr)
-		{
-			if ($attr == 'width' || $attr == 'height') {
-				empty($this->data[$attr]) && $this->read_dimensions();
-			}
-
-			if ($attr == 'file_size') {
-				empty($this->data['file_size']) && ($this->file_size = filesize($this->get_path(true)));
-			}
-
-			return parent::__get($attr);
-		}
-
-
 		/** Read image dimensions from image file
 		 * @return void
 		 */
 		private function read_dimensions()
 		{
-			if (($info = self::get_image_size($this->get_path(true))) !== false && $info[0] !== false) {
-				$this->width  = $info[0];
-				$this->height = $info[1];
-				$this->format = $info[2];
+			if (!$this->width || !$this->height || !$this->format || !$this->file_size) {
+				$this->file_size = filesize($this->get_path(true));
+
+				if (($info = self::get_image_size($this->get_path(true))) !== false && $info[0] !== false) {
+					$this->width  = $info[0];
+					$this->height = $info[1];
+					$this->format = $info[2];
+				}
 			}
 		}
 
@@ -87,6 +74,7 @@ namespace System
 		 */
 		public function get_size()
 		{
+			$this->read_dimensions();
 			return $this->width.'x'.$this->height;
 		}
 
@@ -116,15 +104,26 @@ namespace System
 		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
 		 * @return string
 		 */
-		public function thumb($width, $height = null, $crop = true)
+		public function thumb($width = null, $height = null, $crop = true, $transparent = false)
 		{
-			if ($this->check_thumb($width, $height, $crop)) {
-				return $this->get_thumb_path($width, $height, $crop);
+			if (is_null($width) && is_null($height)) {
+				throw new \System\Error\Argument('You must pass width or height to \System\Image::thumb.');
+			}
+
+
+			if ($this->check_thumb($width, $height, $crop, true, $transparent)) {
+				return $this->get_thumb_path($width, $height, $crop, $transparent);
 			} else {
 				if ($this->bad) {
 					throw new \System\Error('Cannot generate thumb.');
 				} else return self::gen_bad_thumb($width, $height);
 			}
+		}
+
+
+		public function thumb_trans($width = null, $height = null, $crop = true)
+		{
+			return $this->thumb($width, $height, $crop, true);
 		}
 
 
@@ -135,11 +134,11 @@ namespace System
 		 * @param bool $gen    Generate image if it does not exist
 		 * @return bool
 		 */
-		private function check_thumb($width = null, $height = null, $crop = true, $gen = true)
+		private function check_thumb($width = null, $height = null, $crop = true, $gen = true, $transparent = false)
 		{
 			return
-				file_exists(ROOT.$this->get_thumb_path($width, $height)) ||
-				($gen && $this->make_thumb($width, $height, $crop));
+				file_exists(ROOT.$this->get_thumb_path($width, $height, $crop, $transparent)) ||
+				($gen && $this->make_thumb($width, $height, $crop, $transparent));
 		}
 
 
@@ -149,10 +148,10 @@ namespace System
 		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
 		 * @return string
 		 */
-		private function get_thumb_path($width = null, $height = null, $crop = true)
+		private function get_thumb_path($width = null, $height = null, $crop = true, $transparent = false)
 		{
 			$name = $this->get_file_hash();
-			return self::DIR_THUMBS.'/'.$width.'x'.$height.'/'.substr($name, 0, 5).'/'.$name.($crop ? '-crop':'').'.jpg';
+			return self::DIR_THUMBS.'/'.$width.'x'.$height.'/'.substr($name, 0, 5).'/'.$name.($crop ? '-crop':'').($transparent ? '.png':'.jpg');
 		}
 
 
@@ -175,14 +174,14 @@ namespace System
 		 * @param bool $crop   Crop image if it does not fit (width, height):original(width, height) ratio
 		 * return bool
 		 */
-		private function make_thumb($width, $height, $crop = true)
+		private function make_thumb($width, $height, $crop = true, $transparent = false)
 		{
 			if (extension_loaded('imagemagick')) {
 				$im = new ImageMagick($this->get_path(true));
 				$im->resampleImage($width, $height);
 				return $im->writeImage(ROOT.$this->get_thumb_path($width, $height, $crop));
 			} else {
-				return self::gen_thumb($this, $width, $height, $crop);
+				return self::gen_thumb($this, $width, $height, $crop, $transparent);
 			}
 		}
 
@@ -317,116 +316,126 @@ namespace System
 		}
 
 
-		/** Checkout if image dir exists and is writeable
-		 * @param string $path
-		 * @return string Path to write to
-		 */
-		private static function prepare_image_dir($path)
-		{
-			$p = dirname($path);
-			if (!is_dir($p) && (strpos($path, self::DIR_THUMBS) !== false || strpos($path, self::DIR) !== false)) {
-				$p = str_replace(ROOT, "", $p);
-				$p = array_filter(explode('/', $p));
-				$ip = ROOT.'/';
-
-				foreach ($p as $dir) {
-					if (is_dir($dp = $ip.$dir) || mkdir($dp)) {
-						$ip .= $dir.'/';
-					} else {
-						break;
-					}
-				}
-			}
-			return $path;
-		}
-
-
 		/** Generate thumb using GD library
-		 * @param self $obj  Instance of image
-		 * @param int  $w    Width
-		 * @param int  $h    Height
-		 * @param bool $crop Crop
+		 * @param self $obj         Instance of image
+		 * @param int  $w_new       Width
+		 * @param int  $h_new       Height
+		 * @param bool $crop        Crop
+		 * @param bool $transparent Keep image transparency
 		 * @return bool
 		 */
-		public static function gen_thumb(self $obj, $w, $h, $crop = true)
+		public static function gen_thumb(self $obj, $w_new, $h_new, $crop = true, $transparent=false)
 		{
 			$path = $obj->get_path(true);
 
-			if (($w && !is_numeric($w)) || ($h && !is_numeric($h))) {
+			if (($w_new && !is_numeric($w_new)) || ($h_new && !is_numeric($h_new))) {
 				throw new \System\Error\Argument("Width and height must be integer.");
 			}
 
 			if ($path != ROOT && file_exists($path)) {
 
-				$f = false;
-				$org_w = intval($obj->width);
-				$org_h = intval($obj->height);
+				$obj->read_dimensions();
+				$w_org = intval($obj->width);
+				$h_org = intval($obj->height);
 
-				// Prevent bad image size
-				if ($bad_size = ($org_w == 0 && $org_h == 0)) {
-					$obj->read_dimensions();
-				}
+				$tpth = ROOT.$obj->get_thumb_path($w_new, $h_new, $crop, $transparent);
+				\System\Directory::check(dirname($tpth));
 
-				$tpth = self::prepare_image_dir(ROOT.$obj->get_thumb_path($w, $h, $crop));
+				if ($w_new < $w_org || $h_new < $h_org) {
+					list($xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $crop);
 
-				if (!$w && $h) {
-					$w = round(($org_w * $h) / $org_h);
-					$f = true;
-				}
+					$im = self::get_image_resource($path, $obj->get_format());
+					$th = imagecreatetruecolor($w_new, $h_new);
 
-				if (!$h && $w) {
-					$h = round(($org_h * $w) / $org_w);
-					$f = true;
-				}
-
-				if ($w < $org_w || $h < $org_h) {
-
-					switch ($obj->get_format()) {
-						case 1:
-							$im = imagecreatefromgif($path);
-							break;
-						case 2:
-							$im = imagecreatefromjpeg($path);
-							break;
-						case 3:
-							$im = imagecreatefrompng($path);
-							break;
+					if (!$transparent) {
+						$wh = imagecolorallocate($th, 255, 255, 255);
+						imagefill($th, 0, 0, $wh);
 					}
 
-					if ($crop && !$f) {
-						if ($org_w / $org_h < $w / $h) {
-							$xw = $w;
-							$xh = round($org_h / $org_w * $w);
-							$dst_x = 0;
-							$dst_y = round(($xh > $h) ? (-1 * abs($h - $xh) / 2):(abs($h - $xh) / 2));
-						} else {
-							$xh = $h;
-							$xw = round($org_w / $org_h * $h);
-							$dst_x = round(($xw > $w) ? (-1 * abs($w - $xw) / 2):(abs($w - $xw) / 2));
-							$dst_y = 0;
-						}
-					} else {
-						$xw = $w;
-						$xh = $h;
-						$dst_x = $dst_y = 0;
-					}
-
-					$th = imagecreatetruecolor($w, $h);
-					$wh = imagecolorallocate($th, 255, 255, 255);
-					imagefill($th, 0, 0, $wh);
-					imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $org_w, $org_h);
+					imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
 
 					if (file_exists($tpth)) {
 						unlink($tpth);
 					}
 
-					return imagejpeg($th, $tpth, 99);
+					if ($transparent) {
+						return imagepng($th, $tpth);
+					} else {
+						return imagejpeg($th, $tpth, 99);
+					}
 				} else {
 					return copy($path, $tpth);
 				}
 			}
 
 			return false;
+		}
+
+
+		/** Get image GD resource
+		 * @param string $path   Path to image
+		 * @param int    $format GD format constant
+		 * @return resource
+		 */
+		public static function get_image_resource($path, $format)
+		{
+			$im = null;
+
+			switch ($format) {
+				case 1: $im = imagecreatefromgif($path); break;
+				case 2: $im = imagecreatefromjpeg($path); break;
+				case 3: $im = imagecreatefrompng($path); break;
+			}
+
+			if (!is_resource($im)) {
+				throw new \System\Error\File('Failed to open image "%s". File is not readable or format is not supported.');
+			}
+
+			return $im;
+		}
+
+
+		/** Calculate target thumb size and coordinates
+		 * @param int  $w_org Original width
+		 * @param int  $h_org Original height
+		 * @param int  $w_new Desired width
+		 * @param int  $h_new Desired height
+		 * @param bool $crop  Crop image or change proportion
+		 * @return array
+		 */
+		public static function calc_thumb_coords($w_org, $h_org, $w_new=null, $h_new=null, $crop=false)
+		{
+			$refit = false;
+
+			if (!$w_new && $h_new) {
+				$w_new = round(($w_org * $h_new) / $h_org);
+				$refit = true;
+			}
+
+			if (!$h_new && $w_new) {
+				$h_new = round(($h_org * $w_new) / $w_org);
+				$refit = true;
+			}
+
+			if ($crop && !$refit) {
+				if ($w_org / $h_org < $w_new / $h_new) {
+					$xw = $w_new;
+					$xh = round($h_org / $w_org * $w_new);
+					$dst_x = 0;
+					$dst_y = round(($xh > $h_new) ? (-1 * abs($h_new - $xh) / 2):(abs($h_new - $xh) / 2));
+				} else {
+					$xh = $h_new;
+					$xw = round($w_org / $h_org * $h_new);
+					$dst_x = round(($xw > $w_new) ? (-1 * abs($w_new - $xw) / 2):(abs($w_new - $xw) / 2));
+					$dst_y = 0;
+				}
+			} else {
+				$xw = $w_new;
+				$xh = $h_new;
+				$dst_x = $dst_y = 0;
+			}
+
+			return array($xw, $xh, $dst_x, $dst_y);
 		}
 
 
@@ -504,6 +513,13 @@ namespace System
 			}
 
 			return $this;
+		}
+
+
+		public function to_html($transparent = null)
+		{
+			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans(100, 100, true):$this->thumb(100, 100, true);
+			return \Stag::img(array("src" => $path, "alt" => ''));
 		}
 	}
 }
