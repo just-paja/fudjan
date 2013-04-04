@@ -38,7 +38,7 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 	$make->progress(50, 100);
 
 	$pkg_info = array(
-		"name"    => $info['package-category'].'/'.$info['project-name'],
+		"name"    => $info['package-category'].'/'.$info['package-name'],
 		"project" => $info['project-name'],
 		"desc"    => $info['project-desc'],
 		"version" => $info['package-version'],
