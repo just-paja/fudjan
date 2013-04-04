@@ -39,7 +39,6 @@ if (System\Settings::is_this_first_run()) {
 			throw new \System\Error\AccessDenied();
 		}
 
-		content_for("meta", $page->get_meta());
 		System\Output::set_opts(array(
 			"format"   => cfg("output", 'format_default'),
 			"lang"     => System\Locales::get_lang(),
@@ -47,6 +46,10 @@ if (System\Settings::is_this_first_run()) {
 			"template" => $page->template,
 			"page"     => $page->seoname,
 		));
+
+		foreach ($page->get_meta() as $meta) {
+			content_for("meta", $meta);
+		}
 
 		System\Flow::run();
 		System\Flow::run_messages();

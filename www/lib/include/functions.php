@@ -336,7 +336,7 @@ namespace
 	 */
 	function hash_passwd($str)
 	{
-		return sha1(md5('PERFECT_STRING_PREFIX'.$str.'PERFECT_STRING_POSTFIX'.crc32($str)));
+		return sha1(cfg('site', 'password', 'shield').md5($str));
 	}
 
 
@@ -346,6 +346,7 @@ namespace
 	function collect_ids(array $list) {
 		return collect(array('attr', 'id'), $list);
 	}
+
 
 	/** Collect names of all database models in list
 	 * @param array $list

@@ -172,7 +172,7 @@ namespace System
 			$meta = cfg('output', 'meta_tags');
 
 			foreach ((array) $meta as $name) {
-				if (!empty($this->data[$name])) $dataray[$name] = $this->data[$name];
+				if (!empty($this->data[$name])) $dataray[$name] = array("name" => $name, "content" =>$this->data[$name]);
 			}
 
 			return $dataray;

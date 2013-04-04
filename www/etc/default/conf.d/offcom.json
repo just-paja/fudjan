@@ -3,7 +3,5 @@
 		"email_sender":"robot@localhost"
 	},
 
-	"disable":0,
-	"enable-email":1,
-	"enable-sms":1
+	"enable-email":true
 }

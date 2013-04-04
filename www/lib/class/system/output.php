@@ -37,7 +37,7 @@ namespace System
 		 */
 		public static function init()
 		{
-			self::set_title(cfg('default', 'title'));
+			self::set_title(cfg('site', 'title'));
 		}
 
 
@@ -171,7 +171,7 @@ namespace System
 		public static function introduce()
 		{
 			try {
-				return cfg('own', 'name')." ".cfg('own', 'version');
+				return cfg('own', 'name')."-".cfg('own', 'version');
 			} catch(\System\Error $e) {
 				return 'pwf unknown version';
 			}

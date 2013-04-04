@@ -11,7 +11,7 @@ namespace System\Template
 			'#links'    => array('href'),
 			'#sizeable' => array('width', 'height'),
 			'iframe'    => array('frameborder', 'allowfullscreen'),
-			'meta'      => array('name', 'content', 'http-equiv'),
+			'meta'      => array('name', 'content', 'http-equiv', 'charset'),
 			'form'      => array('method', 'action', 'enctype'),
 			'textarea'  => array('required', 'rows', 'cols', '!value'),
 			'input'     => array('type', 'min', 'max', 'maxlength', 'step', 'required', 'size', 'disabled', 'checked', 'results', 'placeholder', 'autocomplete'),
