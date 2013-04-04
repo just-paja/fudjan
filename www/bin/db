@@ -342,9 +342,6 @@
 			self::database_init();
 			self::sync();
 
-			out('Seeding initial system data ..');
-			\System\Database::seed_initial_data();
-
 			out("Rolling migrations ..");
 			self::migrate(false);
 		}
@@ -448,6 +445,10 @@
 		 */
 		public static function seed()
 		{
+			\System\Init::full();
+			out('Seeding initial system data ..');
+			\System\Database::seed_initial_data();
+
 			\System\Init::full();
 			$data = System\Json::read_dist(ROOT.System\Database::DIR_INITIAL_DATA, $data, true);
 

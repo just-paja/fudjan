@@ -272,9 +272,11 @@ namespace System
 						$data_set['password'] = hash_passwd($data_set['password']);
 					}
 
-					$data_set['is_new_object'] = true;
 					$obj = new $model($data_set);
-					$obj->save();
+					try {
+						$obj->is_new_object = true;
+						$obj->save();
+					} catch(\System\Error\Database $e) {}
 
 					foreach ($data_set as $attr=>$val) {
 						if (is_array($val) && \System\Model\Database::attr_is_rel($model, $attr)) {
