@@ -346,14 +346,6 @@ namespace System
 				return format_date($value, 'human');
 			}
 
-			if ($value instanceof \System\Image) {
-				return \Tag::img(array(
-					"src" => $value->thumb(100, 100),
-					"alt" => '',
-					"output" => false,
-				));
-			}
-
 			if (gettype($value) == 'boolean') {
 				$value = $value ? 'yes':'no';
 				return \Tag::span(array(
