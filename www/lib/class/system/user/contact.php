@@ -60,7 +60,7 @@ namespace System\User
 
 		public static function get_type_options()
 		{
-			return self::get_model_attr_options('\Impro\User\Contact', 'type');
+			return self::get_model_attr_options('\System\User\Contact', 'type');
 		}
 
 
