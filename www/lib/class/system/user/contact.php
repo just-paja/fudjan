@@ -56,5 +56,18 @@ namespace System\User
 			'email'  => self::STD_EMAIL,
 			'mobile' => self::STD_MOBILE,
 		);
+
+
+		public static function get_type_options()
+		{
+			return self::get_model_attr_options('\Impro\User\Contact', 'type');
+		}
+
+
+		public function get_type_name($trans = false)
+		{
+			$opts = self::get_type_options();
+			return str_replace('contact_type', '', $opts[$this->type]);
+		}
 	}
 }
