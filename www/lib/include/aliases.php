@@ -45,6 +45,23 @@ namespace
 	}
 
 
+	/** Span tag alias
+	 * @param string|array $class   Classname passed to the div
+	 * @param string|array $content Content rendered inside div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function span($class, $content = null, $id = null)
+	{
+		return Tag::tag('span', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
 	/** UL tag alias
 	 * @param string|array $class   Classname passed to the div
 	 * @param string|array $content Content rendered inside div
