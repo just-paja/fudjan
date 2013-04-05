@@ -43,6 +43,7 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 		"desc"    => $info['project-desc'],
 		"version" => $info['package-version'],
 		"branch"  => $pkg['branch'],
+		"origin"  => 'official',
 	);
 
 	exec('
