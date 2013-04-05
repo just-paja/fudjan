@@ -67,7 +67,7 @@ namespace System\User
 		public function get_type_name($trans = false)
 		{
 			$opts = self::get_type_options();
-			return str_replace('contact_type', '', $opts[$this->type]);
+			return str_replace('contact_type_', '', $opts[$this->type]);
 		}
 	}
 }
