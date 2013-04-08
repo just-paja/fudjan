@@ -9,7 +9,7 @@ namespace System
 		const DIR_CONF_DIST     = '/etc/conf.d';
 		const DIR_CONF_STATIC   = '/etc/default/conf.d';
 		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
-		const FILE_VERSION      = '/etc/current/core/pwf/version';
+		const FILE_VERSION      = '/etc/santa/core/pwf/version';
 		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
 
 		/** Indicates that there are no pages set */

@@ -10,7 +10,7 @@ namespace System\Santa
 	class Package extends \System\Model\Attr
 	{
 		const DIR_TMP = '/var/tmp';
-		const DIR_META = '/etc/current';
+		const DIR_META = '/etc/santa';
 		const PATH_BIN = '/www/bin';
 
 		/** Model attributes

@@ -1,6 +1,6 @@
 packages/*
 www/etc/conf.d/*
-www/etc/current/*
+www/etc/santa/*
 www/var/*
 www/.htaccess
 www/etc/install.lock
