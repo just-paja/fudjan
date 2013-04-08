@@ -27,6 +27,12 @@ if (System\Settings::is_this_first_run()) {
 		content_for('scripts', 'pwf');
 		content_for('styles', 'pwf/elementary');
 
+		foreach (cfg('site', 'init') as $init_step) {
+			if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
+				require_once($f);
+			}
+		}
+
 		if (cfg('dev', 'debug')) {
 			System\Init::low_level_devel();
 		}
