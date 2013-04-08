@@ -32,6 +32,7 @@ Tag::div(array("id" => $f->id.'-container', "class" => array_merge(array('pwform
 			System\Form\Helper::render_element($obj);
 		}
 
+		echo div('cleaner', '');
 	Tag::close('form');
 Tag::close('div');
 
