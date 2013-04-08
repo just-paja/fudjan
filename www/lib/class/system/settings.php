@@ -66,16 +66,24 @@ namespace System
 			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
 
 			self::$conf = array_replace_recursive($default, $conf);
-			self::$conf['pages'] = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
-			self::$no_pages = empty(self::$conf['pages']);
+			$pages_user = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
+			$pages_api  = array();
+
 
 			$dir = opendir($p = ROOT.self::DIR_ROUTES_STATIC);
 			while ($f = readdir($dir)) {
 				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
-					$key = substr($f, 0, strpos($f, "."));
-					self::$conf['pages'][$key] = \System\Json::read($p.'/'.$f);
+					$paths = \System\Json::read($p.'/'.$f);
+
+					foreach ($paths as $key => $path) {
+						$pages_api[$key] = $path;
+					}
 				}
 			}
+
+			self::$conf['pages'] = array_merge($pages_api, $pages_user);
+			self::$no_pages = empty(self::$conf['pages']);
+
 
 			if (file_exists($version_path = ROOT.self::FILE_VERSION)) {
 				$cfg = \System\Json::read($version_path);

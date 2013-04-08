@@ -90,6 +90,8 @@ namespace System
 
 			if (any($iter)) {
 				$path = is_null($search_path) ? self::$path:array_filter(explode('/', $search_path));
+				array_unshift($path, $_SERVER['HTTP_HOST']);
+
 				$pd = self::browse_tree($iter, $path);
 
 				if ($pd) {
@@ -134,17 +136,46 @@ namespace System
 				$page = array_shift($p);
 				$found = false;
 
-				if (isset($iter[$page]) && is_array($iter[$page])) {
-					$iter = &$iter[$page];
-					$seoname = $page;
-					$found = is_array($iter['#']);
-				} elseif(isset($iter["*"]) && is_array($iter["*"])) {
-					$iter = &$iter["*"];
-					$found = is_array($iter['#']);
-					$variable[] = $page;
+				if (isset($iter[$key = $page]) || isset($iter[$key = "*"])) {
+					if (is_array($iter[$key]) && is_array($iter[$key]['#'])) {
+						$iter    = &$iter[$key];
+						$seoname = $key;
+						$found   = true;
+
+						if ($key === '*') {
+							$variable[] = $page;
+						}
+					} else throw new \System\Error\Format('Malformed path "%s". Page must be array, have anchor which also has to be an array.');
 				} else {
-					$found = false;
-					break;
+
+					foreach ($iter as $key=>&$item) {
+						$matches = array();
+						$key_str = str_replace(array('\\', '/'), array('', '\\/'), $key);
+						$slashes = substr_count($key_str, '/');
+
+						for ($i = 0; $i<$slashes; $i ++) {
+							$page .= '/'.array_shift($p);
+						}
+
+						$match = @preg_match('/'.$key_str.'/', $page, $matches);
+
+						if ($match !== false) {
+							if ($match) {
+								if (is_array($item) && is_array($item['#'])) {
+									$iter    = &$item;
+									$seoname = $matches[0];
+									$found = true;
+
+									$variable[] = $matches[0];
+									break;
+								} else throw new \System\Error\Format('Malformed path "%s". Page must be array, have anchor which also has to be an array.');
+							}
+						} else throw new \System\Error\Format(sprintf('Malformed regular expression "%s" for path "%s"', $key_str, join('/', $path)));
+					}
+					if (!$found) {
+						$found = false;
+						break;
+					}
 				}
 
 				if ($found) {

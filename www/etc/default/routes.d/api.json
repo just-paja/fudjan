@@ -1,11 +1,8 @@
 {
-	"#":{},
-
-	"form_search_query":{"#":{
+	".*/api/form_search_query":{"#":{
 		"template":[],
 		"modules":[
 			["system/form/search_tool_query"]
 		]
 	}}
-
 }
