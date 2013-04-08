@@ -95,6 +95,7 @@ namespace System
 				$pd = self::browse_tree($iter, $path);
 
 				if ($pd) {
+					array_shift($path);
 					$pd['path'] = '/'.implode('/', $path).(count($path) > 0 ? '/':'');
 					$page = new self($pd);
 
