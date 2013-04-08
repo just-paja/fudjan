@@ -50,7 +50,7 @@ namespace System
 			}
 
 			if (!(self::$current_user instanceof self)) {
-				self::$current_user = self::create_guest();
+				self::$current_user = self::guest();
 			}
 
 			self::$current_user->get_rights();
@@ -61,9 +61,13 @@ namespace System
 		/** Create guest user
 		 * @return System\User
 		 */
-		private static function create_guest()
+		public static function guest()
 		{
-			return new self(array("user_id" => 0, "nick" => _('Host'), "anonym_key" => session_id()));
+			return new self(array(
+				"user_id" => 0,
+				"nick"    => l('anonymous'),
+				"image"   => \System\Image::from_path("/share/pixmaps/pwf/anonymous_user.png"),
+			));
 		}
 
 
