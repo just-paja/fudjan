@@ -331,7 +331,7 @@ namespace System
 		 * @param bool $transparent Keep image transparency
 		 * @return bool
 		 */
-		public static function gen_thumb(self $obj, $w_new, $h_new, $crop = true, $transparent=false)
+		public static function gen_thumb(self $obj, $w_new, $h_new, $crop = true, $transparent = false)
 		{
 			$path = $obj->get_path(true);
 
@@ -357,6 +357,9 @@ namespace System
 					if (!$transparent) {
 						$wh = imagecolorallocate($th, 255, 255, 255);
 						imagefill($th, 0, 0, $wh);
+					} else {
+						$transparent = imagecolorallocatealpha($th, 0, 0, 0, 127);
+						imagefill($th, 0, 0, $transparent);
 					}
 
 					imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
@@ -372,6 +375,8 @@ namespace System
 					} else {
 						return imagejpeg($th, $tpth, 99);
 					}
+
+					imagedestroy($th);
 				} else {
 					return copy($path, $tpth);
 				}
@@ -525,9 +530,9 @@ namespace System
 		}
 
 
-		public function to_html($transparent = null)
+		public function to_html($w = null, $h = null, $crop = true, $transparent = null)
 		{
-			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans(100, 100, true):$this->thumb(100, 100, true);
+			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans($w, $h, $crop):$this->thumb($w, $h, $crop);
 			return \Stag::img(array("src" => $path, "alt" => ''));
 		}
 	}
