@@ -79,6 +79,24 @@ namespace
 	}
 
 
+	/** IMG tag alias
+	 * @param string       $src   Path to image source
+	 * @param string       $alt   Alternative text
+	 * @param string|array $class Classname passed to the image
+	 * @param string       $id    ID attribute for image
+	 */
+	function img($src, $alt = '', $class = null, $id = null)
+	{
+		return Tag::tag('img', array(
+			"class"  => $class,
+			"src"    => $src,
+			"alt"    => $alt,
+			"id"     => $id,
+			"output" => false,
+		));
+	}
+
+
 	// BasicModel & ExtModel aliases
 	/** @alias System\Model\Database::get_all */
 	function get_all($model, array $conds = array(), array $opts = array(), array $joins = array()) {
