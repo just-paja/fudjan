@@ -347,12 +347,7 @@ namespace System
 			}
 
 			if (gettype($value) == 'boolean') {
-				$value = $value ? 'yes':'no';
-				return \Tag::span(array(
-					"output"  => false,
-					"content" => l($value),
-					"class"   => $value,
-				));
+				return span($value = $value ? 'yes':'no', l($value));
 			}
 
 			if (gettype($value) == 'float') {
