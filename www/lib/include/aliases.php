@@ -79,6 +79,22 @@ namespace
 	}
 
 
+	/** LI tag alias
+	 * @param string|array $content Content rendered inside
+	 * @param string|array $class   Classname passed to the tag
+	 * @param string       $id      ID attribute of the tag
+	 */
+	function li($content, $class = null, $id = null)
+	{
+		return Tag::tag('li', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
 	/** IMG tag alias
 	 * @param string       $src   Path to image source
 	 * @param string       $alt   Alternative text
