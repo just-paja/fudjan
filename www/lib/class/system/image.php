@@ -18,6 +18,9 @@ namespace System
 		const FILE_BAD_THUMB = '/share/pixmaps/pwf/bad_thumb.jpg';
 		const IMG_JPEG_OLD = 3;
 
+		const WIDTH_DEFAULT = 100;
+		const HEIGHT_DEFAULT = 100;
+
 		/** Instance used for bad thumbs
 		 * @param null|self
 		 */
@@ -530,7 +533,7 @@ namespace System
 		}
 
 
-		public function to_html($w = null, $h = null, $crop = true, $transparent = null)
+		public function to_html($w = self::WIDTH_DEFAULT, $h = null, $crop = true, $transparent = null)
 		{
 			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans($w, $h, $crop):$this->thumb($w, $h, $crop);
 			return \Stag::img(array("src" => $path, "alt" => ''));
