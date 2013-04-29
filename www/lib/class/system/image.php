@@ -349,7 +349,7 @@ namespace System
 				\System\Directory::check(dirname($tpth));
 
 				if ($w_new < $w_org || $h_new < $h_org) {
-					list($xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $crop);
+					list($w_new, $h_new, $xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $crop);
 
 					$im = self::get_image_resource($path, $obj->get_format());
 					$th = imagecreatetruecolor($w_new, $h_new);
@@ -421,12 +421,12 @@ namespace System
 		{
 			$refit = false;
 
-			if (!$w_new && $h_new) {
+			if ($w_new <= 0 && $h_new) {
 				$w_new = round(($w_org * $h_new) / $h_org);
 				$refit = true;
 			}
 
-			if (!$h_new && $w_new) {
+			if ($h_new <= 0 && $w_new) {
 				$h_new = round(($h_org * $w_new) / $w_org);
 				$refit = true;
 			}
@@ -449,7 +449,7 @@ namespace System
 				$dst_x = $dst_y = 0;
 			}
 
-			return array($xw, $xh, $dst_x, $dst_y);
+			return array($w_new, $h_new, $xw, $xh, $dst_x, $dst_y);
 		}
 
 
