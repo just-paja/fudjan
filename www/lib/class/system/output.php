@@ -25,54 +25,6 @@ namespace System
 		}
 
 
-		/** Set output title
-		 * @return void
-		 */
-		public static function set_title()
-		{
-			self::$title = array();
-			foreach (func_get_args() as $title) {
-				try { $title = l($title); } catch (\System\Error $e) {}
-				self::$title[] = $title;
-			}
-		}
-
-
-		/** Get title
-		 * @param bool $last
-		 * @return string
-		 */
-		public static function get_title($last = false)
-		{
-			return $last ?
-				end(self::$title):
-				implode(' :: ', array_reverse(array_filter(self::$title)));
-		}
-
-
-		/** Set layout template
-		 * @param string $temp
-		 * @return void
-		 */
-		public static function set_template($temp)
-		{
-			self::$template = (array) $temp;
-		}
-
-
-		/** Set output format
-		 * @param string $format
-		 */
-		public static function set_format($format)
-		{
-			if (!\System\Status::on_cli()) {
-				return self::$format = $format;
-			}
-
-			self::$format = $format;
-		}
-
-
 		/** Set output options
 		 * @param array $opts
 		 */

@@ -69,11 +69,11 @@ namespace System
 		/** Run all modules in queue
 		 * @return void
 		 */
-		public static function run()
+		public static function run(\System\Http\Response $response)
 		{
 			while (!empty(self::$queue)) {
 				$mod = array_shift(self::$queue);
-				$retval = $mod->make();
+				$retval = $mod->make($response);
 
 				if (any(self::$redirect[self::REDIRECT_LATER])) {
 					$r = &self::$redirect[self::REDIRECT_LATER];

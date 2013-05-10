@@ -30,10 +30,10 @@ if (System\Settings::is_this_first_run()) {
 		if ($page->is_readable()) {
 
 			$request->init();
+			$page->add_modules();
 			$response = System\Http\Response::from_page($request, $page);
 
-			System\Flow::run();
-			System\Flow::run_messages();
+			System\Flow::run($response);
 
 			$response->render()->send_headers()->display();
 

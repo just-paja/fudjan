@@ -46,12 +46,6 @@ namespace System
 		}
 
 
-		public static function insert($name, $locals = array(), $slot = self::DEFAULT_SLOT)
-		{
-			Output::add_template(array("name" => $name, "locals" => $locals), $slot);
-		}
-
-
 		public static function get_name($name)
 		{
 			$base = ROOT.self::PARTIALS_DIR.'/';

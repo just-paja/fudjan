@@ -5,10 +5,11 @@ namespace System\Http
 	class Response extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"format" => array('varchar'),
-			"lang"   => array('varchar'),
-			"title"  => array('varchar'),
-			"layout" => array('array'),
+			"format"   => array('varchar'),
+			"lang"     => array('varchar'),
+			"title"    => array('varchar'),
+			"layout"   => array('array'),
+			"no_debug" => array('bool'),
 		);
 
 		private static $resource_filter = array('scripts', 'styles');
@@ -45,6 +46,7 @@ namespace System\Http
 			}
 
 			$response = self::from_request($request);
+			$response->update_attrs($page->get_data());
 			$response->page = $page;
 			$response->title = $page->title;
 			$response->layout = $page->template;

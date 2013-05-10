@@ -21,6 +21,7 @@ namespace System
 			"robots"    => array('varchar'),
 			"copyright" => array('varchar'),
 			"author"    => array('varchar'),
+			"no_debug"  => array('bool'),
 		);
 
 

@@ -74,6 +74,14 @@ namespace System
 			self::$conf['routes'] = array();
 			\System\Json::read_dist(ROOT.self::DIR_CONF_ROUTES, self::$conf['routes'], true);
 
+			$api = \System\Json::read_dist(ROOT.self::DIR_ROUTES_STATIC);
+
+			foreach (self::$conf['routes'] as &$list) {
+				foreach ($api as $url) {
+					$list[] = $url;
+				}
+			}
+
 			if (file_exists($version_path = ROOT.self::FILE_VERSION)) {
 				$cfg = \System\Json::read($version_path);
 			} else {

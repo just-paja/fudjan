@@ -4,7 +4,7 @@
  * @TODO Must rewrite for security reasons
  * @package modules
  */
-System\Output::set_format('json');
+//~ System\Output::set_format('json');
 cfgs(array('dev', 'debug'), false);
 
 $model   = System\Input::get('model');

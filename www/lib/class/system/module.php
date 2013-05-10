@@ -27,7 +27,7 @@ namespace System
 		static private $array_forced_locals = array("conds", "opts");
 
 		/** Attributes of modules */
-		private $id, $path, $locals, $slot, $parents;
+		private $id, $path, $locals, $slot, $parents, $response;
 
 
 		/** Public constructor
@@ -83,8 +83,9 @@ namespace System
 		/** Run module
 		 * @return void
 		 */
-		public function make()
+		public function make(\System\Http\Response $response)
 		{
+			$this->response = $response;
 			$path = ROOT.self::BASE_DIR.$this->path.'.php';
 
 			if (file_exists($path)) {
@@ -179,7 +180,7 @@ namespace System
 
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
-			Template::insert($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
+			$this->response->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
 		}
 
 

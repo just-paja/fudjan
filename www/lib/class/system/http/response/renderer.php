@@ -34,7 +34,8 @@ namespace System\Http\Response
 				$debug = true;
 			}
 
-			if ($debug) {
+			if ($debug && !$this->response->no_debug) {
+				v($this->response->no_debug);
 				$this->partial('system/status');
 				$this->response->content_for('styles', 'pwf/elementary');
 				$this->response->content_for('styles', 'pwf/devbar');
@@ -65,6 +66,11 @@ namespace System\Http\Response
 		}
 
 
+		/** Mark template as used and save locals for debug purposes
+		 * @param string $type
+		 * @param string $name
+		 * @param array $locals
+		 */
 		private function used($type, $name, $locals = null)
 		{
 			$this->templates_used[] = array(
