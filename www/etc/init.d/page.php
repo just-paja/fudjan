@@ -24,6 +24,7 @@ if (System\Settings::is_this_first_run()) {
 
 		content_for('scripts', 'lib/functions');
 		content_for('scripts', 'lib/jquery');
+		content_for('scripts', 'lib/browser');
 		content_for('scripts', 'pwf');
 		content_for('styles', 'pwf/elementary');
 
