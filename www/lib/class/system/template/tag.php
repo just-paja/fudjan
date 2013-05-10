@@ -18,7 +18,7 @@ namespace System\Template
 			'select'    => array('size', 'multiple', 'required'),
 			'option'    => array('selected', 'value'),
 			'button'    => array('type'),
-			'html'      => array('xmlns'),
+			'html'      => array('xmlns', 'lang'),
 			'label'     => array('for'),
 		);
 
