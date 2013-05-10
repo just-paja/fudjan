@@ -84,7 +84,7 @@ namespace
 	 * @param string|array $class   Classname passed to the tag
 	 * @param string       $id      ID attribute of the tag
 	 */
-	function li($content, $class = null, $id = null)
+	function li($content = null, $class = null, $id = null)
 	{
 		return Tag::tag('li', array(
 			"class"   => $class,
