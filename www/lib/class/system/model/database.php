@@ -840,6 +840,7 @@ namespace System\Model
 		public function __construct(array $update = array())
 		{
 			$model = get_class($this);
+			parent::check_properties($model);
 
 			if (!array_key_exists($idc = self::get_id_col($model), $model::$attrs)) {
 				$model::$attrs[$idc] = array("int", "is_unsigned" => true, "is_index" => true);

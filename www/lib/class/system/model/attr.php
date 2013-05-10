@@ -52,6 +52,8 @@ namespace System\Model
 		public function __construct(array $dataray = array())
 		{
 			$model = get_class($this);
+			self::check_properties($model);
+
 			$this->update_attrs($dataray);
 
 			if (isset($model::$attrs['pass'])) {
@@ -487,6 +489,14 @@ namespace System\Model
 		{
 			$data = \System\Template::to_json($this->get_data(), false);
 			return $encode ? \System\Template::to_json($data):$data;
+		}
+
+
+		public static function check_properties($model)
+		{
+			if (!isset($model::$attrs)) {
+				throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
+			}
 		}
 	}
 }
