@@ -85,7 +85,7 @@ namespace System
 					throw new \System\Error\Argument(sprintf('You must enter input name as first argument for System\\Form::%s method', $name));
 				}
 
-				$this->input(array(
+				return $this->input(array(
 					"type"     => $type,
 					"name"     => $args[0],
 					"label"    => def($args[1], ''),
@@ -738,8 +738,12 @@ namespace System
 		{
 			$value = $this->get_input_value($attrs);
 
-			if (!is_object($value) && $value) {
-				$value = new \DateTime($value);
+			if ($value) {
+				if (!is_object($value)) {
+					$value = new \DateTime($value);
+				}
+			} else {
+				$value = null;
 			}
 
 			if ($this->submited) {

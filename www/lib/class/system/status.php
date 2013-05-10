@@ -93,7 +93,7 @@ namespace System
 				$error_page = $errors[$e->get_name()];
 			} else {
 				$error_page = array(
-					"title"    => 'l_error',
+					"title"    => 'Error occurred!',
 					"template" => array('pwf/errors/layout'),
 					"partial"  => 'system/error/bug',
 				);
