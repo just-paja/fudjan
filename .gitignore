@@ -1,5 +1,6 @@
 packages/*
 www/etc/conf.d/*
+www/etc/routes.d/*
 www/etc/santa/*
 www/var/*
 www/.htaccess
