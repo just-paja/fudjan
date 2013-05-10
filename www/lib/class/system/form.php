@@ -738,8 +738,12 @@ namespace System
 		{
 			$value = $this->get_input_value($attrs);
 
-			if (!is_object($value) && $value) {
-				$value = new \DateTime($value);
+			if ($value) {
+				if (!is_object($value)) {
+					$value = new \DateTime($value);
+				}
+			} else {
+				$value = null;
 			}
 
 			if ($this->submited) {
