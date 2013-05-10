@@ -15,58 +15,29 @@ if (System\Settings::is_this_first_run()) {
 
 } else {
 
-	if (System\Settings::is_page_tree_ready()) {
+	System\Cache::init();
+	System\Database::init();
+	System\Output::init();
 
-		System\Cache::init();
-		System\Database::init();
-		System\Output::init();
-		System\Page::init();
+	$request = System\Http\Request::from_hit();
+	$page = $request->get_page();
 
-		content_for('scripts', 'lib/functions');
-		content_for('scripts', 'lib/jquery');
-		content_for('scripts', 'lib/browser');
-		content_for('scripts', 'pwf');
-		content_for('styles', 'pwf/elementary');
+	if (cfg('dev', 'debug')) {
+		System\Init::low_level_devel();
+	}
 
-		foreach (cfg('site', 'init') as $init_step) {
-			if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
-				require_once($f);
-			}
-		}
+	if ($page) {
+		if ($page->is_readable()) {
 
-		if (cfg('dev', 'debug')) {
-			System\Init::low_level_devel();
-		}
+			$request->init();
+			$response = System\Http\Response::from_page($request, $page);
 
-		if (!(($page = System\Page::get_current()) instanceof System\Page)) {
-			throw new \System\Error\NotFound();
-		}
+			System\Flow::run();
+			System\Flow::run_messages();
 
-		if (!$page->is_readable()) {
-			throw new \System\Error\AccessDenied();
-		}
+			$response->render()->send_headers()->display();
 
-		System\Output::set_opts(array(
-			"format"   => cfg("output", 'format_default'),
-			"lang"     => System\Locales::get_lang(),
-			"title"    => $page->title,
-			"template" => $page->template,
-			"page"     => $page->seoname,
-		));
 
-		foreach ($page->get_meta() as $meta) {
-			content_for("meta", $meta);
-		}
-
-		System\Flow::run();
-		System\Flow::run_messages();
-
-		if (strpos($page->get_path(), "/cron") === 0) {
-			System\Status::report("cron", "Requested cron page ".$page->get_path());
-		}
-
-		System\Output::out();
-		System\Message::dequeue_all();
-
-	} else throw new \System\Error\Config('There are no routes.', sprintf('Add some routes to the pages file located in "%s".', ROOT.\System\Settings::DIR_CONF_ALL));
+		} else throw new \System\Error\AccessDenied();
+	} else throw new \System\Error\NotFound();
 }

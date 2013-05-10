@@ -99,45 +99,27 @@ namespace System
 				);
 			}
 
-			if (!self::on_cli()) {
-				content_for('headers', $e->get_http_status());
-			}
-
 			try {
+				$request = \System\Http\Request::from_hit();
 				$page = new \System\Page($error_page);
+				$response = \System\Http\Response::from_page($request, $page);
 
-				\System\Output::set_opts(array(
-					"title"    => $page->title,
-					"template" => $page->template,
-					"page"     => $page->seoname,
-				));
-
-				if (is_null(\System\Output::get_format())) {
-					try {
-						$format_default = cfg('output', 'format_default');
-					} catch(\System\Error $exc) {
-						$format_default = 'html';
-					}
-
-					\System\Output::set_format($format_default);
+				if (!self::on_cli()) {
+					$response->content_for('headers', $e->get_http_status());
 				}
 
 				if (!isset($error_page['partial'])) {
 					$error_page['partial'] = 'system/error/bug';
 				}
 
-				\System\Output::add_template(array(
-					"name" => $error_page['partial'],
-					"locals" => array(
-						"desc" => $e,
-					)
-				), \System\Template::DEFAULT_SLOT);
+				$response->partial($error_page['partial'], array("desc" => $e));
 
-				\System\Output::out();
+				$response->render()->send_headers()->display();
 				self::report('error', $e);
 
 			} catch (\Exception $exc) {
-				require_once ROOT.'/lib/template/pwf/errors/fatal.html.php';
+				echo "Fatal error";
+				v($exc);
 				exit(1);
 			}
 

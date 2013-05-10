@@ -4,11 +4,14 @@ namespace System
 {
 	class Template
 	{
-		const TEMPLATES_DIR = '/lib/template';
-		const PARTIALS_DIR = '/lib/template/partial';
+		const DIR_TEMPLATE = '/lib/template';
+		const DIR_PARTIAL  = '/lib/template/partial';
 		const DIR_ICONS = '/share/icons';
 		const DEFAULT_SLOT = 'zzTop';
 		const DEFAULT_ICON_THEME = 'default';
+
+		const TYPE_LAYOUT  = 'layout';
+		const TYPE_PARTIAL = 'partial';
 
 		const CASE_UPPER = MB_CASE_UPPER;
 		const CASE_LOWER = MB_CASE_LOWER;
@@ -43,20 +46,6 @@ namespace System
 		}
 
 
-		public static function partial($name, array $locals = array())
-		{
-			$temp = self::get_name($name);
-			foreach ((array) $locals as $k=>$v) {
-				$k = str_replace('-', '_', $k);
-				$$k=$v;
-			}
-
-			if (file_exists($temp)) {
-				include($temp);
-			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
-		}
-
-
 		public static function insert($name, $locals = array(), $slot = self::DEFAULT_SLOT)
 		{
 			Output::add_template(array("name" => $name, "locals" => $locals), $slot);
@@ -76,55 +65,6 @@ namespace System
 			return $f;
 		}
 
-
-		public static function meta_out()
-		{
-			Output::content_for("meta", array("name" => 'generator', "content" => Output::introduce()));
-			Output::content_for("meta", array("http-equiv" => 'content-type', "content" => Output::get_format(true).'; charset=utf-8'));
-			Output::content_for("meta", array("charset" => 'utf-8'));
-
-			$meta = Output::get_content_from("meta");
-			foreach ($meta as $name=>$value) {
-				if ($value) {
-					Output::content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
-				}
-			}
-		}
-
-
-		public static function scripts_out()
-		{
-			$cont = Output::get_content_from("scripts");
-
-			if (!is_null($cont)) {
-				Output::content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
-			}
-		}
-
-
-		public static function styles_out()
-		{
-			$cont = Output::get_content_from("styles");
-
-			if (!is_null($cont)) {
-				Output::content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
-			}
-		}
-
-
-		public static function title_out()
-		{
-			Output::content_for("head", '<title>'.Output::get_title().'</title>');
-		}
-
-
-		public static function head_out()
-		{
-			self::meta_out();
-			self::title_out();
-			self::scripts_out();
-			self::styles_out();
-		}
 
 
 		public static function link_for($label, $url, $object = array())
@@ -389,5 +329,32 @@ namespace System
 				return $value;
 			}
 		}
+
+
+
+		/** Get template full path
+		 * @param string $type
+		 * @param string $name
+		 * @param bool $force
+		 */
+		public static function find($name, $type = self::TYPE_LAYOUT, $format = null)
+		{
+			$base = ROOT;
+			$temp = null;
+
+			switch ($type)
+			{
+				case 'layout': $base .= self::DIR_TEMPLATE.'/'; break;
+				case 'partial': $base .= self::DIR_PARTIAL.'/'; break;
+			}
+
+			file_exists($temp = $base.self::get_filename($name, $format, \System\Locales::get_lang())) ||
+			file_exists($temp = $base.self::get_filename($name, $format)) ||
+			file_exists($temp = $base.self::get_filename($name)) ||
+			$temp = false;
+
+			return $temp;
+		}
+
 	}
 }

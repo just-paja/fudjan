@@ -4,6 +4,8 @@ namespace System
 {
 	class Init
 	{
+		const DIR_INIT = '/etc/init.d';
+
 		public static function full()
 		{
 			self::bind_error_handlers();

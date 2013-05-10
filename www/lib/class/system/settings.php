@@ -7,6 +7,8 @@ namespace System
 		const CACHE_FILE        = '/var/cache/settings';
 		const DIR_CONF_ALL      = '/etc';
 		const DIR_CONF_DIST     = '/etc/conf.d';
+		const DIR_CONF_GLOBAL   = '/etc/conf.d/global';
+		const DIR_CONF_ROUTES   = '/etc/routes.d';
 		const DIR_CONF_STATIC   = '/etc/default/conf.d';
 		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
 		const FILE_VERSION      = '/etc/santa/core/pwf/version';
@@ -69,21 +71,8 @@ namespace System
 			$pages_user = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
 			$pages_api  = array();
 
-
-			$dir = opendir($p = ROOT.self::DIR_ROUTES_STATIC);
-			while ($f = readdir($dir)) {
-				if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
-					$paths = \System\Json::read($p.'/'.$f);
-
-					foreach ($paths as $key => $path) {
-						$pages_api[$key] = $path;
-					}
-				}
-			}
-
-			self::$conf['pages'] = array_merge($pages_api, $pages_user);
-			self::$no_pages = empty(self::$conf['pages']);
-
+			self::$conf['routes'] = array();
+			\System\Json::read_dist(ROOT.self::DIR_CONF_ROUTES, self::$conf['routes'], true);
 
 			if (file_exists($version_path = ROOT.self::FILE_VERSION)) {
 				$cfg = \System\Json::read($version_path);
@@ -270,15 +259,6 @@ namespace System
 		public static function is_this_first_run()
 		{
 			return !file_exists($p = ROOT.self::DIR_CONF_ALL.'/install.lock');
-		}
-
-
-		/** Has site developer defined any pages?
-		 * @return bool
-		 */
-		public static function is_page_tree_ready()
-		{
-			return !self::$no_pages;
 		}
 	}
 }

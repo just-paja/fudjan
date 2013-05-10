@@ -202,24 +202,9 @@ namespace
 		return System\Template::section_heading($label, $level);
 	}
 
-	/** @alias System\Output::content_for */
-	function content_for($place, $content, $overwrite = false) {
-		return System\Output::content_for($place, $content, $overwrite);
-	}
-
-	/** @alias System\Output::content_from */
-	function content_from($place) {
-		return System\Output::content_from($place);
-	}
-
 	/** @alias System\Output::slot */
 	function slot($name = System\Template::DEFAULT_SLOT) {
 		return System\Output::slot($name);
-	}
-
-	/** @alias System\Output::yield */
-	function yield() {
-		return System\Output::yield();
 	}
 
 	/** @alias System\Output::title */

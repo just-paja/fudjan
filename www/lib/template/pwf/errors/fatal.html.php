@@ -4,9 +4,9 @@ Tag::doctype();
 Tag::html();
 
 	Tag::head();
-		content_for('styles', 'pwf/base');
-		content_for('styles', 'pwf/errors');
-		content_from('head');
+		$response->content_for('styles', 'pwf/base');
+		$response->content_for('styles', 'pwf/errors');
+		$response->content_from('head');
 	Tag::close('head');
 
 	Tag::body(array("class" => 'error'));

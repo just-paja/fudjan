@@ -28,7 +28,6 @@ namespace System
 		 */
 		public static function init()
 		{
-			self::parse_path();
 		}
 
 
@@ -173,6 +172,7 @@ namespace System
 							}
 						} else throw new \System\Error\Format(sprintf('Malformed regular expression "%s" for path "%s"', $key_str, join('/', $path)));
 					}
+
 					if (!$found) {
 						$found = false;
 						break;
