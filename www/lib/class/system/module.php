@@ -249,6 +249,13 @@ namespace System
 
 			return empty($conds) || $result;
 		}
+
+
+		private function form(array $attrs = array())
+		{
+			$attrs['response'] = $response;
+			return new \System\Form($attrs);
+		}
 	}
 }
 
