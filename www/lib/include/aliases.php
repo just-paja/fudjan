@@ -259,4 +259,10 @@ namespace
 	function cfgs(array $path, $value) {
 		return System\Settings::set($path, $value);
 	}
+
+	/** @alias System\Template::to_json() */
+	function to_json($value, $encode = true)
+	{
+		return \System\Template::to_json($value, $encode);
+	}
 }
