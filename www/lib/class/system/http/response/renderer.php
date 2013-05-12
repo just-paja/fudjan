@@ -35,7 +35,6 @@ namespace System\Http\Response
 			}
 
 			if ($debug && !$this->response->no_debug) {
-				v($this->response->no_debug);
 				$this->partial('system/status');
 				$this->response->content_for('styles', 'pwf/elementary');
 				$this->response->content_for('styles', 'pwf/devbar');
