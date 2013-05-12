@@ -29,7 +29,7 @@ namespace System
 		}
 
 
-		public static function low_level_devel()
+		public static function low_level_devel(\System\Http\Response $response)
 		{
 			if (file_exists(ROOT.'/lib/include/devel.php')) {
 				include ROOT.'/lib/include/devel.php';
