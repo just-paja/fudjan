@@ -22,16 +22,16 @@ if (System\Settings::is_this_first_run()) {
 	$request = System\Http\Request::from_hit();
 	$page = $request->get_page();
 
-	if (cfg('dev', 'debug')) {
-		System\Init::low_level_devel();
-	}
-
 	if ($page) {
 		if ($page->is_readable()) {
 
 			$request->init();
 			$page->add_modules();
 			$response = System\Http\Response::from_page($request, $page);
+
+			if (cfg('dev', 'debug')) {
+				System\Init::low_level_devel($response);
+			}
 
 			System\Flow::run($response);
 
