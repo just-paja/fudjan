@@ -49,7 +49,7 @@ namespace System\Http
 			$response->update_attrs($page->get_data());
 			$response->page = $page;
 			$response->title = $page->title;
-			$response->layout = $page->template;
+			$response->layout = $page->layout;
 
 			return $response;
 		}

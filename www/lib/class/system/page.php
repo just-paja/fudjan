@@ -13,7 +13,7 @@ namespace System
 			"path"      => array('varchar'),
 			"seoname"   => array('varchar'),
 			"modules"   => array('list'),
-			"template"  => array('list'),
+			"layout"    => array('list'),
 			"variable"  => array('list'),
 			"post"      => array('varchar'),
 			"keywords"  => array('varchar'),
@@ -37,7 +37,7 @@ namespace System
 			parent::__construct($dataray);
 
 			if (strpos($this->path, '/cron') === 0) {
-				$this->template = array(null);
+				$this->layout = array(null);
 			}
 		}
 
@@ -125,7 +125,7 @@ namespace System
 			$iter = &$tree;
 
 			$meta = cfg('output', 'meta_tags');
-			self::use_param("template", $iter, $params);
+			self::use_param("layout", $iter, $params);
 			self::use_param("seoname", $iter, $params);
 			self::use_param("title", $iter, $params);
 
@@ -184,7 +184,7 @@ namespace System
 					if (any($iter["#"]['title'])) $params['title'] = def($title, '');
 					$title = def($iter['#']['title'], '');
 
-					self::use_param("template", $iter, $params);
+					self::use_param("layout", $iter, $params);
 					self::use_param("seoname", $iter, $params);
 					self::use_param("title", $iter, $params);
 
