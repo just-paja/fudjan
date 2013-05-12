@@ -130,6 +130,14 @@ namespace System\Template
 					$attr = implode($separator, $attr);
 				}
 
+				if (is_object($attr)) {
+					if (method_exists($attr, 'to_html')) {
+						$attr = $attr->to_html();
+					} else {
+						$attr = '['.\System\Loader::get_model_from_class(get_class($attr)).']';
+					}
+				}
+
 				$is_valid = (!is_null($attr) && strlen($attr)) || $name == 'value';
 				$available_for_tag = isset(self::$html_attrs[$tag]) && (self::$html_attrs[$tag] == '*' || in_array($name, self::$html_attrs[$tag]));
 				$available_for_all_tags = in_array($name, self::$html_attrs['*']);
