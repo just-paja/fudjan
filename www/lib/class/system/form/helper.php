@@ -47,8 +47,8 @@ namespace System\Form
 
 			} elseif ($el->type === 'search_tool') {
 
-				content_for('scripts', 'pwf/form/search_tool');
-				content_for('styles',  'pwf/form/search_tool');
+				$el->form->content_for('scripts', 'pwf/form/search_tool');
+				$el->form->content_for('styles',  'pwf/form/search_tool');
 				$input = self::get_search_tool_html($el);
 
 			} elseif ($el->type === 'image') {
@@ -57,21 +57,21 @@ namespace System\Form
 
 			} elseif ($el->type === 'location') {
 
-				content_for('scripts', 'pwf/form/autocompleter');
-				content_for('scripts', 'pwf/form/location_picker');
-				content_for('styles',  'pwf/form/autocompleter');
+				$el->form->content_for('scripts', 'pwf/form/autocompleter');
+				$el->form->content_for('scripts', 'pwf/form/location_picker');
+				$el->form->content_for('styles',  'pwf/form/autocompleter');
 				$input = self::get_location_input_html($el);
 
 			} elseif ($el->type === 'gps') {
 
-				content_for('scripts', 'pwf/form/jquery.gmap');
-				content_for('scripts', 'pwf/form/gps');
+				$el->form->content_for('scripts', 'pwf/form/jquery.gmap');
+				$el->form->content_for('scripts', 'pwf/form/gps');
 				$input = self::get_gps_input_html($el);
 
 			} else {
 
 				if (in_array($el->type, array('datetime', 'date', 'time'))) {
-					content_for('scripts', 'pwf/form/datetime_picker');
+					$el->form->content_for('scripts', 'pwf/form/datetime_picker');
 
 					if ($el->value instanceof \DateTime) {
 						$tz = new \DateTimeZone('UTC');
@@ -349,8 +349,8 @@ namespace System\Form
 						}
 						case \System\Form\Container::TYPE_TAB_GROUP:
 						{
-							content_for('styles', 'pwf/form/tabs');
-							content_for('scripts', 'pwf/form/tab_manager');
+							$el->form->content_for('styles', 'pwf/form/tabs');
+							$el->form->content_for('scripts', 'pwf/form/tab_manager');
 							\Tag::div(array("class" => array('tab_group', $el->name)));
 
 							foreach ($el->get_elements() as $el) {

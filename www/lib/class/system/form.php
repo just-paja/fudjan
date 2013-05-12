@@ -10,15 +10,16 @@ namespace System
 		const LABEL_SUBMIT_DEFAULT = 'send';
 
 		protected static $attrs = array(
-			"id"      => array('varchar'),
-			"method"  => array('varchar'),
-			"action"  => array('varchar'),
-			"enctype" => array('varchar'),
-			"heading" => array('varchar'),
-			"desc"    => array('varchar'),
-			"anchor"  => array('varchar'),
-			"bool"    => array('no_prefix'),
-			"class"   => array('array'),
+			"id"       => array('varchar'),
+			"method"   => array('varchar'),
+			"action"   => array('varchar'),
+			"enctype"  => array('varchar'),
+			"heading"  => array('varchar'),
+			"desc"     => array('varchar'),
+			"anchor"   => array('varchar'),
+			"bool"     => array('no_prefix'),
+			"class"    => array('array'),
+			"response" => array('object'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
@@ -35,6 +36,7 @@ namespace System
 		);
 
 		private $prefix = '';
+
 		protected $checkboxes = array();
 		protected $counts = array(
 			'inputs'    => 1,
@@ -51,7 +53,7 @@ namespace System
 		 */
 		protected function construct()
 		{
-			content_for('styles', 'pwf/form');
+			$this->content_for('styles', 'pwf/form');
 
 			!$this->method  && $this->method = 'post';
 			!$this->action  && $this->action = \System\Input::get('path');
@@ -71,8 +73,7 @@ namespace System
 		}
 
 
-		/**
-		 * Alias to create simple input type
+		/** Alias to create simple input type
 		 * @param string $name Name of called method
 		 * @param array  $args Arguments to the function
 		 */
@@ -800,7 +801,7 @@ namespace System
 
 			return $obj instanceof \System\Module ?
 				$obj->template(self::get_default_template(), (array) $locals + array("f" => $this)):
-				\System\Template::partial(self::get_default_template(), array("f" => $this));
+				$this->response->partial(self::get_default_template(), array("f" => $this));
 		}
 
 
@@ -912,6 +913,12 @@ namespace System
 			}
 
 			return $type;
+		}
+
+
+		public function content_for($place, $content)
+		{
+			$this->response->content_for($place, $content);
 		}
 	}
 }
