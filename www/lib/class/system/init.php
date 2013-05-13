@@ -61,8 +61,6 @@ namespace System
 
 			require_once ROOT."/etc/init.d/core.php";
 
-			Output::set_format('cli');
-
 			$cmd = \CLIOptions::get('command');
 			\CLICommands::$cmd();
 		}
