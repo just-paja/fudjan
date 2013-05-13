@@ -36,7 +36,7 @@ namespace System
 
 		public function get_http_status()
 		{
-			return \System\Http::get_header($this::HTTP_STATUS);
+			return $this::HTTP_STATUS;
 		}
 
 
