@@ -4,28 +4,69 @@ namespace System\Http
 {
 	class Response extends \System\Model\Attr
 	{
-		protected static $attrs = array(
-			"format"   => array('varchar'),
-			"lang"     => array('varchar'),
-			"title"    => array('varchar'),
-			"layout"   => array('array'),
-			"no_debug" => array('bool'),
+		const NO_RESPONSE           = 0;
+		const OK                    = 200;
+		const NO_CONTENT            = 204;
+		const MOVED_PERMANENTLY     = 301;
+		const FOUND                 = 302;
+		const SEE_OTHER             = 303;
+		const TEMPORARY_REDIRECT    = 307;
+		const FORBIDDEN             = 403;
+		const PAGE_NOT_FOUND        = 404;
+		const INTERNAL_SERVER_ERROR = 500;
+
+
+		private static $states = array(
+			self::OK                    => "HTTP/1.1 200 OK",
+			self::NO_CONTENT            => "HTTP/1.1 204 No Content",
+			self::MOVED_PERMANENTLY     => "HTTP/1.1 301 Moved Permanently",
+			self::FOUND                 => "HTTP/1.1 302 Found",
+			self::SEE_OTHER             => "HTTP/1.1 303 See Other",
+			self::TEMPORARY_REDIRECT    => "HTTP/1.1 307 Temporary Redirect",
+			self::FORBIDDEN             => "HTTP/1.1 403 Forbidden",
+			self::PAGE_NOT_FOUND        => "HTTP/1.1 404 Page Not Found",
+			self::INTERNAL_SERVER_ERROR => "HTTP/1.1 500 Internal Server Error",
 		);
 
-		private static $resource_filter = array('scripts', 'styles');
+		protected static $attrs = array(
+			"format"     => array('varchar'),
+			"lang"       => array('varchar'),
+			"title"      => array('varchar'),
+			"layout"     => array('array'),
+			"no_debug"   => array('bool'),
+			"start_time" => array('float'),
+		);
+
 		private $page;
 		private $templates = array();
 		private $layout    = array();
 		private $request;
 		private $renderer;
 		private $flow;
-		private $content = array(
-			"headers" => array(),
-			"meta" => array(),
-			"scripts" => array(),
-			"styles" => array(),
-			"output" => array()
-		);
+		private $status = self::OK;
+		private $headers = array();
+		private $content = null;
+
+
+		public static function get_status($num)
+		{
+			if (isset(self::$states[$num])) {
+				return self::$states[$num];
+			} else throw new \System\Error\Argument(sprintf('Requested http header "%s" does not exist.', $num));
+		}
+
+
+		public function redirect($url, $code = self::FOUND)
+		{
+			if (!$this->request->cli) {
+				session_write_close();
+
+				header(self::get_status($code));
+				header("Location: ".$url);
+			} else throw new \System\Error\Format(stprintf('Cannot redirect to "%s" while on console.', $r['url']));
+
+			exit(0);
+		}
 
 
 		/** Create response from request
@@ -35,8 +76,9 @@ namespace System\Http
 		public static function from_request(\System\Http\Request $request)
 		{
 			$response = new self(array(
-				"format" => cfg("output", 'format_default'),
-				"lang"   => \System\Locales::get_lang(),
+				"format"     => cfg("output", 'format_default'),
+				"lang"       => \System\Locales::get_lang(),
+				"start_time" => microtime(true),
 			));
 
 			$response->request = $request;
@@ -98,7 +140,13 @@ namespace System\Http
 			if (!\System\Status::on_cli()) {
 				$format = \System\Output::get_mime(true);
 
-				foreach ($this->content["headers"] as $name => $content) {
+				if ($this->status == self::OK && empty($this->content)) {
+					$this->status(self::NO_CONTENT);
+				}
+
+				header(self::get_status($this->status));
+
+				foreach ($this->headers as $name => $content) {
 					if (is_numeric($name)) {
 						header($content);
 					} else {
@@ -119,7 +167,7 @@ namespace System\Http
 		 */
 		public function display()
 		{
-			echo implode('', $this->content['output']);
+			echo $this->content;
 		}
 
 
@@ -151,49 +199,6 @@ namespace System\Http
 				"name"   => $template,
 				"locals" => $locals,
 			);
-		}
-
-
-
-		/** Get content from location
-		 * @param string $place
-		 * @return string
-		 */
-		public function &get_content_from($place)
-		{
-			if (is_array($this->content[$place]) && in_array($place, self::$resource_filter)) {
-				\System\Resource::filter_output_content($place, $this->content[$place]);
-			}
-
-			return $this->content[$place];
-		}
-
-
-		/** Get content from a location and add it to general output
-		 * @param string $place
-		 */
-		public function content_from($place)
-		{
-			$this->content_for('output', ob_get_clean());
-			$this->content['output'][] = &$this->content[$place];
-			ob_start();
-		}
-
-
-		/** Add content into specific place
-		 * @param string $place
-		 * @param array|string $content
-		 * @param bool $overwrite
-		 */
-		public function content_for($place, $content, $overwrite = false)
-		{
-			if (!isset($this->content[$place]) || $overwrite) {
-				$this->content[$place] = $content;
-			} else {
-				is_array($this->content[$place]) && $this->content[$place][] = $content;
-				is_integer($this->content[$place]) && $this->content[$place] += $content;
-				is_string($this->content[$place]) && $this->content[$place] .= $content;
-			}
 		}
 
 
@@ -253,8 +258,31 @@ namespace System\Http
 		{
 			return $this->request()->path.($this->request()->query ? '?'.$this->request()->query:'');
 		}
+
+
+		/** Get execution time of rendering. Not returning definite value, since the response will be sent after that.
+		 * @return float
+		 */
+		public function get_exec_time()
+		{
+			return microtime(true) - $this->start_time;
+		}
+
+
+		public function status($status)
+		{
+			if (isset(self::$states[$status])) {
+				$this->status = $status;
+			} else throw new \System\Error\Argument(sprintf("HTTP status '%s' was not found.", $status));
+		}
+
+
+		public function set_content($content)
+		{
+			if (is_string($content)) {
+				$this->content = $content;
+				return $this;
+			} else throw new \System\Error\Argument(sprintf("HTTP Response must be string! '%s' given.", gettype($content)));
+		}
 	}
 }
-
-
-

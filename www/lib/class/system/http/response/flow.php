@@ -117,8 +117,6 @@ namespace System\Http\Response
 				$r = &$this->redirect[self::REDIRECT_AFTER_MODULES];
 				\System\Http::redirect($r['url'], $r['code']);
 			}
-
-			\System\Http::save_referer();
 		}
 
 

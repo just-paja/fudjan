@@ -5,15 +5,17 @@ namespace System\Http
 	class Request extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"host"  => array('varchar'),
-			"path"  => array('varchar'),
-			"agent" => array('varchar'),
-			"query" => array('varchar'),
-			"time"  => array('float'),
-			"cli"   => array('bool'),
-			"args"  => array('list'),
-			"get"   => array('list'),
-			"post"  => array('list'),
+			"host"     => array('varchar'),
+			"path"     => array('varchar'),
+			"agent"    => array('varchar'),
+			"query"    => array('varchar'),
+			"referrer" => array('varchar'),
+			"time"     => array('float'),
+			"cli"      => array('bool'),
+			"args"     => array('list'),
+			"get"      => array('list'),
+			"post"     => array('list'),
+			"secure"   => array('bool'),
 		);
 
 
@@ -21,16 +23,20 @@ namespace System\Http
 		{
 			if (\System\Status::on_cli()) {
 				$data = array(
-					"time"  => $_SERVER['REQUEST_TIME_FLOAT'],
-					"cli"   => true,
+					"time"   => $_SERVER['REQUEST_TIME_FLOAT'],
+					"cli"    => true,
+					"secure" => false,
 				);
 			} else {
 				$data = array(
-					"host"  => $_SERVER['HTTP_HOST'],
-					"path"  => $_SERVER['REQUEST_URI'],
-					"agent" => $_SERVER['HTTP_USER_AGENT'],
-					"query" => $_SERVER['QUERY_STRING'],
-					"time"  => $_SERVER['REQUEST_TIME_FLOAT'],
+					"cli"      => false,
+					"host"     => $_SERVER['HTTP_HOST'],
+					"path"     => $_SERVER['REQUEST_URI'],
+					"referrer" => def($_SERVER['HTTP_REFERER']),
+					"agent"    => $_SERVER['HTTP_USER_AGENT'],
+					"query"    => $_SERVER['QUERY_STRING'],
+					"time"     => $_SERVER['REQUEST_TIME_FLOAT'],
+					"secure"   => any($_SERVER['HTTPS']),
 				);
 
 				if ($data['query']) {
@@ -185,6 +191,22 @@ namespace System\Http
 			$good = array("&#39;", "&#96;", "&quot;");
 
 			return $str = str_replace($bad, $good, $str);
+		}
+
+
+		public function get()
+		{
+			$args = func_get_args();
+			array_unshift($args, 'get');
+			return $this->input($args);
+		}
+
+
+		public function post()
+		{
+			$args = func_get_args();
+			array_unshift($args, 'post');
+			return $this->input($args);
 		}
 	}
 }

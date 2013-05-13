@@ -5,29 +5,46 @@ namespace System\Http\Response
 	class Renderer extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"format" => array('varchar'),
+			"format"     => array('varchar'),
+			"start_time" => array('float'),
 		);
 
+		private static $resource_filter = array('scripts', 'styles');
 		private $templates_used = array();
 		private $templates;
 		private $layout;
+		private $response;
+		private $content;
 
 
 		public static function from_response(\System\Http\Response $response)
 		{
-			$renderer = new self(array());
+			$renderer = new self(array("format" => $response->format));
 
 			$data = $response->get_render_data();
-			$renderer->format = $response->format;
 			$renderer->templates = $data['templates'];
 			$renderer->layout = $data['layout'];
 			$renderer->response = $response;
+			$renderer->flush();
 			return $renderer;
+		}
+
+
+		public function flush()
+		{
+			$this->content = array(
+				"meta"    => array(),
+				"styles"  => array(),
+				"scripts" => array(),
+				"output"  => array(),
+			);
 		}
 
 
 		public function render()
 		{
+			$this->start_time = microtime(true);
+
 			try {
 				$debug = cfg('dev', 'debug');
 			} catch(\System\Error $e) {
@@ -36,20 +53,22 @@ namespace System\Http\Response
 
 			if ($debug && !$this->response->no_debug) {
 				$this->partial('system/status');
-				$this->response->content_for('styles', 'pwf/elementary');
-				$this->response->content_for('styles', 'pwf/devbar');
-				$this->response->content_for('scripts', 'lib/jquery');
-				$this->response->content_for('scripts', 'pwf');
-				$this->response->content_for('scripts', 'pwf/storage');
-				$this->response->content_for('scripts', 'pwf/devbar');
+				$this->content_for('styles', 'pwf/elementary');
+				$this->content_for('styles', 'pwf/devbar');
+				$this->content_for('scripts', 'lib/jquery');
+				$this->content_for('scripts', 'pwf');
+				$this->content_for('scripts', 'pwf/storage');
+				$this->content_for('scripts', 'pwf/devbar');
 			}
 
 			$this->response->flush();
 			ob_start();
 			empty($this->layout) ? $this->slot():$this->yield();
-			$this->response->content_for('output', ob_get_clean());
+			$this->content_for('output', ob_get_clean());
 			$this->render_head();
 
+			$this->response()->set_content(implode('', $this->content['output']));
+			$this->flush();
 			return $this;
 		}
 
@@ -88,7 +107,10 @@ namespace System\Http\Response
 			while (any($this->layout)) {
 				$name = array_shift($this->layout);
 				$this->used(\System\Template::TYPE_LAYOUT, $name);
-				$response = $this->response;
+
+				$renderer = $this;
+				$response = $this->response();
+				$request  = $this->response()->request();
 
 				if (file_exists($f = \System\Template::find($name, \System\Template::TYPE_LAYOUT, $this->format))) {
 					include($f);
@@ -138,6 +160,11 @@ namespace System\Http\Response
 			}
 
 			if (file_exists($temp)) {
+				$renderer = $this;
+				$response = $this->response();
+				$flow     = $this->response()->flow();
+				$request  = $this->response()->request();
+
 				include($temp);
 			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
 		}
@@ -186,14 +213,14 @@ namespace System\Http\Response
 
 		public function render_meta()
 		{
-			$this->response->content_for("meta", array("name" => 'generator', "content" => \System\Output::introduce()));
-			$this->response->content_for("meta", array("http-equiv" => 'content-type', "content" => \System\Output::get_mime($this->format).'; charset=utf-8'));
-			$this->response->content_for("meta", array("charset" => 'utf-8'));
+			$this->content_for("meta", array("name" => 'generator', "content" => \System\Output::introduce()));
+			$this->content_for("meta", array("http-equiv" => 'content-type', "content" => \System\Output::get_mime($this->format).'; charset=utf-8'));
+			$this->content_for("meta", array("charset" => 'utf-8'));
 
-			$meta = $this->response->get_content_from("meta");
+			$meta = $this->get_content_from("meta");
 			foreach ($meta as $name=>$value) {
 				if ($value) {
-					$this->response->content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
+					$this->content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
 				}
 			}
 		}
@@ -201,26 +228,83 @@ namespace System\Http\Response
 
 		public function render_title()
 		{
-			$this->response->content_for("head", \Stag::title(array("content" => $this->response->get_title())));
+			$this->content_for("head", \Stag::title(array("content" => $this->response->get_title())));
 		}
 
 
 		public function render_scripts()
 		{
-			$cont = $this->response->get_content_from("scripts");
+			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
-				$this->response->content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
+				$this->content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
 			}
 		}
 
 
 		public function render_styles()
 		{
-			$cont = $this->response->get_content_from("styles");
+			$cont = $this->get_content_from("styles");
 
 			if (!is_null($cont)) {
-				$this->response->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
+				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
+			}
+		}
+
+
+		public function response()
+		{
+			return $this->response;
+		}
+
+
+		/** Get execution time of rendering. Not returning definite value, since the response will be sent after that.
+		 * @return float
+		 */
+		public function get_exec_time()
+		{
+			return microtime(true) - $this->start_time;
+		}
+
+
+		/** Get content from location
+		 * @param string $place
+		 * @return string
+		 */
+		public function &get_content_from($place)
+		{
+			if (is_array($this->content[$place]) && in_array($place, self::$resource_filter)) {
+				\System\Resource::filter_output_content($place, $this->content[$place]);
+			}
+
+			return $this->content[$place];
+		}
+
+
+		/** Get content from a location and add it to general output
+		 * @param string $place
+		 */
+		public function content_from($place)
+		{
+			$this->content_for('output', ob_get_clean());
+			$this->content['output'][] = &$this->content[$place];
+			ob_start();
+		}
+
+
+		/** Add content into specific place
+		 * @param string $place
+		 * @param array|string $content
+		 * @param bool $overwrite
+		 */
+		public function content_for($place, $content, $overwrite = false)
+		{
+			if (!isset($this->content[$place]) || $overwrite) {
+				$this->content[$place] = $content;
+			} else {
+				is_array($this->content[$place]) && $this->content[$place][] = $content;
+				is_integer($this->content[$place]) && $this->content[$place] += $content;
+				is_string($this->content[$place]) && $this->content[$place] .= $content;
 			}
 		}
 
