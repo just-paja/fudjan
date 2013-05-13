@@ -172,12 +172,12 @@ namespace System\Http
 
 
 		/** Get renderer object
-		 * @return \System\Http\Response\Renderer
+		 * @return \System\Template\Renderer
 		 */
 		public function renderer()
 		{
 			if (!$this->renderer) {
-				$this->renderer = \System\Http\Response\Renderer::from_response($this);
+				$this->renderer = \System\Template\Renderer::from_response($this);
 			}
 
 			return $this->renderer;

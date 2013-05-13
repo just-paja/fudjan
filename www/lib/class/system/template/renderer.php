@@ -1,6 +1,6 @@
 <?
 
-namespace System\Http\Response
+namespace System\Template
 {
 	class Renderer extends \System\Model\Attr
 	{

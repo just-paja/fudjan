@@ -952,7 +952,7 @@ namespace System
 		}
 
 
-		public function renderer(\System\Http\Response\Renderer $renderer = null)
+		public function renderer(\System\Template\Renderer $renderer = null)
 		{
 			if (!is_null($renderer)) {
 				$this->renderer = $renderer;
