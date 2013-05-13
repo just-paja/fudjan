@@ -197,7 +197,7 @@ namespace System
 				self::resource_list_save($type, $content);
 				$name = self::get_resource_list_name($content);
 
-				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name), \System\Http::MOVED_PERMANENTLY);
+				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name), \System\Http\Response::MOVED_PERMANENTLY);
 			} else {
 				if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)), true)) {
 					return explode("\n", $list);
