@@ -127,7 +127,7 @@ namespace System\Http
 		 */
 		public function render()
 		{
-			$this->renderer = $this->get_renderer()->render();
+			$this->renderer = $this->renderer()->render();
 			return $this;
 		}
 
@@ -138,7 +138,7 @@ namespace System\Http
 		public function send_headers()
 		{
 			if (!\System\Status::on_cli()) {
-				$format = \System\Output::get_mime(true);
+				$mime = \System\Output::get_mime($this->format);
 
 				if ($this->status == self::OK && empty($this->content)) {
 					$this->status(self::NO_CONTENT);
@@ -154,7 +154,7 @@ namespace System\Http
 					}
 				}
 
-				header("Content-Type: $format;charset=utf-8");
+				header("Content-Type: ".$mime.";charset=utf-8");
 				header("Content-Encoding: gz");
 			}
 
@@ -174,7 +174,7 @@ namespace System\Http
 		/** Get renderer object
 		 * @return \System\Http\Response\Renderer
 		 */
-		public function get_renderer()
+		public function renderer()
 		{
 			if (!$this->renderer) {
 				$this->renderer = \System\Http\Response\Renderer::from_response($this);
