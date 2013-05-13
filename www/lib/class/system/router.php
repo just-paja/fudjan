@@ -16,6 +16,10 @@ namespace System
 		const REWRITE_TARGET = '/.htaccess';
 
 
+		/** Get request domain from request HTTP_HOST
+		 * @param string $host HTTP_HOST
+		 * @return string|bool False on no match
+		 */
 		public static function get_domain($host)
 		{
 			$domains = cfg('domains');
@@ -34,7 +38,13 @@ namespace System
 		}
 
 
-		public static function get_path($host, $path)
+		/** Get definition of path
+		 * @param string $host Domain to choose from
+		 * @param string $path Path to check
+		 * @param array  $args Place to put URL arguments
+		 * @return array|bool False on failure
+		 */
+		public static function get_path($host, $path, array &$args = array())
 		{
 			if ($domain = self::get_domain($host)) {
 				try {
@@ -45,7 +55,9 @@ namespace System
 							$route_urls = is_array($route[0]) ? $route[0]:array($route[0]);
 
 							foreach ($route_urls as $route_url) {
-								if (self::json_preg_match($route_url, $path)) {
+								$matches = array();
+
+								if (self::json_preg_match($route_url, $path, $args)) {
 									return $route;
 								}
 							}
@@ -62,13 +74,91 @@ namespace System
 		}
 
 
-		public static function get_url($path)
+		public static function get_url($host, $name, array $args = array(), $variation = 0)
 		{
+			if ($domain = self::get_domain($host)) {
+				$routes = cfg('routes', $domain);
 
+				foreach ($routes as $route) {
+					if (isset($route[0]) && isset($route[2]) && $name == $route[2]) {
+						if ($variation > 0) {
+							if (is_array($route[0])) {
+								$route_url = $route[0][$variation];
+							} else throw new \System\Error\Argument(sprintf("Named route called '%s' does not have any variations.", $name));
+						} else {
+							$route_url = is_array($route[0]) ? $route[0][0]:$route[0];
+						}
+
+						$search = 'open';
+						$route_args = array();
+						$path = str_split($route_url, 1);
+
+						for ($pos = 0; $pos < count($path); $pos++) {
+							if ($search == 'open') {
+								if ($path[$pos] == '(') {
+									$arg = array($pos);
+									$search = 'close';
+								}
+							}
+
+							if ($search == 'close') {
+								if ($path[$pos] == ')') {
+									$arg[1] = $pos + 1;
+									$route_args[] = $arg;
+									$search = 'open';
+								}
+							}
+						}
+
+						if (count($route_args) === count($args)) {
+							$str = '';
+
+							foreach ($args as $num=>$arg) {
+								$start = $num == 0 ? 0:$route_args[$num-1][1];
+
+								for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
+									$str .= $path[$letter];
+								}
+
+								$str .= $arg;
+							}
+
+							$start = $route_args[$num][1];
+
+							for ($letter = $start; $letter < count($path); $letter ++) {
+								$str .= $path[$letter];
+							}
+
+							$str = str_replace(array('^', '$'), '', $str);
+							return $str;
+						} else {
+							throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($route_args), count($args)));
+						}
+
+						$result = $route_url;
+						foreach ($args as $arg) {
+							$result = preg_replace($route_url, $arg, $result);
+						}
+
+						return $result;
+					}
+				}
+
+				throw new \System\Error\Argument(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
+			} else {
+				throw cfg('dev', 'debug') ? new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $domain), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):new \System\Error\NotFound();
+			}
+
+			return false;
 		}
 
 
-		private static function domain_match($host, $config)
+		/** Match domain against allowed host list
+		 * @param string $host
+		 * @param array  $config
+		 * @return bool
+		 */
+		private static function domain_match($host, array $config)
 		{
 			foreach ($config['rules'] as $rule) {
 				if (self::json_preg_match($rule, $host)) {
@@ -80,9 +170,26 @@ namespace System
 		}
 
 
-		private static function json_preg_match($regexp, $subject)
+		/** Short method for URL preg matching
+		 * @param string $regexp  Regexp
+		 * @param string $subject Tested string
+		 * @param array  $matches Place to put matches
+		 * @return bool
+		 */
+		private static function json_preg_match($regexp, $subject, array &$matches = array())
 		{
-			return preg_match('/'.str_replace('/', '\\/', $regexp).'/', $subject);
+			$matches_temp = array();
+			$result = preg_match('/'.str_replace('/', '\\/', $regexp).'/', $subject, $matches_temp);
+
+			if ($result) {
+				foreach ($matches_temp as $key=>$match) {
+					if ($key > 0) {
+						$matches[] = $match;
+					}
+				}
+			}
+
+			return $result;
 		}
 
 
@@ -113,7 +220,5 @@ namespace System
 		{
 			return \System\File::put(ROOT.self::REWRITE_TARGET, self::generate_rewrite_rules());
 		}
-
-
 	}
 }
