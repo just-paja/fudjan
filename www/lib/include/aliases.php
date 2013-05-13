@@ -28,13 +28,55 @@ namespace
 	}
 
 
+	function introduce()
+	{
+		return \System\Output::introduce();
+	}
+
+
+	function doctype()
+	{
+		return Tag::doctype();
+	}
+
+
+	function footer($class = null, $content = null)
+	{
+		return Tag::tag('footer', array(
+			"class"   => $class,
+			"content" => $content,
+			"output"  => false,
+		));
+	}
+
+
+	function htmlheader($class = null, $content = null)
+	{
+		return Tag::tag('header', array(
+			"class"   => $class,
+			"content" => $content,
+			"output"  => false,
+		));
+	}
+
+
+	function body($class = null, $content = null)
+	{
+		return Tag::tag('div', array(
+			"class"   => $class,
+			"content" => $content,
+			"output"  => false,
+		));
+	}
+
+
 	/** Div tag alias
 	 * @param string|array $class   Classname passed to the div
 	 * @param string|array $content Content rendered inside div
 	 * @param string       $id      ID attribute of the div
 	 * @return string
 	 */
-	function div($class, $content = null, $id = null)
+	function div($class = null, $content = null, $id = null)
 	{
 		return Tag::tag('div', array(
 			"class"   => $class,
@@ -108,6 +150,25 @@ namespace
 			"src"    => $src,
 			"alt"    => $alt,
 			"id"     => $id,
+			"output" => false,
+		));
+	}
+
+
+	function html($lang, $class = null)
+	{
+		return Tag::tag('html', array(
+			"class"  => $class,
+			"lang"   => $lang,
+			"output" => false,
+		));
+	}
+
+
+	function head($content = null)
+	{
+		return Tag::tag('html', array(
+			"content" => $content,
 			"output" => false,
 		));
 	}
