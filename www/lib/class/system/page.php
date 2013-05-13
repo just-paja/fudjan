@@ -274,17 +274,6 @@ namespace System
 		}
 
 
-		/** Get variables from parsed page path
-		 * @return array
-		 */
-		public static function get_path_variables()
-		{
-			if (self::get_current()) {
-				return self::get_current()->variable;
-			} else return array();
-		}
-
-
 		/** Inherit page tree ancestors' parameters
 		 * @param  string $name Parameter name
 		 * @param &array  $node
