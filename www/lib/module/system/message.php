@@ -5,4 +5,4 @@
  */
 
 def($template, 'system/message');
-$this->template($template, $locals);
+$this->partial($template, $locals);

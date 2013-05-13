@@ -7,14 +7,14 @@
 //~ System\Output::set_format('json');
 cfgs(array('dev', 'debug'), false);
 
-$model   = System\Input::get('model');
-$conds   = System\Input::get('conds');
-$filter  = System\Input::get('filter');
-$display = System\Input::get('display');
-$fetch   = System\Input::get('fetch');
-$value   = System\Input::get('value');
-$has     = System\Input::get('has');
-$limit   = System\Input::get('limit');
+$model   = $request->get('model');
+$conds   = $request->get('conds');
+$filter  = $request->get('filter');
+$display = $request->get('display');
+$fetch   = $request->get('fetch');
+$value   = $request->get('value');
+$has     = $request->get('has');
+$limit   = $request->get('limit');
 
 if ($model) {
 
@@ -68,4 +68,4 @@ if ($model) {
 	$result = array();
 }
 
-$this->template('system/common', array("json_data" => $result));
+$this->partial('system/common', array("json_data" => $result));
