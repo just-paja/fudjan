@@ -9,12 +9,10 @@ namespace System
 		public static function full()
 		{
 			self::bind_error_handlers();
-			Flow::init();
 			Settings::init();
 			Locales::init();
 			Cache::init();
 			Database::init();
-			Output::init();
 		}
 
 
