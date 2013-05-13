@@ -14,6 +14,7 @@ namespace System
 		private static $default_instance;
 		private static $queries = 0;
 		private static $query_record = array();
+		private static $ready = false;
 		private static $initial_data = array(
 			"\\System\\User\\Group" => array(
 				array("id" => 1, "name" => "GodLike"),
@@ -36,18 +37,21 @@ namespace System
 
 		public static function init()
 		{
-			$db_list = cfg('database', 'connect');
+			if (!self::$ready) {
+				$db_list = cfg('database', 'connect');
+				self::$ready = true;
 
-			if (any($db_list)) {
-				foreach ($db_list as $db_ident) {
-					$cfg = cfg('database', 'list', $db_ident);
-					self::connect($cfg, $db_ident);
-				}
-			} else {
-				if (php_sapi_name() == 'cli') {
-					exec(ROOT.'/bin/db --setup');
+				if (any($db_list)) {
+					foreach ($db_list as $db_ident) {
+						$cfg = cfg('database', 'list', $db_ident);
+						self::connect($cfg, $db_ident);
+					}
 				} else {
-					throw new \System\Error\Config('No database is set.');
+					if (php_sapi_name() == 'cli') {
+						exec(ROOT.'/bin/db --setup');
+					} else {
+						throw new \System\Error\Config('No database is set.');
+					}
 				}
 			}
 		}
