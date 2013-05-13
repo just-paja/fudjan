@@ -4,17 +4,18 @@
  * @TODO Must rewrite for security reasons
  * @package modules
  */
-//~ System\Output::set_format('json');
+
+$response->format = 'json';
 cfgs(array('dev', 'debug'), false);
 
-$model   = $request->get('model');
-$conds   = $request->get('conds');
-$filter  = $request->get('filter');
-$display = $request->get('display');
-$fetch   = $request->get('fetch');
-$value   = $request->get('value');
-$has     = $request->get('has');
-$limit   = $request->get('limit');
+$model   = \System\Loader::get_class_from_model($request->post('model'));
+$conds   = $request->post('conds');
+$filter  = $request->post('filter');
+$display = $request->post('display');
+$fetch   = $request->post('fetch');
+$value   = $request->post('value');
+$has     = $request->post('has');
+$limit   = $request->post('limit');
 
 if ($model) {
 

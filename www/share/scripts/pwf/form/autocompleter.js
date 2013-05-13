@@ -74,6 +74,7 @@ pwf.register('autocompleter', function() {
 					};
 
 					$.ajax({
+						"type":"POST",
 						"url":'/api/form_search_query/',
 						"data":data_send,
 						"dataType":'json',

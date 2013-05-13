@@ -18,7 +18,7 @@ pwf.register('location_picker', function()
 					if (input.attr('name').match(/name$/)) {
 
 						pwf.autocompleter.bind(input, {
-							"model":"\\System\\Location",
+							"model":"System::Location",
 							"filter":["name"],
 							"display":["name"],
 							"fetch":["addr", "site", "gps"],
