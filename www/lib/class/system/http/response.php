@@ -18,6 +18,7 @@ namespace System\Http
 		private $layout    = array();
 		private $request;
 		private $renderer;
+		private $flow;
 		private $content = array(
 			"headers" => array(),
 			"meta" => array(),
@@ -50,12 +51,20 @@ namespace System\Http
 			$response->page = $page;
 			$response->title = $page->title;
 			$response->layout = $page->layout;
+			$response->flow = new \System\Http\Response\Flow($response, $page->modules);
 
 			if ($request->cli) {
 				$response->format = 'txt';
 			}
 
 			return $response;
+		}
+
+
+		public function exec()
+		{
+			$this->flow->exec();
+			return $this;
 		}
 
 
@@ -185,6 +194,24 @@ namespace System\Http
 		public function get_title()
 		{
 			return $this->title;
+		}
+
+
+		public function flow()
+		{
+			return $this->flow;
+		}
+
+
+		public function request()
+		{
+			return $this->request;
+		}
+
+
+		public function path()
+		{
+			return $this->request()->path.($this->request()->query ? '?'.$this->request()->query:'');
 		}
 	}
 }

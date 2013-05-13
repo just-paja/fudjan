@@ -26,16 +26,13 @@ if (System\Settings::is_this_first_run()) {
 		if ($page->is_readable()) {
 
 			$request->init();
-			$page->add_modules();
 			$response = System\Http\Response::from_page($request, $page);
 
 			if (cfg('dev', 'debug')) {
 				System\Init::low_level_devel($response);
 			}
 
-			System\Flow::run($response);
-
-			$response->render()->send_headers()->display();
+			$response->exec()->render()->send_headers()->display();
 
 
 		} else throw new \System\Error\AccessDenied();

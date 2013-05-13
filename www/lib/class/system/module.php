@@ -83,9 +83,8 @@ namespace System
 		/** Run module
 		 * @return void
 		 */
-		public function make(\System\Http\Response $response)
+		public function exec()
 		{
-			$this->response = $response;
 			$path = ROOT.self::BASE_DIR.$this->path.'.php';
 
 			if (file_exists($path)) {
@@ -95,10 +94,10 @@ namespace System
 						$locals = &$this->locals;
 
 						def($locals['per_page'], 20);
-						def($locals['page'], intval(\System\Input::get('page')));
+						//~ def($locals['page'], intval(\System\Input::get('page')));
 
 						if (is_array($locals)) {
-							$input = Input::get('page');
+							//~ $input = Input::get('page');
 							$propagated = array();
 
 							if (any($this->parents)) {
@@ -122,7 +121,7 @@ namespace System
 
 								$val === '#' && $val = end($input);
 								if (!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
-									$temp = \System\Page::get_path_variables();
+									$temp = $this->response()->request()->args;
 									$temp_key = intval(substr($val, 2));
 
 									if (isset($temp[$temp_key])) {
@@ -166,7 +165,7 @@ namespace System
 		 * @param array $locals Local variables for the template
 		 * @return void
 		 */
-		public function template($name, array $locals = array())
+		public function partial($name, array $locals = array())
 		{
 			if ($name instanceof \System\Form)
 			{
@@ -180,7 +179,7 @@ namespace System
 
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
-			$this->response->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
+			$this->response()->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
 		}
 
 
@@ -251,10 +250,24 @@ namespace System
 		}
 
 
-		private function form(array $attrs = array())
+		public function form(array $attrs = array())
 		{
-			$attrs['response'] = $response;
+			$attrs['response'] = $this->response;
+			$attrs['module'] = $this;
 			return new \System\Form($attrs);
+		}
+
+
+		public function bind_to_response(\System\Http\Response $response)
+		{
+			$this->response = $response;
+			return $this;
+		}
+
+
+		public function response()
+		{
+			return $this->response;
 		}
 	}
 }
