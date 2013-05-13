@@ -158,7 +158,6 @@ namespace System\Template
 		public static function doctype()
 		{
 			$o = '<!DOCTYPE html>';
-			echo $o;
 			return $o;
 		}
 	}
