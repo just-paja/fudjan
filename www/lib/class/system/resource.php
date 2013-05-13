@@ -51,8 +51,9 @@ namespace System
 		 */
 		public static function request()
 		{
-			$info    = self::get_type_info(\System\Input::get('type'));
-			$modules = self::get_module_list($info['type'], \System\Input::get('modules'));
+			$request = \System\Http\Request::from_hit();
+			$info = self::get_type_info($request->get('type'));
+			$modules = self::get_module_list($info['type'], $request->get('modules'));
 
 			if (any($modules)) {
 				$files   = self::file_list($info[self::KEY_TYPE], $modules);
