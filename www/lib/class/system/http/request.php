@@ -10,18 +10,27 @@ namespace System\Http
 			"agent" => array('varchar'),
 			"query" => array('varchar'),
 			"time"  => array('float'),
+			"cli"   => array('bool'),
 		);
 
 
 		public static function from_hit()
 		{
-			return new self(array(
-				"host"  => $_SERVER['HTTP_HOST'],
-				"path"  => $_SERVER['REQUEST_URI'],
-				"agent" => $_SERVER['HTTP_USER_AGENT'],
-				"query" => $_SERVER['QUERY_STRING'],
-				"time"  => $_SERVER['REQUEST_TIME_FLOAT'],
-			));
+			if (\System\Status::on_cli()) {
+				$data = array(
+					"time"  => $_SERVER['REQUEST_TIME_FLOAT'],
+					"cli"   => true,
+				);
+			} else {
+				$data = array(
+					"host"  => $_SERVER['HTTP_HOST'],
+					"path"  => $_SERVER['REQUEST_URI'],
+					"agent" => $_SERVER['HTTP_USER_AGENT'],
+					"query" => $_SERVER['QUERY_STRING'],
+					"time"  => $_SERVER['REQUEST_TIME_FLOAT'],
+				);
+			}
+			return new self($data);
 		}
 
 

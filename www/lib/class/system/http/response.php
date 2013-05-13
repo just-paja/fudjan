@@ -51,6 +51,10 @@ namespace System\Http
 			$response->title = $page->title;
 			$response->layout = $page->layout;
 
+			if ($request->cli) {
+				$response->format = 'txt';
+			}
+
 			return $response;
 		}
 
