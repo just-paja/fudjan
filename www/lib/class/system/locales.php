@@ -145,9 +145,7 @@ namespace System
 			if (self::$lang) {
 				return self::$lang;
 			} else {
-				if (Input::get('lang')) {
-					return self::set_lang(Input::get('lang'));
-				} elseif (any($_SESSION['lang'])) {
+				if (any($_SESSION['lang'])) {
 					return $_SESSION['lang'];
 				} else {
 					try {

@@ -71,6 +71,10 @@ namespace System\Http
 
 		public function init()
 		{
+			if ($this->get('lang')) {
+				\System\Locales::set_lang($this->get('lang'));
+			}
+
 			foreach ($this->get_init() as $init_step) {
 				if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
 					require_once($f);
