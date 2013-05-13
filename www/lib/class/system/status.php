@@ -105,7 +105,7 @@ namespace System
 				$response = \System\Http\Response::from_page($request, $page);
 
 				if (!self::on_cli()) {
-					$response->content_for('headers', $e->get_http_status());
+					$response->status($e->get_http_status());
 				}
 
 				if (!isset($error_page['partial'])) {
