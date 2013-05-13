@@ -56,7 +56,7 @@ namespace System
 			$this->content_for('styles', 'pwf/form');
 
 			!$this->method  && $this->method = 'post';
-			!$this->action  && $this->action = \System\Input::get('path');
+			!$this->action  && $this->action = $this->response->path();
 			!$this->id      && $this->id = self::get_generic_id();
 			!$this->anchor  && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
 			!$this->enctype && $this->enctype = 'multipart/form-data';
@@ -65,6 +65,7 @@ namespace System
 				$this->data_default = $this->default;
 			}
 
+			$this->method = strtolower($this->method);
 			$this->class = array_merge((array) $this->class, array('yaform'));
 			$this->take_data_from_input();
 
@@ -103,7 +104,7 @@ namespace System
 		 */
 		protected function take_data_from_input()
 		{
-			$this->data_commited = \System\Input::get_by_prefix($this->get_prefix());
+			$this->data_commited = $this->response->request()->input_by_prefix($this->get_prefix(), $this->method);
 
 			if (isset($this->data_commited['data_hidden'])) {
 				$this->data_hidden = \System\Json::decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
