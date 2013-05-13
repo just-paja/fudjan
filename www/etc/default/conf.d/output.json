@@ -1,11 +1,4 @@
 {
-	"format":{
-		"html":"text/html",
-		"xhtml":"application/xhtml+xml",
-		"xml":"application/xml",
-		"json":"application/json",
-		"txt":"text/plain"
-	},
 	"format_default":"html",
 	"meta_tags":["description", "keywords", "author", "copyright", "robots"],
 	"errors":{
