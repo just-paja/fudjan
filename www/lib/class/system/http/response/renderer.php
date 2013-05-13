@@ -56,6 +56,7 @@ namespace System\Http\Response
 				$this->content_for('styles', 'pwf/elementary');
 				$this->content_for('styles', 'pwf/devbar');
 				$this->content_for('scripts', 'lib/jquery');
+				$this->content_for('scripts', 'lib/functions');
 				$this->content_for('scripts', 'pwf');
 				$this->content_for('scripts', 'pwf/storage');
 				$this->content_for('scripts', 'pwf/devbar');
