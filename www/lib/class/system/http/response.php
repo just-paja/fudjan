@@ -28,6 +28,10 @@ namespace System\Http
 		);
 
 
+		/** Create response from request
+		 * @param \System\Http\Request $request
+		 * @return self
+		 */
 		public static function from_request(\System\Http\Request $request)
 		{
 			$response = new self(array(
@@ -40,6 +44,11 @@ namespace System\Http
 		}
 
 
+		/** Create response from page and request
+		 * @param \System\Http\Request $requset
+		 * @param \System\Page         $page
+		 * @return self
+		 */
 		public static function from_page(\System\Http\Request $request, \System\Page $page)
 		{
 			foreach ($page->get_meta() as $meta) {
@@ -61,6 +70,9 @@ namespace System\Http
 		}
 
 
+		/** Execute modules
+		 * @return $this
+		 */
 		public function exec()
 		{
 			$this->flow->exec();
@@ -68,20 +80,13 @@ namespace System\Http
 		}
 
 
+		/** Render response content
+		 * @return $this
+		 */
 		public function render()
 		{
 			$this->renderer = $this->get_renderer()->render();
 			return $this;
-		}
-
-
-		public function get_renderer()
-		{
-			if (!$this->renderer) {
-				$this->renderer = \System\Http\Response\Renderer::from_response($this);
-			}
-
-			return $this->renderer;
 		}
 
 
@@ -109,9 +114,25 @@ namespace System\Http
 		}
 
 
+		/** Send response content to output
+		 * @return void
+		 */
 		public function display()
 		{
 			echo implode('', $this->content['output']);
+		}
+
+
+		/** Get renderer object
+		 * @return \System\Http\Response\Renderer
+		 */
+		public function get_renderer()
+		{
+			if (!$this->renderer) {
+				$this->renderer = \System\Http\Response\Renderer::from_response($this);
+			}
+
+			return $this->renderer;
 		}
 
 
@@ -176,12 +197,19 @@ namespace System\Http
 		}
 
 
+		/** Clear response content
+		 * @return $this
+		 */
 		public function flush()
 		{
 			$this->content['output'] = array();
+			return $this;
 		}
 
 
+		/** Get render data
+		 * @return array
+		 */
 		public function get_render_data()
 		{
 			return array(
@@ -191,24 +219,36 @@ namespace System\Http
 		}
 
 
+		/** Get title
+		 * @return string|array
+		 */
 		public function get_title()
 		{
 			return $this->title;
 		}
 
 
+		/** Get flow object
+		 * @return \System\Http\Response\Flow
+		 */
 		public function flow()
 		{
 			return $this->flow;
 		}
 
 
+		/** Get request object
+		 * @return \System\Http\Request
+		 */
 		public function request()
 		{
 			return $this->request;
 		}
 
 
+		/** Get full path including query string
+		 * @return string
+		 */
 		public function path()
 		{
 			return $this->request()->path.($this->request()->query ? '?'.$this->request()->query:'');
