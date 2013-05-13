@@ -5,5 +5,4 @@
  */
 
 $this->req('template');
-
-$this->template($template);
+$this->partial($template);
