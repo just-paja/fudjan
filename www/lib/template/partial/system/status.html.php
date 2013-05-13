@@ -37,49 +37,59 @@ if (!defined('H_STATUS_DUMP')) {
 	}
 }
 
-?>
-<div class="status devbar">
-	<div class="status-dump">
-		<div class="status-dump-inner">
-			<ul class="bar-menu plain">
-				<li><a href="" class="close"><span class="label"><?=l('dump_bar_hide')?></span></a></li>
-				<li><a class="panel-status-time" href="#status-time">
-					<span class="label"><?=l('dump_bar_exec_time')?></span>
-					<span class="text"><?=t('dump_bar_exec_time_val', round(System\Flow::get_exec_time(), 6))?></span>
-				</a></li>
-				<li><a class="panel-status-packages" href="#status-packages">
-					<span class="label"><?=l('dump_bar_packages')?></span>
-					<span class="text"><?=System\Output::introduce()?></span>
-				</a></li>
-				<li><a class="panel-status-sql" href="#status-sql">
-					<span class="label"><?=l('dump_bar_sql')?></span>
-					<span class="text"><?=t('dump_bar_query_count', System\Database\Query::count_all())?></span>
-				</a></li>
-				<li><a class="panel-status-server" href="#status-server">
-					<span class="label"><?=l('dump_bar_server_vars')?></span>
-					<span class="text"><?=System\Page::get_path()?></span>
-				</a></li>
-				<li><a class="panel-status-input" href="#status-input">
-					<span class="label"><?=l('dump_bar_input_data')?></span>
-					<span class="text"><?=t('dump_bar_input_data_count', count(System\Input::get()))?></span>
-				</a></li>
-				<li><a class="panel-status-output" href="#status-output">
-					<span class="label"><?=l('dump_bar_output')?></span>
-					<span class="text"><?=t('dump_bar_template_count', count(System\Output::count_templates()))?></span>
-				</a></li>
-			</ul>
-		</div>
-	</div>
+echo div('status devbar');
+	echo div('status-dump',
+		div('status-dump-inner',
+			ul('bar-menu plain', array(
+				li(link_for(span('label', l('dump_bar_hide')), '', array("class" => 'close'))),
+				li(link_for(
+						span('label', l('dump_bar_exec_time')).
+						span("text", t('dump_bar_exec_time_val', number_format($flow->get_exec_time(), 9))),
+					'#status-time', array("class" => 'panel-status-time')
+				)),
+				li(link_for(
+						span('label', l('dump_bar_packages')).
+						span("text", introduce()),
+					'#status-packages', array("class" => 'panel-status-packages')
+				)),
+				li(link_for(
+						span('label', l('dump_bar_sql')).
+						span("text", t('dump_bar_query_count', System\Database\Query::count_all())),
+					'#status-sql', array("class" => 'panel-status-sql')
+				)),
+				li(link_for(
+						span('label', l('dump_bar_server_vars')).
+						span("text", $request->path),
+					'#status-server', array("class" => 'panel-status-server')
+				)),
+				li(link_for(
+						span('label', l('dump_bar_input_data')).
+						span("text", t('dump_bar_input_data_count', count(0))),
+					'#status-input', array("class" => 'panel-status-input')
+				)),
+				li(link_for(
+						span('label', l('dump_bar_output')).
+						span("text", t('dump_bar_template_count', count(0))),
+					'#status-input', array("class" => 'panel-status-output')
+				))
+			))
+		)
+	);
 
-	<div class="info">
-		<?
+	echo div('info');
 
 		echo div('panel', array(
 				div('title', array(
 					heading(l('dump_bar_exec_time'), true, 2),
 					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 				)),
-				div('info-inner', div('info-padding', l('not_implemented'))),
+				div('info-inner',
+					div('info-padding', dump_table(array(
+						l('dump_bar_time_flow') => number_format($flow->get_exec_time(), 12),
+						l('dump_bar_time_renderer') => number_format($renderer->get_exec_time(), 12),
+						l('dump_bar_time_response') => number_format($response->get_exec_time(), 12),
+					)))
+				),
 			), 'status-time');
 
 
@@ -108,7 +118,7 @@ if (!defined('H_STATUS_DUMP')) {
 						Tag::li(array("content" => array(
 								div('info', array(
 									div('file', t('dump_query_file', $q['trace']['file'], $q['trace']['line'])),
-									div('time', t('dump_query_execution_time', round($q['time'], 9))),
+									div('time', t('dump_query_execution_time', number_format($q['time'], 9))),
 								)),
 								Stag::pre(array("content" =>
 									str_replace(
@@ -123,7 +133,7 @@ if (!defined('H_STATUS_DUMP')) {
 
 				close('ul');
 
-				echo div('total', t('dump_query_total_execution_time', round($total, 9)));
+				echo div('total', t('dump_query_total_execution_time', number_format($total, 9)));
 			close('div');
 		close('div');
 		close('div');
@@ -144,8 +154,13 @@ if (!defined('H_STATUS_DUMP')) {
 				)),
 				div('info-inner', div('info-padding', array(
 					div('datadump', array(
-						heading(l('dump_bar_input_data_get_post'), true, 3),
-						dump_table(System\Input::get()),
+						heading(l('dump_bar_input_data_get'), true, 3),
+						dump_table($request->get),
+					)),
+
+					div('datadump', array(
+						heading(l('dump_bar_input_data_post'), true, 3),
+						dump_table($request->post),
 					)),
 
 					div('datadump', array(
@@ -170,19 +185,17 @@ if (!defined('H_STATUS_DUMP')) {
 			echo div('info-inner');
 				echo div('info-padding');
 
-					$data = \System\Output::get_template_data();
+					//~ $data = \System\Output::get_template_data();
 
-					foreach ($data as $row) {
-						echo div('datadump', array(
-							heading("'".$row['name']."'".' ('.$row['type'].')', true, 3),
-							any($row['locals']) ? dump_table($row['locals']):l('dump_bar_no_locals'),
-						));
-					}
+					//~ foreach ($data as $row) {
+						//~ echo div('datadump', array(
+							//~ heading("'".$row['name']."'".' ('.$row['type'].')', true, 3),
+							//~ any($row['locals']) ? dump_table($row['locals']):l('dump_bar_no_locals'),
+						//~ ));
+					//~ }
 
 				close('div');
 			close('div');
 		close('div');
-
-		?>
-	</div>
-</div>
+	close('div');
+close('div');
