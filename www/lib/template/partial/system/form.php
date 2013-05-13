@@ -1,5 +1,12 @@
 <?
 
+$renderer->content_for('styles', 'pwf/form');
+
+if ($response) {
+	!$this->action && $this->action = $this->response->path();
+}
+
+
 $sub_li = $li = 0;
 $cclass = array();
 

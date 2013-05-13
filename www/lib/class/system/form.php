@@ -19,7 +19,6 @@ namespace System
 			"anchor"   => array('varchar'),
 			"bool"     => array('no_prefix'),
 			"class"    => array('array'),
-			"response" => array('object'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
@@ -29,6 +28,7 @@ namespace System
 		protected $data_hidden   = array();
 
 		private $objects = array();
+		private $renderer, $response, $request;
 		private $rendering = array(
 			"group"     => false,
 			"tab_group" => false,
@@ -48,15 +48,36 @@ namespace System
 		private static $inputs_datetime = array("datetime", "date", "time");
 		private static $inputs_button = array("button", "submit");
 
+
+		public static function from_response(\System\Http\Response $response, array $attrs = array())
+		{
+			$attrs['request'] = $response->request();
+
+			$form = new self($attrs);
+			$form->response = $response;
+			$form->renderer = $response->renderer();
+			return $form;
+		}
+
+
+		public static function from_module(\System\Module $module, array $attrs = array())
+		{
+			return self::from_response($module->response(), $attrs);
+		}
+
+
+		public static function from_request(\System\Http\Request $request, array $attrs = array())
+		{
+			$attrs['request'] = $request;
+			return new self($attrs);
+		}
+
 		/** Constructor addon
 		 * @return void
 		 */
 		protected function construct()
 		{
-			$this->content_for('styles', 'pwf/form');
-
 			!$this->method  && $this->method = 'post';
-			!$this->action  && $this->action = $this->response->path();
 			!$this->id      && $this->id = self::get_generic_id();
 			!$this->anchor  && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
 			!$this->enctype && $this->enctype = 'multipart/form-data';
@@ -65,9 +86,14 @@ namespace System
 				$this->data_default = $this->default;
 			}
 
+			if ($this->opts['request']) {
+				$this->request = $this->opts['request'];
+				unset($this->opts['request']);
+			}
+
 			$this->method = strtolower($this->method);
 			$this->class = array_merge((array) $this->class, array('yaform'));
-			$this->take_data_from_input();
+			$this->take_data_from_request();
 
 			$this->hidden('submited', true);
 			$this->data_default['submited'] = false;
@@ -102,9 +128,9 @@ namespace System
 		/** Lookup commited data in input class
 		 * @return void
 		 */
-		protected function take_data_from_input()
+		protected function take_data_from_request()
 		{
-			$this->data_commited = $this->response->request()->input_by_prefix($this->get_prefix(), $this->method);
+			$this->data_commited = $this->request()->input_by_prefix($this->get_prefix(), $this->method);
 
 			if (isset($this->data_commited['data_hidden'])) {
 				$this->data_hidden = \System\Json::decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
@@ -919,7 +945,39 @@ namespace System
 
 		public function content_for($place, $content)
 		{
-			$this->response->content_for($place, $content);
+			if ($this->renderer) {
+				$this->renderer()->content_for($place, $content);
+			}
+		}
+
+
+		public function renderer(\System\Http\Response\Renderer $renderer = null)
+		{
+			if (!is_null($renderer)) {
+				$this->renderer = $renderer;
+			}
+
+			return $this->renderer;
+		}
+
+
+		public function response(\System\Http\Response $response = null)
+		{
+			if (!is_null($response)) {
+				$this->response = $response;
+			}
+
+			return $this->response;
+		}
+
+
+		public function request(\System\Http\Request $request = null)
+		{
+			if (!is_null($request)) {
+				$this->request = $request;
+			}
+
+			return $this->request;
 		}
 	}
 }

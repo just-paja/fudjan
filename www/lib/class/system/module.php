@@ -257,9 +257,7 @@ namespace System
 
 		public function form(array $attrs = array())
 		{
-			$attrs['response'] = $this->response;
-			$attrs['module'] = $this;
-			return new \System\Form($attrs);
+			return \System\Form::from_module($this, $attrs);
 		}
 
 
