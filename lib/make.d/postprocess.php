@@ -3,8 +3,8 @@
 $path = Compiler::get('path');
 $version = Compiler::get('version');
 $info = Compiler::get('info');
-$version_dir = $path['dir-data'].'/etc/current/core/pwf';
-$version_file = $path['dir-data'].'/etc/current/core/pwf/version';
+$version_dir = $path['dir-data'].'/etc/santa/core/pwf';
+$version_file = $path['dir-data'].'/etc/santa/core/pwf/version';
 $path['output-uf'] = 'pwf-ready-'.$version;
 
 exec('
@@ -13,7 +13,7 @@ exec('
 	echo "'.$info['project-name'].'" >> '.$version_file.';
 	echo "'.$version.'" >> '.$version_file.';
 	cd '.$path['dir-temp'].'/temp; cp -R data '.$path['dir-temp'].'/'.$path['output-uf'].';
-	cp '.$path['dir-meta'].'/* "'.$path['dir-temp'].'/'.$path['output-uf'].'/etc/current/core/pwf/";
+	cp '.$path['dir-meta'].'/* "'.$path['dir-temp'].'/'.$path['output-uf'].'/etc/santa/core/pwf/";
 ');
 
 // Pack it all together
