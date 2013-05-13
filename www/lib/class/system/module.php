@@ -135,6 +135,11 @@ namespace System
 							}
 						}
 
+						$module   = $this;
+						$response = $this->response();
+						$request  = $this->response()->request();
+						$flow     = $this->response()->flow();
+
 						$req = require($path);
 
 						if (any($propagate)) {
