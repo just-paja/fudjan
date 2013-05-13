@@ -593,6 +593,7 @@ namespace System
 			$input_addr->use_form($this);
 			$input_site->use_form($this);
 			$input_gps->use_form($this);
+
 			$inputs = array();
 
 			if (count($opts) !== 1) {
@@ -668,7 +669,7 @@ namespace System
 					$value = null;
 				}
 
-				if ($action == \System\Form\Input::ACTION_NEW || \System\Form\Input::ACTION_EDIT) {
+				if ($action == \System\Form\Input::ACTION_NEW || $action == \System\Form\Input::ACTION_EDIT) {
 					$value = get_first('\System\Location')->where(array("name" => $name))->fetch();
 
 					if (!$value) {
@@ -681,7 +682,7 @@ namespace System
 					}
 				}
 
-				unset($this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
+				unset($this->data_commited[$name_action], $this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
 				$this->data_commited[$attrs['name']] = $value;
 			}
 
