@@ -216,10 +216,7 @@ namespace
 
 	// Redirects
 	/** @alias System\Http::redirect */
-	function redirect_now($url, $code=\System\Http::FOUND) { return System\Http::redirect($url, $code); }
-
-	/** @alias System\Flow::redirect */
-	function redirect($url, $code=\System\Http::FOUND, $when = \System\Flow::REDIRECT_AFTER_MODULES) { return System\Flow::redirect($url, $code, $when); }
+	function redirect_now($url, $code=\System\Http\Response::FOUND) { return System\Http\Response::redirect($url, $code); }
 
 
 	// Template
