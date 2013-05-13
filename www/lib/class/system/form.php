@@ -801,8 +801,8 @@ namespace System
 			$this->tab_group_end();
 
 			return $obj instanceof \System\Module ?
-				$obj->template(self::get_default_template(), (array) $locals + array("f" => $this)):
-				$this->response->partial(self::get_default_template(), array("f" => $this));
+				$obj->partial(self::get_default_template(), (array) $locals + array("f" => $this)):
+				$this->response->renderer()->partial(self::get_default_template(), array("f" => $this));
 		}
 
 
