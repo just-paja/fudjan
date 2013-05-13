@@ -11,15 +11,17 @@ require_once ROOT."/etc/init.d/core.php";
 
 System\Init::basic();
 
+$request = \System\Http\Request::from_hit();
+
 $exp = new DateTime();
 $exp->setTimezone(new DateTimeZone("Europe/Prague"));
 
 $path = '';
-$theme = System\Input::get('theme');
+$theme = $request->get('theme');
 $theme = $theme ? $theme:System\Template::get_icon_theme();
-$size = System\Input::get('size');
-$catg = System\Input::get('catg');
-$name = System\Input::get('name');
+$size = $request->get('size');
+$catg = $request->get('catg');
+$name = $request->get('name');
 
 file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/'.$name.'.png') ||
 file_exists($path = ROOT.System\Template::DIR_ICONS.'/'.$theme.'/'.$size.'/'.$catg.'/default.png') ||
