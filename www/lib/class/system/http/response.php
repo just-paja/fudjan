@@ -56,9 +56,9 @@ namespace System\Http
 		}
 
 
-		public function redirect($url, $code = self::FOUND)
+		public static function redirect($url, $code = self::FOUND)
 		{
-			if (!$this->request->cli) {
+			if (!\System\Status::on_cli()) {
 				session_write_close();
 
 				header(self::get_status($code));
