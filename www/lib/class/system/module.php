@@ -97,7 +97,6 @@ namespace System
 						//~ def($locals['page'], intval(\System\Input::get('page')));
 
 						if (is_array($locals)) {
-							//~ $input = Input::get('page');
 							$propagated = array();
 
 							if (any($this->parents)) {
