@@ -60,6 +60,12 @@ namespace System
 
 		public static function run(array $list, array $locals)
 		{
+			// Convert locals into level on variables
+			foreach ((array) $locals as $k=>$v) {
+				$k = str_replace('-', '_', $k);
+				$$k=$v;
+			}
+
 			foreach ($list as $init_step) {
 				if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
 					require_once($f);
