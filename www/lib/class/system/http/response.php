@@ -35,19 +35,23 @@ namespace System\Http
 			"layout"     => array('array'),
 			"no_debug"   => array('bool'),
 			"start_time" => array('float'),
+			"request"    => array('object', "model" => '\System\Http\Request'),
+			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 		);
 
 		private $page;
 		private $templates = array();
 		private $layout    = array();
-		private $request;
-		private $renderer;
 		private $flow;
 		private $status = self::OK;
 		private $headers = array();
 		private $content = null;
 
 
+		/** Get response HTTP status
+		 * @param int $num
+		 * @return String
+		 */
 		public static function get_status($num)
 		{
 			if (isset(self::$states[$num])) {
@@ -56,6 +60,11 @@ namespace System\Http
 		}
 
 
+		/** Redirect immediately page to another URL
+		 * @param string $url
+		 * @param int    $code
+		 * @return void
+		 */
 		public static function redirect($url, $code = self::FOUND)
 		{
 			if (!\System\Status::on_cli()) {
@@ -270,6 +279,10 @@ namespace System\Http
 		}
 
 
+		/** Set response HTTP status
+		 * @param int $status
+		 * @return void
+		 */
 		public function status($status)
 		{
 			if (isset(self::$states[$status])) {
@@ -278,6 +291,10 @@ namespace System\Http
 		}
 
 
+		/** Set response content
+		 * @param string $content
+		 * @return $this
+		 */
 		public function set_content($content)
 		{
 			if (is_string($content)) {
@@ -287,6 +304,9 @@ namespace System\Http
 		}
 
 
+		/** Run low level debug - Include a PHP file just after init and before module flow
+		 * @return void
+		 */
 		public function low_level_debug()
 		{
 			if (!$this->no_debug && cfg('dev', 'debug')) {
