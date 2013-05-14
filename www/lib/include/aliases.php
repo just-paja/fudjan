@@ -215,8 +215,10 @@ namespace
 
 
 	// Redirects
-	/** @alias System\Http::redirect */
-	function redirect_now($url, $code=\System\Http\Response::FOUND) { return System\Http\Response::redirect($url, $code); }
+	/** @alias System\Http\Response::redirect */
+	function redirect_now($url, $code=\System\Http\Response::FOUND) {
+		return System\Http\Response::redirect($url, $code);
+	}
 
 
 	// Template

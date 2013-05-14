@@ -107,7 +107,7 @@ namespace System\Http\Response
 
 				if (any($this->redirect[self::REDIRECT_LATER])) {
 					$r = &$this->redirect[self::REDIRECT_LATER];
-					\System\Http::redirect($r['url'], $r['code']);
+					\System\Http\Response::redirect($r['url'], $r['code']);
 				}
 			}
 
@@ -115,7 +115,7 @@ namespace System\Http\Response
 
 			if (any($this->redirect[self::REDIRECT_AFTER_MODULES])) {
 				$r = &$this->redirect[self::REDIRECT_AFTER_MODULES];
-				\System\Http::redirect($r['url'], $r['code']);
+				\System\Http\Response::redirect($r['url'], $r['code']);
 			}
 		}
 
@@ -126,9 +126,9 @@ namespace System\Http\Response
 		 * @param int    $when When to redirect, one of (\System\Flow::REDIRECT_LATER,\System\Flow::REDIRECT_AFTER_MODULES,\System\Flow::REDIRECT_NOW)
 		 * @return void
 		 */
-		public function redirect($url, $code=\System\Http::FOUND, $when=self::REDIRECT_AFTER_MODULES)
+		public function redirect($url, $code=\System\Http\Response::FOUND, $when=self::REDIRECT_AFTER_MODULES)
 		{
-			$when === self::REDIRECT_IMMEDIATELY && \System\Http::redirect($url, $code);
+			$when === self::REDIRECT_IMMEDIATELY && \System\Http\Response::redirect($url, $code);
 			$this->redirect[$when] = array("url" => $url, "code" => $code);
 		}
 
