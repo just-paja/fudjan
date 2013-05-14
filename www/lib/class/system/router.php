@@ -110,7 +110,7 @@ namespace System
 							}
 						}
 
-						if (($c = count($route_args)) === count($args)) {
+						if (($c = count($route_args)) <= count($args)) {
 							$str = '';
 
 							if ($c > 0) {
