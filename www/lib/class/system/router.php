@@ -182,7 +182,7 @@ namespace System
 		 * @param array  $matches Place to put matches
 		 * @return bool
 		 */
-		private static function json_preg_match($regexp, $subject, array &$matches = array())
+		public static function json_preg_match($regexp, $subject, array &$matches = array())
 		{
 			$matches_temp = array();
 			$result = preg_match('/'.str_replace('/', '\\/', $regexp).'/', $subject, $matches_temp);
