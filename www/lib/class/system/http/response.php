@@ -31,16 +31,14 @@ namespace System\Http
 		protected static $attrs = array(
 			"format"     => array('varchar'),
 			"lang"       => array('varchar'),
-			"title"      => array('varchar'),
 			"layout"     => array('array'),
 			"no_debug"   => array('bool'),
 			"start_time" => array('float'),
+			"page"       => array('object', "model" => '\System\Page'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 		);
 
-		private $page;
-		private $templates = array();
 		private $layout    = array();
 		private $flow;
 		private $status = self::OK;
@@ -109,8 +107,6 @@ namespace System\Http
 			$response = self::from_request($request);
 			$response->update_attrs($page->get_data());
 			$response->page = $page;
-			$response->title = $page->title;
-			$response->layout = $page->layout;
 			$response->flow = new \System\Http\Response\Flow($response, $page->modules);
 
 			if ($request->cli) {
@@ -194,24 +190,6 @@ namespace System\Http
 		}
 
 
-		/** Add template into queue
-		 * @param string $template
-		 * @param string $slot
-		 * @return void
-		 */
-		public function partial($template, array $locals = array(), $slot = \System\Template::DEFAULT_SLOT)
-		{
-			if (!isset($this->templates[$slot])) {
-				$this->templates[$slot] = array();
-			}
-
-			$this->templates[$slot][] = array(
-				"name"   => $template,
-				"locals" => $locals,
-			);
-		}
-
-
 		/** Clear response content
 		 * @return $this
 		 */
@@ -219,27 +197,6 @@ namespace System\Http
 		{
 			$this->content['output'] = array();
 			return $this;
-		}
-
-
-		/** Get render data
-		 * @return array
-		 */
-		public function get_render_data()
-		{
-			return array(
-				"templates" => $this->templates,
-				"layout"    => $this->layout,
-			);
-		}
-
-
-		/** Get title
-		 * @return string|array
-		 */
-		public function get_title()
-		{
-			return $this->title;
 		}
 
 

@@ -112,8 +112,7 @@ namespace System
 					$error_page['partial'] = 'system/error/bug';
 				}
 
-				$response->partial($error_page['partial'], array("desc" => $e));
-
+				$response->renderer()->partial($error_page['partial'], array("desc" => $e));
 				$response->render()->send_headers()->display();
 				self::report('error', $e);
 

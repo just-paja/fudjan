@@ -194,7 +194,7 @@ namespace System
 
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
-			$this->response()->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
+			$this->response()->renderer()->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
 		}
 
 

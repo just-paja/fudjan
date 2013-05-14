@@ -28,9 +28,10 @@ namespace System\Template
 				"format"   => $response->format
 			));
 
-			$data = $response->get_render_data();
-			$renderer->templates = $data['templates'];
-			$renderer->layout = $data['layout'];
+			if ($response->page) {
+				$renderer->layout = $response->page->layout;
+			}
+
 			$renderer->flush();
 			return $renderer;
 		}
@@ -42,6 +43,7 @@ namespace System\Template
 		public function flush()
 		{
 			$this->content = array(
+				"title"   => '',
 				"meta"    => array(),
 				"styles"  => array(),
 				"scripts" => array(),
@@ -220,8 +222,6 @@ namespace System\Template
 				"name"   => $template,
 				"locals" => $locals,
 			);
-
-			$this->response->partial($template, $locals, $slot);
 		}
 
 
@@ -260,7 +260,7 @@ namespace System\Template
 		 */
 		public function render_title()
 		{
-			$this->content_for("head", \Stag::title(array("content" => $this->response->get_title())));
+			$this->content_for("head", \Stag::title(array("content" => $this->get_content_from('title'))));
 			return $this;
 		}
 
