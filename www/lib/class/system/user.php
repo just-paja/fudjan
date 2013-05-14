@@ -144,16 +144,6 @@ namespace System
 		}
 
 
-		/** Static version of System\User::has_right for current user
-		 * @param string $what
-		 * @return bool
-		 */
-		public static function has_right_to($what)
-		{
-			return self::get_active()->has_right($what);
-		}
-
-
 		/** Is active user root?
 		 * @return bool
 		 */

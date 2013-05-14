@@ -84,8 +84,8 @@ namespace System
 		{
 			return
 				$this->request()->user()->is_root() ||
-				$this->request()->user()->has_right_to('*') ||
-				$this->request()->user()->has_right_to(substr($this->get_path(), 1));
+				$this->request()->user()->has_right('*') ||
+				$this->request()->user()->has_right(substr($this->get_path(), 1));
 		}
 
 
