@@ -18,12 +18,12 @@ if (System\Settings::is_this_first_run()) {
 	System\Output::init();
 
 	$request = System\Http\Request::from_hit();
+	$request->init();
 	$page = $request->get_page();
 
 	if ($page) {
 		if ($page->is_readable()) {
 
-			$request->init();
 			$response = System\Http\Response::from_page($request, $page);
 			$response->exec()->render()->send_headers()->display();
 
