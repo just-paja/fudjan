@@ -64,12 +64,17 @@ namespace System
 			self::check_env();
 
 			$default = array();
-			$conf = array();
+			$global  = array();
+			$conf    = array();
 
 			\System\Json::read_dist(ROOT.self::DIR_CONF_STATIC, $default, true);
 			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
 
-			self::$conf = array_replace_recursive($default, $conf);
+			\System\Directory::check(ROOT.self::DIR_CONF_GLOBAL);
+			\System\Json::read_dist(ROOT.self::DIR_CONF_GLOBAL, $global, true);
+
+			$global = array_replace_recursive($default, $global);
+			self::$conf = array_replace_recursive($global, $conf);
 			$pages_user = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
 			$pages_api  = array();
 
