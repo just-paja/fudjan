@@ -100,10 +100,6 @@ namespace System\Http
 		 */
 		public static function from_page(\System\Http\Request $request, \System\Page $page)
 		{
-			foreach ($page->get_meta() as $meta) {
-				content_for("meta", $meta);
-			}
-
 			$response = self::from_request($request);
 			$response->update_attrs($page->get_data());
 			$response->page = $page;

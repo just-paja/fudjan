@@ -30,6 +30,10 @@ namespace System\Template
 
 			if ($response->page) {
 				$renderer->layout = $response->page->layout;
+
+				foreach ($response->page->get_meta() as $meta) {
+					$this->content_for("meta", $meta);
+				}
 			}
 
 			$renderer->flush();

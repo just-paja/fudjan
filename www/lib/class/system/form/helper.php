@@ -41,6 +41,12 @@ namespace System\Form
 				"for"     => $el->id,
 			)):'';
 
+			if ($el->type === 'rte') {
+				$el->form->content_for('styles', 'pwf/form/rte');
+				$el->form->content_for('scripts', 'pwf/lib/rte');
+				$data['class'] = array_merge((array) $el->class, array('rte'));
+			}
+
 			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
 
 				$input = self::get_multi_input_html($el);

@@ -87,16 +87,15 @@ namespace System\Form
 
 		protected function construct()
 		{
-			if ($this->type === 'rte') {
-				content_for('styles', 'pwf/form/rte');
-				content_for('scripts', 'pwf/lib/rte');
-				$this->class = array_merge((array) $this->class, array('rte'));
-				$this->type = 'textarea';
+			if ($this->type == 'rte') {
+				$this->kind = 'textarea';
 			}
 
 			!$this->type && self::get_default_type();
 			!$this->kind && self::get_default_kind();
-			$this->kind = in_array($this->type, self::$kinds) ? $this->type:self::get_default_kind();
+			$this->kind = in_array($this->types, self::$kinds) ?
+				$this->type:
+				(in_array($this->kind, self::$kinds) ? $this->kind:self::get_default_kind());
 			!$this->id && $this->id = 'field_'.$this->name;
 
 			$this->type == 'submit' && $this->kind = 'button';
