@@ -169,7 +169,7 @@ namespace System
 		 */
 		public function req($var_name)
 		{
-			if (!is_null($this->locals[$var_name])) {
+			if (isset($this->locals[$var_name]) && !is_null($this->locals[$var_name])) {
 				return $this->locals[$var_name];
 			} else throw new \System\Error\Argument(sprintf('Local variable "%s" must be defined and not null for module "%s"!', $var_name, $this->get_path()));
 		}
