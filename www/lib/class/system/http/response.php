@@ -117,6 +117,7 @@ namespace System\Http
 		 */
 		public function exec()
 		{
+			$this->low_level_debug();
 			$this->flow->exec();
 			return $this;
 		}
@@ -283,6 +284,21 @@ namespace System\Http
 				$this->content = $content;
 				return $this;
 			} else throw new \System\Error\Argument(sprintf("HTTP Response must be string! '%s' given.", gettype($content)));
+		}
+
+
+		public function low_level_debug()
+		{
+			if (!$this->no_debug && cfg('dev', 'debug')) {
+				if (file_exists(ROOT.'/lib/include/devel.php')) {
+					$response = $this;
+					$request  = $this->request();
+					$renderer = $this->renderer();
+					$flow     = $this->flow();
+
+					include ROOT.'/lib/include/devel.php';
+				}
+			}
 		}
 	}
 }
