@@ -75,11 +75,7 @@ namespace System\Http
 				\System\Locales::set_lang($this->get('lang'));
 			}
 
-			foreach ($this->get_init() as $init_step) {
-				if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
-					require_once($f);
-				} else throw new \System\Error\File(sprintf("Init file '%s' was not found inside init folder '%s'.", $init_step, \System\Init::DIR_INIT));
-			}
+			\System\Init::run($this->get_init(), array("request" => $this));
 		}
 
 

@@ -24,12 +24,6 @@ namespace System
 		}
 
 
-		public static function session()
-		{
-			session_start();
-		}
-
-
 		public static function cli()
 		{
 			global $argv;
@@ -61,6 +55,16 @@ namespace System
 			ini_set('log_errors',     true);
 			ini_set('display_errors', true);
 			ini_set('html_errors',    false);
+		}
+
+
+		public static function run(array $list, array $locals)
+		{
+			foreach ($list as $init_step) {
+				if (file_exists($f = ROOT.'/etc/init.d/'.$init_step.'.php')) {
+					require_once($f);
+				} else throw new \System\Error\File(sprintf("Init file '%s' was not found inside init folder '%s'.", $init_step, \System\Init::DIR_INIT));
+			}
 		}
 
 	}

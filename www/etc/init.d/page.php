@@ -27,7 +27,6 @@ if (System\Settings::is_this_first_run()) {
 			$response = System\Http\Response::from_page($request, $page);
 			$response->exec()->render()->send_headers()->display();
 
-
 		} else throw new \System\Error\AccessDenied();
 	} else throw new \System\Error\NotFound();
 }
