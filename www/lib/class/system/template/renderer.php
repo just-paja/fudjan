@@ -7,29 +7,38 @@ namespace System\Template
 		protected static $attrs = array(
 			"format"     => array('varchar'),
 			"start_time" => array('float'),
+			"response"   => array('object', "model" => '\System\Http\Response'),
 		);
 
 		private static $resource_filter = array('scripts', 'styles');
 		private $templates_used = array();
 		private $templates;
 		private $layout;
-		private $response;
 		private $content;
 
 
+		/** Create renderer from response
+		 * @param \System\Http\Response $response
+		 * @return self
+		 */
 		public static function from_response(\System\Http\Response $response)
 		{
-			$renderer = new self(array("format" => $response->format));
+			$renderer = new self(array(
+				"response" => $response,
+				"format"   => $response->format
+			));
 
 			$data = $response->get_render_data();
 			$renderer->templates = $data['templates'];
 			$renderer->layout = $data['layout'];
-			$renderer->response = $response;
 			$renderer->flush();
 			return $renderer;
 		}
 
 
+		/** Flush output
+		 * @return $this
+		 */
 		public function flush()
 		{
 			$this->content = array(
@@ -38,9 +47,14 @@ namespace System\Template
 				"scripts" => array(),
 				"output"  => array(),
 			);
+
+			return $this;
 		}
 
 
+		/** Start rendering
+		 * @return $this
+		 */
 		public function render()
 		{
 			$this->start_time = microtime(true);
@@ -150,6 +164,11 @@ namespace System\Template
 		}
 
 
+		/** Render single partial
+		 * @param string $name
+		 * @param array  $locals Local data for partial
+		 * @return void
+		 */
 		public function render_partial($name, array $locals = array())
 		{
 			$temp = \System\Template::find($name, \System\Template::TYPE_PARTIAL, $this->format);
@@ -171,6 +190,9 @@ namespace System\Template
 		}
 
 
+		/** Add default system resources
+		 * @return void
+		 */
 		public function add_default_resources()
 		{
 			$this->content_for('scripts', 'lib/functions');
@@ -203,15 +225,18 @@ namespace System\Template
 		}
 
 
+		/** Render HTML head
+		 * @return $this
+		 */
 		public function render_head()
 		{
-			$this->render_meta();
-			$this->render_title();
-			$this->render_scripts();
-			$this->render_styles();
+			return $this->render_meta()->render_title()->render_scripts()->render_styles();
 		}
 
 
+		/** Render HTML meta tag section
+		 * @return $this
+		 */
 		public function render_meta()
 		{
 			$this->content_for("meta", array("name" => 'generator', "content" => \System\Output::introduce()));
@@ -219,20 +244,30 @@ namespace System\Template
 			$this->content_for("meta", array("charset" => 'utf-8'));
 
 			$meta = $this->get_content_from("meta");
+
 			foreach ($meta as $name=>$value) {
 				if ($value) {
 					$this->content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
 				}
 			}
+
+			return $this;
 		}
 
 
+		/** Render HTML title section
+		 * @return $this
+		 */
 		public function render_title()
 		{
 			$this->content_for("head", \Stag::title(array("content" => $this->response->get_title())));
+			return $this;
 		}
 
 
+		/** Render HTML javascript section
+		 * @return $this
+		 */
 		public function render_scripts()
 		{
 			$cont = $this->get_content_from("scripts");
@@ -240,9 +275,14 @@ namespace System\Template
 			if (!is_null($cont)) {
 				$this->content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
 			}
+
+			return $this;
 		}
 
 
+		/** Render HTML css style section
+		 * @return $this
+		 */
 		public function render_styles()
 		{
 			$cont = $this->get_content_from("styles");
@@ -250,6 +290,8 @@ namespace System\Template
 			if (!is_null($cont)) {
 				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
 			}
+
+			return $this;
 		}
 
 
@@ -308,6 +350,5 @@ namespace System\Template
 				is_string($this->content[$place]) && $this->content[$place] .= $content;
 			}
 		}
-
 	}
 }
