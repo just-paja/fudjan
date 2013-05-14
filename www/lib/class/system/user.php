@@ -82,7 +82,7 @@ namespace System
 		 */
 		public function logout()
 		{
-			unset($_SESSION['yacms-user-id']);
+			unset($_SESSION[self::COOKIE_USER]);
 			return true;
 		}
 
