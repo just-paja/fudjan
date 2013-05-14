@@ -16,7 +16,6 @@ namespace System
 	{
 		const COOKIE_USER = 'pwf_user';
 
-		static protected $required = array('login');
 		static protected $attrs = array(
 			"login"       => array('varchar', "is_unique" => true),
 			"nick"        => array('varchar'),
@@ -72,7 +71,7 @@ namespace System
 			$request->user = $this;
 			$this->last_login = new \DateTime();
 			$this->save();
-			$_SESSION['yacms-user-id'] = $this->id;
+			$_SESSION[self::COOKIE_USER] = $this->id;
 
 			return true;
 		}
