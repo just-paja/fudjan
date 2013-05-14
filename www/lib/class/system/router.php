@@ -226,5 +226,27 @@ namespace System
 		{
 			return \System\File::put(ROOT.self::REWRITE_TARGET, self::generate_rewrite_rules());
 		}
+
+
+		/** Get all named routes available
+		 * @return array
+		 */
+		public static function get_named_routes()
+		{
+			$all_routes = cfg('routes');
+			$path_list = array();
+
+			foreach ($all_routes as $domain=>$routes) {
+				$path_list[$domain] = array();
+
+				foreach ($routes as $route) {
+					if (isset($route[0]) && isset($route[2])) {
+						$path_list[$domain][$route[2]] = $route[0];
+					}
+				}
+			}
+
+			return $path_list;
+		}
 	}
 }
