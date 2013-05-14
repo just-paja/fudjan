@@ -909,19 +909,6 @@ namespace System
 		}
 
 
-		public static function create_delete_checker(array $data)
-		{
-			$f = new self($data);
-
-			foreach ($data['info'] as $i=>$text) {
-				$f->text($i, $text);
-			}
-
-			$f->submit(isset($data['submit']) ? $data['submit']:l('delete'));
-			return $f;
-		}
-
-
 		/** Get field type from model attr type
 		 * @param string $attr_type
 		 * @return string

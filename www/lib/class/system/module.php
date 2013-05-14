@@ -271,6 +271,19 @@ namespace System
 		}
 
 
+		public function form_checker(array $data)
+		{
+			$f = $this->form($data);
+
+			foreach ($data['info'] as $i=>$text) {
+				$f->text($i, $text);
+			}
+
+			$f->submit(isset($data['submit']) ? $data['submit']:l('delete'));
+			return $f;
+		}
+
+
 		public function bind_to_response(\System\Http\Response $response)
 		{
 			$this->response = $response;
