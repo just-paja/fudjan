@@ -20,6 +20,9 @@ namespace System\Http
 		);
 
 
+		/** Create request object from current hit
+		 * @return self
+		 */
 		public static function from_hit()
 		{
 			if (\System\Status::on_cli()) {
@@ -51,6 +54,9 @@ namespace System\Http
 		}
 
 
+		/** Get page by request path
+		 * @return \System\Page|bool
+		 */
 		public function get_page()
 		{
 			$this->args = array();
@@ -66,13 +72,19 @@ namespace System\Http
 		}
 
 
-		public function get_init()
+		/** Get domain init data
+		 * @return mixed
+		 */
+		private function get_init()
 		{
 			$domain = \System\Router::get_domain($this->host);
 			return cfg('domains', $domain, 'init');
 		}
 
 
+		/** Initialize all scripts for this request and domain
+		 * @return void
+		 */
 		public function init()
 		{
 			if ($this->get('lang')) {
@@ -198,6 +210,9 @@ namespace System\Http
 		}
 
 
+		/** Get data from GET request data
+		 * @return mixed
+		 */
 		public function get()
 		{
 			$args = func_get_args();
@@ -206,6 +221,9 @@ namespace System\Http
 		}
 
 
+		/** Get data from POST request data
+		 * @return mixed
+		 */
 		public function post()
 		{
 			$args = func_get_args();
