@@ -94,7 +94,7 @@ namespace System
 			} else {
 				$error_page = array(
 					"title"    => 'Error occurred!',
-					"template" => array('pwf/errors/layout'),
+					"layout"   => array('pwf/errors/layout'),
 					"partial"  => 'system/error/bug',
 				);
 			}
