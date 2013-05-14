@@ -17,13 +17,14 @@ namespace System
 
 		public static function init()
 		{
-			if (self::$enabled = cfg('cache', 'memory', 'enabled'))
-			{
-				if (class_exists(self::get_cfg_driver())) {
-					self::$ready = self::setup_driver();
-				} else throw new \System\Error\Config('Cache driver does not exist. Check your app settings', cfg('cache', 'memory'));
-			} else {
-				self::$ready = true;
+			if (!self::$ready) {
+				if (self::$enabled = cfg('cache', 'memory', 'enabled')) {
+					if (class_exists(self::get_cfg_driver())) {
+						self::$ready = self::setup_driver();
+					} else throw new \System\Error\Config('Cache driver does not exist. Check your app settings', cfg('cache', 'memory'));
+				} else {
+					self::$ready = true;
+				}
 			}
 		}
 

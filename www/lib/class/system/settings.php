@@ -14,9 +14,10 @@ namespace System
 		const FILE_VERSION      = '/etc/santa/core/pwf/version';
 		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
 
-		/** Indicates that there are no pages set */
-		private static $no_pages = false;
+		/** Is the module initialized and ready */
+		private static $ready = false;
 
+		/** Default version data to be used */
 		private static $version_default = array(
 			"name"    => "pwf",
 			"project" => "Purple Web Framework",
@@ -41,17 +42,18 @@ namespace System
 			'update_server'
 		);
 
-		static function init()
-		{
-			if (self::check_cache()) {
-				self::load_cache();
-			} else {
-				self::reload();
 
-				// Don't cache settings if there are no pages. Site is probabbly in development
-				if (!self::$no_pages) {
+		public static function init()
+		{
+			if (!self::$ready) {
+				if (self::check_cache()) {
+					self::load_cache();
+				} else {
+					self::reload();
 					self::cache();
 				}
+
+				self::$ready = true;
 			}
 		}
 
