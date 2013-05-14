@@ -5,6 +5,7 @@
  */
 
 System\Init::basic();
+session_start();
 
 if (System\Settings::is_this_first_run()) {
 
@@ -25,7 +26,10 @@ if (System\Settings::is_this_first_run()) {
 		if ($page->is_readable()) {
 
 			$response = System\Http\Response::from_page($request, $page);
-			$response->exec()->render()->send_headers()->display();
+			$response->exec()->render();
+
+			session_write_close();
+			$response->send_headers()->display();
 
 		} else throw new \System\Error\AccessDenied();
 	} else throw new \System\Error\NotFound();
