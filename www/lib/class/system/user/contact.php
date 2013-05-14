@@ -42,8 +42,8 @@ namespace System\User
 				self::SOCIAL_TWITTER     => 'contact_type_twitter',
 				self::SOCIAL_GOOGLE_PLUS => 'contact_type_google_plus',
 			)),
-			"name"    => array('varchar'),
 			"ident"   => array('varchar'),
+			"name"    => array('varchar'),
 			"visible" => array('bool'),
 			"public"  => array('bool'),
 		);

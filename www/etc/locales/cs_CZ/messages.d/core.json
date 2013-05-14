@@ -66,7 +66,7 @@
 	"model_system_user_contact":"Kontakt uživatele",
 	"model_system_user_contact_plural":"Kontakty uživatele",
 	"attr_system_user_contact_type":"Služba",
-	"attr_system_user_contact_name":"Jméno",
+	"attr_system_user_contact_name":"Označení kontaktu",
 	"attr_system_user_contact_ident":"Identifikátor",
 	"attr_system_user_contact_visible":"Viditelný",
 	"attr_system_user_contact_public":"Veřejný",
