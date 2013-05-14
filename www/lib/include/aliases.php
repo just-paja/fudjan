@@ -285,14 +285,6 @@ namespace
 		return System\Template::get_color_container($color);
 	}
 
-	/** @alias System\User::get_active */
-	function user() {
-		return System\User::get_active();
-	}
-
-	/** @alias System\User::logged_in */
-	function logged_in() { return System\User::logged_in(); }
-
 	/** @alias System\Locales::strlen_binary */
 	function strlen_binary($str) {
 		return System\Locales::strlen_binary($str);

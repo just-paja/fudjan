@@ -14,6 +14,8 @@ namespace System
 	 */
 	class User extends Model\Database
 	{
+		const COOKIE_USER = 'pwf_user';
+
 		static protected $required = array('login');
 		static protected $attrs = array(
 			"login"       => array('varchar', "is_unique" => true),
@@ -32,30 +34,8 @@ namespace System
 			"contacts" => array("model" => '\System\User\Contact')
 		);
 
-		/** Current user is placed here */
-		static private $current_user;
-
 		/** Rights are cached here, within the object */
 		private $rights;
-
-		/** Get current active user
-		 * @return System\User
-		 */
-		public static function get_active()
-		{
-			if (self::$current_user instanceof self) {
-				return self::$current_user;
-			} elseif (any($_SESSION['yacms-user-id'])) {
-				self::$current_user = find("\System\User", $_SESSION['yacms-user-id']);
-			}
-
-			if (!(self::$current_user instanceof self)) {
-				self::$current_user = self::guest();
-			}
-
-			self::$current_user->get_rights();
-			return self::$current_user;
-		}
 
 
 		/** Create guest user
@@ -71,28 +51,15 @@ namespace System
 		}
 
 
-		/** Is anyone logged in?
-		 * @return bool
-		 */
-		public static function logged_in()
-		{
-			if(!self::$current_user){
-				self::get_active();
-			}
-			return @!!self::$current_user->id;
-		}
-
-
 		/** Login selected user
 		 * @param self   $user
 		 * @param string $password
 		 * @return bool
 		 */
-		public static function login(self $user, $password)
+		public function login(\System\Http\Request $request, $password)
 		{
-			return $user->password == hash_passwd($password) ?
-				self::create_session($user):
-				false;
+			return $this->password == hash_passwd($password) ?
+				$this->create_session($request):false;
 		}
 
 
@@ -100,12 +67,13 @@ namespace System
 		 * @param self $user
 		 * @return bool
 		 */
-		private static function create_session(self $user)
+		private function create_session(\System\Http\Request $request)
 		{
-			self::$current_user = $user;
-			$user->last_login = new \DateTime();
-			$user->save();
-			$_SESSION['yacms-user-id'] = $user->id;
+			$request->user = $this;
+			$this->last_login = new \DateTime();
+			$this->save();
+			$_SESSION['yacms-user-id'] = $this->id;
+
 			return true;
 		}
 
@@ -113,7 +81,7 @@ namespace System
 		/** Logout current active user
 		 * @return bool
 		 */
-		public static function logout()
+		public function logout()
 		{
 			unset($_SESSION['yacms-user-id']);
 			return true;
@@ -242,17 +210,6 @@ namespace System
 			}
 
 			return $this->setup;
-		}
-
-
-		/** Get all user flags - some system behavior changes
-		 * @return string Space separated flags
-		 */
-		public static function get_flags()
-		{
-			$flags = array();
-			$flags[] = self::logged_in() ? 'user':'guest';
-			return implode(' ', $flags);
 		}
 
 

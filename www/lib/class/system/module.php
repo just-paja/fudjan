@@ -27,7 +27,7 @@ namespace System
 		static private $array_forced_locals = array("conds", "opts");
 
 		/** Attributes of modules */
-		private $id, $path, $locals, $slot, $parents, $response;
+		private $id, $path, $locals, $slot, $parents, $request, $response;
 
 
 		/** Public constructor
@@ -80,6 +80,15 @@ namespace System
 		}
 
 
+		public function accessible()
+		{
+			return
+				$this->request()->user()->is_root() ||
+				$this->request()->user()->has_right_to('*') ||
+				$this->request()->user()->has_right_to(substr($this->get_path(), 1));
+		}
+
+
 		/** Run module
 		 * @return void
 		 */
@@ -89,7 +98,7 @@ namespace System
 
 			if (file_exists($path)) {
 				if (is_readable($path)) {
-					if (user()->is_root() || user()->has_right_to('*') || user()->has_right_to(substr($this->get_path(), 1))) {
+					if ($this->accessible()) {
 						if (!is_array($this->locals)) $this->locals = array($this->locals);
 						$locals = &$this->locals;
 
@@ -128,7 +137,9 @@ namespace System
 									} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
 								}
 
-								!is_object($val) && !is_array($val) && strpos($val, '#user{') === 0 && $val = soprintf(substr($val, 5), user());
+								if (!is_object($val) && !is_array($val) && strpos($val, '#user{') === 0) {
+									$val = soprintf(substr($val, 5), $this->request()->user());
+								}
 
 								$$key = &$val;
 							}
@@ -242,10 +253,10 @@ namespace System
 				list($cond, $val) = explode(',', $cond_str, 2);
 				switch ($cond) {
 					case 'logged-in':
-						$result = $result && \System\User::logged_in();
+						$result = $result && $request->logged_in();
 						break;
 					case 'logged-out':
-						$result = $result && !\System\User::logged_in();
+						$result = $result && !$request->logged_in();
 						break;
 				}
 			}
@@ -263,6 +274,7 @@ namespace System
 		public function bind_to_response(\System\Http\Response $response)
 		{
 			$this->response = $response;
+			$this->request  = $response->request();
 			return $this;
 		}
 
@@ -270,6 +282,12 @@ namespace System
 		public function response()
 		{
 			return $this->response;
+		}
+
+
+		public function request()
+		{
+			return $this->request;
 		}
 	}
 }

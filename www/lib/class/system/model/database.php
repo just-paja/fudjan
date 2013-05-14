@@ -514,10 +514,6 @@ namespace System\Model
 					}
 				}
 
-				if ($this->has_attr($at = 'id_user_author') || $this->has_attr($at = 'id_author')) {
-					!$this->$at && ($this->$at = intval(user()->id));
-				}
-
 				$nochange = array();
 
 				foreach (self::$obj_attrs as $attr) {

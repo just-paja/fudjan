@@ -16,6 +16,7 @@ namespace System\Http
 			"get"      => array('list'),
 			"post"     => array('list'),
 			"secure"   => array('bool'),
+			"user"     => array('object', "model" => '\System\User'),
 		);
 
 
@@ -55,7 +56,10 @@ namespace System\Http
 			$this->args = array();
 
 			if ($path = \System\Router::get_path($this->host, $this->path, $this->data['args'])) {
-				return new \System\Page(isset($path[1]) ? $path[1]:array());
+				$attrs = isset($path[1]) ? $path[1]:array();
+				$attrs['request'] = $this;
+
+				return new \System\Page($attrs);
 			}
 
 			return false;
@@ -207,6 +211,35 @@ namespace System\Http
 			$args = func_get_args();
 			array_unshift($args, 'post');
 			return $this->input($args);
+		}
+
+
+		/** Get current active user
+		 * @return System\User
+		 */
+		public function user()
+		{
+			if ($this->user instanceof self) {
+				return $this->user;
+			} elseif (any($_SESSION[\System\User::COOKIE_USER])) {
+				$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
+			}
+
+			if (!($this->user instanceof self)) {
+				$this->user = \System\User::guest();
+			}
+
+			$this->user->get_rights();
+			return $this->user;
+		}
+
+
+		/** Is anyone logged in?
+		 * @return bool
+		 */
+		public function logged_in()
+		{
+			return !!$this->user()->id;
 		}
 	}
 }

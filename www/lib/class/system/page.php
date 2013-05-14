@@ -22,6 +22,7 @@ namespace System
 			"copyright" => array('varchar'),
 			"author"    => array('varchar'),
 			"no_debug"  => array('bool'),
+			"request"   => array('object'),
 		);
 
 
@@ -294,8 +295,8 @@ namespace System
 		 */
 		public function is_readable()
 		{
-			if (!user()->is_root() && !empty($this->opts['groups'])) {
-				foreach (user()->get_group_ids() as $id) {
+			if (!$this->request->user()->is_root() && !empty($this->opts['groups'])) {
+				foreach ($this->request->user()->get_group_ids() as $id) {
 					if (in_array($id, $this->opts['groups'])) return true;
 				}
 				return false;
