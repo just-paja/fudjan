@@ -93,7 +93,7 @@ namespace System\Form
 
 			!$this->type && self::get_default_type();
 			!$this->kind && self::get_default_kind();
-			$this->kind = in_array($this->types, self::$kinds) ?
+			$this->kind = in_array($this->type, self::$kinds) ?
 				$this->type:
 				(in_array($this->kind, self::$kinds) ? $this->kind:self::get_default_kind());
 			!$this->id && $this->id = 'field_'.$this->name;
