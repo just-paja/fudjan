@@ -53,6 +53,10 @@ namespace System
 		{
 			$attrs['request'] = $response->request();
 
+			if (empty($attrs['action'])) {
+				$attrs['action'] = $response->request()->path;
+			}
+
 			$form = new self($attrs);
 			$form->response = $response;
 			$form->renderer = $response->renderer();
@@ -69,6 +73,11 @@ namespace System
 		public static function from_request(\System\Http\Request $request, array $attrs = array())
 		{
 			$attrs['request'] = $request;
+
+			if (empty($attrs['action'])) {
+				$attrs['action'] = $request->path;
+			}
+
 			return new self($attrs);
 		}
 
