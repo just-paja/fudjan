@@ -243,7 +243,7 @@ namespace System\Http
 				$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
 			}
 
-			if (!($this->user instanceof self)) {
+			if (!($this->user instanceof \System\User)) {
 				$this->user = \System\User::guest();
 			}
 
