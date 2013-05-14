@@ -36,10 +36,11 @@ namespace System\Model
 			'image',
 			'gps',
 			'list',
+			'object',
 		);
 
 		/** Registered object handlers */
-		static protected $obj_attrs = array('image');
+		static protected $obj_attrs = array('object', 'image');
 
 		/** Swap for attributes merged from related models */
 		static protected $merged_attrs = array();
@@ -360,6 +361,19 @@ namespace System\Model
 						} else {
 							$val = \System\Image::from_scratch();
 						}
+					}
+					break;
+				}
+
+
+				case 'object':
+				{
+					if ($val) {
+						if (isset($attr_data['model'])) {
+							if (!($val instanceof $attr_data['model'])) {
+								throw new \System\Error\Argument(sprintf("Value must be instance of '%s' for attribute '%s'", $attr_data['model'], $attr));
+							}
+						} else throw new \System\Error\Argument(sprintf("Attribute '%s' of model '%s' must have model defined!", $attr, $model));
 					}
 					break;
 				}
