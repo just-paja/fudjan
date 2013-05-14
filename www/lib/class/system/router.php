@@ -110,23 +110,29 @@ namespace System
 							}
 						}
 
-						if (count($route_args) === count($args)) {
+						if (($c = count($route_args)) === count($args)) {
 							$str = '';
 
-							foreach ($args as $num=>$arg) {
-								$start = $num == 0 ? 0:$route_args[$num-1][1];
+							if ($c > 0) {
+								$num = 0;
 
-								for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
-									$str .= $path[$letter];
+								foreach ($args as $num=>$arg) {
+									$start = $num == 0 ? 0:$route_args[$num-1][1];
+
+									for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
+										$str .= $path[$letter];
+									}
+
+									$str .= $arg;
 								}
 
-								$str .= $arg;
-							}
+								$start = $route_args[$num][1];
 
-							$start = $route_args[$num][1];
-
-							for ($letter = $start; $letter < count($path); $letter ++) {
-								$str .= $path[$letter];
+								for ($letter = $start; $letter < count($path); $letter ++) {
+									$str .= $path[$letter];
+								}
+							} else {
+								$str = implode('', $path);
 							}
 
 							$str = str_replace(array('^', '$'), '', $str);
