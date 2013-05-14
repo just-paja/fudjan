@@ -103,7 +103,7 @@ namespace System
 						$locals = &$this->locals;
 
 						def($locals['per_page'], 20);
-						//~ def($locals['page'], intval(\System\Input::get('page')));
+						def($locals['page'], intval($this->request()->get('page')));
 
 						if (is_array($locals)) {
 							$propagated = array();
