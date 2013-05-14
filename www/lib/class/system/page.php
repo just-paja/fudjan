@@ -22,7 +22,7 @@ namespace System
 			"copyright" => array('varchar'),
 			"author"    => array('varchar'),
 			"no_debug"  => array('bool'),
-			"request"   => array('object'),
+			"request"   => array('object', "model" => '\System\Http\Request'),
 		);
 
 
