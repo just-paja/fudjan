@@ -134,6 +134,7 @@ namespace System\Template
 				$renderer = $this;
 				$response = $this->response();
 				$request  = $this->response()->request();
+				$ren      = &$renderer;
 
 				if (file_exists($f = \System\Template::find($name, \System\Template::TYPE_LAYOUT, $this->format))) {
 					include($f);
@@ -193,6 +194,7 @@ namespace System\Template
 				$response = $this->response();
 				$flow     = $this->response()->flow();
 				$request  = $this->response()->request();
+				$ren      = &$renderer;
 
 				include($temp);
 			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
