@@ -16,7 +16,6 @@ if (System\Settings::is_this_first_run()) {
 
 	System\Cache::init();
 	System\Database::init();
-	System\Output::init();
 
 	$request = System\Http\Request::from_hit();
 	$request->init();
