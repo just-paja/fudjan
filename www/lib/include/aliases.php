@@ -30,7 +30,7 @@ namespace
 
 	function introduce()
 	{
-		return \System\Output::introduce();
+		return \System\Status::introduce();
 	}
 
 
@@ -260,21 +260,6 @@ namespace
 	/** @alias System\Template::section_heading */
 	function section_heading($label, $level = NULL) {
 		return System\Template::section_heading($label, $level);
-	}
-
-	/** @alias System\Output::slot */
-	function slot($name = System\Template::DEFAULT_SLOT) {
-		return System\Output::slot($name);
-	}
-
-	/** @alias System\Output::title */
-	function title() {
-		return System\Output::get_title(true);
-	}
-
-	/** @alias System\Page::get_path */
-	function path() {
-		return System\Page::get_path();
 	}
 
 	/** @alias System\Template::get_css_color */

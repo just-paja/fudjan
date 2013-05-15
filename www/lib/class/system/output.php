@@ -24,32 +24,11 @@ namespace System
 		const PREFIX_AJAX = "ajax-api";
 
 
-		/** Class init
-		 * @return void
-		 */
-		public static function init()
-		{
-		}
-
-
 		public static function get_mime($format)
 		{
 			if (isset(self::$mime[$format])) {
 				return self::$mime[$format];
 			} else throw new \System\Error\Argument(sprintf("Unknown mime type format '%s'.", $format));
-		}
-
-
-		/** Introduce pwf name and version
-		 * @return string
-		 */
-		public static function introduce()
-		{
-			try {
-				return cfg('own', 'name')."-".cfg('own', 'version');
-			} catch(\System\Error $e) {
-				return 'pwf unknown version';
-			}
 		}
 	}
 }

@@ -138,5 +138,18 @@ namespace System
 		{
 			return php_sapi_name() == 'cli';
 		}
+
+
+		/** Introduce pwf name and version
+		 * @return string
+		 */
+		public static function introduce()
+		{
+			try {
+				return cfg('own', 'name')."-".cfg('own', 'version');
+			} catch(\System\Error $e) {
+				return 'pwf unknown version';
+			}
+		}
 	}
 }
