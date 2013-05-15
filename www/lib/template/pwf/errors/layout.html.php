@@ -16,6 +16,6 @@ Tag::html();
 			$this->slot();
 
 		Tag::close('section');
-		Tag::footer(array("content" => \System\Output::introduce()));
+		Tag::footer(array("content" => introduce()));
 	Tag::close('body');
 Tag::close('html');

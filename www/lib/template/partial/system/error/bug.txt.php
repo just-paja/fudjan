@@ -6,7 +6,7 @@
  */
 
 try {
-	$generator = System\Output::introduce();
+	$generator = introduce();
 } catch(Exception $e) { $generator = 'pwf-unknown'; }
 
 

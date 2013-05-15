@@ -21,7 +21,7 @@ Tag::html();
 			slot();
 
 		Tag::close('section', true);
-		Tag::footer(array("content" => System\Output::introduce()));
+		Tag::footer(array("content" => introduce()));
 
 	Tag::close('body');
 Tag::close('html');

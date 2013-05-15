@@ -79,7 +79,7 @@ namespace System\Offcom
 		public static function get_default_headers()
 		{
 			if (!isset(self::$default_headers['X-Mailer'])) {
-				self::$default_headers["X-Mailer"] = \System\Output::introduce();
+				self::$default_headers["X-Mailer"] = introduce();
 			}
 
 			return self::$default_headers;
