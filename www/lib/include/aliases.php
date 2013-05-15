@@ -252,16 +252,6 @@ namespace
 		return System\Template::format_date($datetime, $format);
 	}
 
-	/** @alias System\Template::heading */
-	function heading($label, $save_level = true, $level = NULL) {
-		return System\Template::heading($label, $save_level, $level);
-	}
-
-	/** @alias System\Template::section_heading */
-	function section_heading($label, $level = NULL) {
-		return System\Template::section_heading($label, $level);
-	}
-
 	/** @alias System\Template::get_css_color */
 	function get_css_color($color) {
 		return System\Template::get_css_color($color);
