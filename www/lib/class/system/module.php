@@ -147,16 +147,19 @@ namespace System
 
 						$module   = $this;
 						$response = $this->response();
+						$renderer = $this->response()->renderer();
 						$request  = $this->response()->request();
 						$flow     = $this->response()->flow();
 
-						$req = require($path);
+						$ren = &$renderer;
+
+						$required = require($path);
 
 						if (any($propagate)) {
 							DataBus::save_data($this, $propagate);
 						}
 
-						return !!$req;
+						return !!$required;
 					} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". Permission denied.', $this->get_path()));
 				} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". File is not readable.', $this->get_path()));
 			} else throw new \System\Error\File(sprintf('Module not found: "%s", expected on path "%s".', $this->get_path(), $path));
