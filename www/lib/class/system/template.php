@@ -29,16 +29,6 @@ namespace System
 		);
 
 
-		public static function icon($icon, $size='32', array $attrs = array())
-		{
-			@list($width, $height) = explode('x', $size, 2);
-			!$height && $height = $width;
-			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
-
-			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
-		}
-
-
 		public static function get_filename($name, $format = null, $lang = null)
 		{
 			$format == 'xhtml' && $format = 'html';
@@ -60,36 +50,47 @@ namespace System
 		}
 
 
-
-		public static function link_for($label, $url, $object = array())
+		/** Deprecated method for rendering links
+		 */
+		public static function link_for($label, $url, array $object = array(), \System\Http\Request $request = null)
 		{
-			if (!is_array($object)) {
-				$object = array("no-tag" => !!$object);
+			def($object['no-tag'], false);
+			def($object['strict'], false);
+			def($object['class'], array());
+
+			if (!is_array($object['class'])) {
+				$object['class'] = explode(' ', $object['class']);
 			}
 
-			!isset($object['no-tag']) && $object['no-tag'] = false;
-			!isset($object['strict']) && $object['strict'] = false;
-			!isset($object['no-activation']) && $object['no-activation'] = false;
-			!isset($object['class']) && $object['class'] = '';
+			if ($url && !is_null($request)) {
+				$is_root = $url == '/' && $request->path == '/';
+				$is_selected = $object['strict'] ?
+					($url == $request->path || $url == $request->path.'/'):
+					(strpos($request->path, $url) === 0);
 
-			$path = Page::get_path();
-			clear_this_url($url); clear_this_url($path);
-			$object['class'] = explode(' ', $object['class']);
-
-			$is_root     = $url == '/' && $path == '/';
-			$is_selected = $url && !$object['no-activation'] && (($object['strict'] && ($url == $path || $url == $path.'/')) || (!$object['strict'] && strpos($path, $url) === 0));
-
-			if ($is_root || ($url != '/' && $is_selected)) {
-				$object['class'][] = 'link-selected';
+				if ($is_root || ($url != '/' && $is_selected)) {
+					$object['class'][] = 'link-selected';
+				}
 			}
 
-			$object['class'] = implode(' ', $object['class']);
+			if ($object['no-tag'] && $path == $url) {
+				$object['class'][] = 'link';
+				return span($object['class'], $label);
+			} else {
+				$object['content'] = $label;
+				$object['href'] = $url;
+				return \STag::a($object);
+			}
+		}
 
-			return (($object['no-tag'] && $path == $url) ?
-					'<span class="link'.($object['class'] ? ' '.$object['class']:NULL).'">':
-					'<a href="'.$url.'"'.\Tag::html_attrs('a', $object).'>'
-				).$label.
-				(($object['no-tag'] && $path == $url) ? '</span>':'</a>');
+
+		public static function icon($icon, $size='32', array $attrs = array())
+		{
+			@list($width, $height) = explode('x', $size, 2);
+			!$height && $height = $width;
+			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
+
+			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
 		}
 
 

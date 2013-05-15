@@ -410,9 +410,85 @@ namespace System\Template
 		}
 
 
+		/** Render heading without incrementing level
+		 * @param string   $label
+		 * @param int|null $level
+		 */
 		public function heading_static($label, $level = null)
 		{
 			return $this->heading($label, $level, true);
+		}
+
+
+		/** Render link (tag <a/>)
+		 * @param string $label  Label to render with
+		 * @param string $url    URL to refer to
+		 * @param array  $object Additional data (
+		 * 	"no-tag" => Render <span/> instead of <a/> if active
+		 * 	"strict" => Be strict when checking path - dont count subdirectories
+		 * 	 other   => HTML attributes that will be passed to the tag
+		 * )
+		 */
+		public function link($label, $url, array $object = array())
+		{
+			def($object['no-tag'], false);
+			def($object['strict'], false);
+			def($object['class'], array());
+
+			if (!is_array($object['class'])) {
+				$object['class'] = explode(' ', $object['class']);
+			}
+
+			$is_root = $url == '/' && $this->response()->request()->path == '/';
+			$is_selected = $object['strict'] ?
+				($url == $this->response()->request()->path || $url == $this->response()->request()->path.'/'):
+				(strpos($this->response()->request()->path, $url) === 0);
+
+			if ($is_root || ($url != '/' && $is_selected)) {
+				$object['class'][] = 'active';
+			}
+
+			if ($object['no-tag'] && $is_selected) {
+				$object['class'][] = 'link';
+				return span($object['class'], $label);
+			} else {
+				$object['content'] = $label;
+				$object['href'] = $url;
+				return \STag::a($object);
+			}
+		}
+
+
+		public function icon($icon, $size='32', array $attrs = array())
+		{
+			@list($width, $height) = explode('x', $size, 2);
+			!$height && $height = $width;
+			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
+
+			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
+		}
+
+
+		/** Render icon as link
+		 * @param string $icon Icon name (theme/type/name)
+		 * @param string $url  URL to refer to
+		 * @param array  $object Additional data (
+		 * 	"size"  => Icon size, default is 32
+		 * 	other   => HTML attributes that will be passed to the link tag
+		 * )
+		 */
+		public function icon_for($icon, $url, array $object = array())
+		{
+			def($object['size'], 32);
+
+			@list($width, $height) = explode('x', $object['size'], 2);
+			!$height && $height = $width;
+			$icon = ($icon instanceof Image) ? $icon->thumb_trans(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
+
+			return $this->link(Stag::span(array(
+				"class" => 'icon isize-'.$size,
+				"style" => 'background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px',
+			));
 		}
 	}
 }
