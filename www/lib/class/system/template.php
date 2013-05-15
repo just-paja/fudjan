@@ -123,64 +123,7 @@ namespace System
 
 		public static function label_text($label)
 		{
-			return '<span class="lt">'.$label.'</span>';
-		}
-
-
-		public static function heading($label, $save_level = true, $level = NULL)
-		{
-			if ($level === NULL) {
-				$level = self::$heading_level+1;
-			}
-
-			if ($save_level) {
-				self::set_heading_level($level);
-				if ($level == 1) {
-					self::$heading_section_level = 2;
-				}
-			}
-
-			$tag = ($level > 6) ? 'strong':'h'.$level;
-			$attrs = array(
-				"id" => \System\Model\Database::gen_seoname($label)
-			);
-			return self::tag($tag, $label, $attrs);
-		}
-
-
-		public static function tag($tag, $content = '', array $attrs = array())
-		{
-			return '<'.$tag.' '.\Tag::html_attrs($tag, $attrs).'>'.$content.'</'.$tag.'>';
-		}
-
-
-		public static function section_heading($label, $level = NULL)
-		{
-			if ($level === NULL) {
-				$level = self::$heading_section_level == 1 ? self::$heading_section_level++:self::$heading_section_level;
-			}
-
-			self::set_heading_level($level);
-
-			return heading($label, true, $level);
-		}
-
-
-		public static function get_heading_level()
-		{
-			return self::$heading_level;
-		}
-
-
-		public static function set_heading_level($lvl)
-		{
-			return self::$heading_level = intval($lvl);
-		}
-
-
-		public static function set_heading_section_level($lvl)
-		{
-			return self::$heading_section_level = intval($lvl);
+			return span(lt, $label);
 		}
 
 
