@@ -5,9 +5,11 @@ namespace System\Template
 	class Renderer extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"format"     => array('varchar'),
-			"start_time" => array('float'),
-			"response"   => array('object', "model" => '\System\Http\Response'),
+			"format"               => array('varchar'),
+			"start_time"           => array('float'),
+			"response"             => array('object', "model" => '\System\Http\Response'),
+			"heading_layout_level" => array('int', "default" => 1),
+			"heading_level"        => array('int', "default" => null, "is_null" => true),
 		);
 
 		private static $resource_filter = array('scripts', 'styles');
@@ -177,6 +179,7 @@ namespace System\Template
 		 */
 		public function render_partial($name, array $locals = array())
 		{
+			$this->heading_level = $this->heading_layout_level;
 			$temp = \System\Template::find($name, \System\Template::TYPE_PARTIAL, $this->format);
 
 			// Convert locals into level on variables
@@ -243,7 +246,7 @@ namespace System\Template
 		 */
 		public function render_meta()
 		{
-			$this->content_for("meta", array("name" => 'generator', "content" => \System\Output::introduce()));
+			$this->content_for("meta", array("name" => 'generator', "content" => introduce()));
 			$this->content_for("meta", array("http-equiv" => 'content-type', "content" => \System\Output::get_mime($this->format).'; charset=utf-8'));
 			$this->content_for("meta", array("charset" => 'utf-8'));
 
@@ -353,6 +356,61 @@ namespace System\Template
 				is_integer($this->content[$place]) && $this->content[$place] += $content;
 				is_string($this->content[$place]) && $this->content[$place] .= $content;
 			}
+		}
+
+
+		private function heading_render($label, $level = null)
+		{
+			$tag = ($level > 6) ? 'strong':'h'.$level;
+			$attrs = array(
+				"id"      => \System\Model\Database::gen_seoname($label),
+				"content" => $label,
+				"output"  => false,
+			);
+
+			return \System\Template\Tag::tag($tag, $attrs);
+		}
+
+
+		/** Render heading
+		 * @param string   $label
+		 * @param int|null $level
+		 * @return string
+		 */
+		public function heading($label, $level = null, $no_increment = false)
+		{
+			if (is_null($level)) {
+				if (is_null($this->heading_level)) {
+					$level = $this->heading_layout_level;
+				} else {
+					$level = $this->heading_level;
+				}
+			}
+
+			$this->heading_level = $no_increment ? $level:($level + 1);
+			return $this->heading_render($label, $level);
+		}
+
+
+		/** Render layout heading
+		 * @param string   $label
+		 * @param int|null $level
+		 * @return string
+		 */
+		public function heading_layout($label, $level = null, $no_increment = false)
+		{
+			if (is_null($level)) {
+				$level = $this->heading_layout_level;
+			}
+
+			$this->heading_layout_level = $no_increment ? $level:($level + 1);
+			return $this->heading_render($label, $level);
+		}
+
+
+		public function heading_static($label, $level = null)
+		{
+			return $this->heading($label, $level, true);
 		}
 	}
 }

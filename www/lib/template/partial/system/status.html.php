@@ -80,7 +80,7 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					heading(l('dump_bar_exec_time'), true, 2),
+					$renderer->heading_static(l('dump_bar_exec_time'), 2),
 					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 				)),
 				div('info-inner',
@@ -95,7 +95,7 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					heading(l('dump_bar_packages'), true, 2),
+					$renderer->heading_static(l('dump_bar_packages')),
 					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', l('not_implemented'))),
@@ -104,7 +104,7 @@ echo div('status devbar');
 
 		echo div('panel', null, 'status-sql');
 			echo div('title', array(
-				heading(l('dump_bar_packages'), true, 2),
+				$renderer->heading_static(l('dump_bar_packages')),
 				link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 			));
 			echo div(array('info-inner', 'sql'));
@@ -140,7 +140,7 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					heading(l('dump_bar_server_vars'), true, 2),
+					$renderer->heading_static(l('dump_bar_server_vars')),
 					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', dump_table($_SERVER))),
@@ -149,27 +149,27 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					heading(l('dump_bar_input_data'), true, 2),
+					$renderer->heading(l('dump_bar_input_data'), 2),
 					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', array(
 					div('datadump', array(
-						heading(l('dump_bar_input_data_get'), true, 3),
+						$renderer->heading_static(l('dump_bar_input_data_get')),
 						dump_table($request->get),
 					)),
 
 					div('datadump', array(
-						heading(l('dump_bar_input_data_post'), true, 3),
+						$renderer->heading_static(l('dump_bar_input_data_post')),
 						dump_table($request->post),
 					)),
 
 					div('datadump', array(
-						heading(l('dump_bar_input_data_cookies'), true, 3),
+						$renderer->heading_static(l('dump_bar_input_data_cookies')),
 						dump_table($_COOKIE),
 					)),
 
 					div('datadump', array(
-						heading(l('dump_bar_input_data_session'), true, 3),
+						$renderer->heading_static(l('dump_bar_input_data_session')),
 						dump_table($_SESSION),
 					)),
 				))),
@@ -178,7 +178,7 @@ echo div('status devbar');
 
 		echo div('panel', null, 'status-output');
 			echo div('title', array(
-				heading(l('dump_bar_output'), true, 2),
+				$renderer->heading_static(l('dump_bar_output'), 2),
 				link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
 			));
 

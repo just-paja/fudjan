@@ -17,7 +17,7 @@ foreach ((array) $f->class as $c) {
 Tag::div(array("id" => $f->id.'-container', "class" => array_merge(array('pwform'), $cclass)));
 
 	Tag::a(array("name" => $f->anchor, "id" => $f->anchor, "close" => true));
-	$f->heading && print(section_heading($f->heading));
+	$f->heading && print($renderer->heading($f->heading));
 	$f->desc && Tag::p(array("class" => 'desc', "content" => $f->desc));
 
 	Tag::form($f->get_attr_data());

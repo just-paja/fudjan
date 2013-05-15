@@ -123,7 +123,7 @@ namespace System
 
 		public static function label_text($label)
 		{
-			return span(lt, $label);
+			return span('lt', $label);
 		}
 
 

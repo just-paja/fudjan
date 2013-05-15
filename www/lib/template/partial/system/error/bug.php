@@ -6,7 +6,7 @@
  */
 
 try {
-	$generator = System\Output::introduce();
+	$generator = introduce();
 } catch(Exception $e) { $generator = 'pwf-unknown'; }
 
 $heading = 'core_bug_report_heading';
@@ -23,11 +23,11 @@ try {
 
 
 $exp = $desc->get_explanation();
-echo section_heading(isset($exp[0]) ? $exp[0].Tag::span(array("class" => 'type', "content" => get_class($desc), "output" => false)):get_class($desc));
+Tag::h1(array("content" => isset($exp[0]) ? $exp[0].Tag::span(array("class" => 'type', "content" => get_class($desc), "output" => false)):get_class($desc)));
 
 if (count($exp) > 1) {
 
-	echo heading($reason, true, 2);
+	Tag::h2(array("content" => $reason));
 	Tag::ul();
 	foreach ($exp as $ex) {
 		Tag::li(array("content" => $ex));
@@ -36,7 +36,7 @@ if (count($exp) > 1) {
 
 }
 
-echo heading($trace, true, 2);
+Tag::h2(array("content" => $trace));
 $back = $desc->get_backtrace();
 $num = 0;
 Tag::ul();
@@ -83,13 +83,13 @@ Tag::ul();
 						$args[] = Stag::li(array("content" => $arg_content));
 					}
 
-					$str_args[] = heading('Arguments:', true, 4);
+					$str_args[] = STag::h3(array("content" => 'Arguments:'));
 					$str_args[] = Stag::ol(array("content" => $args));
 				}
 			}
 
 			if (!$skip && isset($b['object'])) {
-				$str_obj[] = heading('Object:', true, 4);
+				$str_obj[] = STag::heading(array("content" => 'Object:'));
 				$str_obj[] = Tag::div(array(
 					"content" => '<pre>'.@var_export($b['object'], true).'</pre>',
 					"output"  => false,
