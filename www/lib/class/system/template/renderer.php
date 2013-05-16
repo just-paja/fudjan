@@ -502,6 +502,7 @@ namespace System\Template
 			return \Stag::span(array(
 				"class" => 'icon isize-'.$size,
 				"style" => 'background-image:url('.$icon.'); width:'.$w.'px; height:'.$h.'px',
+				"close" => true,
 			));
 		}
 
