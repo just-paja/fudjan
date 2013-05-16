@@ -256,7 +256,7 @@ namespace System\Model
 					if (self::attr_exists($model, 'seoname')) {
 						$col = 'seoname';
 					} else {
-						$ids = intval(substr($ids, strlen($ids) - strpos(strrev($ids), '-')));
+						$ids = \System\Url::get_seoid($ids);
 					}
 				}
 
