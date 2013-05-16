@@ -531,7 +531,7 @@ namespace System\Template
 		 */
 		public function label_for($url, $label, $icon, $size='32', array $object = array())
 		{
-			$html = array(span('label', $label), $this->icon($icon, $size));
+			$html = array($this->icon($icon, $size), span('label', $label));
 
 			if (def($object['label_left'], false)) {
 				$html = array_reverse($html);
