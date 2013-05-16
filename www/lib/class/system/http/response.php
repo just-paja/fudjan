@@ -268,6 +268,7 @@ namespace System\Http
 					$request  = $this->request();
 					$renderer = $this->renderer();
 					$flow     = $this->flow();
+					$ren      = &$renderer;
 
 					include ROOT.'/lib/include/devel.php';
 				}
