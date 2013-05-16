@@ -19,6 +19,7 @@ namespace System\Model
 		const AFTER_SAVE    = 'after_save';
 		const AFTER_DELETE  = 'after_delete';
 
+		/** Callbacks container */
 		private static $callbacks = array(
 			self::BEFORE_SAVE   => array(),
 			self::BEFORE_DELETE => array(),
@@ -30,7 +31,6 @@ namespace System\Model
 		/** Add a callback function to some action
 		 * @param string  $trigger One of triggers
 		 * @param Closure $lambda  Instance of closure
-		 * @param array   $data    Data to be passed to the lambda function
 		 */
 		public function add_callback($trigger, Closure $lambda)
 		{
@@ -49,7 +49,8 @@ namespace System\Model
 
 
 		/** Run callbacks
-		 * @param array Set of callbacks
+		 * @param string $trigger Name of trigger to fier
+		 * @param array  $args    Data to pass
 		 * @return void
 		 */
 		public function run_tasks($trigger, array $args = array())

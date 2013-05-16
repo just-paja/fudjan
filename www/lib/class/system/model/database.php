@@ -33,10 +33,10 @@ namespace System\Model
 		/** Seoname conflicting characters, strict mode */
 		private static $strictly_bad_chars = array('-');
 
-		/** @type Seoname replace characters, strict mode */
+		/** Seoname replace characters, strict mode */
 		private static $strictly_good_chars = array('_');
 
-		/** @type string Model table name */
+		/** string Model table name */
 		static protected $table;
 
 		/** Mode ID column name */
@@ -69,6 +69,7 @@ namespace System\Model
 
 
 		/** Get name of associated table
+		 * @param string $model Class name
 		 * @return string
 		 */
 		public static function get_table($model)
@@ -94,6 +95,11 @@ namespace System\Model
 		}
 
 
+		/** Does attribute belong to belongs_to relation?
+		 * @param string $model
+		 * @param string $attr
+		 * @return bool
+		 */
 		public static function is_model_belongs_to_id($model, $attr)
 		{
 			$is_true = false;
@@ -121,7 +127,12 @@ namespace System\Model
 		}
 
 
-		public static function get_attr_name_from_belongs_to_rel($rel_name, $rel)
+		/** Get attribute name from definition of belongs_to relation
+		 * @param string $rel_name Name of relation
+		 * @param array  $rel      Relation definition
+		 * @return string|bool     Returns false on failure
+		 */
+		public static function get_attr_name_from_belongs_to_rel($rel_name, array $rel)
 		{
 			if (any($rel['foreign_key'])) {
 				return $rel['foreign_key'];
@@ -134,6 +145,7 @@ namespace System\Model
 
 
 		/** Get name of ID column
+		 * @param string $model Model name
 		 * @return string
 		 */
 		public static function get_id_col($model)
@@ -148,6 +160,11 @@ namespace System\Model
 		}
 
 
+		/** Create new object of model and save it
+		 * @param string $model Model name
+		 * @param array  $attrs Attribute data
+		 * @return object
+		 */
 		public static function create($model, array $attrs)
 		{
 			$obj = new $model($attrs);
@@ -155,7 +172,7 @@ namespace System\Model
 		}
 
 
-		/* Get all models of a class
+		/** Get all models of a class
 		 * @param   string $model Class name desired model
 		 * @param   array  $conds Set of conditions
 		 * @param   array  $opts  Set of query options
@@ -267,7 +284,7 @@ namespace System\Model
 		}
 
 
-		/* Get first instance of matched query
+		/** Get first instance of matched query
 		 * @param mixed $model  Class or instance of desired model
 		 * @param array $conds  Set of conditions
 		 * @param array $opts   Set of query options
@@ -282,7 +299,7 @@ namespace System\Model
 		}
 
 
-		/* Count all
+		/** Count all
 		 * @param mixed $model  Class or instance of desired model
 		 * @param array $conds  Set of conditions
 		 * @param array $opts   Set of query options
@@ -354,7 +371,7 @@ namespace System\Model
 
 
 		/** Attribute getter
-		 * @param string $name
+		 * @param string $attr
 		 * @return mixed
 		 */
 		public function __get($attr)
@@ -450,6 +467,11 @@ namespace System\Model
 		}
 
 
+		/** Get name of table where keys for billinear has_many relation are stored
+		 * @param string $model     Model name
+		 * @param array  $rel_attrs Relation definition
+		 * @return string
+		 */
 		public static function get_bilinear_table_name($model, array $rel_attrs)
 		{
 			$name = array();
@@ -558,6 +580,8 @@ namespace System\Model
 
 
 		/** Prepare data to be saved (ReJSON)
+		 * @param string $model
+		 * @param array  $data
 		 * @return void
 		 */
 		protected static function prepare_data($model, array &$data)
@@ -712,7 +736,7 @@ namespace System\Model
 		}
 
 
-		/* Get list of model attributes
+		/** Get list of model attributes
 		 * @param string $model      Name of model class
 		 * @param bool   $sql_format Format names to sql
 		 * @return array
@@ -755,8 +779,8 @@ namespace System\Model
 		 * @param string $model      Name of model
 		 * @param string $model_id   ID of object
 		 * @param string $rel_name   Name of relation
-		 * @param list   $ids_save   List of IDs to keep/save
-		 * @param list   $ids_delete List of IDs to delete
+		 * @param array  $ids_save   List of IDs to keep/save
+		 * @param array  $ids_delete List of IDs to delete
 		 * @return  void
 		 */
 		private function relation_save($model, $model_id, $rel_name, array $ids_save, array $ids_delete)
@@ -802,7 +826,7 @@ namespace System\Model
 
 		/** Assign and save relation by IDs
 		 * @param string $rel_name Name of relation
-		 * @param list   $ids_new  List of new IDs - others will be deleted
+		 * @param array  $ids_new  List of new IDs - others will be deleted
 		 * @return $this
 		 */
 		public function assign_rel($rel_name, array $ids_new)

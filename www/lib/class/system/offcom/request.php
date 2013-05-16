@@ -1,7 +1,15 @@
 <?
 
+/** Remote request handling via CURL
+ * @package system
+ * @subpackage offcom
+ */
 namespace System\Offcom
 {
+	/** Remote request handling via CURL
+	 * @package system
+	 * @subpackage offcom
+	 */
 	abstract class Request
 	{
 		/** Make a get request to URL
@@ -35,6 +43,10 @@ namespace System\Offcom
 		}
 
 
+		/** Make a request and return JSON decoded data
+		 * @param string $url Requested URL
+		 * @return mixed
+		 */
 		static function json($url) {
 			return \System\Json::decode(self::get($url), true);
 		}

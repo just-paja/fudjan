@@ -1,11 +1,20 @@
 <?
 
+/** System static init
+ * @package system
+ */
 namespace System
 {
+	/** System static init
+	 * @package system
+	 */
 	class Init
 	{
 		const DIR_INIT = '/etc/init.d';
 
+		/** Full initialization - preload settings, locales, cache and database
+		 * @return void
+		 */
 		public static function full()
 		{
 			self::bind_error_handlers();
@@ -15,7 +24,9 @@ namespace System
 			Database::init();
 		}
 
-
+		/** Basic initialization - preload settings and locales
+		 * @return void
+		 */
 		public static function basic()
 		{
 			self::bind_error_handlers();
@@ -24,6 +35,9 @@ namespace System
 		}
 
 
+		/** CLI initialization
+		 * @return void
+		 */
 		public static function cli()
 		{
 			global $argv;
@@ -46,7 +60,9 @@ namespace System
 			\CLICommands::$cmd();
 		}
 
-
+		/** Bind pwf error handlers
+		 * @return void
+		 */
 		public static function bind_error_handlers()
 		{
 			set_exception_handler(array("System\Status", "catch_exception"));
@@ -58,6 +74,11 @@ namespace System
 		}
 
 
+		/** Run list of init scripts
+		 * @param array $list   List of init scripts
+		 * @param array $locals Local data
+		 * @return void
+		 */
 		public static function run(array $list, array $locals)
 		{
 			// Convert locals into level on variables

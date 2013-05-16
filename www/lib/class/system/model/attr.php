@@ -73,7 +73,7 @@ namespace System\Model
 
 
 		/** Attribute getter
-		 * @param string $name
+		 * @param string $attr
 		 * @return mixed
 		 */
 		public function __get($attr)
@@ -91,7 +91,7 @@ namespace System\Model
 
 
 		/** Attribute setter
-		 * @param string $name
+		 * @param string $attr
 		 * @param mixed  $value
 		 * @return BasicModel
 		 */
@@ -182,7 +182,7 @@ namespace System\Model
 		}
 
 
-		/* Get list of model attributes
+		/** Get list of model attributes
 		 * @param string $model Name of model class
 		 * @return array
 		 */
@@ -198,7 +198,7 @@ namespace System\Model
 		}
 
 
-		/* Get list of model attributes
+		/** Get list of model attributes
 		 * @param string $model Name of model class
 		 * @return array
 		 */
@@ -208,22 +208,8 @@ namespace System\Model
 		}
 
 
-		/** Join all attributes into single array (helper)
-		 * @param  array $attributes
-		 * @return array List of attributes
-		 */
-		public static function get_attrs($attrs)
-		{
-			$temp = array();
-			foreach($attrs as $attr_type) {
-				$temp = array_merge($temp, (array) $attr_type);
-			}
-
-			return $temp;
-		}
-
-
 		/** Gets definition of model attributes
+		 * @param string $model Name of model
 		 */
 		public static function get_attr_def($model)
 		{
@@ -250,7 +236,8 @@ namespace System\Model
 
 		/** Get attr definition
 		 * @param string $model
-		 * @param string $attribute
+		 * @param string $attr
+		 * @return array
 		 */
 		public static function get_attr($model, $attr)
 		{
@@ -269,9 +256,10 @@ namespace System\Model
 
 
 		/** Prepare data of a kind to be saved, mostly conversions
-		 * @param array  $keys    Set of attribute names
-		 * @param string $type    Type of data
-		 * @param &array $dataray Object data
+		 * @param string $model Name of model
+		 * @param string $attr  Name of attribute
+		 * @param mixed  $val   Value to check and fix
+		 * @return mixed Fixed value
 		 */
 		public static function convert_attr_val($model, $attr, $val = null)
 		{
@@ -444,6 +432,10 @@ namespace System\Model
 		}
 
 
+		/** Did object change since it's construction?
+		 * @param string $status Change status to this
+		 * @return bool
+		 */
 		public function changed($status = null)
 		{
 			if (!is_null($status)) {
@@ -454,36 +446,62 @@ namespace System\Model
 		}
 
 
+		/** Get translated attribute name
+		 * @param string $attr
+		 * @return string
+		 */
 		public function get_attr_name($attr)
 		{
 			return self::get_model_attr_name(get_class($this), $attr);
 		}
 
 
+		/** Get translated attribute description
+		 * @param string $attr
+		 * @return string
+		 */
 		public function get_attr_desc($attr)
 		{
 			return self::get_model_attr_desc(get_class($this), $attr);
 		}
 
 
+		/** Get translated model name
+		 * @param bool $plural
+		 * @return string
+		 */
 		public function get_model_name($plural = false)
 		{
 			return self::get_model_model_name($model, $plural);
 		}
 
 
+		/** Get translated attribute name
+		 * @param string $model
+		 * @param string $attr
+		 * @return string
+		 */
 		public static function get_model_attr_name($model, $attr)
 		{
 			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
 		}
 
 
+		/** Get translated attribute description
+		 * @param string $model
+		 * @param string $attr
+		 * @return string
+		 */
 		public static function get_model_attr_desc($model, $attr)
 		{
 			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
 		}
 
 
+		/** Get attribute value
+		 * @param string $attr
+		 * @return mixed
+		 */
 		public function get_attr_value($attr)
 		{
 			if (isset($this->data[$attr])) {
@@ -506,6 +524,9 @@ namespace System\Model
 		}
 
 
+		/** Check static model class properties
+		 * @param string $model
+		 */
 		public static function check_properties($model)
 		{
 			if (!isset($model::$attrs)) {

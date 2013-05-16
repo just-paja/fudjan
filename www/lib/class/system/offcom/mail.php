@@ -19,6 +19,7 @@ namespace System\Offcom
 		const STATUS_FAILED  = 4;
 
 
+		/** Attributes */
 		protected static $attrs = array(
 			"subject"  => array('varchar', "required" => true),
 			"message"  => array('text', "required" => true),

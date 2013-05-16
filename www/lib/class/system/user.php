@@ -16,6 +16,8 @@ namespace System
 	{
 		const COOKIE_USER = 'pwf_user';
 
+
+		/** Attributes */
 		static protected $attrs = array(
 			"login"       => array('varchar', "is_unique" => true),
 			"nick"        => array('varchar'),
@@ -28,6 +30,7 @@ namespace System
 			"com_sms"     => array('bool', "default" => false),
 		);
 
+		/** Relations */
 		static protected $has_many = array(
 			"groups" => array("model" => '\System\User\Group', "is_bilinear" => true, "is_master" => true),
 			"contacts" => array("model" => '\System\User\Contact')
@@ -51,8 +54,8 @@ namespace System
 
 
 		/** Login selected user
-		 * @param self   $user
-		 * @param string $password
+		 * @param \System\Http\Request $request  Request to write login inside
+		 * @param string               $password Password to use in login
 		 * @return bool
 		 */
 		public function login(\System\Http\Request $request, $password)
@@ -63,7 +66,7 @@ namespace System
 
 
 		/** Create user session
-		 * @param self $user
+		 * @param \System\Http\Request $request Request to write session inside
 		 * @return bool
 		 */
 		private function create_session(\System\Http\Request $request)

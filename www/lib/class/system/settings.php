@@ -1,7 +1,17 @@
 <?
 
+/** Settings
+ * @package system
+ * @subpackage core
+ */
 namespace System
 {
+	/** System settings
+	 * @package system
+	 * @prop $conf
+	 * @prop $env
+	 * @subpackage core
+	 */
 	class Settings
 	{
 		const CACHE_FILE        = '/var/cache/settings';
@@ -26,23 +36,16 @@ namespace System
 			"origin"  => "local",
 		);
 
-		// Data
+		/** Data */
 		private static $conf = array();
 
-		// Environment
+		/** Environment */
 		private static $env = 'dev';
 
-		// Internal modules and settings that will not be accessible from configurator
-		private static $noconf = array(
-			'own',
-			'datatype_schema',
-			'pages',
-			'pass_shield',
-			'core',
-			'update_server'
-		);
 
-
+		/** Initialization
+		 * @return void
+		 */
 		public static function init()
 		{
 			if (!self::$ready) {
@@ -58,6 +61,9 @@ namespace System
 		}
 
 
+		/** Reload from all config files
+		 * @return void
+		 */
 		public static function reload()
 		{
 			self::set_env();
@@ -101,6 +107,9 @@ namespace System
 		}
 
 
+		/** Check if environment config directory exists and try to create it
+		 * @return file
+		 */
 		public static function check_env()
 		{
 			if (!is_dir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env)) {
@@ -118,6 +127,9 @@ namespace System
 		}
 
 
+		/** Get name of cache file
+		 * @return string
+		 */
 		private static function get_cache_filename()
 		{
 			return ROOT.self::CACHE_FILE.'-'.self::$env.'.serial';
@@ -141,9 +153,12 @@ namespace System
 		}
 
 
+		/** Purge cache file
+		 * @return bool
+		 */
 		public static function purge_cache()
 		{
-			@unlink(self::get_cache_filename());
+			return @unlink(self::get_cache_filename());
 		}
 
 
@@ -239,6 +254,7 @@ namespace System
 
 
 		/** Force env or read it
+		 * @param string $env Environment name
 		 * @return void
 		 */
 		public static function set_env($env = null)
@@ -260,6 +276,7 @@ namespace System
 
 
 		/** Does config environment exist
+		 * @param string $env Environment name
 		 * @return bool
 		 */
 		public static function env_exists($env)

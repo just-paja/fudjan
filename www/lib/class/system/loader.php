@@ -1,10 +1,19 @@
 <?
 
+/** System class loader
+ * @package system
+ */
 namespace System
 {
+	/** System class loader
+	 * @package system
+	 * @property $loaded
+	 */
 	class Loader
 	{
 		const DIR_CLASS = '/lib/class';
+
+		/** Run load all classes only once */
 		private static $loaded = false;
 
 
@@ -24,7 +33,8 @@ namespace System
 
 
 		/** Get filesystem representation of class name
-		 * @param string $class_name
+		 * @param string $class_name  Name of class
+		 * @param bool   $with_suffix Return file name with suffix
 		 * @todo Rewrite not using regexps
 		 * @return string
 		 */
