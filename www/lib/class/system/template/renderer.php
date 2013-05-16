@@ -371,7 +371,7 @@ namespace System\Template
 		{
 			$tag = ($level > 6) ? 'strong':'h'.$level;
 			$attrs = array(
-				"id"      => \System\Model\Database::gen_seoname($label),
+				"id"      => \System\Url::gen_seoname($label),
 				"content" => $label,
 				"output"  => false,
 			);

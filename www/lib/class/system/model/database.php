@@ -8,10 +8,6 @@ namespace System\Model
 	 * has_many relation is also supported
 	 * @package system
 	 * @subpackage models
-	 * @property array  $bad_chars
-	 * @property array  $good_chars
-	 * @property array  $strictly_bad_chars
-	 * @property array  $strictly_good_chars
 	 * @property string $table asdfasdf
 	 * @property string $id_col
 	 * @property array  $tables_generated
@@ -23,18 +19,6 @@ namespace System\Model
 		const REL_BELONGS_TO = 'belongs_to';
 		const REL_HAS_ONE    = 'has_one';
 		const REL_HAS_MANY   = 'has_many';
-
-		/** Seoname conflicting characters */
-		private static $bad_chars  = array(' ', '_', '--', '.');
-
-		/** Seoname replace characters */
-		private static $good_chars = array('-', '-', '-', '', '');
-
-		/** Seoname conflicting characters, strict mode */
-		private static $strictly_bad_chars = array('-');
-
-		/** Seoname replace characters, strict mode */
-		private static $strictly_good_chars = array('_');
 
 		/** string Model table name */
 		static protected $table;
@@ -493,7 +477,7 @@ namespace System\Model
 		 */
 		public function get_seoname()
 		{
-			return $this->id ? self::gen_seoname($this->name).'-'.$this->id:null;
+			return $this->id ? \System\Url::gen_seoname($this->name).'-'.$this->id:null;
 		}
 
 
@@ -650,28 +634,6 @@ namespace System\Model
 			}
 
 			return $this;
-		}
-
-
-		/** Replace bad characters and generate seoname from string
-		 * @param string $str
-		 * @param bool   $strict Replace even dashes
-		 * @return string
-		 */
-		public static function gen_seoname($str, $strict = false)
-		{
-			$str = strtolower(strip_tags(iconv('UTF-8', 'US-ASCII//TRANSLIT', str_replace(self::$bad_chars, self::$good_chars, $str))));
-			return $strict ? str_replace(self::$strictly_bad_chars, self::$strictly_good_chars, $str):$str;
-		}
-
-
-		/** Returns model ID from URL
-		 * @param string $str
-		 * @return in ID
-		 */
-		public static function get_seoid($str)
-		{
-			return (int) end(explode('-', $str));
 		}
 
 

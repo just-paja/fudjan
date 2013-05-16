@@ -88,7 +88,7 @@ namespace System
 		{
 			!$this->method  && $this->method = 'post';
 			!$this->id      && $this->id = self::get_generic_id();
-			!$this->anchor  && $this->anchor = \System\Model\Database::gen_seoname($this->id, true);
+			!$this->anchor  && $this->anchor = \System\Url::gen_seoname($this->id, true);
 			!$this->enctype && $this->enctype = 'multipart/form-data';
 
 			if (is_array($this->default)) {
