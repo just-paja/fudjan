@@ -57,7 +57,7 @@ namespace System\Template
 			if ($this->response()->page) {
 				$this->content_for('title', $this->response()->page->title);
 
-				foreach ($response->page->get_meta() as $meta) {
+				foreach ($this->response()->page->get_meta() as $meta) {
 					$this->content_for("meta", $meta);
 				}
 			}
