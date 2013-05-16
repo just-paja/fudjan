@@ -139,7 +139,7 @@ namespace System\Form
 
 			if ($el->value && $el->value instanceof \System\Image) {
 				list($w, $h) = explode('x', $el->thumb_size);
-				$inputs[] = link_for($el->value->to_html($w, $h), $el->value->get_path());
+				$inputs[] = $el->form->renderer()->link_ext($el->value->get_path(), $el->value->to_html($w, $h));
 			}
 
 			$to = array("output" => false, "class" => 'inputs im-options', "content" => array());

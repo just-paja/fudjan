@@ -50,83 +50,6 @@ namespace System
 		}
 
 
-		/** Deprecated method for rendering links
-		 */
-		public static function link_for($label, $url, array $object = array(), \System\Http\Request $request = null)
-		{
-			def($object['no-tag'], false);
-			def($object['strict'], false);
-			def($object['class'], array());
-
-			if (!is_array($object['class'])) {
-				$object['class'] = explode(' ', $object['class']);
-			}
-
-			if ($url && !is_null($request)) {
-				$is_root = $url == '/' && $request->path == '/';
-				$is_selected = $object['strict'] ?
-					($url == $request->path || $url == $request->path.'/'):
-					(strpos($request->path, $url) === 0);
-
-				if ($is_root || ($url != '/' && $is_selected)) {
-					$object['class'][] = 'link-selected';
-				}
-			}
-
-			if ($object['no-tag'] && $path == $url) {
-				$object['class'][] = 'link';
-				return span($object['class'], $label);
-			} else {
-				$object['content'] = $label;
-				$object['href'] = $url;
-				return \STag::a($object);
-			}
-		}
-
-
-		public static function icon($icon, $size='32', array $attrs = array())
-		{
-			@list($width, $height) = explode('x', $size, 2);
-			!$height && $height = $width;
-			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
-
-			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
-		}
-
-
-		public static function icon_for($icon, $size=32, $url, $label = NULL, $object = array())
-		{
-			def($object['label'], '');
-			def($object['label_left'], false);
-
-			$object['title'] = $label;
-			return self::link_for(
-				($object['label_left'] && $object['label'] ? self::label_text($object['label']):'').
-				self::icon($icon, $size).
-				(!$object['label_left'] && $object['label'] ? self::label_text($object['label']):''), $url, $object);
-		}
-
-
-		public static function label_for($icon, $size=32, $label, $url, $object = array())
-		{
-			$object['label'] = $label;
-			return \System\Template::icon_for($icon, $size, $url, $label, $object);
-		}
-
-
-		public static function label_right_for($icon, $size=32, $label, $url, $object = array())
-		{
-			$object['label'] = $label;
-			$object['label_left'] = true;
-			return \System\Template::icon_for($icon, $size, $url, $label, $object);
-		}
-
-
-		public static function label_text($label)
-		{
-			return span('lt', $label);
-		}
-
 
 		/** Format and translate datetime format
 		 * @param mixed  $date
@@ -267,7 +190,6 @@ namespace System
 				return $value;
 			}
 		}
-
 
 
 		/** Get template full path

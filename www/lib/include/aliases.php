@@ -201,19 +201,6 @@ namespace
 	}
 
 
-	// Messages
-	function message($status, $title, $message=null, $autohide=false, $links = array()) {
-		$msg = new System\Message($status, $title, $message, $autohide, $links, false);
-		return $msg->get_retval();
-	}
-
-	function t_message($status, $title, $message=null, $autohide=false, $links = array()) {
-		$msg = new System\Message($status, $title, $message, $autohide, $links, false);
-		System\Template::partial("system/message", array("message" => $msg));
-		return $msg->get_retval();
-	}
-
-
 	// Redirects
 	/** @alias System\Http\Response::redirect */
 	function redirect_now($url, $code=\System\Http\Response::FOUND) {
@@ -222,31 +209,6 @@ namespace
 
 
 	// Template
-	/** @alias System\Template::link_for */
-	function link_for($label, $url=null, $object=array()) {
-		return System\Template::link_for($label, $url, $object);
-	}
-
-	/** @alias System\Template::icon_for */
-	function icon_for($icon, $size=32, $url, $label = NULL, $object = array()) {
-		return System\Template::icon_for($icon, $size, $url, $label, $object);
-	}
-
-	/** @alias System\Template::label_for */
-	function label_for($icon, $size=32, $label, $url, $object = array()) {
-		return System\Template::label_for($icon, $size, $url, $label, $object);
-	}
-
-	/** @alias System\Template::label_right_for */
-	function label_right_for($icon, $size=32, $label, $url, $object = array()) {
-		return System\Template::label_right_for($icon, $size, $url, $label, $object);
-	}
-
-	/** @alias System\Template::icon */
-	function icon($icon, $size=32, array $attrs = array()) {
-		return System\Template::icon($icon, $size, $attrs);
-	}
-
 	/** @alias System\Template::format_date */
 	function format_date($datetime = null, $format = 'std') {
 		return System\Template::format_date($datetime, $format);

@@ -41,36 +41,36 @@ echo div('status devbar');
 	echo div('status-dump',
 		div('status-dump-inner',
 			ul('bar-menu plain', array(
-				li(link_for(span('label', l('dump_bar_hide')), '', array("class" => 'close'))),
-				li(link_for(
-						span('label', l('dump_bar_exec_time')).
-						span("text", t('dump_bar_exec_time_val', number_format($flow->get_exec_time(), 9))),
-					'#status-time', array("class" => 'panel-status-time')
+				li($ren->link('', span('label', l('dump_bar_hide')), array("class" => 'close'))),
+				li($ren->link(
+					'#status-time',
+					array(span('label', l('dump_bar_exec_time')), span("text", t('dump_bar_exec_time_val', number_format($flow->get_exec_time(), 9)))),
+					array("class" => 'panel-status-time')
 				)),
-				li(link_for(
-						span('label', l('dump_bar_packages')).
-						span("text", introduce()),
-					'#status-packages', array("class" => 'panel-status-packages')
+				li($ren->link(
+					'#status-packages',
+					array(span('label', l('dump_bar_packages')), span("text", introduce())),
+					array("class" => 'panel-status-packages')
 				)),
-				li(link_for(
-						span('label', l('dump_bar_sql')).
-						span("text", t('dump_bar_query_count', System\Database\Query::count_all())),
-					'#status-sql', array("class" => 'panel-status-sql')
+				li($ren->link(
+					'#status-sql',
+					array(span('label', l('dump_bar_sql')), span("text", t('dump_bar_query_count', System\Database\Query::count_all()))),
+					array("class" => 'panel-status-sql')
 				)),
-				li(link_for(
-						span('label', l('dump_bar_server_vars')).
-						span("text", $request->path),
-					'#status-server', array("class" => 'panel-status-server')
+				li($ren->link(
+					'#status-server',
+					array(span('label', l('dump_bar_server_vars')), span("text", $request->path)),
+					array("class" => 'panel-status-server')
 				)),
-				li(link_for(
-						span('label', l('dump_bar_input_data')).
-						span("text", t('dump_bar_input_data_count', count(0))),
-					'#status-input', array("class" => 'panel-status-input')
+				li($ren->link(
+					'#status-input',
+					array(span('label', l('dump_bar_input_data')), span("text", t('dump_bar_input_data_count', count(0)))),
+					array("class" => 'panel-status-input')
 				)),
-				li(link_for(
-						span('label', l('dump_bar_output')).
-						span("text", t('dump_bar_template_count', count(0))),
-					'#status-input', array("class" => 'panel-status-output')
+				li($ren->link(
+					'#status-input',
+					array(span('label', l('dump_bar_output')), span("text", t('dump_bar_template_count', count(0)))),
+					array("class" => 'panel-status-output')
 				))
 			))
 		)
@@ -80,13 +80,13 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					$renderer->heading_static(l('dump_bar_exec_time'), 2),
-					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+					$ren->heading_static(l('dump_bar_exec_time'), 2),
+					$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 				)),
 				div('info-inner',
 					div('info-padding', dump_table(array(
 						l('dump_bar_time_flow') => number_format($flow->get_exec_time(), 12),
-						l('dump_bar_time_renderer') => number_format($renderer->get_exec_time(), 12),
+						l('dump_bar_time_renderer') => number_format($ren->get_exec_time(), 12),
 						l('dump_bar_time_response') => number_format($response->get_exec_time(), 12),
 					)))
 				),
@@ -95,8 +95,8 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					$renderer->heading_static(l('dump_bar_packages')),
-					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+					$ren->heading_static(l('dump_bar_packages')),
+					$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', l('not_implemented'))),
 			), 'status-packages');
@@ -104,8 +104,8 @@ echo div('status devbar');
 
 		echo div('panel', null, 'status-sql');
 			echo div('title', array(
-				$renderer->heading_static(l('dump_bar_packages')),
-				link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				$ren->heading_static(l('dump_bar_packages')),
+				$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 			));
 			echo div(array('info-inner', 'sql'));
 				echo div('info-padding');
@@ -140,8 +140,8 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					$renderer->heading_static(l('dump_bar_server_vars')),
-					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+					$ren->heading_static(l('dump_bar_server_vars')),
+					$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', dump_table($_SERVER))),
 			), 'status-server');
@@ -149,27 +149,27 @@ echo div('status devbar');
 
 		echo div('panel', array(
 				div('title', array(
-					$renderer->heading(l('dump_bar_input_data'), 2),
-					link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+					$ren->heading(l('dump_bar_input_data'), 2),
+					$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 				)),
 				div('info-inner', div('info-padding', array(
 					div('datadump', array(
-						$renderer->heading_static(l('dump_bar_input_data_get')),
+						$ren->heading_static(l('dump_bar_input_data_get')),
 						dump_table($request->get),
 					)),
 
 					div('datadump', array(
-						$renderer->heading_static(l('dump_bar_input_data_post')),
+						$ren->heading_static(l('dump_bar_input_data_post')),
 						dump_table($request->post),
 					)),
 
 					div('datadump', array(
-						$renderer->heading_static(l('dump_bar_input_data_cookies')),
+						$ren->heading_static(l('dump_bar_input_data_cookies')),
 						dump_table($_COOKIE),
 					)),
 
 					div('datadump', array(
-						$renderer->heading_static(l('dump_bar_input_data_session')),
+						$ren->heading_static(l('dump_bar_input_data_session')),
 						dump_table($_SESSION),
 					)),
 				))),
@@ -178,8 +178,8 @@ echo div('status devbar');
 
 		echo div('panel', null, 'status-output');
 			echo div('title', array(
-				$renderer->heading_static(l('dump_bar_output'), 2),
-				link_for(icon('pwf/actions/turn-off', 24), '#', array("class" => 'close'))
+				$ren->heading_static(l('dump_bar_output'), 2),
+				$ren->icon_for('#', 'pwf/actions/turn-off', 24, array("class" => 'close'))
 			));
 
 			echo div('info-inner');

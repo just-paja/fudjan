@@ -438,14 +438,19 @@ namespace System\Template
 			def($object['strict'], false);
 			def($object['class'], array());
 
+			$is_root = false;
+			$is_selected = false;
+
 			if (!is_array($object['class'])) {
 				$object['class'] = explode(' ', $object['class']);
 			}
 
-			$is_root = $url == '/' && $this->response()->request()->path == '/';
-			$is_selected = $object['strict'] ?
-				($url == $this->response()->request()->path || $url == $this->response()->request()->path.'/'):
-				(strpos($this->response()->request()->path, $url) === 0);
+			if ($url) {
+				$is_root = $url == '/' && $this->response()->request()->path == '/';
+				$is_selected = $object['strict'] ?
+					($url == $this->response()->request()->path || $url == $this->response()->request()->path.'/'):
+					(strpos($this->response()->request()->path, $url) === 0);
+			}
 
 			if ($is_root || ($url != '/' && $is_selected)) {
 				$object['class'][] = 'active';
