@@ -1104,7 +1104,7 @@ data of the icon or default&lt;/p&gt;</long-description>
       <value>realpath(__DIR__ . '/../../')</value>
     </constant>
   </file>
-  <file path="class/system/user.php" hash="17b9b34b3c98b5c2d63af4b2b333fc15" package="system\users">
+  <file path="class/system/user.php" hash="4bfe96f896349bf28b43cb2fa3359cf3" package="system\users">
     <docblock line="3">
       <description>System users</description>
       <long-description/>
@@ -1128,235 +1128,233 @@ data of the icon or default&lt;/p&gt;</long-description>
         <full_name>COOKIE_USER</full_name>
         <value>'pwf_user'</value>
       </constant>
-      <property final="false" static="true" visibility="protected" line="19" namespace="System" package="Default">
+      <property final="false" static="true" visibility="protected" line="21" namespace="System" package="Default">
         <name>$attrs</name>
         <default>array("login" =&gt; array('varchar', "is_unique" =&gt; true), "nick" =&gt; array('varchar'), "first_name" =&gt; array('varchar'), "last_name" =&gt; array('varchar'), "password" =&gt; array('password', "default" =&gt; ''), "avatar" =&gt; array('image'), "last_login" =&gt; array('datetime', "default" =&gt; 0), "com_email" =&gt; array('bool', "default" =&gt; true), "com_sms" =&gt; array('bool', "default" =&gt; false))</default>
+        <docblock line="20">
+          <description>Attributes</description>
+          <long-description/>
+        </docblock>
       </property>
-      <property final="false" static="true" visibility="protected" line="31" namespace="System" package="Default">
+      <property final="false" static="true" visibility="protected" line="34" namespace="System" package="Default">
         <name>$has_many</name>
         <default>array("groups" =&gt; array("model" =&gt; '\System\User\Group', "is_bilinear" =&gt; true, "is_master" =&gt; true), "contacts" =&gt; array("model" =&gt; '\System\User\Contact'))</default>
+        <docblock line="33">
+          <description>Relations</description>
+          <long-description/>
+        </docblock>
       </property>
-      <property final="false" static="false" visibility="private" line="37" namespace="System" package="Default">
+      <property final="false" static="false" visibility="private" line="40" namespace="System" package="Default">
         <name>$rights</name>
         <default/>
-        <docblock line="36">
+        <docblock line="39">
           <description>Rights are cached here, within the object</description>
           <long-description/>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="43" package="system\users">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="46" package="system\users">
         <name>guest</name>
         <full_name>guest</full_name>
-        <docblock line="40">
+        <docblock line="43">
           <description>Create guest user</description>
           <long-description/>
-          <tag line="40" name="return" description="" type="\System\System\User">
+          <tag line="43" name="return" description="" type="\System\System\User">
             <type by_reference="false">\System\System\User</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="58" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="61" package="system\users">
         <name>login</name>
         <full_name>login</full_name>
-        <docblock line="53">
+        <docblock line="56">
           <description>Login selected user</description>
           <long-description/>
-          <tag line="53" name="param" description="" type="self" variable="$user">
-            <type by_reference="false">self</type>
+          <tag line="56" name="param" description="Request to write login inside" type="\System\Http\Request" variable="$request">
+            <type by_reference="false">\System\Http\Request</type>
           </tag>
-          <tag line="53" name="param" description="" type="string" variable="$password">
+          <tag line="56" name="param" description="Password to use in login" type="string" variable="$password">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="53" name="return" description="" type="bool">
+          <tag line="56" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="58">
+        <argument line="61">
           <name>$request</name>
           <default/>
           <type>\System\Http\Request</type>
         </argument>
-        <argument line="58">
+        <argument line="61">
           <name>$password</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" namespace="System" line="69" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="private" namespace="System" line="72" package="system\users">
         <name>create_session</name>
         <full_name>create_session</full_name>
-        <docblock line="65">
+        <docblock line="68">
           <description>Create user session</description>
           <long-description/>
-          <tag line="65" name="param" description="" type="self" variable="$user">
-            <type by_reference="false">self</type>
+          <tag line="68" name="param" description="Request to write session inside" type="\System\Http\Request" variable="$request">
+            <type by_reference="false">\System\Http\Request</type>
           </tag>
-          <tag line="65" name="return" description="" type="bool">
+          <tag line="68" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="69">
+        <argument line="72">
           <name>$request</name>
           <default/>
           <type>\System\Http\Request</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="83" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="86" package="system\users">
         <name>logout</name>
         <full_name>logout</full_name>
-        <docblock line="80">
+        <docblock line="83">
           <description>Logout current active user</description>
           <long-description/>
-          <tag line="80" name="return" description="" type="bool">
+          <tag line="83" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="94" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="97" package="system\users">
         <name>get_name</name>
         <full_name>get_name</full_name>
-        <docblock line="90">
+        <docblock line="93">
           <description>Get full user name</description>
           <long-description/>
-          <tag line="90" name="param" description="Format of the name" type="string" variable="$pattern">
+          <tag line="93" name="param" description="Format of the name" type="string" variable="$pattern">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="90" name="return" description="" type="string">
+          <tag line="93" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="94">
+        <argument line="97">
           <name>$pattern</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="103" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="106" package="system\users">
         <name>get_rights</name>
         <full_name>get_rights</full_name>
-        <docblock line="100">
+        <docblock line="103">
           <description>Get all users permissions</description>
           <long-description/>
-          <tag line="100" name="return" description="Set of permissions (System\User\Perm)" type="array">
+          <tag line="103" name="return" description="Set of permissions (System\User\Perm)" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="130" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="133" package="system\users">
         <name>has_right</name>
         <full_name>has_right</full_name>
-        <docblock line="126">
+        <docblock line="129">
           <description>Has user right to do action</description>
           <long-description/>
-          <tag line="126" name="param" description="" type="string" variable="$to">
+          <tag line="129" name="param" description="" type="string" variable="$to">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="126" name="return" description="" type="bool">
+          <tag line="129" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="130">
+        <argument line="133">
           <name>$to</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="149" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="152" package="system\users">
         <name>is_root</name>
         <full_name>is_root</full_name>
-        <docblock line="146">
+        <docblock line="149">
           <description>Is active user root?</description>
           <long-description/>
-          <tag line="146" name="return" description="" type="bool">
+          <tag line="149" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="158" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="161" package="system\users">
         <name>get_mailer_types</name>
         <full_name>get_mailer_types</full_name>
-        <docblock line="155">
+        <docblock line="158">
           <description>Get all available ways to send notifications</description>
           <long-description/>
-          <tag line="155" name="return" description="Set of ways" type="string[]">
+          <tag line="158" name="return" description="Set of ways" type="string[]">
             <type by_reference="false">string[]</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="167" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="170" package="system\users">
         <name>delete</name>
         <full_name>delete</full_name>
-        <docblock line="164">
+        <docblock line="167">
           <description>Wrapper for delete - forbids deleting root user</description>
           <long-description/>
-          <tag line="164" name="return" description="" type="bool">
+          <tag line="167" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="176" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="179" package="system\users">
         <name>get_seoname</name>
         <full_name>get_seoname</full_name>
-        <docblock line="173">
+        <docblock line="176">
           <description>Wrapper for parent::seoname()</description>
           <long-description/>
-          <tag line="173" name="return" description="" type="string">
+          <tag line="176" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="186" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="189" package="system\users">
         <name>get_group_ids</name>
         <full_name>get_group_ids</full_name>
-        <docblock line="183">
+        <docblock line="186">
           <description>Get IDs of all system groups</description>
           <long-description/>
-          <tag line="183" name="return" description="Set of group IDs" type="int[]">
+          <tag line="186" name="return" description="Set of group IDs" type="int[]">
             <type by_reference="false">int[]</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="195" package="system\users">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System" line="198" package="system\users">
         <name>get_setup</name>
         <full_name>get_setup</full_name>
-        <docblock line="192">
+        <docblock line="195">
           <description>Get all user settings</description>
           <long-description/>
-          <tag line="192" name="return" description="" type="array">
+          <tag line="195" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="209" package="system\users">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="212" package="system\users">
         <name>gen_passwd</name>
         <full_name>gen_passwd</full_name>
-        <docblock line="205">
+        <docblock line="208">
           <description>Generate random password</description>
           <long-description/>
-          <tag line="205" name="param" description="" type="int" variable="$len">
+          <tag line="208" name="param" description="" type="int" variable="$len">
             <type by_reference="false">int</type>
           </tag>
-          <tag line="205" name="return" description="" type="string">
+          <tag line="208" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="209">
+        <argument line="212">
           <name>$len</name>
           <default>12</default>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="19" code="50018">No DocBlock was found for property $attrs</error>
-      <error line="31" code="50018">No DocBlock was found for property $has_many</error>
-      <error line="53" code="50014">Name of argument $request does not match with the DocBlock's name $user in login()</error>
-      <error line="53" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $request in login()</error>
-      <notice line="53" code="50013">Parameter $user could not be found in login()</notice>
-      <error line="65" code="50014">Name of argument $request does not match with the DocBlock's name $user in create_session()</error>
-      <error line="65" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $request in create_session()</error>
-      <notice line="65" code="50013">Parameter $user could not be found in create_session()</notice>
-    </parse_markers>
   </file>
   <file path="class/system/directory.php" hash="a92d95ab1a1127fc4f3852e3ae603307" package="system\files">
     <docblock line="3">
@@ -1529,21 +1527,7 @@ errors. You are encouraged to use this class for directory operations.&lt;/p&gt;
       </method>
     </class>
   </file>
-  <file path="class/system/offcom/sms.php" hash="279c1effea5ac2f5a41cd5d0752fd346" package="Default">
-    <class final="false" abstract="false" namespace="System\Offcom" line="5" package="Default">
-      <extends/>
-      <name>SMS</name>
-      <full_name>\System\Offcom\SMS</full_name>
-    </class>
-    <markers>
-      <todo line="7">tadada</todo>
-    </markers>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/offcom/sms.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Offcom\SMS</error>
-    </parse_markers>
-  </file>
-  <file path="class/system/offcom/mail.php" hash="50f84ecce3a358b9d748fe97f86d4a13" package="system\offcom">
+  <file path="class/system/offcom/mail.php" hash="150e3627a7ee580dd5642e73c00082f0" package="system\offcom">
     <docblock line="3">
       <description>Email handling</description>
       <long-description/>
@@ -1581,253 +1565,288 @@ errors. You are encouraged to use this class for directory operations.&lt;/p&gt;
         <full_name>STATUS_FAILED</full_name>
         <value>4</value>
       </constant>
-      <property final="false" static="true" visibility="protected" line="22" namespace="System\Offcom" package="Default">
+      <property final="false" static="true" visibility="protected" line="23" namespace="System\Offcom" package="Default">
         <name>$attrs</name>
         <default>array("subject" =&gt; array('varchar', "required" =&gt; true), "message" =&gt; array('text', "required" =&gt; true), "rcpt" =&gt; array('array', "required" =&gt; true), "headers" =&gt; array('array'), "from" =&gt; array('string', "is_null" =&gt; false), "reply_to" =&gt; array('string', "is_null" =&gt; false), "status" =&gt; array('int', "is_unsigned" =&gt; true))</default>
+        <docblock line="22">
+          <description>Attributes</description>
+          <long-description/>
+        </docblock>
       </property>
-      <property final="false" static="true" visibility="protected" line="34" namespace="System\Offcom" package="Default">
+      <property final="false" static="true" visibility="protected" line="35" namespace="System\Offcom" package="Default">
         <name>$default_headers</name>
         <default>array("Content-Type" =&gt; 'text/plain; charset=utf-8')</default>
-        <docblock line="33">
+        <docblock line="34">
           <description>Headers that must be sent</description>
           <long-description/>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="46" package="system\offcom">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="47" package="system\offcom">
         <name>create</name>
         <full_name>create</full_name>
-        <docblock line="39">
+        <docblock line="40">
           <description>Create email object</description>
           <long-description/>
-          <tag line="39" name="param" description="Subject encoded in UTF-8" type="string" variable="$subject">
+          <tag line="40" name="param" description="Subject encoded in UTF-8" type="string" variable="$subject">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="39" name="param" description="Text message encoded in UTF-8" type="string" variable="$message">
+          <tag line="40" name="param" description="Text message encoded in UTF-8" type="string" variable="$message">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="39" name="param" description="Recipients in nice format" type="array" variable="$rcpt">
+          <tag line="40" name="param" description="Recipients in nice format" type="array" variable="$rcpt">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="39" name="param" description="E-mail address of sender in nice format" type="string" variable="$from">
+          <tag line="40" name="param" description="E-mail address of sender in nice format" type="string" variable="$from">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="39" name="return" description="self" type="\System\Offcom\new">
+          <tag line="40" name="return" description="self" type="\System\Offcom\new">
             <type by_reference="false">\System\Offcom\new</type>
           </tag>
         </docblock>
-        <argument line="46">
+        <argument line="47">
           <name>$subject</name>
           <default/>
           <type/>
         </argument>
-        <argument line="46">
+        <argument line="47">
           <name>$message</name>
           <default/>
           <type/>
         </argument>
-        <argument line="46">
+        <argument line="47">
           <name>$rcpt</name>
           <default/>
           <type>array</type>
         </argument>
-        <argument line="46">
+        <argument line="47">
           <name>$from</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="69" package="system\offcom">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="70" package="system\offcom">
         <name>post</name>
         <full_name>post</full_name>
-        <docblock line="62">
+        <docblock line="63">
           <description>Create and immediately send a message</description>
           <long-description/>
-          <tag line="62" name="param" description="Subject encoded in UTF-8" type="string" variable="$subject">
+          <tag line="63" name="param" description="Subject encoded in UTF-8" type="string" variable="$subject">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="62" name="param" description="Text message encoded in UTF-8" type="string" variable="$message">
+          <tag line="63" name="param" description="Text message encoded in UTF-8" type="string" variable="$message">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="62" name="param" description="Recipients in nice format" type="array" variable="$rcpt">
+          <tag line="63" name="param" description="Recipients in nice format" type="array" variable="$rcpt">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="62" name="param" description="E-mail address of sender in nice format" type="string" variable="$from">
+          <tag line="63" name="param" description="E-mail address of sender in nice format" type="string" variable="$from">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="62" name="return" description="" type="bool">
+          <tag line="63" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="69">
+        <argument line="70">
           <name>$subject</name>
           <default/>
           <type/>
         </argument>
-        <argument line="69">
+        <argument line="70">
           <name>$message</name>
           <default/>
           <type/>
         </argument>
-        <argument line="69">
+        <argument line="70">
           <name>$rcpt</name>
           <default/>
           <type>array</type>
         </argument>
-        <argument line="69">
+        <argument line="70">
           <name>$from</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="79" package="system\offcom">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="80" package="system\offcom">
         <name>get_default_headers</name>
         <full_name>get_default_headers</full_name>
-        <docblock line="76">
+        <docblock line="77">
           <description>Get set of default e-mail headers</description>
           <long-description/>
-          <tag line="76" name="return" description="" type="array">
+          <tag line="77" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="92" package="system\offcom">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="93" package="system\offcom">
         <name>get_sender</name>
         <full_name>get_sender</full_name>
-        <docblock line="89">
+        <docblock line="90">
           <description>Get sender or default sender if not set</description>
           <long-description/>
-          <tag line="89" name="return" description="" type="string">
+          <tag line="90" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Offcom" line="101" package="system\offcom">
+      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Offcom" line="102" package="system\offcom">
         <name>validate</name>
         <full_name>validate</full_name>
-        <docblock line="98">
+        <docblock line="99">
           <description>Validate e-mail before sending</description>
           <long-description/>
-          <tag line="98" name="return" description="" type="bool">
+          <tag line="99" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Offcom" line="120" package="system\offcom">
+      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Offcom" line="121" package="system\offcom">
         <name>get_encoded_subject</name>
         <full_name>get_encoded_subject</full_name>
-        <docblock line="117">
+        <docblock line="118">
           <description>Get subject encoded with base64 and UTF-8</description>
           <long-description/>
-          <tag line="117" name="return" description="" type="string">
+          <tag line="118" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="129" package="system\offcom">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="130" package="system\offcom">
         <name>send</name>
         <full_name>send</full_name>
-        <docblock line="126">
+        <docblock line="127">
           <description>Send email message object</description>
           <long-description/>
-          <tag line="126" name="return" description="" type="int">
+          <tag line="127" name="return" description="" type="int">
             <type by_reference="false">int</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" namespace="System\Offcom" line="169" package="system\offcom">
+      <method final="false" abstract="false" static="true" visibility="private" namespace="System\Offcom" line="170" package="system\offcom">
         <name>isAddrValid</name>
         <full_name>isAddrValid</full_name>
-        <docblock line="164">
+        <docblock line="165">
           <description>Validate email address against RFC 2822</description>
           <long-description/>
-          <tag line="164" name="param" description="" type="string" variable="$email">
+          <tag line="165" name="param" description="" type="string" variable="$email">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="164" name="param" description="" type="bool" variable="$strict">
+          <tag line="165" name="param" description="" type="bool" variable="$strict">
             <type by_reference="false">bool</type>
           </tag>
-          <tag line="164" name="return" description="" type="bool">
+          <tag line="165" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="169">
+        <argument line="170">
           <name>$email</name>
           <default/>
           <type/>
         </argument>
-        <argument line="169">
+        <argument line="170">
           <name>$strict</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="22" code="50018">No DocBlock was found for property $attrs</error>
-    </parse_markers>
   </file>
-  <file path="class/system/offcom/request.php" hash="f904b86852546f0602298ad4c8cd8306" package="Default">
-    <class final="false" abstract="true" namespace="System\Offcom" line="5" package="Default">
+  <file path="class/system/offcom/request.php" hash="c710a649c2df7d91f0858e15c90ab7ec" package="system\offcom">
+    <docblock line="3">
+      <description>Remote request handling via CURL</description>
+      <long-description/>
+      <tag line="3" name="package" description="system"/>
+      <tag line="3" name="subpackage" description="offcom"/>
+    </docblock>
+    <class final="false" abstract="true" namespace="System\Offcom" line="13" package="system\offcom">
       <extends/>
       <name>Request</name>
       <full_name>\System\Offcom\Request</full_name>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="11" package="Default">
+      <docblock line="9">
+        <description>Remote request handling via CURL</description>
+        <long-description/>
+        <tag line="9" name="package" description="system"/>
+        <tag line="9" name="subpackage" description="offcom"/>
+      </docblock>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="19" package="system\offcom">
         <name>get</name>
         <full_name>get</full_name>
-        <docblock line="7">
+        <docblock line="15">
           <description>Make a get request to URL</description>
           <long-description/>
-          <tag line="7" name="param" description="Requested URL" type="string" variable="$url">
+          <tag line="15" name="param" description="Requested URL" type="string" variable="$url">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="7" name="return" description="" type="array">
+          <tag line="15" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="11">
+        <argument line="19">
           <name>$url</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="38" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Offcom" line="50" package="system\offcom">
         <name>json</name>
         <full_name>json</full_name>
-        <argument line="38">
+        <docblock line="46">
+          <description>Make a request and return JSON decoded data</description>
+          <long-description/>
+          <tag line="46" name="param" description="Requested URL" type="string" variable="$url">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="46" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="50">
           <name>$url</name>
           <default/>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/offcom/request.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Offcom\Request</error>
-      <error line="38" code="50010">No DocBlock was found for method json()</error>
-    </parse_markers>
   </file>
-  <file path="class/system/offcom/response.php" hash="081719df65191ce52d3c80a84e12546d" package="Default">
-    <class final="false" abstract="false" namespace="System\Offcom" line="5" package="Default">
+  <file path="class/system/offcom/response.php" hash="12971099a23f6a7cf6c8738eb388f871" package="system\offcom">
+    <docblock line="3">
+      <description>Remote request response</description>
+      <long-description/>
+      <tag line="3" name="package" description="system"/>
+      <tag line="3" name="subpackage" description="offcom"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="System\Offcom" line="13" package="system\offcom">
       <extends>\System\Model\Attr</extends>
       <name>Response</name>
       <full_name>\System\Offcom\Response</full_name>
-      <property final="false" static="true" visibility="protected" line="7" namespace="System\Offcom" package="Default">
+      <docblock line="9">
+        <description>Remote request response</description>
+        <long-description/>
+        <tag line="9" name="package" description="system"/>
+        <tag line="9" name="subpackage" description="offcom"/>
+      </docblock>
+      <property final="false" static="true" visibility="protected" line="16" namespace="System\Offcom" package="Default">
         <name>$attrs</name>
         <default>array("content" =&gt; array('blob'), "headers" =&gt; array('text'), "status" =&gt; array('int'))</default>
+        <docblock line="15">
+          <description>Attributes</description>
+          <long-description/>
+        </docblock>
       </property>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="14" package="Default">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Offcom" line="26" package="system\offcom">
         <name>ok</name>
         <full_name>ok</full_name>
+        <docblock line="23">
+          <description>Was there an error while receiving the response?</description>
+          <long-description/>
+          <tag line="23" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/offcom/response.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Offcom\Response</error>
-      <error line="7" code="50018">No DocBlock was found for property $attrs</error>
-      <error line="14" code="50010">No DocBlock was found for method ok()</error>
-    </parse_markers>
   </file>
-  <file path="class/system/model/database.php" hash="39a730ce0ac5c99bcd1f871e124bd3cb" package="Default">
+  <file path="class/system/model/database.php" hash="dae2cd08801b7ca18d3ef7a07d1c03f2" package="Default">
     <docblock line="3">
       <description>Database data model handling</description>
       <long-description/>
@@ -1914,18 +1933,16 @@ has_many relation is also supported&lt;/p&gt;</long-description>
         <name>$strictly_good_chars</name>
         <default>array('_')</default>
         <docblock line="36">
-          <description/>
+          <description>Seoname replace characters, strict mode</description>
           <long-description/>
-          <tag line="36" name="type" description="Seoname replace characters, strict mode"/>
         </docblock>
       </property>
       <property final="false" static="true" visibility="protected" line="40" namespace="System\Model" package="Default">
         <name>$table</name>
         <default/>
         <docblock line="39">
-          <description/>
+          <description>string Model table name</description>
           <long-description/>
-          <tag line="39" name="type" description="string Model table name"/>
         </docblock>
       </property>
       <property final="false" static="true" visibility="protected" line="43" namespace="System\Model" package="Default">
@@ -1992,858 +2009,966 @@ has_many relation is also supported&lt;/p&gt;</long-description>
           <long-description/>
         </docblock>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="74" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="75" package="system\models">
         <name>get_table</name>
         <full_name>get_table</full_name>
         <docblock line="71">
           <description>Get name of associated table</description>
           <long-description/>
+          <tag line="71" name="param" description="Class name" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
           <tag line="71" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="74">
+        <argument line="75">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="91" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="92" package="system\models">
         <name>attr_exists</name>
         <full_name>attr_exists</full_name>
-        <docblock line="86">
+        <docblock line="87">
           <description>Does attribute of a model exist</description>
           <long-description/>
-          <tag line="86" name="param" description="" type="string" variable="$model">
+          <tag line="87" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="86" name="param" description="" type="string" variable="$attr">
+          <tag line="87" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="86" name="return" description="True if exists" type="bool">
+          <tag line="87" name="return" description="True if exists" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="91">
+        <argument line="92">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="91">
+        <argument line="92">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="97" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="103" package="system\models">
         <name>is_model_belongs_to_id</name>
         <full_name>is_model_belongs_to_id</full_name>
-        <argument line="97">
+        <docblock line="98">
+          <description>Does attribute belong to belongs_to relation?</description>
+          <long-description/>
+          <tag line="98" name="param" description="" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="98" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="98" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="103">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="97">
+        <argument line="103">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="124" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="135" package="system\models">
         <name>get_attr_name_from_belongs_to_rel</name>
         <full_name>get_attr_name_from_belongs_to_rel</full_name>
-        <argument line="124">
+        <docblock line="130">
+          <description>Get attribute name from definition of belongs_to relation</description>
+          <long-description/>
+          <tag line="130" name="param" description="Name of relation" type="string" variable="$rel_name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="130" name="param" description="Relation definition" type="array" variable="$rel">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="130" name="return" description="Returns false on failure" type="string|bool">
+            <type by_reference="false">string</type>
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="135">
           <name>$rel_name</name>
           <default/>
           <type/>
         </argument>
-        <argument line="124">
+        <argument line="135">
           <name>$rel</name>
           <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="139" package="system\models">
-        <name>get_id_col</name>
-        <full_name>get_id_col</full_name>
-        <docblock line="136">
-          <description>Get name of ID column</description>
-          <long-description/>
-          <tag line="136" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-        <argument line="139">
-          <name>$model</name>
-          <default/>
-          <type/>
+          <type>array</type>
         </argument>
       </method>
       <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="151" package="system\models">
-        <name>create</name>
-        <full_name>create</full_name>
+        <name>get_id_col</name>
+        <full_name>get_id_col</full_name>
+        <docblock line="147">
+          <description>Get name of ID column</description>
+          <long-description/>
+          <tag line="147" name="param" description="Model name" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="147" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
         <argument line="151">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="151">
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="168" package="system\models">
+        <name>create</name>
+        <full_name>create</full_name>
+        <docblock line="163">
+          <description>Create new object of model and save it</description>
+          <long-description/>
+          <tag line="163" name="param" description="Model name" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="163" name="param" description="Attribute data" type="array" variable="$attrs">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="163" name="return" description="" type="object">
+            <type by_reference="false">object</type>
+          </tag>
+        </docblock>
+        <argument line="168">
+          <name>$model</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="168">
           <name>$attrs</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="165" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="182" package="system\models">
         <name>get_all</name>
         <full_name>get_all</full_name>
-        <argument line="165">
+        <docblock line="175">
+          <description>Get all models of a class</description>
+          <long-description/>
+          <tag line="175" name="param" description="Class name desired model" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="175" name="param" description="Set of conditions" type="array" variable="$conds">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="175" name="param" description="Set of query options" type="array" variable="$opts">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="175" name="param" description="Set of query joins" type="array" variable="$joins">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="175" name="return" description="Set of matched models" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="182">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="165">
+        <argument line="182">
           <name>$conds</name>
           <default>array()</default>
           <type>array</type>
         </argument>
-        <argument line="165">
+        <argument line="182">
           <name>$opts</name>
           <default>array()</default>
           <type>array</type>
         </argument>
-        <argument line="165">
+        <argument line="182">
           <name>$joins</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="243" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="260" package="system\models">
         <name>find</name>
         <full_name>find</full_name>
-        <docblock line="237">
+        <docblock line="254">
           <description>Find model by ID or set of IDs</description>
           <long-description/>
-          <tag line="237" name="param" description="Class name of desired model" type="string" variable="$model">
+          <tag line="254" name="param" description="Class name of desired model" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="237" name="param" description="ID or list of IDs to look for" type="int|array" variable="$ids">
+          <tag line="254" name="param" description="ID or list of IDs to look for" type="int|array" variable="$ids">
             <type by_reference="false">int</type>
             <type by_reference="false">array</type>
           </tag>
-          <tag line="237" name="param" description="Returns array even if single result" type="bool" variable="$force_list">
+          <tag line="254" name="param" description="Returns array even if single result" type="bool" variable="$force_list">
             <type by_reference="false">bool</type>
           </tag>
-          <tag line="237" name="return" description="" type="self|array">
+          <tag line="254" name="return" description="" type="self|array">
             <type by_reference="false">self</type>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="243">
+        <argument line="260">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="243">
+        <argument line="260">
           <name>$ids</name>
           <default>NULL</default>
           <type/>
         </argument>
-        <argument line="243">
+        <argument line="260">
           <name>$force_list</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="276" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="293" package="system\models">
         <name>get_first</name>
         <full_name>get_first</full_name>
-        <argument line="276">
-          <name>$model</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="276">
-          <name>$conds</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-        <argument line="276">
-          <name>$opts</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="291" package="system\models">
-        <name>count_all</name>
-        <full_name>count_all</full_name>
-        <argument line="291">
-          <name>$model</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="291">
-          <name>$conds</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-        <argument line="291">
-          <name>$opts</name>
-          <default>array()</default>
-          <type>array</type>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="303" package="system\models">
-        <name>attr_is_rel</name>
-        <full_name>attr_is_rel</full_name>
-        <docblock line="298">
-          <description>Is model attribute of type relation?</description>
+        <docblock line="287">
+          <description>Get first instance of matched query</description>
           <long-description/>
-          <tag line="298" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
+          <tag line="287" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="298" name="param" description="Name of atribute" type="string" variable="$attr">
-            <type by_reference="false">string</type>
+          <tag line="287" name="param" description="Set of conditions" type="array" variable="$conds">
+            <type by_reference="false">array</type>
           </tag>
-          <tag line="298" name="return" description="" type="bool">
-            <type by_reference="false">bool</type>
+          <tag line="287" name="param" description="Set of query options" type="array" variable="$opts">
+            <type by_reference="false">array</type>
           </tag>
-        </docblock>
-        <argument line="303">
-          <name>$model</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="303">
-          <name>$attr</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="317" package="system\models">
-        <name>get_rel_type</name>
-        <full_name>get_rel_type</full_name>
-        <docblock line="312">
-          <description>Get type of model relation</description>
-          <long-description/>
-          <tag line="312" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
-            <type by_reference="false">mixed</type>
-          </tag>
-          <tag line="312" name="param" description="Name of relation" type="string" variable="$attr">
-            <type by_reference="false">string</type>
-          </tag>
-          <tag line="312" name="return" description="false on failure" type="\System\Model\string,">
-            <type by_reference="false">\System\Model\string,</type>
-          </tag>
-        </docblock>
-        <argument line="317">
-          <name>$model</name>
-          <default/>
-          <type/>
-        </argument>
-        <argument line="317">
-          <name>$attr</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="336" package="system\models">
-        <name>__set</name>
-        <full_name>__set</full_name>
-        <docblock line="331">
-          <description>Attribute handler, setter</description>
-          <long-description/>
-          <tag line="331" name="param" description="Attribute handler" type="string" variable="$name">
-            <type by_reference="false">string</type>
-          </tag>
-          <tag line="331" name="param" description="Value to be set" type="mixed" variable="$value">
-            <type by_reference="false">mixed</type>
-          </tag>
-          <tag line="331" name="return" description="" type="\System\Model\BasicModel">
+          <tag line="287" name="return" description="" type="\System\Model\BasicModel">
             <type by_reference="false">\System\Model\BasicModel</type>
           </tag>
         </docblock>
-        <argument line="336">
+        <argument line="293">
+          <name>$model</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="293">
+          <name>$conds</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+        <argument line="293">
+          <name>$opts</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="308" package="system\models">
+        <name>count_all</name>
+        <full_name>count_all</full_name>
+        <docblock line="302">
+          <description>Count all</description>
+          <long-description/>
+          <tag line="302" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="302" name="param" description="Set of conditions" type="array" variable="$conds">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="302" name="param" description="Set of query options" type="array" variable="$opts">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="302" name="return" description="" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+        <argument line="308">
+          <name>$model</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="308">
+          <name>$conds</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+        <argument line="308">
+          <name>$opts</name>
+          <default>array()</default>
+          <type>array</type>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="320" package="system\models">
+        <name>attr_is_rel</name>
+        <full_name>attr_is_rel</full_name>
+        <docblock line="315">
+          <description>Is model attribute of type relation?</description>
+          <long-description/>
+          <tag line="315" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="315" name="param" description="Name of atribute" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="315" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="320">
+          <name>$model</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="320">
+          <name>$attr</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="334" package="system\models">
+        <name>get_rel_type</name>
+        <full_name>get_rel_type</full_name>
+        <docblock line="329">
+          <description>Get type of model relation</description>
+          <long-description/>
+          <tag line="329" name="param" description="Class or instance of desired model" type="mixed" variable="$model">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="329" name="param" description="Name of relation" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="329" name="return" description="false on failure" type="\System\Model\string,">
+            <type by_reference="false">\System\Model\string,</type>
+          </tag>
+        </docblock>
+        <argument line="334">
+          <name>$model</name>
+          <default/>
+          <type/>
+        </argument>
+        <argument line="334">
+          <name>$attr</name>
+          <default/>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="353" package="system\models">
+        <name>__set</name>
+        <full_name>__set</full_name>
+        <docblock line="348">
+          <description>Attribute handler, setter</description>
+          <long-description/>
+          <tag line="348" name="param" description="Attribute handler" type="string" variable="$name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="348" name="param" description="Value to be set" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="348" name="return" description="" type="\System\Model\BasicModel">
+            <type by_reference="false">\System\Model\BasicModel</type>
+          </tag>
+        </docblock>
+        <argument line="353">
           <name>$name</name>
           <default/>
           <type/>
         </argument>
-        <argument line="336">
+        <argument line="353">
           <name>$value</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="360" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="377" package="system\models">
         <name>__get</name>
         <full_name>__get</full_name>
-        <docblock line="356">
+        <docblock line="373">
           <description>Attribute getter</description>
           <long-description/>
-          <tag line="356" name="param" description="" type="string" variable="$name">
+          <tag line="373" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="356" name="return" description="" type="mixed">
+          <tag line="373" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="360">
+        <argument line="377">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="387" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="404" package="system\models">
         <name>get_rel</name>
         <full_name>get_rel</full_name>
-        <docblock line="382">
+        <docblock line="399">
           <description>Get relation data</description>
           <long-description/>
-          <tag line="382" name="param" description="Instance or class name of model" type="mixed" variable="$model">
+          <tag line="399" name="param" description="Instance or class name of model" type="mixed" variable="$model">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="382" name="param" description="Name of the relation" type="string" variable="$rel">
+          <tag line="399" name="param" description="Name of the relation" type="string" variable="$rel">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="382" name="return" description="Relation data, usually array of BasicModels" type="mixed">
+          <tag line="399" name="return" description="Relation data, usually array of BasicModels" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="387">
+        <argument line="404">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="387">
+        <argument line="404">
           <name>$rel</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="453" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="475" package="system\models">
         <name>get_bilinear_table_name</name>
         <full_name>get_bilinear_table_name</full_name>
-        <argument line="453">
+        <docblock line="470">
+          <description>Get name of table where keys for billinear has_many relation are stored</description>
+          <long-description/>
+          <tag line="470" name="param" description="Model name" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="470" name="param" description="Relation definition" type="array" variable="$rel_attrs">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="470" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="475">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="453">
+        <argument line="475">
           <name>$rel_attrs</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="472" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="494" package="system\models">
         <name>get_seoname</name>
         <full_name>get_seoname</full_name>
-        <docblock line="469">
+        <docblock line="491">
           <description>Get generic seoname of instance</description>
           <long-description/>
-          <tag line="469" name="return" description="" type="string">
+          <tag line="491" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="481" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="503" package="system\models">
         <name>update_check</name>
         <full_name>update_check</full_name>
-        <docblock line="478">
+        <docblock line="500">
           <description>Check all attributes and figure out if object is ready to be saved</description>
           <long-description/>
-          <tag line="478" name="return" description="True if all ok" type="bool">
+          <tag line="500" name="return" description="True if all ok" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="501" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="523" package="system\models">
         <name>save</name>
         <full_name>save</full_name>
-        <docblock line="498">
+        <docblock line="520">
           <description>Create or update object in database</description>
           <long-description/>
-          <tag line="498" name="return" description="" type="\System\Model\BasicModel">
+          <tag line="520" name="return" description="" type="\System\Model\BasicModel">
             <type by_reference="false">\System\Model\BasicModel</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="protected" namespace="System\Model" line="563" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="System\Model" line="587" package="system\models">
         <name>prepare_data</name>
         <full_name>prepare_data</full_name>
-        <docblock line="560">
+        <docblock line="582">
           <description>Prepare data to be saved (ReJSON)</description>
           <long-description/>
-          <tag line="560" name="return" description="" type="void">
+          <tag line="582" name="param" description="" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="582" name="param" description="" type="array" variable="$data">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="582" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
-        <argument line="563">
+        <argument line="587">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="563">
+        <argument line="587">
           <name>$data</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="584" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="608" package="system\models">
         <name>drop</name>
         <full_name>drop</full_name>
-        <docblock line="581">
+        <docblock line="605">
           <description>Delete object from database</description>
           <long-description/>
-          <tag line="581" name="return" description="" type="bool">
+          <tag line="605" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="595" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="619" package="system\models">
         <name>get_quick_conds</name>
         <full_name>get_quick_conds</full_name>
-        <docblock line="591">
+        <docblock line="615">
           <description>Get generic conditions for BasicModel</description>
           <long-description/>
-          <tag line="591" name="param" description="Instance or class name of model" type="mixed" variable="$model">
+          <tag line="615" name="param" description="Instance or class name of model" type="mixed" variable="$model">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="591" name="return" description="Set of conditions" type="array">
+          <tag line="615" name="return" description="Set of conditions" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="595">
+        <argument line="619">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="612" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="636" package="system\models">
         <name>is_new</name>
         <full_name>is_new</full_name>
-        <docblock line="609">
+        <docblock line="633">
           <description>Does object have an id?</description>
           <long-description/>
-          <tag line="609" name="return" description="" type="bool">
+          <tag line="633" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="621" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="645" package="system\models">
         <name>reload</name>
         <full_name>reload</full_name>
-        <docblock line="618">
+        <docblock line="642">
           <description>Reload object from database</description>
           <long-description/>
-          <tag line="618" name="return" description="" type="\System\Model\BasicModel">
+          <tag line="642" name="return" description="" type="\System\Model\BasicModel">
             <type by_reference="false">\System\Model\BasicModel</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="637" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="661" package="system\models">
         <name>gen_seoname</name>
         <full_name>gen_seoname</full_name>
-        <docblock line="632">
+        <docblock line="656">
           <description>Replace bad characters and generate seoname from string</description>
           <long-description/>
-          <tag line="632" name="param" description="" type="string" variable="$str">
+          <tag line="656" name="param" description="" type="string" variable="$str">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="632" name="param" description="Replace even dashes" type="bool" variable="$strict">
+          <tag line="656" name="param" description="Replace even dashes" type="bool" variable="$strict">
             <type by_reference="false">bool</type>
           </tag>
-          <tag line="632" name="return" description="" type="string">
+          <tag line="656" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="637">
+        <argument line="661">
           <name>$str</name>
           <default/>
           <type/>
         </argument>
-        <argument line="637">
+        <argument line="661">
           <name>$strict</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="648" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="672" package="system\models">
         <name>get_seoid</name>
         <full_name>get_seoid</full_name>
-        <docblock line="644">
+        <docblock line="668">
           <description>Returns model ID from URL</description>
           <long-description/>
-          <tag line="644" name="param" description="" type="string" variable="$str">
+          <tag line="668" name="param" description="" type="string" variable="$str">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="644" name="return" description="ID" type="\System\Model\in">
+          <tag line="668" name="return" description="ID" type="\System\Model\in">
             <type by_reference="false">\System\Model\in</type>
           </tag>
         </docblock>
-        <argument line="648">
+        <argument line="672">
           <name>$str</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="657" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="681" package="system\models">
         <name>get_all_children</name>
         <full_name>get_all_children</full_name>
-        <docblock line="654">
+        <docblock line="678">
           <description>Get all children of Database model</description>
           <long-description/>
-          <tag line="654" name="return" description="List of class names" type="array">
+          <tag line="678" name="return" description="List of class names" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="678" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="702" package="system\models">
         <name>get_model_relations</name>
         <full_name>get_model_relations</full_name>
-        <docblock line="674">
+        <docblock line="698">
           <description>Get definition of all model relations</description>
           <long-description/>
-          <tag line="674" name="param" description="" type="string" variable="$model">
+          <tag line="698" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="674" name="return" description="" type="array">
+          <tag line="698" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="678">
+        <argument line="702">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="700" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="724" package="system\models">
         <name>get_rel_def</name>
         <full_name>get_rel_def</full_name>
-        <docblock line="695">
+        <docblock line="719">
           <description>Get definition of relation</description>
           <long-description/>
-          <tag line="695" name="param" description="" type="string" variable="$model">
+          <tag line="719" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="695" name="param" description="" type="string" variable="$rel">
+          <tag line="719" name="param" description="" type="string" variable="$rel">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="695" name="return" description="" type="array">
+          <tag line="719" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="700">
+        <argument line="724">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="700">
+        <argument line="724">
           <name>$rel</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="720" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="744" package="system\models">
         <name>get_model_attr_list</name>
         <full_name>get_model_attr_list</full_name>
-        <argument line="720">
+        <docblock line="739">
+          <description>Get list of model attributes</description>
+          <long-description/>
+          <tag line="739" name="param" description="Name of model class" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="739" name="param" description="Format names to sql" type="bool" variable="$sql_format">
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="739" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="744">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="720">
+        <argument line="744">
           <name>$sql_format</name>
           <default>true</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Model" line="762" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="private" namespace="System\Model" line="786" package="system\models">
         <name>relation_save</name>
         <full_name>relation_save</full_name>
-        <docblock line="754">
+        <docblock line="778">
           <description>Save relation</description>
           <long-description/>
-          <tag line="754" name="param" description="Name of model" type="string" variable="$model">
+          <tag line="778" name="param" description="Name of model" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="754" name="param" description="ID of object" type="string" variable="$model_id">
+          <tag line="778" name="param" description="ID of object" type="string" variable="$model_id">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="754" name="param" description="Name of relation" type="string" variable="$rel_name">
+          <tag line="778" name="param" description="Name of relation" type="string" variable="$rel_name">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="754" name="param" description="List of IDs to keep/save" type="\System\Model\list" variable="$ids_save">
-            <type by_reference="false">\System\Model\list</type>
+          <tag line="778" name="param" description="List of IDs to keep/save" type="array" variable="$ids_save">
+            <type by_reference="false">array</type>
           </tag>
-          <tag line="754" name="param" description="List of IDs to delete" type="\System\Model\list" variable="$ids_delete">
-            <type by_reference="false">\System\Model\list</type>
+          <tag line="778" name="param" description="List of IDs to delete" type="array" variable="$ids_delete">
+            <type by_reference="false">array</type>
           </tag>
-          <tag line="754" name="return" description="" type="void">
+          <tag line="778" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
-        <argument line="762">
+        <argument line="786">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="762">
+        <argument line="786">
           <name>$model_id</name>
           <default/>
           <type/>
         </argument>
-        <argument line="762">
+        <argument line="786">
           <name>$rel_name</name>
           <default/>
           <type/>
         </argument>
-        <argument line="762">
+        <argument line="786">
           <name>$ids_save</name>
           <default/>
           <type>array</type>
         </argument>
-        <argument line="762">
+        <argument line="786">
           <name>$ids_delete</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="808" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="832" package="system\models">
         <name>assign_rel</name>
         <full_name>assign_rel</full_name>
-        <docblock line="803">
+        <docblock line="827">
           <description>Assign and save relation by IDs</description>
           <long-description/>
-          <tag line="803" name="param" description="Name of relation" type="string" variable="$rel_name">
+          <tag line="827" name="param" description="Name of relation" type="string" variable="$rel_name">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="803" name="param" description="List of new IDs - others will be deleted" type="\System\Model\list" variable="$ids_new">
-            <type by_reference="false">\System\Model\list</type>
+          <tag line="827" name="param" description="List of new IDs - others will be deleted" type="array" variable="$ids_new">
+            <type by_reference="false">array</type>
           </tag>
-          <tag line="803" name="return" description="" type="$this">
+          <tag line="827" name="return" description="" type="$this">
             <type by_reference="false">$this</type>
           </tag>
         </docblock>
-        <argument line="808">
+        <argument line="832">
           <name>$rel_name</name>
           <default/>
           <type/>
         </argument>
-        <argument line="808">
+        <argument line="832">
           <name>$ids_new</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="826" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="850" package="system\models">
         <name>has_attr</name>
         <full_name>has_attr</full_name>
-        <docblock line="822">
+        <docblock line="846">
           <description>Instance version of model_attr_exist</description>
           <long-description/>
-          <tag line="822" name="param" description="Name of attribute" type="string" variable="$attr">
+          <tag line="846" name="param" description="Name of attribute" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="822" name="return" description="" type="bool">
+          <tag line="846" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="826">
+        <argument line="850">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="836" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="860" package="system\models">
         <name>__construct</name>
         <full_name>__construct</full_name>
-        <docblock line="832">
+        <docblock line="856">
           <description>Override of constructor, adds id column, created_at and updated_at into attrs</description>
           <long-description/>
-          <tag line="832" name="param" description="" type="array" variable="$update">
+          <tag line="856" name="param" description="" type="array" variable="$update">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="832" name="return" description="object" type="\System\Model\new">
+          <tag line="856" name="return" description="object" type="\System\Model\new">
             <type by_reference="false">\System\Model\new</type>
           </tag>
         </docblock>
-        <argument line="836">
+        <argument line="860">
           <name>$update</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="862" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="886" package="system\models">
         <name>get_attr</name>
         <full_name>get_attr</full_name>
-        <docblock line="857">
+        <docblock line="881">
           <description>Override of attr models get_attr, respects 'id' alias</description>
           <long-description/>
-          <tag line="857" name="param" description="" type="string" variable="$model">
+          <tag line="881" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="857" name="param" description="" type="string" variable="$attr">
+          <tag line="881" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="857" name="return" description="" type="mixed">
+          <tag line="881" name="return" description="" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="862">
+        <argument line="886">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="862">
+        <argument line="886">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="876" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="900" package="system\models">
         <name>get_name</name>
         <full_name>get_name</full_name>
-        <docblock line="872">
+        <docblock line="896">
           <description>Unified name getter</description>
           <long-description/>
-          <tag line="872" name="param" description="" type="\System\Model\pattern" variable="$pattern">
+          <tag line="896" name="param" description="" type="\System\Model\pattern" variable="$pattern">
             <type by_reference="false">\System\Model\pattern</type>
           </tag>
-          <tag line="872" name="return" description="" type="string">
+          <tag line="896" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="876">
+        <argument line="900">
           <name>$pattern</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="890" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="914" package="system\models">
         <name>get_location_attrs</name>
         <full_name>get_location_attrs</full_name>
-        <docblock line="886">
+        <docblock line="910">
           <description>Get all attribute names that point to system::location</description>
           <long-description/>
-          <tag line="886" name="param" description="" type="string" variable="$model">
+          <tag line="910" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="886" name="return" description="" type="array">
+          <tag line="910" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="890">
+        <argument line="914">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="911" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="935" package="system\models">
         <name>get_model_attr_options</name>
         <full_name>get_model_attr_options</full_name>
-        <docblock line="906">
+        <docblock line="930">
           <description>Get options for model if defined</description>
           <long-description/>
-          <tag line="906" name="param" description="" type="string" variable="$model">
+          <tag line="930" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="906" name="param" description="" type="string" variable="$attr">
+          <tag line="930" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="906" name="return" description="" type="false|array">
+          <tag line="930" name="return" description="" type="false|array">
             <type by_reference="false">false</type>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="911">
+        <argument line="935">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="911">
+        <argument line="935">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="926" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="950" package="system\models">
         <name>get_rel_bound_to</name>
         <full_name>get_rel_bound_to</full_name>
-        <docblock line="921">
+        <docblock line="945">
           <description>Get belongs_to relation that is bound to has_many or has_one relation</description>
           <long-description/>
-          <tag line="921" name="param" description="" type="string" variable="$model">
+          <tag line="945" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="921" name="param" description="" type="string" variable="$rel">
+          <tag line="945" name="param" description="" type="string" variable="$rel">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="921" name="return" description="" type="false|array">
+          <tag line="945" name="return" description="" type="false|array">
             <type by_reference="false">false</type>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="926">
+        <argument line="950">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="926">
+        <argument line="950">
           <name>$rel</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="953" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="977" package="system\models">
         <name>get_rel_bound_to_def</name>
         <full_name>get_rel_bound_to_def</full_name>
-        <docblock line="948">
+        <docblock line="972">
           <description>Get definition of relation bound to another relation</description>
           <long-description/>
-          <tag line="948" name="param" description="" type="string" variable="$model">
+          <tag line="972" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="948" name="param" description="" type="string" variable="$rel">
+          <tag line="972" name="param" description="" type="string" variable="$rel">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="948" name="return" description="" type="array">
+          <tag line="972" name="return" description="" type="array">
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="953">
+        <argument line="977">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="953">
+        <argument line="977">
           <name>$rel</name>
           <default/>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <critical line="36" code="50019">No short description for property $strictly_good_chars</critical>
-      <critical line="39" code="50019">No short description for property $table</critical>
-      <error line="71" code="50015">Argument $model is missing from the Docblock of get_table()</error>
-      <error line="97" code="50010">No DocBlock was found for method is_model_belongs_to_id()</error>
-      <error line="124" code="50010">No DocBlock was found for method get_attr_name_from_belongs_to_rel()</error>
-      <error line="136" code="50015">Argument $model is missing from the Docblock of get_id_col()</error>
-      <error line="151" code="50010">No DocBlock was found for method create()</error>
-      <error line="165" code="50010">No DocBlock was found for method get_all()</error>
-      <error line="276" code="50010">No DocBlock was found for method get_first()</error>
-      <error line="291" code="50010">No DocBlock was found for method count_all()</error>
-      <error line="356" code="50014">Name of argument $attr does not match with the DocBlock's name $name in __get()</error>
-      <notice line="356" code="50013">Parameter $name could not be found in __get()</notice>
-      <error line="453" code="50010">No DocBlock was found for method get_bilinear_table_name()</error>
-      <error line="560" code="50015">Argument $model is missing from the Docblock of prepare_data()</error>
-      <error line="560" code="50015">Argument $data is missing from the Docblock of prepare_data()</error>
-      <error line="720" code="50010">No DocBlock was found for method get_model_attr_list()</error>
-      <error line="754" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $ids_save in relation_save()</error>
-      <error line="754" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $ids_delete in relation_save()</error>
-      <error line="803" code="50016">The type hint of the argument is incorrect for the type definition of the @param tag with argument $ids_new in assign_rel()</error>
-    </parse_markers>
   </file>
-  <file path="class/system/model/callback.php" hash="13cd21c635f90d8f7ddb5f68aa2bfc20" package="system\models">
+  <file path="class/system/model/callback.php" hash="5e19f6df5c019a3368b9a3e837375bf6" package="system\models">
     <docblock line="3">
       <description>Model callback handling</description>
       <long-description/>
@@ -2881,24 +3006,25 @@ something every time befor or after saving object into database&lt;/p&gt;</long-
         <full_name>AFTER_DELETE</full_name>
         <value>'after_delete'</value>
       </constant>
-      <property final="false" static="true" visibility="private" line="22" namespace="System\Model" package="Default">
+      <property final="false" static="true" visibility="private" line="23" namespace="System\Model" package="Default">
         <name>$callbacks</name>
         <default>array(self::BEFORE_SAVE =&gt; array(), self::BEFORE_DELETE =&gt; array(), self::AFTER_SAVE =&gt; array(), self::AFTER_DELETE =&gt; array())</default>
+        <docblock line="22">
+          <description>Callbacks container</description>
+          <long-description/>
+        </docblock>
       </property>
       <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="35" package="system\models">
         <name>add_callback</name>
         <full_name>add_callback</full_name>
-        <docblock line="30">
+        <docblock line="31">
           <description>Add a callback function to some action</description>
           <long-description/>
-          <tag line="30" name="param" description="One of triggers" type="string" variable="$trigger">
+          <tag line="31" name="param" description="One of triggers" type="string" variable="$trigger">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="30" name="param" description="Instance of closure" type="\System\Model\Closure" variable="$lambda">
+          <tag line="31" name="param" description="Instance of closure" type="\System\Model\Closure" variable="$lambda">
             <type by_reference="false">\System\Model\Closure</type>
-          </tag>
-          <tag line="30" name="param" description="Data to be passed to the lambda function" type="array" variable="$data">
-            <type by_reference="false">array</type>
           </tag>
         </docblock>
         <argument line="35">
@@ -2912,36 +3038,34 @@ something every time befor or after saving object into database&lt;/p&gt;</long-
           <type>\System\Model\Closure</type>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="55" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="56" package="system\models">
         <name>run_tasks</name>
         <full_name>run_tasks</full_name>
         <docblock line="51">
           <description>Run callbacks</description>
           <long-description/>
-          <tag line="51" name="param" description="Set of callbacks" type="array" variable="$trigger">
+          <tag line="51" name="param" description="Name of trigger to fier" type="string" variable="$trigger">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="51" name="param" description="Data to pass" type="array" variable="$args">
             <type by_reference="false">array</type>
           </tag>
           <tag line="51" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
-        <argument line="55">
+        <argument line="56">
           <name>$trigger</name>
           <default/>
           <type/>
         </argument>
-        <argument line="55">
+        <argument line="56">
           <name>$args</name>
           <default>array()</default>
           <type>array</type>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="22" code="50018">No DocBlock was found for property $callbacks</error>
-      <notice line="30" code="50013">Parameter $data could not be found in add_callback()</notice>
-      <error line="51" code="50015">Argument $args is missing from the Docblock of run_tasks()</error>
-    </parse_markers>
   </file>
   <file path="class/system/model/color.php" hash="e62c203e1d90b379df331a35796ff2f7" package="system\models">
     <docblock line="3">
@@ -2973,7 +3097,7 @@ something every time befor or after saving object into database&lt;/p&gt;</long-
       </method>
     </class>
   </file>
-  <file path="class/system/model/attr.php" hash="b45e45835efc8464a2d333c3b7a218e9" package="system\models">
+  <file path="class/system/model/attr.php" hash="7c031210cc668a9b0c5f708b383b2a53" package="system\models">
     <docblock line="3">
       <description>Attribute handling</description>
       <long-description/>
@@ -3057,7 +3181,7 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
         <docblock line="75">
           <description>Attribute getter</description>
           <long-description/>
-          <tag line="75" name="param" description="" type="string" variable="$name">
+          <tag line="75" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
           <tag line="75" name="return" description="" type="mixed">
@@ -3076,7 +3200,7 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
         <docblock line="93">
           <description>Attribute setter</description>
           <long-description/>
-          <tag line="93" name="param" description="" type="string" variable="$name">
+          <tag line="93" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
           <tag line="93" name="param" description="" type="mixed" variable="$value">
@@ -3206,6 +3330,16 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
       <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="189" package="system\models">
         <name>get_model_attr_list</name>
         <full_name>get_model_attr_list</full_name>
+        <docblock line="185">
+          <description>Get list of model attributes</description>
+          <long-description/>
+          <tag line="185" name="param" description="Name of model class" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="185" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
         <argument line="189">
           <name>$model</name>
           <default/>
@@ -3215,140 +3349,160 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
       <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="205" package="system\models">
         <name>get_model_attrs</name>
         <full_name>get_model_attrs</full_name>
+        <docblock line="201">
+          <description>Get list of model attributes</description>
+          <long-description/>
+          <tag line="201" name="param" description="Name of model class" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="201" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
         <argument line="205">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="215" package="system\models">
-        <name>get_attrs</name>
-        <full_name>get_attrs</full_name>
-        <docblock line="211">
-          <description>Join all attributes into single array (helper)</description>
-          <long-description/>
-          <tag line="211" name="param" description="" type="array" variable="$attributes">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="211" name="return" description="List of attributes" type="array">
-            <type by_reference="false">array</type>
-          </tag>
-        </docblock>
-        <argument line="215">
-          <name>$attrs</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="228" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="214" package="system\models">
         <name>get_attr_def</name>
         <full_name>get_attr_def</full_name>
-        <docblock line="226">
+        <docblock line="211">
           <description>Gets definition of model attributes</description>
           <long-description/>
+          <tag line="211" name="param" description="Name of model" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
         </docblock>
-        <argument line="228">
+        <argument line="214">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="239" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="225" package="system\models">
         <name>get_attr_type</name>
         <full_name>get_attr_type</full_name>
-        <docblock line="234">
+        <docblock line="220">
           <description>Get type of attribute</description>
           <long-description/>
-          <tag line="234" name="param" description="Name of model class" type="string" variable="$model">
+          <tag line="220" name="param" description="Name of model class" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="234" name="param" description="Name of attribute" type="string" variable="$attr">
+          <tag line="220" name="param" description="Name of attribute" type="string" variable="$attr">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="234" name="return" description="Type of attribute (string) or false on failure" type="mixed">
+          <tag line="220" name="return" description="Type of attribute (string) or false on failure" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="239">
+        <argument line="225">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="239">
+        <argument line="225">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="255" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="242" package="system\models">
         <name>get_attr</name>
         <full_name>get_attr</full_name>
-        <docblock line="251">
+        <docblock line="237">
           <description>Get attr definition</description>
           <long-description/>
-          <tag line="251" name="param" description="" type="string" variable="$model">
+          <tag line="237" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="251" name="param" description="" type="string" variable="$attribute">
+          <tag line="237" name="param" description="" type="string" variable="$attr">
             <type by_reference="false">string</type>
+          </tag>
+          <tag line="237" name="return" description="" type="array">
+            <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="255">
+        <argument line="242">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="255">
+        <argument line="242">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="276" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="264" package="system\models">
         <name>convert_attr_val</name>
         <full_name>convert_attr_val</full_name>
-        <docblock line="271">
+        <docblock line="258">
           <description>Prepare data of a kind to be saved, mostly conversions</description>
           <long-description/>
-          <tag line="271" name="param" description="Set of attribute names" type="array" variable="$keys">
-            <type by_reference="false">array</type>
-          </tag>
-          <tag line="271" name="param" description="Type of data" type="string" variable="$type">
+          <tag line="258" name="param" description="Name of model" type="string" variable="$model">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="271" name="param" description="Object data" type="\System\Model\&amp;array" variable="$dataray">
-            <type by_reference="false">\System\Model\array</type>
+          <tag line="258" name="param" description="Name of attribute" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="258" name="param" description="Value to check and fix" type="mixed" variable="$val">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="258" name="return" description="Fixed value" type="mixed">
+            <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="276">
+        <argument line="264">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="276">
+        <argument line="264">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
-        <argument line="276">
+        <argument line="264">
           <name>$val</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="447" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="439" package="system\models">
         <name>changed</name>
         <full_name>changed</full_name>
-        <argument line="447">
+        <docblock line="435">
+          <description>Did object change since it's construction?</description>
+          <long-description/>
+          <tag line="435" name="param" description="Change status to this" type="string" variable="$status">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="435" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+        <argument line="439">
           <name>$status</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="457" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="453" package="system\models">
         <name>get_attr_name</name>
         <full_name>get_attr_name</full_name>
-        <argument line="457">
+        <docblock line="449">
+          <description>Get translated attribute name</description>
+          <long-description/>
+          <tag line="449" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="449" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="453">
           <name>$attr</name>
           <default/>
           <type/>
@@ -3357,253 +3511,330 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
       <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="463" package="system\models">
         <name>get_attr_desc</name>
         <full_name>get_attr_desc</full_name>
+        <docblock line="459">
+          <description>Get translated attribute description</description>
+          <long-description/>
+          <tag line="459" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="459" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
         <argument line="463">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="469" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="473" package="system\models">
         <name>get_model_name</name>
         <full_name>get_model_name</full_name>
-        <argument line="469">
+        <docblock line="469">
+          <description>Get translated model name</description>
+          <long-description/>
+          <tag line="469" name="param" description="" type="bool" variable="$plural">
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="469" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="473">
           <name>$plural</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="475" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="484" package="system\models">
         <name>get_model_attr_name</name>
         <full_name>get_model_attr_name</full_name>
-        <argument line="475">
+        <docblock line="479">
+          <description>Get translated attribute name</description>
+          <long-description/>
+          <tag line="479" name="param" description="" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="479" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="479" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="484">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="475">
+        <argument line="484">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="481" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="495" package="system\models">
         <name>get_model_attr_desc</name>
         <full_name>get_model_attr_desc</full_name>
-        <argument line="481">
+        <docblock line="490">
+          <description>Get translated attribute description</description>
+          <long-description/>
+          <tag line="490" name="param" description="" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="490" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="490" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="495">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="481">
+        <argument line="495">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="487" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="505" package="system\models">
         <name>get_attr_value</name>
         <full_name>get_attr_value</full_name>
-        <argument line="487">
+        <docblock line="501">
+          <description>Get attribute value</description>
+          <long-description/>
+          <tag line="501" name="param" description="" type="string" variable="$attr">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="501" name="return" description="" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="505">
           <name>$attr</name>
           <default/>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="502" package="system\models">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="System\Model" line="520" package="system\models">
         <name>to_json</name>
         <full_name>to_json</full_name>
-        <docblock line="498">
+        <docblock line="516">
           <description>Encode object into json</description>
           <long-description/>
-          <tag line="498" name="param" description="[true] $encode Encode into JSON string" type="bool" variable="$encode">
+          <tag line="516" name="param" description="[true] $encode Encode into JSON string" type="bool" variable="$encode">
             <type by_reference="false">bool</type>
           </tag>
-          <tag line="498" name="return" description="" type="string|array">
+          <tag line="516" name="return" description="" type="string|array">
             <type by_reference="false">string</type>
             <type by_reference="false">array</type>
           </tag>
         </docblock>
-        <argument line="502">
+        <argument line="520">
           <name>$encode</name>
           <default>true</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="509" package="system\models">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System\Model" line="530" package="system\models">
         <name>check_properties</name>
         <full_name>check_properties</full_name>
-        <argument line="509">
+        <docblock line="527">
+          <description>Check static model class properties</description>
+          <long-description/>
+          <tag line="527" name="param" description="" type="string" variable="$model">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="530">
           <name>$model</name>
           <default/>
           <type/>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="75" code="50014">Name of argument $attr does not match with the DocBlock's name $name in __get()</error>
-      <notice line="75" code="50013">Parameter $name could not be found in __get()</notice>
-      <error line="93" code="50014">Name of argument $attr does not match with the DocBlock's name $name in __set()</error>
-      <notice line="93" code="50013">Parameter $name could not be found in __set()</notice>
-      <error line="189" code="50010">No DocBlock was found for method get_model_attr_list()</error>
-      <error line="205" code="50010">No DocBlock was found for method get_model_attrs()</error>
-      <error line="211" code="50014">Name of argument $attrs does not match with the DocBlock's name $attributes in get_attrs()</error>
-      <notice line="211" code="50013">Parameter $attributes could not be found in get_attrs()</notice>
-      <error line="226" code="50015">Argument $model is missing from the Docblock of get_attr_def()</error>
-      <error line="251" code="50014">Name of argument $attr does not match with the DocBlock's name $attribute in get_attr()</error>
-      <notice line="251" code="50013">Parameter $attribute could not be found in get_attr()</notice>
-      <error line="271" code="50014">Name of argument $model does not match with the DocBlock's name $keys in convert_attr_val()</error>
-      <error line="271" code="50014">Name of argument $attr does not match with the DocBlock's name $type in convert_attr_val()</error>
-      <error line="271" code="50014">Name of argument $val does not match with the DocBlock's name $dataray in convert_attr_val()</error>
-      <notice line="271" code="50013">Parameter $keys could not be found in convert_attr_val()</notice>
-      <notice line="271" code="50013">Parameter $type could not be found in convert_attr_val()</notice>
-      <notice line="271" code="50013">Parameter $dataray could not be found in convert_attr_val()</notice>
-      <error line="447" code="50010">No DocBlock was found for method changed()</error>
-      <error line="457" code="50010">No DocBlock was found for method get_attr_name()</error>
-      <error line="463" code="50010">No DocBlock was found for method get_attr_desc()</error>
-      <error line="469" code="50010">No DocBlock was found for method get_model_name()</error>
-      <error line="475" code="50010">No DocBlock was found for method get_model_attr_name()</error>
-      <error line="481" code="50010">No DocBlock was found for method get_model_attr_desc()</error>
-      <error line="487" code="50010">No DocBlock was found for method get_attr_value()</error>
-      <error line="509" code="50010">No DocBlock was found for method check_properties()</error>
-    </parse_markers>
   </file>
-  <file path="class/system/init.php" hash="98d4e621b00bbdf641feeee32dc89842" package="Default">
-    <include line="38" type="Require Once" package="Default">
+  <file path="class/system/init.php" hash="6fdac9a3fd0ac0d8045c2bf3a517ed52" package="system">
+    <docblock line="3">
+      <description>System static init</description>
+      <long-description/>
+      <tag line="3" name="package" description="system"/>
+    </docblock>
+    <include line="52" type="Require Once" package="Default">
       <name/>
     </include>
-    <include line="43" type="Require Once" package="Default">
+    <include line="57" type="Require Once" package="Default">
       <name/>
     </include>
-    <include line="71" type="Require Once" package="Default">
+    <include line="92" type="Require Once" package="Default">
       <name/>
     </include>
-    <class final="false" abstract="false" namespace="System" line="5" package="Default">
+    <class final="false" abstract="false" namespace="System" line="11" package="system">
       <extends/>
       <name>Init</name>
       <full_name>\System\Init</full_name>
-      <constant namespace="System" line="7" package="Default">
+      <docblock line="8">
+        <description>System static init</description>
+        <long-description/>
+        <tag line="8" name="package" description="system"/>
+      </docblock>
+      <constant namespace="System" line="13" package="system">
         <name>DIR_INIT</name>
         <full_name>DIR_INIT</full_name>
         <value>'/etc/init.d'</value>
       </constant>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="9" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="18" package="system">
         <name>full</name>
         <full_name>full</full_name>
+        <docblock line="15">
+          <description>Full initialization - preload settings, locales, cache and database</description>
+          <long-description/>
+          <tag line="15" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="19" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="30" package="system">
         <name>basic</name>
         <full_name>basic</full_name>
+        <docblock line="27">
+          <description>Basic initialization - preload settings and locales</description>
+          <long-description/>
+          <tag line="27" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="27" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="41" package="system">
         <name>cli</name>
         <full_name>cli</full_name>
+        <docblock line="38">
+          <description>CLI initialization</description>
+          <long-description/>
+          <tag line="38" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="50" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="66" package="system">
         <name>bind_error_handlers</name>
         <full_name>bind_error_handlers</full_name>
+        <docblock line="63">
+          <description>Bind pwf error handlers</description>
+          <long-description/>
+          <tag line="63" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="61" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="82" package="system">
         <name>run</name>
         <full_name>run</full_name>
-        <argument line="61">
+        <docblock line="77">
+          <description>Run list of init scripts</description>
+          <long-description/>
+          <tag line="77" name="param" description="List of init scripts" type="array" variable="$list">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="77" name="param" description="Local data" type="array" variable="$locals">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="77" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="82">
           <name>$list</name>
           <default/>
           <type>array</type>
         </argument>
-        <argument line="61">
+        <argument line="82">
           <name>$locals</name>
           <default/>
           <type>array</type>
         </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/init.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Init</error>
-      <error line="9" code="50010">No DocBlock was found for method full()</error>
-      <error line="19" code="50010">No DocBlock was found for method basic()</error>
-      <error line="27" code="50010">No DocBlock was found for method cli()</error>
-      <error line="50" code="50010">No DocBlock was found for method bind_error_handlers()</error>
-      <error line="61" code="50010">No DocBlock was found for method run()</error>
-    </parse_markers>
   </file>
-  <file path="class/system/loader.php" hash="5f91979bfdc17db8e3eed3a1d20ffc8f" package="Default">
-    <include line="19" type="Require Once" package="Default">
+  <file path="class/system/loader.php" hash="7e48c170ff202d5b4289997f30ebecd9" package="system">
+    <docblock line="3">
+      <description>System class loader</description>
+      <long-description/>
+      <tag line="3" name="package" description="system"/>
+    </docblock>
+    <include line="28" type="Require Once" package="Default">
       <name/>
     </include>
-    <class final="false" abstract="false" namespace="System" line="5" package="Default">
+    <class final="false" abstract="false" namespace="System" line="12" package="system">
       <extends/>
       <name>Loader</name>
       <full_name>\System\Loader</full_name>
-      <constant namespace="System" line="7" package="Default">
+      <docblock line="8">
+        <description>System class loader</description>
+        <long-description/>
+        <tag line="8" name="package" description="system"/>
+        <tag line="8" name="property" description="" type="\System\" variable="$loaded"/>
+      </docblock>
+      <constant namespace="System" line="14" package="system">
         <name>DIR_CLASS</name>
         <full_name>DIR_CLASS</full_name>
         <value>'/lib/class'</value>
       </constant>
-      <property final="false" static="true" visibility="private" line="8" namespace="System" package="Default">
+      <property final="false" static="true" visibility="private" line="17" namespace="System" package="Default">
         <name>$loaded</name>
         <default>false</default>
+        <docblock line="16">
+          <description>Run load all classes only once</description>
+          <long-description/>
+        </docblock>
       </property>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="14" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="23" package="system">
         <name>load_all</name>
         <full_name>load_all</full_name>
-        <docblock line="11">
+        <docblock line="20">
           <description>Load all available classes</description>
           <long-description/>
-          <tag line="11" name="return" description="" type="void">
+          <tag line="20" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="31" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="41" package="system">
         <name>get_class_file_name</name>
         <full_name>get_class_file_name</full_name>
-        <docblock line="26">
+        <docblock line="35">
           <description>Get filesystem representation of class name</description>
           <long-description/>
-          <tag line="26" name="param" description="" type="string" variable="$class_name">
+          <tag line="35" name="param" description="Name of class" type="string" variable="$class_name">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="26" name="todo" description="Rewrite not using regexps"/>
-          <tag line="26" name="return" description="" type="string">
+          <tag line="35" name="param" description="Return file name with suffix" type="bool" variable="$with_suffix">
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="35" name="todo" description="Rewrite not using regexps"/>
+          <tag line="35" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="31">
+        <argument line="41">
           <name>$class_name</name>
           <default/>
           <type/>
         </argument>
-        <argument line="31">
+        <argument line="41">
           <name>$with_suffix</name>
           <default>false</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="41" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="51" package="system">
         <name>get_link_from_model</name>
         <full_name>get_link_from_model</full_name>
-        <docblock line="37">
-          <description>Get class name in link format from model format</description>
-          <long-description/>
-          <tag line="37" name="param" description="" type="string" variable="$model">
-            <type by_reference="false">string</type>
-          </tag>
-          <tag line="37" name="return" description="" type="string">
-            <type by_reference="false">string</type>
-          </tag>
-        </docblock>
-        <argument line="41">
-          <name>$model</name>
-          <default/>
-          <type/>
-        </argument>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="51" package="Default">
-        <name>get_link_from_class</name>
-        <full_name>get_link_from_class</full_name>
         <docblock line="47">
-          <description>Get class name in link format from standart format</description>
+          <description>Get class name in link format from model format</description>
           <long-description/>
           <tag line="47" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
@@ -3618,11 +3849,11 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="61" package="Default">
-        <name>get_class_from_model</name>
-        <full_name>get_class_from_model</full_name>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="61" package="system">
+        <name>get_link_from_class</name>
+        <full_name>get_link_from_class</full_name>
         <docblock line="57">
-          <description>Get class name from model format</description>
+          <description>Get class name in link format from standart format</description>
           <long-description/>
           <tag line="57" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
@@ -3637,43 +3868,38 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="72" package="Default">
-        <name>get_class_trans</name>
-        <full_name>get_class_trans</full_name>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="71" package="system">
+        <name>get_class_from_model</name>
+        <full_name>get_class_from_model</full_name>
         <docblock line="67">
-          <description>Get class translation from class format</description>
+          <description>Get class name from model format</description>
           <long-description/>
-          <tag line="67" name="param" description="Class name in class format" type="string" variable="$class_name">
+          <tag line="67" name="param" description="" type="string" variable="$model">
             <type by_reference="false">string</type>
-          </tag>
-          <tag line="67" name="param" description="Return plural" type="bool" variable="$plural">
-            <type by_reference="false">bool</type>
           </tag>
           <tag line="67" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="72">
-          <name>$class_name</name>
+        <argument line="71">
+          <name>$model</name>
           <default/>
           <type/>
         </argument>
-        <argument line="72">
-          <name>$plural</name>
-          <default>false</default>
-          <type/>
-        </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="82" package="Default">
-        <name>get_model_from_class</name>
-        <full_name>get_model_from_class</full_name>
-        <docblock line="78">
-          <description>Get class name in model format from class format</description>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="82" package="system">
+        <name>get_class_trans</name>
+        <full_name>get_class_trans</full_name>
+        <docblock line="77">
+          <description>Get class translation from class format</description>
           <long-description/>
-          <tag line="78" name="param" description="" type="string" variable="$class_name">
+          <tag line="77" name="param" description="Class name in class format" type="string" variable="$class_name">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="78" name="return" description="" type="string">
+          <tag line="77" name="param" description="Return plural" type="bool" variable="$plural">
+            <type by_reference="false">bool</type>
+          </tag>
+          <tag line="77" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
@@ -3682,14 +3908,32 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
           <default/>
           <type/>
         </argument>
+        <argument line="82">
+          <name>$plural</name>
+          <default>false</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="92" package="system">
+        <name>get_model_from_class</name>
+        <full_name>get_model_from_class</full_name>
+        <docblock line="88">
+          <description>Get class name in model format from class format</description>
+          <long-description/>
+          <tag line="88" name="param" description="" type="string" variable="$class_name">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="88" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="92">
+          <name>$class_name</name>
+          <default/>
+          <type/>
+        </argument>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/loader.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Loader</error>
-      <error line="8" code="50018">No DocBlock was found for property $loaded</error>
-      <error line="26" code="50015">Argument $with_suffix is missing from the Docblock of get_class_file_name()</error>
-    </parse_markers>
   </file>
   <file path="class/system/database/query.php" hash="ca1bd655a4642e240ce8fa92a0f52d9c" package="Default">
     <class final="false" abstract="false" namespace="System\Database" line="5" package="Default">
@@ -5040,21 +5284,32 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
       <error line="41" code="50010">No DocBlock was found for method first()</error>
     </parse_markers>
   </file>
-  <file path="class/system/text.php" hash="c0f84a50727422cee04e07ed6f192b54" package="Default">
-    <class final="false" abstract="false" namespace="System" line="5" package="Default">
+  <file path="class/system/text.php" hash="b36d69bb0689208399081a7ef988ffda" package="system\models">
+    <docblock line="3">
+      <description>Static texts</description>
+      <long-description/>
+      <tag line="3" name="package" description="system"/>
+      <tag line="3" name="subpackage" description="models"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="System" line="13" package="system\models">
       <extends>\System\Model\Database</extends>
       <name>Text</name>
       <full_name>\System\Text</full_name>
-      <property final="false" static="true" visibility="public" line="7" namespace="System" package="Default">
+      <docblock line="9">
+        <description>Static text</description>
+        <long-description/>
+        <tag line="9" name="package" description="system"/>
+        <tag line="9" name="subpackage" description="models"/>
+      </docblock>
+      <property final="false" static="true" visibility="public" line="16" namespace="System" package="Default">
         <name>$attrs</name>
         <default>array("name" =&gt; array('varchar'), "text" =&gt; array('text'), "visible" =&gt; array('bool'))</default>
+        <docblock line="15">
+          <description>Attributes</description>
+          <long-description/>
+        </docblock>
       </property>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/text.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Text</error>
-      <error line="7" code="50018">No DocBlock was found for property $attrs</error>
-    </parse_markers>
   </file>
   <file path="class/system/template/renderer.php" hash="22bb80398c9fe7eda6069ece5c22f993" package="Default">
     <include line="142" type="Include" package="Default">
@@ -6742,283 +6997,328 @@ attribute types among others. This model will be your favourite.&lt;/p&gt;</long
       <error line="27" code="50010">No DocBlock was found for method get_mime()</error>
     </parse_markers>
   </file>
-  <file path="class/system/settings.php" hash="77f2f5bafed4e93bdde8cd54559a5254" package="Default">
-    <constant namespace="global" line="257" package="Default">
+  <file path="class/system/settings.php" hash="7e0ee3523638e2653374a56741aa4275" package="system\core">
+    <docblock line="3">
+      <description>Settings</description>
+      <long-description></long-description>
+      <tag line="3" name="package" description="system"/>
+      <tag line="3" name="subpackage" description="core"/>
+    </docblock>
+    <constant namespace="global" line="273" package="system\core">
       <name>YACMS_ENV</name>
       <full_name>\YACMS_ENV</full_name>
       <value>self::$env</value>
     </constant>
-    <class final="false" abstract="false" namespace="System" line="5" package="Default">
+    <class final="false" abstract="false" namespace="System" line="15" package="system\core">
       <extends/>
       <name>Settings</name>
       <full_name>\System\Settings</full_name>
-      <constant namespace="System" line="7" package="Default">
+      <docblock line="9">
+        <description>System settings</description>
+        <long-description></long-description>
+        <tag line="9" name="package" description="system"/>
+        <tag line="9" name="prop" description="$conf"/>
+        <tag line="9" name="prop" description="$env"/>
+        <tag line="9" name="subpackage" description="core"/>
+      </docblock>
+      <constant namespace="System" line="17" package="system\core">
         <name>CACHE_FILE</name>
         <full_name>CACHE_FILE</full_name>
         <value>'/var/cache/settings'</value>
       </constant>
-      <constant namespace="System" line="8" package="Default">
+      <constant namespace="System" line="18" package="system\core">
         <name>DIR_CONF_ALL</name>
         <full_name>DIR_CONF_ALL</full_name>
         <value>'/etc'</value>
       </constant>
-      <constant namespace="System" line="9" package="Default">
+      <constant namespace="System" line="19" package="system\core">
         <name>DIR_CONF_DIST</name>
         <full_name>DIR_CONF_DIST</full_name>
         <value>'/etc/conf.d'</value>
       </constant>
-      <constant namespace="System" line="10" package="Default">
+      <constant namespace="System" line="20" package="system\core">
         <name>DIR_CONF_GLOBAL</name>
         <full_name>DIR_CONF_GLOBAL</full_name>
         <value>'/etc/conf.d/global'</value>
       </constant>
-      <constant namespace="System" line="11" package="Default">
+      <constant namespace="System" line="21" package="system\core">
         <name>DIR_CONF_ROUTES</name>
         <full_name>DIR_CONF_ROUTES</full_name>
         <value>'/etc/routes.d'</value>
       </constant>
-      <constant namespace="System" line="12" package="Default">
+      <constant namespace="System" line="22" package="system\core">
         <name>DIR_CONF_STATIC</name>
         <full_name>DIR_CONF_STATIC</full_name>
         <value>'/etc/default/conf.d'</value>
       </constant>
-      <constant namespace="System" line="13" package="Default">
+      <constant namespace="System" line="23" package="system\core">
         <name>DIR_ROUTES_STATIC</name>
         <full_name>DIR_ROUTES_STATIC</full_name>
         <value>'/etc/default/routes.d'</value>
       </constant>
-      <constant namespace="System" line="14" package="Default">
+      <constant namespace="System" line="24" package="system\core">
         <name>FILE_VERSION</name>
         <full_name>FILE_VERSION</full_name>
         <value>'/etc/santa/core/pwf/version'</value>
       </constant>
-      <constant namespace="System" line="15" package="Default">
+      <constant namespace="System" line="25" package="system\core">
         <name>CONF_FILE_REGEXP</name>
         <full_name>CONF_FILE_REGEXP</full_name>
         <value>'/^[a-z].*\.json$/i'</value>
       </constant>
-      <property final="false" static="true" visibility="private" line="18" namespace="System" package="Default">
+      <property final="false" static="true" visibility="private" line="28" namespace="System" package="Default">
         <name>$ready</name>
         <default>false</default>
-        <docblock line="17">
+        <docblock line="27">
           <description>Is the module initialized and ready</description>
-          <long-description/>
+          <long-description></long-description>
         </docblock>
       </property>
-      <property final="false" static="true" visibility="private" line="21" namespace="System" package="Default">
+      <property final="false" static="true" visibility="private" line="31" namespace="System" package="Default">
         <name>$version_default</name>
         <default>array("name" =&gt; "pwf", "project" =&gt; "Purple Web Framework", "version" =&gt; "unknown", "branch" =&gt; "local", "origin" =&gt; "local")</default>
-        <docblock line="20">
+        <docblock line="30">
           <description>Default version data to be used</description>
-          <long-description/>
+          <long-description></long-description>
         </docblock>
       </property>
-      <property final="false" static="true" visibility="private" line="30" namespace="System" package="Default">
+      <property final="false" static="true" visibility="private" line="40" namespace="System" package="Default">
         <name>$conf</name>
         <default>array()</default>
+        <docblock line="39">
+          <description>Data</description>
+          <long-description></long-description>
+        </docblock>
       </property>
-      <property final="false" static="true" visibility="private" line="33" namespace="System" package="Default">
+      <property final="false" static="true" visibility="private" line="43" namespace="System" package="Default">
         <name>$env</name>
         <default>'dev'</default>
+        <docblock line="42">
+          <description>Environment</description>
+          <long-description></long-description>
+        </docblock>
       </property>
-      <property final="false" static="true" visibility="private" line="36" namespace="System" package="Default">
-        <name>$noconf</name>
-        <default>array('own', 'datatype_schema', 'pages', 'pass_shield', 'core', 'update_server')</default>
-      </property>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="46" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="49" package="system\core">
         <name>init</name>
         <full_name>init</full_name>
+        <docblock line="46">
+          <description>Initialization</description>
+          <long-description></long-description>
+          <tag line="46" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="61" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="67" package="system\core">
         <name>reload</name>
         <full_name>reload</full_name>
+        <docblock line="64">
+          <description>Reload from all config files</description>
+          <long-description></long-description>
+          <tag line="64" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="104" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="113" package="system\core">
         <name>check_env</name>
         <full_name>check_env</full_name>
+        <docblock line="110">
+          <description>Check if environment config directory exists and try to create it</description>
+          <long-description></long-description>
+          <tag line="110" name="return" description="" type="\System\file">
+            <type by_reference="false">\System\file</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="115" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="124" package="system\core">
         <name>reset</name>
         <full_name>reset</full_name>
-        <docblock line="112">
+        <docblock line="121">
           <description>Reset settings to default</description>
-          <long-description/>
-          <tag line="112" name="return" description="" type="void">
+          <long-description></long-description>
+          <tag line="121" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="121" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="133" package="system\core">
         <name>get_cache_filename</name>
         <full_name>get_cache_filename</full_name>
+        <docblock line="130">
+          <description>Get name of cache file</description>
+          <long-description></long-description>
+          <tag line="130" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="130" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="142" package="system\core">
         <name>cache</name>
         <full_name>cache</full_name>
-        <docblock line="127">
+        <docblock line="139">
           <description>Save config to one cached file</description>
-          <long-description/>
-          <tag line="127" name="return" description="" type="void">
+          <long-description></long-description>
+          <tag line="139" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="144" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="159" package="system\core">
         <name>purge_cache</name>
         <full_name>purge_cache</full_name>
-      </method>
-      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="153" package="Default">
-        <name>check_cache</name>
-        <full_name>check_cache</full_name>
-        <docblock line="150">
-          <description>Check cache file</description>
-          <long-description/>
-          <tag line="150" name="return" description="" type="bool">
+        <docblock line="156">
+          <description>Purge cache file</description>
+          <long-description></long-description>
+          <tag line="156" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="162" package="Default">
+      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="168" package="system\core">
+        <name>check_cache</name>
+        <full_name>check_cache</full_name>
+        <docblock line="165">
+          <description>Check cache file</description>
+          <long-description></long-description>
+          <tag line="165" name="return" description="" type="bool">
+            <type by_reference="false">bool</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="private" namespace="System" line="177" package="system\core">
         <name>load_cache</name>
         <full_name>load_cache</full_name>
-        <docblock line="160">
+        <docblock line="175">
           <description>Load cached data</description>
-          <long-description/>
+          <long-description></long-description>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="172" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="187" package="system\core">
         <name>get</name>
         <full_name>get</full_name>
-        <docblock line="169">
+        <docblock line="184">
           <description>Get configuration of a path</description>
-          <long-description/>
-          <tag line="169" name="param" description="" type="mixed" variable="$path">
+          <long-description></long-description>
+          <tag line="184" name="param" description="" type="mixed" variable="$path">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="172">
+        <argument line="187">
           <name>$path</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="196" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="211" package="system\core">
         <name>set</name>
         <full_name>set</full_name>
-        <docblock line="192">
+        <docblock line="207">
           <description>Change config of a path</description>
-          <long-description/>
-          <tag line="192" name="param" description="" type="array" variable="$path">
+          <long-description></long-description>
+          <tag line="207" name="param" description="" type="array" variable="$path">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="192" name="param" description="" type="mixed" variable="$val">
+          <tag line="207" name="param" description="" type="mixed" variable="$val">
             <type by_reference="false">mixed</type>
           </tag>
         </docblock>
-        <argument line="196">
+        <argument line="211">
           <name>$path</name>
-          <default/>
+          <default></default>
           <type>array</type>
         </argument>
-        <argument line="196">
+        <argument line="211">
           <name>$val</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="216" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="231" package="system\core">
         <name>save</name>
         <full_name>save</full_name>
-        <docblock line="212">
+        <docblock line="227">
           <description>Save module settings</description>
-          <long-description/>
-          <tag line="212" name="param" description="" type="string" variable="$module">
+          <long-description></long-description>
+          <tag line="227" name="param" description="" type="string" variable="$module">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="212" name="param" description="" type="string" variable="$env">
+          <tag line="227" name="param" description="" type="string" variable="$env">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
-        <argument line="216">
+        <argument line="231">
           <name>$module</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
-        <argument line="216">
+        <argument line="231">
           <name>$env</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="235" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="250" package="system\core">
         <name>get_env</name>
         <full_name>get_env</full_name>
-        <docblock line="232">
+        <docblock line="247">
           <description>Return environment name</description>
-          <long-description/>
-          <tag line="232" name="return" description="" type="string">
+          <long-description></long-description>
+          <tag line="247" name="return" description="" type="string">
             <type by_reference="false">string</type>
           </tag>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="244" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="260" package="system\core">
         <name>set_env</name>
         <full_name>set_env</full_name>
-        <docblock line="241">
+        <docblock line="256">
           <description>Force env or read it</description>
-          <long-description/>
-          <tag line="241" name="return" description="" type="void">
+          <long-description></long-description>
+          <tag line="256" name="param" description="Environment name" type="string" variable="$env">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="256" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
         </docblock>
-        <argument line="244">
+        <argument line="260">
           <name>$env</name>
           <default>null</default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="265" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="282" package="system\core">
         <name>env_exists</name>
         <full_name>env_exists</full_name>
-        <docblock line="262">
+        <docblock line="278">
           <description>Does config environment exist</description>
-          <long-description/>
-          <tag line="262" name="return" description="" type="bool">
+          <long-description></long-description>
+          <tag line="278" name="param" description="Environment name" type="string" variable="$env">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="278" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
-        <argument line="265">
+        <argument line="282">
           <name>$env</name>
-          <default/>
+          <default></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="274" package="Default">
+      <method final="false" abstract="false" static="true" visibility="public" namespace="System" line="291" package="system\core">
         <name>is_this_first_run</name>
         <full_name>is_this_first_run</full_name>
-        <docblock line="271">
+        <docblock line="288">
           <description>Has site developer locked the installer?</description>
-          <long-description/>
-          <tag line="271" name="return" description="" type="bool">
+          <long-description></long-description>
+          <tag line="288" name="return" description="" type="bool">
             <type by_reference="false">bool</type>
           </tag>
         </docblock>
       </method>
     </class>
-    <parse_markers>
-      <error line="0" code="50007">No page-level DocBlock was found in file class/system/settings.php</error>
-      <error line="5" code="50000">No DocBlock was found for \System\Settings</error>
-      <error line="30" code="50018">No DocBlock was found for property $conf</error>
-      <error line="33" code="50018">No DocBlock was found for property $env</error>
-      <error line="36" code="50018">No DocBlock was found for property $noconf</error>
-      <error line="46" code="50010">No DocBlock was found for method init()</error>
-      <error line="61" code="50010">No DocBlock was found for method reload()</error>
-      <error line="104" code="50010">No DocBlock was found for method check_env()</error>
-      <error line="121" code="50010">No DocBlock was found for method get_cache_filename()</error>
-      <error line="144" code="50010">No DocBlock was found for method purge_cache()</error>
-      <error line="241" code="50015">Argument $env is missing from the Docblock of set_env()</error>
-      <error line="262" code="50015">Argument $env is missing from the Docblock of env_exists()</error>
-    </parse_markers>
   </file>
   <file path="class/system/error.php" hash="09704d50a591c7a3127a3b15065608d5" package="Default">
     <class final="false" abstract="false" namespace="System" line="5" package="Default">
@@ -16790,6 +17090,7 @@ minimization badly. A test suite is available.&lt;/p&gt;</long-description>
   <package name="modules" full_name="modules"/>
   <package name="santa" full_name="santa"/>
   <package name="system" full_name="system">
+    <package name="core" full_name="system\core"/>
     <package name="files" full_name="system\files"/>
     <package name="media" full_name="system\media"/>
     <package name="models" full_name="system\models"/>
@@ -16828,7 +17129,7 @@ minimization badly. A test suite is available.&lt;/p&gt;</long-description>
     <namespace name="Video" full_name="System\Video"/>
   </namespace>
   <namespace name="global" full_name="global"/>
-  <marker count="3">todo</marker>
+  <marker count="2">todo</marker>
   <marker count="0">fixme</marker>
   <deprecated count="1"/>
 </project>

@@ -37,10 +37,10 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">839</span></a></li>
+                <span class="label label-info">748</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
-                <span class="label label-info">3</span>
+                <span class="label label-info">2</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
                 <span class="label label-info">1</span></a></li>
@@ -64,16 +64,11 @@
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
-<li class="method public "><a href="#method_basic" title="basic :: "><span class="description">basic()
-        </span><pre>basic()</pre></a></li>
-<li class="method public "><a href="#method_bind_error_handlers" title="bind_error_handlers :: "><span class="description">bind_error_handlers()
-        </span><pre>bind_error_handlers()</pre></a></li>
-<li class="method public "><a href="#method_cli" title="cli :: "><span class="description">cli()
-        </span><pre>cli()</pre></a></li>
-<li class="method public "><a href="#method_full" title="full :: "><span class="description">full()
-        </span><pre>full()</pre></a></li>
-<li class="method public "><a href="#method_run" title="run :: "><span class="description">run()
-        </span><pre>run()</pre></a></li>
+<li class="method public "><a href="#method_basic" title="basic :: Basic initialization - preload settings and locales"><span class="description">Basic initialization - preload settings and locales</span><pre>basic()</pre></a></li>
+<li class="method public "><a href="#method_bind_error_handlers" title="bind_error_handlers :: Bind pwf error handlers"><span class="description">Bind pwf error handlers</span><pre>bind_error_handlers()</pre></a></li>
+<li class="method public "><a href="#method_cli" title="cli :: CLI initialization"><span class="description">CLI initialization</span><pre>cli()</pre></a></li>
+<li class="method public "><a href="#method_full" title="full :: Full initialization - preload settings, locales, cache and database"><span class="description">Full initialization - preload settings, locales, cache and database</span><pre>full()</pre></a></li>
+<li class="method public "><a href="#method_run" title="run :: Run list of init scripts"><span class="description">Run list of init scripts</span><pre>run()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -92,47 +87,53 @@
 <span class="divider">\</span><a href="../classes/System.Init.html">Init</a>
 </li>
 </ul>
-<div class="element class"><div class="details">
+<div class="element class">
+<p class="short_description">System static init</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/system.html">system</a></td>
+</tr></table>
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a id="method_basic"></a><div class="element clickable method public method_basic" data-toggle="collapse" data-target=".method_basic .collapse">
-<h2>basic()
-        </h2>
-<pre>basic() </pre>
+<h2>Basic initialization - preload settings and locales</h2>
+<pre>basic() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_bind_error_handlers"></a><div class="element clickable method public method_bind_error_handlers" data-toggle="collapse" data-target=".method_bind_error_handlers .collapse">
-<h2>bind_error_handlers()
-        </h2>
-<pre>bind_error_handlers() </pre>
+<h2>Bind pwf error handlers</h2>
+<pre>bind_error_handlers() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_cli"></a><div class="element clickable method public method_cli" data-toggle="collapse" data-target=".method_cli .collapse">
-<h2>cli()
-        </h2>
-<pre>cli() </pre>
+<h2>CLI initialization</h2>
+<pre>cli() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_full"></a><div class="element clickable method public method_full" data-toggle="collapse" data-target=".method_full .collapse">
-<h2>full()
-        </h2>
-<pre>full() </pre>
+<h2>Full initialization - preload settings, locales, cache and database</h2>
+<pre>full() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_run"></a><div class="element clickable method public method_run" data-toggle="collapse" data-target=".method_run .collapse">
-<h2>run()
-        </h2>
-<pre>run(array $list, array $locals) </pre>
+<h2>Run list of init scripts</h2>
+<pre>run(array $list, array $locals) : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$list</h4></div>
-<div class="subelement argument"><h4>$locals</h4></div>
+<div class="subelement argument">
+<h4>$list</h4>
+<code>array</code><p>List of init scripts</p></div>
+<div class="subelement argument">
+<h4>$locals</h4>
+<code>array</code><p>Local data</p></div>
 </div></div>
 </div>
 <h3>
@@ -143,13 +144,14 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-</div></div>
+</div>
+</div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-05-16T15:00:27+02:00.<br></footer></div>
+            generated on 2013-05-16T15:45:13+02:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -37,10 +37,10 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">839</span></a></li>
+                <span class="label label-info">748</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
-                <span class="label label-info">3</span>
+                <span class="label label-info">2</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
                 <span class="label label-info">1</span></a></li>
@@ -64,18 +64,14 @@
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
-<li class="method public "><a href="#method_check_env" title="check_env :: "><span class="description">check_env()
-        </span><pre>check_env()</pre></a></li>
+<li class="method public "><a href="#method_check_env" title="check_env :: Check if environment config directory exists and try to create it"><span class="description">Check if environment config directory exists and try to create it</span><pre>check_env()</pre></a></li>
 <li class="method public "><a href="#method_env_exists" title="env_exists :: Does config environment exist"><span class="description">Does config environment exist</span><pre>env_exists()</pre></a></li>
 <li class="method public "><a href="#method_get" title="get :: Get configuration of a path"><span class="description">Get configuration of a path</span><pre>get()</pre></a></li>
 <li class="method public "><a href="#method_get_env" title="get_env :: Return environment name"><span class="description">Return environment name</span><pre>get_env()</pre></a></li>
-<li class="method public "><a href="#method_init" title="init :: "><span class="description">init()
-        </span><pre>init()</pre></a></li>
+<li class="method public "><a href="#method_init" title="init :: Initialization"><span class="description">Initialization</span><pre>init()</pre></a></li>
 <li class="method public "><a href="#method_is_this_first_run" title="is_this_first_run :: Has site developer locked the installer?"><span class="description">Has site developer locked the installer?</span><pre>is_this_first_run()</pre></a></li>
-<li class="method public "><a href="#method_purge_cache" title="purge_cache :: "><span class="description">purge_cache()
-        </span><pre>purge_cache()</pre></a></li>
-<li class="method public "><a href="#method_reload" title="reload :: "><span class="description">reload()
-        </span><pre>reload()</pre></a></li>
+<li class="method public "><a href="#method_purge_cache" title="purge_cache :: Purge cache file"><span class="description">Purge cache file</span><pre>purge_cache()</pre></a></li>
+<li class="method public "><a href="#method_reload" title="reload :: Reload from all config files"><span class="description">Reload from all config files</span><pre>reload()</pre></a></li>
 <li class="method public "><a href="#method_reset" title="reset :: Reset settings to default"><span class="description">Reset settings to default</span><pre>reset()</pre></a></li>
 <li class="method public "><a href="#method_save" title="save :: Save module settings"><span class="description">Save module settings</span><pre>save()</pre></a></li>
 <li class="method public "><a href="#method_set" title="set :: Change config of a path"><span class="description">Change config of a path</span><pre>set()</pre></a></li>
@@ -86,8 +82,7 @@
                     <ul>
 <li class="method private "><a href="#method_cache" title="cache :: Save config to one cached file"><span class="description">Save config to one cached file</span><pre>cache()</pre></a></li>
 <li class="method private "><a href="#method_check_cache" title="check_cache :: Check cache file"><span class="description">Check cache file</span><pre>check_cache()</pre></a></li>
-<li class="method private "><a href="#method_get_cache_filename" title="get_cache_filename :: "><span class="description">get_cache_filename()
-        </span><pre>get_cache_filename()</pre></a></li>
+<li class="method private "><a href="#method_get_cache_filename" title="get_cache_filename :: Get name of cache file"><span class="description">Get name of cache file</span><pre>get_cache_filename()</pre></a></li>
 <li class="method private "><a href="#method_load_cache" title="load_cache :: Load cached data"><span class="description">Load cached data</span><pre>load_cache()</pre></a></li>
 </ul>
 </li>
@@ -97,9 +92,8 @@
 </li>
 <li class="nav-header private">» Private
                     <ul>
-<li class="property private "><a href="#property_conf" title="$conf :: "><span class="description"></span><pre>$conf</pre></a></li>
-<li class="property private "><a href="#property_env" title="$env :: "><span class="description"></span><pre>$env</pre></a></li>
-<li class="property private "><a href="#property_noconf" title="$noconf :: "><span class="description"></span><pre>$noconf</pre></a></li>
+<li class="property private "><a href="#property_conf" title="$conf :: Data"><span class="description"></span><pre>$conf</pre></a></li>
+<li class="property private "><a href="#property_env" title="$env :: Environment"><span class="description"></span><pre>$env</pre></a></li>
 <li class="property private "><a href="#property_ready" title="$ready :: Is the module initialized and ready"><span class="description"></span><pre>$ready</pre></a></li>
 <li class="property private "><a href="#property_version_default" title="$version_default :: Default version data to be used"><span class="description"></span><pre>$version_default</pre></a></li>
 </ul>
@@ -130,24 +124,54 @@
 <span class="divider">\</span><a href="../classes/System.Settings.html">Settings</a>
 </li>
 </ul>
-<div class="element class"><div class="details">
+<div class="element class">
+<p class="short_description">System settings</p>
+<div class="details">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/system.core.html">system</a></td>
+</tr>
+<tr>
+<th>prop</th>
+<td>$conf</td>
+</tr>
+<tr>
+<th>prop</th>
+<td>$env</td>
+</tr>
+<tr>
+<th>subpackage</th>
+<td>core</td>
+</tr>
+<tr>
+<th>used_by</th>
+<td>\System\Database</td>
+</tr>
+</table>
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a id="method_check_env"></a><div class="element clickable method public method_check_env" data-toggle="collapse" data-target=".method_check_env .collapse">
-<h2>check_env()
-        </h2>
-<pre>check_env() </pre>
+<h2>Check if environment config directory exists and try to create it</h2>
+<pre>check_env() : \System\file</pre>
 <div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\file</code></div>
+</div></div>
 </div>
 <a id="method_env_exists"></a><div class="element clickable method public method_env_exists" data-toggle="collapse" data-target=".method_env_exists .collapse">
 <h2>Does config environment exist</h2>
-<pre>env_exists($env) : bool</pre>
+<pre>env_exists(string $env) : bool</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$env</h4></div>
+<div class="subelement argument">
+<h4>$env</h4>
+<code>string</code><p>Environment name</p></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
@@ -176,9 +200,8 @@
 </div></div>
 </div>
 <a id="method_init"></a><div class="element clickable method public method_init" data-toggle="collapse" data-target=".method_init .collapse">
-<h2>init()
-        </h2>
-<pre>init() </pre>
+<h2>Initialization</h2>
+<pre>init() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -193,16 +216,18 @@
 </div></div>
 </div>
 <a id="method_purge_cache"></a><div class="element clickable method public method_purge_cache" data-toggle="collapse" data-target=".method_purge_cache .collapse">
-<h2>purge_cache()
-        </h2>
-<pre>purge_cache() </pre>
+<h2>Purge cache file</h2>
+<pre>purge_cache() : bool</pre>
 <div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
 </div>
 <a id="method_reload"></a><div class="element clickable method public method_reload" data-toggle="collapse" data-target=".method_reload .collapse">
-<h2>reload()
-        </h2>
-<pre>reload() </pre>
+<h2>Reload from all config files</h2>
+<pre>reload() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -248,12 +273,14 @@
 </div>
 <a id="method_set_env"></a><div class="element clickable method public method_set_env" data-toggle="collapse" data-target=".method_set_env .collapse">
 <h2>Force env or read it</h2>
-<pre>set_env($env) : void</pre>
+<pre>set_env(string $env) : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$env</h4></div>
+<div class="subelement argument">
+<h4>$env</h4>
+<code>string</code><p>Environment name</p></div>
 </div></div>
 </div>
 <a id="method_cache"></a><div class="element clickable method private method_cache" data-toggle="collapse" data-target=".method_cache .collapse">
@@ -273,11 +300,14 @@
 </div></div>
 </div>
 <a id="method_get_cache_filename"></a><div class="element clickable method private method_get_cache_filename" data-toggle="collapse" data-target=".method_get_cache_filename .collapse">
-<h2>get_cache_filename()
-        </h2>
-<pre>get_cache_filename() </pre>
+<h2>Get name of cache file</h2>
+<pre>get_cache_filename() : string</pre>
 <div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
 </div>
 <a id="method_load_cache"></a><div class="element clickable method private method_load_cache" data-toggle="collapse" data-target=".method_load_cache .collapse">
 <h2>Load cached data</h2>
@@ -299,23 +329,11 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_noconf"> </a><div class="element clickable property private property_noconf" data-toggle="collapse" data-target=".property_noconf .collapse">
-<h2></h2>
-<pre>$noconf </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
 <a id="property_ready"> </a><div class="element clickable property private property_ready" data-toggle="collapse" data-target=".property_ready .collapse">
 <h2></h2>
 <pre>$ready </pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>used_by</th>
-<td>\System\Database</td>
-</tr></table>
-</div></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="property_version_default"> </a><div class="element clickable property private property_version_default" data-toggle="collapse" data-target=".property_version_default .collapse">
 <h2></h2>
@@ -379,13 +397,14 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-</div></div>
+</div>
+</div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-05-16T15:00:28+02:00.<br></footer></div>
+            generated on 2013-05-16T15:45:13+02:00.<br></footer></div>
 </div>
 </body>
 </html>
