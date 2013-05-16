@@ -34,10 +34,6 @@ namespace System\Template
 
 			if ($response->page) {
 				$renderer->layout = $response->page->layout;
-
-				foreach ($response->page->get_meta() as $meta) {
-					$this->content_for("meta", $meta);
-				}
 			}
 
 			$renderer->flush();
@@ -57,6 +53,14 @@ namespace System\Template
 				"scripts" => array(),
 				"output"  => array(),
 			);
+
+			if ($this->response()->page) {
+				$this->content_for('title', $this->response()->page->title);
+
+				foreach ($response->page->get_meta() as $meta) {
+					$this->content_for("meta", $meta);
+				}
+			}
 
 			return $this;
 		}
