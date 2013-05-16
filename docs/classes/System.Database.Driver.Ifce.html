@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phpDocumentor » \System\Database\Driver\DriverInterface</title>
+<title>phpDocumentor » \System\Database\Driver\Ifce</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -73,29 +71,15 @@
         </span><pre>connect()</pre></a></li>
 <li class="method public "><a href="#method_disconnect" title="disconnect :: "><span class="description">disconnect()
         </span><pre>disconnect()</pre></a></li>
-<li class="method public "><a href="#method_escape" title="escape :: "><span class="description">escape()
-        </span><pre>escape()</pre></a></li>
-<li class="method public "><a href="#method_escape_like" title="escape_like :: "><span class="description">escape_like()
-        </span><pre>escape_like()</pre></a></li>
-<li class="method public "><a href="#method_fetch" title="fetch :: "><span class="description">fetch()
-        </span><pre>fetch()</pre></a></li>
-<li class="method public "><a href="#method_get_affected_rows" title="get_affected_rows :: "><span class="description">get_affected_rows()
-        </span><pre>get_affected_rows()</pre></a></li>
-<li class="method public "><a href="#method_get_info" title="get_info :: "><span class="description">get_info()
-        </span><pre>get_info()</pre></a></li>
 <li class="method public "><a href="#method_get_insert_id" title="get_insert_id :: "><span class="description">get_insert_id()
         </span><pre>get_insert_id()</pre></a></li>
-<li class="method public "><a href="#method_get_resource" title="get_resource :: "><span class="description">get_resource()
-        </span><pre>get_resource()</pre></a></li>
-<li class="method public "><a href="#method_get_row_count" title="get_row_count :: "><span class="description">get_row_count()
-        </span><pre>get_row_count()</pre></a></li>
 <li class="method public "><a href="#method_rollback" title="rollback :: "><span class="description">rollback()
         </span><pre>rollback()</pre></a></li>
 </ul>
 </li></ul>
 </div>
 <div class="span8">
-<a id="\System\Database\Driver\DriverInterface"></a><ul class="breadcrumb">
+<a id="\System\Database\Driver\Ifce"></a><ul class="breadcrumb">
 <li>
 <a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
 </li>
@@ -107,7 +91,7 @@
 <span class="divider">\</span><a href="../namespaces/System.Database.Driver.html">Driver</a>
 </li>
 <li class="active">
-<span class="divider">\</span><a href="../classes/System.Database.Driver.DriverInterface.html">DriverInterface</a>
+<span class="divider">\</span><a href="../classes/System.Database.Driver.Ifce.html">Ifce</a>
 </li>
 </ul>
 <div class="element interface"><div class="details">
@@ -145,69 +129,10 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="method_escape"></a><div class="element clickable method public method_escape" data-toggle="collapse" data-target=".method_escape .collapse">
-<h2>escape()
-        </h2>
-<pre>escape($value, $type) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$value</h4></div>
-<div class="subelement argument"><h4>$type</h4></div>
-</div></div>
-</div>
-<a id="method_escape_like"></a><div class="element clickable method public method_escape_like" data-toggle="collapse" data-target=".method_escape_like .collapse">
-<h2>escape_like()
-        </h2>
-<pre>escape_like($value, $pos) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$value</h4></div>
-<div class="subelement argument"><h4>$pos</h4></div>
-</div></div>
-</div>
-<a id="method_fetch"></a><div class="element clickable method public method_fetch" data-toggle="collapse" data-target=".method_fetch .collapse">
-<h2>fetch()
-        </h2>
-<pre>fetch() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
-<a id="method_get_affected_rows"></a><div class="element clickable method public method_get_affected_rows" data-toggle="collapse" data-target=".method_get_affected_rows .collapse">
-<h2>get_affected_rows()
-        </h2>
-<pre>get_affected_rows() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
-<a id="method_get_info"></a><div class="element clickable method public method_get_info" data-toggle="collapse" data-target=".method_get_info .collapse">
-<h2>get_info()
-        </h2>
-<pre>get_info() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
 <a id="method_get_insert_id"></a><div class="element clickable method public method_get_insert_id" data-toggle="collapse" data-target=".method_get_insert_id .collapse">
 <h2>get_insert_id()
         </h2>
 <pre>get_insert_id() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
-<a id="method_get_resource"></a><div class="element clickable method public method_get_resource" data-toggle="collapse" data-target=".method_get_resource .collapse">
-<h2>get_resource()
-        </h2>
-<pre>get_resource() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
-<a id="method_get_row_count"></a><div class="element clickable method public method_get_row_count" data-toggle="collapse" data-target=".method_get_row_count .collapse">
-<h2>get_row_count()
-        </h2>
-<pre>get_row_count() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -224,7 +149,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

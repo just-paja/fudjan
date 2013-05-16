@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -66,19 +64,19 @@
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
+<li class="method public "><a href="#method_check_env" title="check_env :: "><span class="description">check_env()
+        </span><pre>check_env()</pre></a></li>
 <li class="method public "><a href="#method_env_exists" title="env_exists :: Does config environment exist"><span class="description">Does config environment exist</span><pre>env_exists()</pre></a></li>
 <li class="method public "><a href="#method_get" title="get :: Get configuration of a path"><span class="description">Get configuration of a path</span><pre>get()</pre></a></li>
 <li class="method public "><a href="#method_get_env" title="get_env :: Return environment name"><span class="description">Return environment name</span><pre>get_env()</pre></a></li>
 <li class="method public "><a href="#method_init" title="init :: "><span class="description">init()
         </span><pre>init()</pre></a></li>
-<li class="method public "><a href="#method_is_page_tree_ready" title="is_page_tree_ready :: Has site developer defined any pages?"><span class="description">Has site developer defined any pages?</span><pre>is_page_tree_ready()</pre></a></li>
 <li class="method public "><a href="#method_is_this_first_run" title="is_this_first_run :: Has site developer locked the installer?"><span class="description">Has site developer locked the installer?</span><pre>is_this_first_run()</pre></a></li>
 <li class="method public "><a href="#method_purge_cache" title="purge_cache :: "><span class="description">purge_cache()
         </span><pre>purge_cache()</pre></a></li>
 <li class="method public "><a href="#method_reload" title="reload :: "><span class="description">reload()
         </span><pre>reload()</pre></a></li>
-<li class="method public "><a href="#method_reset" title="reset :: "><span class="description">reset()
-        </span><pre>reset()</pre></a></li>
+<li class="method public "><a href="#method_reset" title="reset :: Reset settings to default"><span class="description">Reset settings to default</span><pre>reset()</pre></a></li>
 <li class="method public "><a href="#method_save" title="save :: Save module settings"><span class="description">Save module settings</span><pre>save()</pre></a></li>
 <li class="method public "><a href="#method_set" title="set :: Change config of a path"><span class="description">Change config of a path</span><pre>set()</pre></a></li>
 <li class="method public "><a href="#method_set_env" title="set_env :: Force env or read it"><span class="description">Force env or read it</span><pre>set_env()</pre></a></li>
@@ -101,9 +99,9 @@
                     <ul>
 <li class="property private "><a href="#property_conf" title="$conf :: "><span class="description"></span><pre>$conf</pre></a></li>
 <li class="property private "><a href="#property_env" title="$env :: "><span class="description"></span><pre>$env</pre></a></li>
-<li class="property private "><a href="#property_no_pages" title="$no_pages :: Indicates that there are no pages set"><span class="description"></span><pre>$no_pages</pre></a></li>
 <li class="property private "><a href="#property_noconf" title="$noconf :: "><span class="description"></span><pre>$noconf</pre></a></li>
-<li class="property private "><a href="#property_version_default" title="$version_default :: "><span class="description"></span><pre>$version_default</pre></a></li>
+<li class="property private "><a href="#property_ready" title="$ready :: Is the module initialized and ready"><span class="description"></span><pre>$ready</pre></a></li>
+<li class="property private "><a href="#property_version_default" title="$version_default :: Default version data to be used"><span class="description"></span><pre>$version_default</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -113,6 +111,8 @@
 <li class="constant  "><a href="#constant_CONF_FILE_REGEXP" title="CONF_FILE_REGEXP :: "><span class="description">CONF_FILE_REGEXP</span><pre>CONF_FILE_REGEXP</pre></a></li>
 <li class="constant  "><a href="#constant_DIR_CONF_ALL" title="DIR_CONF_ALL :: "><span class="description">DIR_CONF_ALL</span><pre>DIR_CONF_ALL</pre></a></li>
 <li class="constant  "><a href="#constant_DIR_CONF_DIST" title="DIR_CONF_DIST :: "><span class="description">DIR_CONF_DIST</span><pre>DIR_CONF_DIST</pre></a></li>
+<li class="constant  "><a href="#constant_DIR_CONF_GLOBAL" title="DIR_CONF_GLOBAL :: "><span class="description">DIR_CONF_GLOBAL</span><pre>DIR_CONF_GLOBAL</pre></a></li>
+<li class="constant  "><a href="#constant_DIR_CONF_ROUTES" title="DIR_CONF_ROUTES :: "><span class="description">DIR_CONF_ROUTES</span><pre>DIR_CONF_ROUTES</pre></a></li>
 <li class="constant  "><a href="#constant_DIR_CONF_STATIC" title="DIR_CONF_STATIC :: "><span class="description">DIR_CONF_STATIC</span><pre>DIR_CONF_STATIC</pre></a></li>
 <li class="constant  "><a href="#constant_DIR_ROUTES_STATIC" title="DIR_ROUTES_STATIC :: "><span class="description">DIR_ROUTES_STATIC</span><pre>DIR_ROUTES_STATIC</pre></a></li>
 <li class="constant  "><a href="#constant_FILE_VERSION" title="FILE_VERSION :: "><span class="description">FILE_VERSION</span><pre>FILE_VERSION</pre></a></li>
@@ -133,6 +133,13 @@
 <div class="element class"><div class="details">
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
+<a id="method_check_env"></a><div class="element clickable method public method_check_env" data-toggle="collapse" data-target=".method_check_env .collapse">
+<h2>check_env()
+        </h2>
+<pre>check_env() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="method_env_exists"></a><div class="element clickable method public method_env_exists" data-toggle="collapse" data-target=".method_env_exists .collapse">
 <h2>Does config environment exist</h2>
 <pre>env_exists($env) : bool</pre>
@@ -175,16 +182,6 @@
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="method_is_page_tree_ready"></a><div class="element clickable method public method_is_page_tree_ready" data-toggle="collapse" data-target=".method_is_page_tree_ready .collapse">
-<h2>Has site developer defined any pages?</h2>
-<pre>is_page_tree_ready() : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response"><code>bool</code></div>
-</div></div>
-</div>
 <a id="method_is_this_first_run"></a><div class="element clickable method public method_is_this_first_run" data-toggle="collapse" data-target=".method_is_this_first_run .collapse">
 <h2>Has site developer locked the installer?</h2>
 <pre>is_this_first_run() : bool</pre>
@@ -210,9 +207,8 @@
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_reset"></a><div class="element clickable method public method_reset" data-toggle="collapse" data-target=".method_reset .collapse">
-<h2>reset()
-        </h2>
-<pre>reset() </pre>
+<h2>Reset settings to default</h2>
+<pre>reset() : void</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -303,9 +299,15 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_no_pages"> </a><div class="element clickable property private property_no_pages" data-toggle="collapse" data-target=".property_no_pages .collapse">
+<a id="property_noconf"> </a><div class="element clickable property private property_noconf" data-toggle="collapse" data-target=".property_noconf .collapse">
 <h2></h2>
-<pre>$no_pages </pre>
+<pre>$noconf </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_ready"> </a><div class="element clickable property private property_ready" data-toggle="collapse" data-target=".property_ready .collapse">
+<h2></h2>
+<pre>$ready </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -314,12 +316,6 @@
 <td>\System\Database</td>
 </tr></table>
 </div></div>
-</div>
-<a id="property_noconf"> </a><div class="element clickable property private property_noconf" data-toggle="collapse" data-target=".property_noconf .collapse">
-<h2></h2>
-<pre>$noconf </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="property_version_default"> </a><div class="element clickable property private property_version_default" data-toggle="collapse" data-target=".property_version_default .collapse">
 <h2></h2>
@@ -353,6 +349,18 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="constant_DIR_CONF_GLOBAL"> </a><div class="element clickable constant  constant_DIR_CONF_GLOBAL" data-toggle="collapse" data-target=".constant_DIR_CONF_GLOBAL .collapse">
+<h2>DIR_CONF_GLOBAL</h2>
+<pre>DIR_CONF_GLOBAL </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_DIR_CONF_ROUTES"> </a><div class="element clickable constant  constant_DIR_CONF_ROUTES" data-toggle="collapse" data-target=".constant_DIR_CONF_ROUTES .collapse">
+<h2>DIR_CONF_ROUTES</h2>
+<pre>DIR_CONF_ROUTES </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="constant_DIR_CONF_STATIC"> </a><div class="element clickable constant  constant_DIR_CONF_STATIC" data-toggle="collapse" data-target=".constant_DIR_CONF_STATIC .collapse">
 <h2>DIR_CONF_STATIC</h2>
 <pre>DIR_CONF_STATIC </pre>
@@ -377,7 +385,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -76,6 +74,8 @@
 <li class="method public inherited"><a href="#method_attr_required" title="attr_required :: Is attribute required"><span class="description">Is attribute required</span><pre>attr_required()</pre></a></li>
 <li class="method public inherited"><a href="#method_changed" title="changed :: "><span class="description">changed()
         </span><pre>changed()</pre></a></li>
+<li class="method public inherited"><a href="#method_check_properties" title="check_properties :: "><span class="description">check_properties()
+        </span><pre>check_properties()</pre></a></li>
 <li class="method public inherited"><a href="#method_convert_attr_val" title="convert_attr_val :: Prepare data of a kind to be saved, mostly conversions"><span class="description">Prepare data of a kind to be saved, mostly conversions</span><pre>convert_attr_val()</pre></a></li>
 <li class="method public inherited"><a href="#method_count_all" title="count_all :: "><span class="description">count_all()
         </span><pre>count_all()</pre></a></li>
@@ -86,7 +86,6 @@
 <li class="method public inherited"><a href="#method_find" title="find :: Find model by ID or set of IDs"><span class="description">Find model by ID or set of IDs</span><pre>find()</pre></a></li>
 <li class="method public "><a href="#method_gen_passwd" title="gen_passwd :: Generate random password"><span class="description">Generate random password</span><pre>gen_passwd()</pre></a></li>
 <li class="method public inherited"><a href="#method_gen_seoname" title="gen_seoname :: Replace bad characters and generate seoname from string"><span class="description">Replace bad characters and generate seoname from string</span><pre>gen_seoname()</pre></a></li>
-<li class="method public "><a href="#method_get_active" title="get_active :: Get current active user"><span class="description">Get current active user</span><pre>get_active()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_all" title="get_all :: "><span class="description">get_all()
         </span><pre>get_all()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_all_children" title="get_all_children :: Get all children of Database model"><span class="description">Get all children of Database model</span><pre>get_all_children()</pre></a></li>
@@ -107,7 +106,6 @@
 <li class="method public inherited"><a href="#method_get_data" title="get_data :: Get all object data"><span class="description">Get all object data</span><pre>get_data()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_first" title="get_first :: "><span class="description">get_first()
         </span><pre>get_first()</pre></a></li>
-<li class="method public "><a href="#method_get_flags" title="get_flags :: Get all user flags - some system behavior changes"><span class="description">Get all user flags - some system behavior changes</span><pre>get_flags()</pre></a></li>
 <li class="method public "><a href="#method_get_group_ids" title="get_group_ids :: Get IDs of all system groups"><span class="description">Get IDs of all system groups</span><pre>get_group_ids()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_id_col" title="get_id_col :: Get name of ID column"><span class="description">Get name of ID column</span><pre>get_id_col()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_location_attrs" title="get_location_attrs :: Get all attribute names that point to system::location"><span class="description">Get all attribute names that point to system::location</span><pre>get_location_attrs()</pre></a></li>
@@ -137,19 +135,19 @@
 <li class="method public "><a href="#method_get_seoname" title="get_seoname :: Wrapper for parent::seoname()"><span class="description">Wrapper for parent::seoname()</span><pre>get_seoname()</pre></a></li>
 <li class="method public "><a href="#method_get_setup" title="get_setup :: Get all user settings"><span class="description">Get all user settings</span><pre>get_setup()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_table" title="get_table :: Get name of associated table"><span class="description">Get name of associated table</span><pre>get_table()</pre></a></li>
+<li class="method public "><a href="#method_guest" title="guest :: Create guest user"><span class="description">Create guest user</span><pre>guest()</pre></a></li>
 <li class="method public inherited"><a href="#method_has_attr" title="has_attr :: Instance version of model_attr_exist"><span class="description">Instance version of model_attr_exist</span><pre>has_attr()</pre></a></li>
 <li class="method public "><a href="#method_has_right" title="has_right :: Has user right to do action"><span class="description">Has user right to do action</span><pre>has_right()</pre></a></li>
-<li class="method public "><a href="#method_has_right_to" title="has_right_to :: Static version of System\User::has_right for current user"><span class="description">Static version of System\User::has_right for current user</span><pre>has_right_to()</pre></a></li>
 <li class="method public inherited"><a href="#method_is_model_belongs_to_id" title="is_model_belongs_to_id :: "><span class="description">is_model_belongs_to_id()
         </span><pre>is_model_belongs_to_id()</pre></a></li>
 <li class="method public inherited"><a href="#method_is_new" title="is_new :: Does object have an id?"><span class="description">Does object have an id?</span><pre>is_new()</pre></a></li>
 <li class="method public "><a href="#method_is_root" title="is_root :: Is active user root?"><span class="description">Is active user root?</span><pre>is_root()</pre></a></li>
-<li class="method public "><a href="#method_logged_in" title="logged_in :: Is anyone logged in?"><span class="description">Is anyone logged in?</span><pre>logged_in()</pre></a></li>
 <li class="method public "><a href="#method_login" title="login :: Login selected user"><span class="description">Login selected user</span><pre>login()</pre></a></li>
 <li class="method public "><a href="#method_logout" title="logout :: Logout current active user"><span class="description">Logout current active user</span><pre>logout()</pre></a></li>
 <li class="method public inherited"><a href="#method_reload" title="reload :: Reload object from database"><span class="description">Reload object from database</span><pre>reload()</pre></a></li>
 <li class="method public inherited"><a href="#method_run_tasks" title="run_tasks :: Run callbacks"><span class="description">Run callbacks</span><pre>run_tasks()</pre></a></li>
 <li class="method public inherited"><a href="#method_save" title="save :: Create or update object in database"><span class="description">Create or update object in database</span><pre>save()</pre></a></li>
+<li class="method public inherited"><a href="#method_to_json" title="to_json :: Encode object into json"><span class="description">Encode object into json</span><pre>to_json()</pre></a></li>
 <li class="method public inherited"><a href="#method_update_attrs" title="update_attrs :: Update attributes and distribute all data into object containers"><span class="description">Update attributes and distribute all data into object containers</span><pre>update_attrs()</pre></a></li>
 <li class="method public inherited"><a href="#method_update_check" title="update_check :: Check all attributes and figure out if object is ready to be saved"><span class="description">Check all attributes and figure out if object is ready to be saved</span><pre>update_check()</pre></a></li>
 </ul>
@@ -159,7 +157,6 @@
 </li>
 <li class="nav-header private">» Private
                     <ul>
-<li class="method private "><a href="#method_create_guest" title="create_guest :: Create guest user"><span class="description">Create guest user</span><pre>create_guest()</pre></a></li>
 <li class="method private "><a href="#method_create_session" title="create_session :: Create user session"><span class="description">Create user session</span><pre>create_session()</pre></a></li>
 <li class="method private inherited"><a href="#method_relation_save" title="relation_save :: Save relation"><span class="description">Save relation</span><pre>relation_save()</pre></a></li>
 </ul>
@@ -182,7 +179,6 @@
 <li class="property protected inherited"><a href="#property_obj_attrs" title="$obj_attrs :: Registered object handlers"><span class="description"></span><pre>$obj_attrs</pre></a></li>
 <li class="property protected inherited"><a href="#property_opts" title="$opts :: Secondary data passed to object"><span class="description"></span><pre>$opts</pre></a></li>
 <li class="property protected inherited"><a href="#property_relation_types" title="$relation_types :: Allowed model relation types"><span class="description"></span><pre>$relation_types</pre></a></li>
-<li class="property protected "><a href="#property_required" title="$required :: "><span class="description"></span><pre>$required</pre></a></li>
 <li class="property protected inherited"><a href="#property_table" title="$table :: "><span class="description"></span><pre>$table</pre></a></li>
 <li class="property protected inherited"><a href="#property_tables_generated" title="$tables_generated :: Table names generated by model name"><span class="description"></span><pre>$tables_generated</pre></a></li>
 </ul>
@@ -191,7 +187,6 @@
                     <ul>
 <li class="property private inherited"><a href="#property_bad_chars" title="$bad_chars :: Seoname conflicting characters"><span class="description"></span><pre>$bad_chars</pre></a></li>
 <li class="property private inherited"><a href="#property_callbacks" title="$callbacks :: "><span class="description"></span><pre>$callbacks</pre></a></li>
-<li class="property private "><a href="#property_current_user" title="$current_user :: Current user is placed here"><span class="description"></span><pre>$current_user</pre></a></li>
 <li class="property private inherited"><a href="#property_good_chars" title="$good_chars :: Seoname replace characters"><span class="description"></span><pre>$good_chars</pre></a></li>
 <li class="property private inherited"><a href="#property_quick_conds" title="$quick_conds :: Detault conditions for get_all"><span class="description"></span><pre>$quick_conds</pre></a></li>
 <li class="property private "><a href="#property_rights" title="$rights :: Rights are cached here, within the object"><span class="description"></span><pre>$rights</pre></a></li>
@@ -206,6 +201,7 @@
 <li class="constant  inherited"><a href="#constant_AFTER_SAVE" title="AFTER_SAVE :: "><span class="description">AFTER_SAVE</span><pre>AFTER_SAVE</pre></a></li>
 <li class="constant  inherited"><a href="#constant_BEFORE_DELETE" title="BEFORE_DELETE :: "><span class="description">BEFORE_DELETE</span><pre>BEFORE_DELETE</pre></a></li>
 <li class="constant  inherited"><a href="#constant_BEFORE_SAVE" title="BEFORE_SAVE :: "><span class="description">BEFORE_SAVE</span><pre>BEFORE_SAVE</pre></a></li>
+<li class="constant  "><a href="#constant_COOKIE_USER" title="COOKIE_USER :: "><span class="description">COOKIE_USER</span><pre>COOKIE_USER</pre></a></li>
 <li class="constant  inherited"><a href="#constant_REL_BELONGS_TO" title="REL_BELONGS_TO :: "><span class="description">REL_BELONGS_TO</span><pre>REL_BELONGS_TO</pre></a></li>
 <li class="constant  inherited"><a href="#constant_REL_HAS_MANY" title="REL_HAS_MANY :: "><span class="description">REL_HAS_MANY</span><pre>REL_HAS_MANY</pre></a></li>
 <li class="constant  inherited"><a href="#constant_REL_HAS_ONE" title="REL_HAS_ONE :: "><span class="description">REL_HAS_ONE</span><pre>REL_HAS_ONE</pre></a></li>
@@ -461,6 +457,33 @@ has_many relation is also supported</p></div>
 <div class="subelement argument"><h4>$status</h4></div>
 </div></div>
 </div>
+<a id="method_check_properties"></a><div class="element clickable method public method_check_properties" data-toggle="collapse" data-target=".method_check_properties .collapse">
+<h2>check_properties()
+        </h2>
+<pre>check_properties($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::check_properties()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::check_properties()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::check_properties()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
 <a id="method_convert_attr_val"></a><div class="element clickable method public method_convert_attr_val" data-toggle="collapse" data-target=".method_convert_attr_val .collapse">
 <h2>Prepare data of a kind to be saved, mostly conversions</h2>
 <pre>convert_attr_val($model, $attr, $val) </pre>
@@ -621,16 +644,6 @@ has_many relation is also supported</p></div>
 <code>bool</code><p>Replace even dashes</p></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
-</div></div>
-</div>
-<a id="method_get_active"></a><div class="element clickable method public method_get_active" data-toggle="collapse" data-target=".method_get_active .collapse">
-<h2>Get current active user</h2>
-<pre>get_active() : \System\System\User</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response"><code>\System\System\User</code></div>
 </div></div>
 </div>
 <a id="method_get_all"></a><div class="element clickable method public method_get_all" data-toggle="collapse" data-target=".method_get_all .collapse">
@@ -939,17 +952,6 @@ has_many relation is also supported</p></div>
 <div class="subelement argument"><h4>$opts</h4></div>
 </div></div>
 </div>
-<a id="method_get_flags"></a><div class="element clickable method public method_get_flags" data-toggle="collapse" data-target=".method_get_flags .collapse">
-<h2>Get all user flags - some system behavior changes</h2>
-<pre>get_flags() : string</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>string</code>Space separated flags</div>
-</div></div>
-</div>
 <a id="method_get_group_ids"></a><div class="element clickable method public method_get_group_ids" data-toggle="collapse" data-target=".method_get_group_ids .collapse">
 <h2>Get IDs of all system groups</h2>
 <pre>get_group_ids() : int[]</pre>
@@ -1042,7 +1044,7 @@ has_many relation is also supported</p></div>
 <a id="method_get_model_attr_list"></a><div class="element clickable method public method_get_model_attr_list" data-toggle="collapse" data-target=".method_get_model_attr_list .collapse">
 <h2>get_model_attr_list()
         </h2>
-<pre>get_model_attr_list($model) </pre>
+<pre>get_model_attr_list($model, $sql_format) </pre>
 <div class="labels">
 <span class="label">Inherited</span><span class="label">Static</span>
 </div>
@@ -1054,6 +1056,7 @@ has_many relation is also supported</p></div>
 </tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$model</h4></div>
+<div class="subelement argument"><h4>$sql_format</h4></div>
 </div></div>
 </div>
 <a id="method_get_model_attr_name"></a><div class="element clickable method public method_get_model_attr_name" data-toggle="collapse" data-target=".method_get_model_attr_name .collapse">
@@ -1437,6 +1440,16 @@ has_many relation is also supported</p></div>
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
+<a id="method_guest"></a><div class="element clickable method public method_guest" data-toggle="collapse" data-target=".method_guest .collapse">
+<h2>Create guest user</h2>
+<pre>guest() : \System\System\User</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>\System\System\User</code></div>
+</div></div>
+</div>
 <a id="method_has_attr"></a><div class="element clickable method public method_has_attr" data-toggle="collapse" data-target=".method_has_attr .collapse">
 <h2>Instance version of model_attr_exist</h2>
 <pre>has_attr(string $attr) : bool</pre>
@@ -1464,21 +1477,6 @@ has_many relation is also supported</p></div>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$to</h4>
-<code>string</code>
-</div>
-<h3>Returns</h3>
-<div class="subelement response"><code>bool</code></div>
-</div></div>
-</div>
-<a id="method_has_right_to"></a><div class="element clickable method public method_has_right_to" data-toggle="collapse" data-target=".method_has_right_to .collapse">
-<h2>Static version of System\User::has_right for current user</h2>
-<pre>has_right_to(string $what) : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$what</h4>
 <code>string</code>
 </div>
 <h3>Returns</h3>
@@ -1527,27 +1525,14 @@ has_many relation is also supported</p></div>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
 </div>
-<a id="method_logged_in"></a><div class="element clickable method public method_logged_in" data-toggle="collapse" data-target=".method_logged_in .collapse">
-<h2>Is anyone logged in?</h2>
-<pre>logged_in() : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response"><code>bool</code></div>
-</div></div>
-</div>
 <a id="method_login"></a><div class="element clickable method public method_login" data-toggle="collapse" data-target=".method_login .collapse">
 <h2>Login selected user</h2>
-<pre>login(self $user, string $password) : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
+<pre>login(\System\Http\Request $request, string $password) : bool</pre>
+<div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$user</h4>
-<code>self</code>
-</div>
+<div class="subelement argument"><h4>$request</h4></div>
 <div class="subelement argument">
 <h4>$password</h4>
 <code>string</code>
@@ -1559,7 +1544,7 @@ has_many relation is also supported</p></div>
 <a id="method_logout"></a><div class="element clickable method public method_logout" data-toggle="collapse" data-target=".method_logout .collapse">
 <h2>Logout current active user</h2>
 <pre>logout() : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
+<div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Returns</h3>
@@ -1615,6 +1600,37 @@ has_many relation is also supported</p></div>
 </tr></table>
 <h3>Returns</h3>
 <div class="subelement response"><code>\System\Model\BasicModel</code></div>
+</div></div>
+</div>
+<a id="method_to_json"></a><div class="element clickable method public method_to_json" data-toggle="collapse" data-target=".method_to_json .collapse">
+<h2>Encode object into json</h2>
+<pre>to_json(bool $encode) : string | array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::to_json()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Callback::to_json()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\System\Model\Database::to_json()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$encode</h4>
+<code>bool</code><p>[true] $encode Encode into JSON string</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_update_attrs"></a><div class="element clickable method public method_update_attrs" data-toggle="collapse" data-target=".method_update_attrs .collapse">
@@ -1677,27 +1693,14 @@ has_many relation is also supported</p></div>
 <div class="subelement argument"><h4>$data</h4></div>
 </div></div>
 </div>
-<a id="method_create_guest"></a><div class="element clickable method private method_create_guest" data-toggle="collapse" data-target=".method_create_guest .collapse">
-<h2>Create guest user</h2>
-<pre>create_guest() : \System\System\User</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Returns</h3>
-<div class="subelement response"><code>\System\System\User</code></div>
-</div></div>
-</div>
 <a id="method_create_session"></a><div class="element clickable method private method_create_session" data-toggle="collapse" data-target=".method_create_session .collapse">
 <h2>Create user session</h2>
-<pre>create_session(self $user) : bool</pre>
-<div class="labels"><span class="label">Static</span></div>
+<pre>create_session(\System\Http\Request $request) : bool</pre>
+<div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$user</h4>
-<code>self</code>
-</div>
+<div class="subelement argument"><h4>$request</h4></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
@@ -1915,12 +1918,6 @@ has_many relation is also supported</p></div>
 </tr></table>
 </div></div>
 </div>
-<a id="property_required"> </a><div class="element clickable property protected property_required" data-toggle="collapse" data-target=".property_required .collapse">
-<h2></h2>
-<pre>$required </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
 <a id="property_table"> </a><div class="element clickable property protected property_table" data-toggle="collapse" data-target=".property_table .collapse">
 <h2></h2>
 <pre>$table </pre>
@@ -1980,12 +1977,6 @@ has_many relation is also supported</p></div>
 </tr>
 </table>
 </div></div>
-</div>
-<a id="property_current_user"> </a><div class="element clickable property private property_current_user" data-toggle="collapse" data-target=".property_current_user .collapse">
-<h2></h2>
-<pre>$current_user </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="property_good_chars"> </a><div class="element clickable property private property_good_chars" data-toggle="collapse" data-target=".property_good_chars .collapse">
 <h2></h2>
@@ -2121,6 +2112,12 @@ has_many relation is also supported</p></div>
 </table>
 </div></div>
 </div>
+<a id="constant_COOKIE_USER"> </a><div class="element clickable constant  constant_COOKIE_USER" data-toggle="collapse" data-target=".constant_COOKIE_USER .collapse">
+<h2>COOKIE_USER</h2>
+<pre>COOKIE_USER </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="constant_REL_BELONGS_TO"> </a><div class="element clickable constant  constant_REL_BELONGS_TO" data-toggle="collapse" data-target=".constant_REL_BELONGS_TO .collapse">
 <h2>REL_BELONGS_TO</h2>
 <pre>REL_BELONGS_TO </pre>
@@ -2164,7 +2161,7 @@ has_many relation is also supported</p></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

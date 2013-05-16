@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -106,6 +104,18 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="function_body"></a><div class="element clickable function  function_body" data-toggle="collapse" data-target=".function_body .collapse">
+<h2>body()
+        </h2>
+<pre>body($class, $content) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
 <a id="function_cfg"></a><div class="element clickable function  function_cfg" data-toggle="collapse" data-target=".function_cfg .collapse">
@@ -184,6 +194,17 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
+<a id="function_close"></a><div class="element clickable function  function_close" data-toggle="collapse" data-target=".function_close .collapse">
+<h2>close()
+        </h2>
+<pre>close($tagname) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$tagname</h4></div>
+</div></div>
+</div>
 <a id="function_collect"></a><div class="element clickable function  function_collect" data-toggle="collapse" data-target=".function_collect .collapse">
 <h2>Collect is improved array_map, it is able to run method of object</h2>
 <pre>collect(array $func, array $array, bool $dont_assoc) : array</pre>
@@ -256,38 +277,6 @@
 <div class="subelement response"><code>array</code></div>
 </div></div>
 </div>
-<a id="function_content_for"></a><div class="element clickable function  function_content_for" data-toggle="collapse" data-target=".function_content_for .collapse">
-<h2>content_for()
-        </h2>
-<pre>content_for($place, $content, $overwrite) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::content_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$place</h4></div>
-<div class="subelement argument"><h4>$content</h4></div>
-<div class="subelement argument"><h4>$overwrite</h4></div>
-</div></div>
-</div>
-<a id="function_content_from"></a><div class="element clickable function  function_content_from" data-toggle="collapse" data-target=".function_content_from .collapse">
-<h2>content_from()
-        </h2>
-<pre>content_from($place) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::content_from</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$place</h4></div>
-</div></div>
-</div>
 <a id="function_count_all"></a><div class="element clickable function  function_count_all" data-toggle="collapse" data-target=".function_count_all .collapse">
 <h2>count_all()
         </h2>
@@ -337,6 +326,44 @@
 <code>mixed</code><p>Default value to set</p></div>
 </div></div>
 </div>
+<a id="function_div"></a><div class="element clickable function  function_div" data-toggle="collapse" data-target=".function_div .collapse">
+<h2>Div tag alias</h2>
+<pre>div(string | array $class, string | array $content, string $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="function_doctype"></a><div class="element clickable function  function_doctype" data-toggle="collapse" data-target=".function_doctype .collapse">
+<h2>doctype()
+        </h2>
+<pre>doctype() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="function_dump_table"></a><div class="element clickable function  function_dump_table" data-toggle="collapse" data-target=".function_dump_table .collapse">
+<h2>dump_table()
+        </h2>
+<pre>dump_table(array $values) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$values</h4></div>
+</div></div>
+</div>
 <a id="function_find"></a><div class="element clickable function  function_find" data-toggle="collapse" data-target=".function_find .collapse">
 <h2>find()
         </h2>
@@ -382,6 +409,18 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="function_footer"></a><div class="element clickable function  function_footer" data-toggle="collapse" data-target=".function_footer .collapse">
+<h2>footer()
+        </h2>
+<pre>footer($class, $content) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
 <a id="function_format_date"></a><div class="element clickable function  function_format_date" data-toggle="collapse" data-target=".function_format_date .collapse">
@@ -514,58 +553,68 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="function_heading"></a><div class="element clickable function  function_heading" data-toggle="collapse" data-target=".function_heading .collapse">
-<h2>heading()
+<a id="function_head"></a><div class="element clickable function  function_head" data-toggle="collapse" data-target=".function_head .collapse">
+<h2>head()
         </h2>
-<pre>heading($label, $save_level, $level) </pre>
+<pre>head($content) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::heading</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$save_level</h4></div>
-<div class="subelement argument"><h4>$level</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
-<a id="function_icon"></a><div class="element clickable function  function_icon" data-toggle="collapse" data-target=".function_icon .collapse">
-<h2>icon()
+<a id="function_html"></a><div class="element clickable function  function_html" data-toggle="collapse" data-target=".function_html .collapse">
+<h2>html()
         </h2>
-<pre>icon($icon, $size, array $attrs) </pre>
+<pre>html($lang, $class) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::icon</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$attrs</h4></div>
+<div class="subelement argument"><h4>$lang</h4></div>
+<div class="subelement argument"><h4>$class</h4></div>
 </div></div>
 </div>
-<a id="function_icon_for"></a><div class="element clickable function  function_icon_for" data-toggle="collapse" data-target=".function_icon_for .collapse">
-<h2>icon_for()
+<a id="function_htmlheader"></a><div class="element clickable function  function_htmlheader" data-toggle="collapse" data-target=".function_htmlheader .collapse">
+<h2>htmlheader()
         </h2>
-<pre>icon_for($icon, $size, $url, $label, $object) </pre>
+<pre>htmlheader($class, $content) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::icon_for</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
+</div>
+<a id="function_img"></a><div class="element clickable function  function_img" data-toggle="collapse" data-target=".function_img .collapse">
+<h2>IMG tag alias</h2>
+<pre>img(string $src, string $alt, string | array $class, string $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$src</h4>
+<code>string</code><p>Path to image source</p></div>
+<div class="subelement argument">
+<h4>$alt</h4>
+<code>string</code><p>Alternative text</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the image</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute for image</p></div>
+</div></div>
+</div>
+<a id="function_introduce"></a><div class="element clickable function  function_introduce" data-toggle="collapse" data-target=".function_introduce .collapse">
+<h2>introduce()
+        </h2>
+<pre>introduce() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="function_is_yes"></a><div class="element clickable function  function_is_yes" data-toggle="collapse" data-target=".function_is_yes .collapse">
 <h2>Translate string containing something like 'yes' into bool</h2>
@@ -598,44 +647,6 @@
 <div class="subelement argument"><h4>$lang</h4></div>
 </div></div>
 </div>
-<a id="function_label_for"></a><div class="element clickable function  function_label_for" data-toggle="collapse" data-target=".function_label_for .collapse">
-<h2>label_for()
-        </h2>
-<pre>label_for($icon, $size, $label, $url, $object) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::label_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
-<a id="function_label_right_for"></a><div class="element clickable function  function_label_right_for" data-toggle="collapse" data-target=".function_label_right_for .collapse">
-<h2>label_right_for()
-        </h2>
-<pre>label_right_for($icon, $size, $label, $url, $object) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::label_right_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
 <a id="function_last"></a><div class="element clickable function  function_last" data-toggle="collapse" data-target=".function_last .collapse">
 <h2>Returns last item from array</h2>
 <pre>last(array $array) : mixed</pre>
@@ -651,34 +662,22 @@
 <div class="subelement response"><code>mixed</code></div>
 </div></div>
 </div>
-<a id="function_link_for"></a><div class="element clickable function  function_link_for" data-toggle="collapse" data-target=".function_link_for .collapse">
-<h2>link_for()
-        </h2>
-<pre>link_for($label, $url, $object) </pre>
+<a id="function_li"></a><div class="element clickable function  function_li" data-toggle="collapse" data-target=".function_li .collapse">
+<h2>LI tag alias</h2>
+<pre>li(string | array $content, string | array $class, string $id) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::link_for</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
-<a id="function_logged_in"></a><div class="element clickable function  function_logged_in" data-toggle="collapse" data-target=".function_logged_in .collapse">
-<h2>logged_in()
-        </h2>
-<pre>logged_in() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\User::logged_in</td>
-</tr></table>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the tag</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the tag</p></div>
 </div></div>
 </div>
 <a id="function_members_to_path"></a><div class="element clickable function  function_members_to_path" data-toggle="collapse" data-target=".function_members_to_path .collapse">
@@ -694,21 +693,6 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
-</div></div>
-</div>
-<a id="function_message"></a><div class="element clickable function  function_message" data-toggle="collapse" data-target=".function_message .collapse">
-<h2>message()
-        </h2>
-<pre>message($status, $title, $message, $autohide, $links) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$status</h4></div>
-<div class="subelement argument"><h4>$title</h4></div>
-<div class="subelement argument"><h4>$message</h4></div>
-<div class="subelement argument"><h4>$autohide</h4></div>
-<div class="subelement argument"><h4>$links</h4></div>
 </div></div>
 </div>
 <a id="function_out"></a><div class="element clickable function  function_out" data-toggle="collapse" data-target=".function_out .collapse">
@@ -754,19 +738,6 @@
 <div class="subelement argument">
 <h4>$purge</h4>
 <code>bool</code><p>Skip empty values</p></div>
-</div></div>
-</div>
-<a id="function_path"></a><div class="element clickable function  function_path" data-toggle="collapse" data-target=".function_path .collapse">
-<h2>path()
-        </h2>
-<pre>path() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Page::get_path</td>
-</tr></table>
 </div></div>
 </div>
 <a id="function_read"></a><div class="element clickable function  function_read" data-toggle="collapse" data-target=".function_read .collapse">
@@ -816,23 +787,6 @@
 </div>
 </div></div>
 </div>
-<a id="function_redirect"></a><div class="element clickable function  function_redirect" data-toggle="collapse" data-target=".function_redirect .collapse">
-<h2>redirect()
-        </h2>
-<pre>redirect($url, $code, $when) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Flow::redirect</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$code</h4></div>
-<div class="subelement argument"><h4>$when</h4></div>
-</div></div>
-</div>
 <a id="function_redirect_now"></a><div class="element clickable function  function_redirect_now" data-toggle="collapse" data-target=".function_redirect_now .collapse">
 <h2>redirect_now()
         </h2>
@@ -842,27 +796,11 @@
 <div class="long_description"></div>
 <table class="table table-bordered"><tr>
 <th>alias</th>
-<td>System\Http::redirect</td>
+<td>System\Http\Response::redirect</td>
 </tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$url</h4></div>
 <div class="subelement argument"><h4>$code</h4></div>
-</div></div>
-</div>
-<a id="function_section_heading"></a><div class="element clickable function  function_section_heading" data-toggle="collapse" data-target=".function_section_heading .collapse">
-<h2>section_heading()
-        </h2>
-<pre>section_heading($label, $level) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::section_heading</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$level</h4></div>
 </div></div>
 </div>
 <a id="function_sep"></a><div class="element clickable function  function_sep" data-toggle="collapse" data-target=".function_sep .collapse">
@@ -901,21 +839,6 @@
 <code>string</code><p>Message that will be printed during the process</p></div>
 </div></div>
 </div>
-<a id="function_slot"></a><div class="element clickable function  function_slot" data-toggle="collapse" data-target=".function_slot .collapse">
-<h2>slot()
-        </h2>
-<pre>slot($name) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::slot</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$name</h4></div>
-</div></div>
-</div>
 <a id="function_soprintf"></a><div class="element clickable function  function_soprintf" data-toggle="collapse" data-target=".function_soprintf .collapse">
 <h2>Object version of stprintf - handles System\Model\Attr models</h2>
 <pre>soprintf(string $str, \System\Model\Attr $object, bool $strict, string $prefix) </pre>
@@ -939,6 +862,26 @@
 <h4>$prefix</h4>
 <code>string</code>
 </div>
+</div></div>
+</div>
+<a id="function_span"></a><div class="element clickable function  function_span" data-toggle="collapse" data-target=".function_span .collapse">
+<h2>Span tag alias</h2>
+<pre>span(string | array $class, string | array $content, string $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="function_stprintf"></a><div class="element clickable function  function_stprintf" data-toggle="collapse" data-target=".function_stprintf .collapse">
@@ -993,32 +936,20 @@
 <div class="subelement argument"><h4>$str</h4></div>
 </div></div>
 </div>
-<a id="function_t_message"></a><div class="element clickable function  function_t_message" data-toggle="collapse" data-target=".function_t_message .collapse">
-<h2>t_message()
+<a id="function_to_json"></a><div class="element clickable function  function_to_json" data-toggle="collapse" data-target=".function_to_json .collapse">
+<h2>to_json()
         </h2>
-<pre>t_message($status, $title, $message, $autohide, $links) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$status</h4></div>
-<div class="subelement argument"><h4>$title</h4></div>
-<div class="subelement argument"><h4>$message</h4></div>
-<div class="subelement argument"><h4>$autohide</h4></div>
-<div class="subelement argument"><h4>$links</h4></div>
-</div></div>
-</div>
-<a id="function_title"></a><div class="element clickable function  function_title" data-toggle="collapse" data-target=".function_title .collapse">
-<h2>title()
-        </h2>
-<pre>title() </pre>
+<pre>to_json($value, $encode) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <table class="table table-bordered"><tr>
 <th>alias</th>
-<td>System\Output::title</td>
+<td>System\Template::to_json()</td>
 </tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$value</h4></div>
+<div class="subelement argument"><h4>$encode</h4></div>
 </div></div>
 </div>
 <a id="function_ucfirsts"></a><div class="element clickable function  function_ucfirsts" data-toggle="collapse" data-target=".function_ucfirsts .collapse">
@@ -1039,17 +970,24 @@
 <code>string</code><p>Glue</p></div>
 </div></div>
 </div>
-<a id="function_user"></a><div class="element clickable function  function_user" data-toggle="collapse" data-target=".function_user .collapse">
-<h2>user()
-        </h2>
-<pre>user() </pre>
+<a id="function_ul"></a><div class="element clickable function  function_ul" data-toggle="collapse" data-target=".function_ul .collapse">
+<h2>UL tag alias</h2>
+<pre>ul(string | array $class, string | array $content, string $id) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\User::get_active</td>
-</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="function_v"></a><div class="element clickable function  function_v" data-toggle="collapse" data-target=".function_v .collapse">
@@ -1076,25 +1014,12 @@
 <code>bool</code><p>Return the value if true</p></div>
 </div></div>
 </div>
-<a id="function_yield"></a><div class="element clickable function  function_yield" data-toggle="collapse" data-target=".function_yield .collapse">
-<h2>yield()
-        </h2>
-<pre>yield() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::yield</td>
-</tr></table>
-</div></div>
-</div>
 <h3>
 <i class="icon-custom icon-class"></i> Classes and interfaces</h3>
 <div id="Stag" class="element ajax clickable class">
 <h1>Stag<a href="../classes/Stag.html">¶</a>
 </h1>
-<p class="short_description"></p>
+<p class="short_description">Silent tag class</p>
 <div class="details collapse"></div>
 <a href="../classes/Stag.html" class="more">« More »</a>
 </div>
@@ -1121,15 +1046,15 @@
 </div>
 <h3>
 <i class="icon-custom icon-constant"></i> Constants</h3>
-<a id="constant_NL"> </a><div class="element clickable constant  constant_NL" data-toggle="collapse" data-target=".constant_NL .collapse">
-<h2>NL</h2>
-<pre>NL </pre>
+<a id="constant_H_STATUS_DUMP"> </a><div class="element clickable constant  constant_H_STATUS_DUMP" data-toggle="collapse" data-target=".constant_H_STATUS_DUMP .collapse">
+<h2>H_STATUS_DUMP</h2>
+<pre>H_STATUS_DUMP </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="constant_ROOT"> </a><div class="element clickable constant  constant_ROOT" data-toggle="collapse" data-target=".constant_ROOT .collapse">
-<h2>ROOT</h2>
-<pre>ROOT </pre>
+<a id="constant_NL"> </a><div class="element clickable constant  constant_NL" data-toggle="collapse" data-target=".constant_NL .collapse">
+<h2>NL</h2>
+<pre>NL </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -1169,7 +1094,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:20+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

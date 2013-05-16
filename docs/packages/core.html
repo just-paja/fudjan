@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -66,12 +64,16 @@
 <li class="nav-header">
 <i class="icon-map-marker"></i> Packages</li>
 <li>
-<a href="../packages/core.html" title="core"><i class="icon-folder-open"></i>core</a><ul class="nav nav-list nav-packages"></ul>
+<a href="../packages/core.html" title="core"><i class="icon-folder-open"></i>core</a><ul class="nav nav-list nav-packages"><li>
+<a href="../packages/core.aliases.html" title="aliases"><i class="icon-folder-open"></i>aliases</a><ul class="nav nav-list nav-packages"></ul>
+</li></ul>
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-function"></i> Functions</li>
 <li class="function  "><a href="#function___autoload" title="__autoload :: Class autoloader"><span class="description">Class autoloader</span><pre>__autoload</pre></a></li>
 <li class="function  "><a href="#function_any" title="any :: Does variable contain something?"><span class="description">Does variable contain something?</span><pre>any</pre></a></li>
+<li class="function  "><a href="#function_body" title="body :: "><span class="description">body()
+        </span><pre>body</pre></a></li>
 <li class="function  "><a href="#function_cfg" title="cfg :: "><span class="description">cfg()
         </span><pre>cfg</pre></a></li>
 <li class="function  "><a href="#function_cfgs" title="cfgs :: "><span class="description">cfgs()
@@ -79,23 +81,26 @@
 <li class="function  "><a href="#function_cflc" title="cflc :: Change first letter case into whatever"><span class="description">Change first letter case into whatever</span><pre>cflc</pre></a></li>
 <li class="function  "><a href="#function_clear_this_url" title="clear_this_url :: Reference wrapper for clear_url"><span class="description">Reference wrapper for clear_url</span><pre>clear_this_url</pre></a></li>
 <li class="function  "><a href="#function_clear_url" title="clear_url :: Clear url slashes"><span class="description">Clear url slashes</span><pre>clear_url</pre></a></li>
+<li class="function  "><a href="#function_close" title="close :: "><span class="description">close()
+        </span><pre>close</pre></a></li>
 <li class="function  "><a href="#function_collect" title="collect :: Collect is improved array_map, it is able to run method of object"><span class="description">Collect is improved array_map, it is able to run method of object</span><pre>collect</pre></a></li>
 <li class="function  "><a href="#function_collect_ids" title="collect_ids :: Collect ids of all database models in list"><span class="description">Collect ids of all database models in list</span><pre>collect_ids</pre></a></li>
 <li class="function  "><a href="#function_collect_names" title="collect_names :: Collect names of all database models in list"><span class="description">Collect names of all database models in list</span><pre>collect_names</pre></a></li>
 <li class="function  "><a href="#function_collect_pair" title="collect_pair :: Pair data key:value 1:1"><span class="description">Pair data key:value 1:1</span><pre>collect_pair</pre></a></li>
-<li class="function  "><a href="#function_content_for" title="content_for :: "><span class="description">content_for()
-        </span><pre>content_for</pre></a></li>
-<li class="function  "><a href="#function_content_from" title="content_from :: "><span class="description">content_from()
-        </span><pre>content_from</pre></a></li>
 <li class="function  "><a href="#function_count_all" title="count_all :: "><span class="description">count_all()
         </span><pre>count_all</pre></a></li>
 <li class="function  "><a href="#function_create" title="create :: "><span class="description">create()
         </span><pre>create</pre></a></li>
 <li class="function  "><a href="#function_def" title="def :: Preset variable with default value if not set"><span class="description">Preset variable with default value if not set</span><pre>def</pre></a></li>
+<li class="function  "><a href="#function_div" title="div :: Div tag alias"><span class="description">Div tag alias</span><pre>div</pre></a></li>
+<li class="function  "><a href="#function_doctype" title="doctype :: "><span class="description">doctype()
+        </span><pre>doctype</pre></a></li>
 <li class="function  "><a href="#function_find" title="find :: "><span class="description">find()
         </span><pre>find</pre></a></li>
 <li class="function  "><a href="#function_first" title="first :: Returns first item from array"><span class="description">Returns first item from array</span><pre>first</pre></a></li>
 <li class="function  "><a href="#function_first_key" title="first_key :: Returns first key in array"><span class="description">Returns first key in array</span><pre>first_key</pre></a></li>
+<li class="function  "><a href="#function_footer" title="footer :: "><span class="description">footer()
+        </span><pre>footer</pre></a></li>
 <li class="function  "><a href="#function_format_date" title="format_date :: "><span class="description">format_date()
         </span><pre>format_date</pre></a></li>
 <li class="function  "><a href="#function_gen_random_string" title="gen_random_string :: Generate random string"><span class="description">Generate random string</span><pre>gen_random_string</pre></a></li>
@@ -109,60 +114,42 @@
         </span><pre>get_first</pre></a></li>
 <li class="function  "><a href="#function_give_up" title="give_up :: Kill script with return code"><span class="description">Kill script with return code</span><pre>give_up</pre></a></li>
 <li class="function  "><a href="#function_hash_passwd" title="hash_passwd :: Generate hash of a password"><span class="description">Generate hash of a password</span><pre>hash_passwd</pre></a></li>
-<li class="function  "><a href="#function_heading" title="heading :: "><span class="description">heading()
-        </span><pre>heading</pre></a></li>
-<li class="function  "><a href="#function_icon" title="icon :: "><span class="description">icon()
-        </span><pre>icon</pre></a></li>
-<li class="function  "><a href="#function_icon_for" title="icon_for :: "><span class="description">icon_for()
-        </span><pre>icon_for</pre></a></li>
+<li class="function  "><a href="#function_head" title="head :: "><span class="description">head()
+        </span><pre>head</pre></a></li>
+<li class="function  "><a href="#function_html" title="html :: "><span class="description">html()
+        </span><pre>html</pre></a></li>
+<li class="function  "><a href="#function_htmlheader" title="htmlheader :: "><span class="description">htmlheader()
+        </span><pre>htmlheader</pre></a></li>
+<li class="function  "><a href="#function_img" title="img :: IMG tag alias"><span class="description">IMG tag alias</span><pre>img</pre></a></li>
+<li class="function  "><a href="#function_introduce" title="introduce :: "><span class="description">introduce()
+        </span><pre>introduce</pre></a></li>
 <li class="function  "><a href="#function_is_yes" title="is_yes :: Translate string containing something like 'yes' into bool"><span class="description">Translate string containing something like 'yes' into bool</span><pre>is_yes</pre></a></li>
 <li class="function  "><a href="#function_l" title="l :: "><span class="description">l()
         </span><pre>l</pre></a></li>
-<li class="function  "><a href="#function_label_for" title="label_for :: "><span class="description">label_for()
-        </span><pre>label_for</pre></a></li>
-<li class="function  "><a href="#function_label_right_for" title="label_right_for :: "><span class="description">label_right_for()
-        </span><pre>label_right_for</pre></a></li>
 <li class="function  "><a href="#function_last" title="last :: Returns last item from array"><span class="description">Returns last item from array</span><pre>last</pre></a></li>
-<li class="function  "><a href="#function_link_for" title="link_for :: "><span class="description">link_for()
-        </span><pre>link_for</pre></a></li>
-<li class="function  "><a href="#function_logged_in" title="logged_in :: "><span class="description">logged_in()
-        </span><pre>logged_in</pre></a></li>
+<li class="function  "><a href="#function_li" title="li :: LI tag alias"><span class="description">LI tag alias</span><pre>li</pre></a></li>
 <li class="function  "><a href="#function_members_to_path" title="members_to_path :: Get class path"><span class="description">Get class path</span><pre>members_to_path</pre></a></li>
-<li class="function  "><a href="#function_message" title="message :: "><span class="description">message()
-        </span><pre>message</pre></a></li>
 <li class="function  "><a href="#function_out" title="out :: Output to STDOUT"><span class="description">Output to STDOUT</span><pre>out</pre></a></li>
 <li class="function  "><a href="#function_out_flist" title="out_flist :: Print a set of paired keys and values"><span class="description">Print a set of paired keys and values</span><pre>out_flist</pre></a></li>
-<li class="function  "><a href="#function_path" title="path :: "><span class="description">path()
-        </span><pre>path</pre></a></li>
 <li class="function  "><a href="#function_read" title="read :: Read from user input"><span class="description">Read from user input</span><pre>read</pre></a></li>
 <li class="function  "><a href="#function_read_dir_contents" title="read_dir_contents :: Reads contents of directory"><span class="description">Reads contents of directory</span><pre>read_dir_contents</pre></a></li>
-<li class="function  "><a href="#function_redirect" title="redirect :: "><span class="description">redirect()
-        </span><pre>redirect</pre></a></li>
 <li class="function  "><a href="#function_redirect_now" title="redirect_now :: "><span class="description">redirect_now()
         </span><pre>redirect_now</pre></a></li>
-<li class="function  "><a href="#function_section_heading" title="section_heading :: "><span class="description">section_heading()
-        </span><pre>section_heading</pre></a></li>
 <li class="function  "><a href="#function_sep" title="sep :: Print heading separator to STDOUT"><span class="description">Print heading separator to STDOUT</span><pre>sep</pre></a></li>
 <li class="function  "><a href="#function_show_progress_cli" title="show_progress_cli :: Show progress bar on cli"><span class="description">Show progress bar on cli</span><pre>show_progress_cli</pre></a></li>
-<li class="function  "><a href="#function_slot" title="slot :: "><span class="description">slot()
-        </span><pre>slot</pre></a></li>
 <li class="function  "><a href="#function_soprintf" title="soprintf :: Object version of stprintf - handles System\Model\Attr models"><span class="description">Object version of stprintf - handles System\Model\Attr models</span><pre>soprintf</pre></a></li>
+<li class="function  "><a href="#function_span" title="span :: Span tag alias"><span class="description">Span tag alias</span><pre>span</pre></a></li>
 <li class="function  "><a href="#function_stprintf" title="stprintf :: Print data by keys into string"><span class="description">Print data by keys into string</span><pre>stprintf</pre></a></li>
 <li class="function  "><a href="#function_strlen_binary" title="strlen_binary :: "><span class="description">strlen_binary()
         </span><pre>strlen_binary</pre></a></li>
 <li class="function  "><a href="#function_t" title="t :: "><span class="description">t()
         </span><pre>t</pre></a></li>
-<li class="function  "><a href="#function_t_message" title="t_message :: "><span class="description">t_message()
-        </span><pre>t_message</pre></a></li>
-<li class="function  "><a href="#function_title" title="title :: "><span class="description">title()
-        </span><pre>title</pre></a></li>
+<li class="function  "><a href="#function_to_json" title="to_json :: "><span class="description">to_json()
+        </span><pre>to_json</pre></a></li>
 <li class="function  "><a href="#function_ucfirsts" title="ucfirsts :: Make all first letters uppercase"><span class="description">Make all first letters uppercase</span><pre>ucfirsts</pre></a></li>
-<li class="function  "><a href="#function_user" title="user :: "><span class="description">user()
-        </span><pre>user</pre></a></li>
+<li class="function  "><a href="#function_ul" title="ul :: UL tag alias"><span class="description">UL tag alias</span><pre>ul</pre></a></li>
 <li class="function  "><a href="#function_v" title="v :: Dump function - displays debug info on all arguments"><span class="description">Dump function - displays debug info on all arguments</span><pre>v</pre></a></li>
 <li class="function  "><a href="#function_vout" title="vout :: Output to STDOUT if verbose"><span class="description">Output to STDOUT if verbose</span><pre>vout</pre></a></li>
-<li class="function  "><a href="#function_yield" title="yield :: "><span class="description">yield()
-        </span><pre>yield</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-class"></i> Classes</li>
 <li><a href="#YacmsCLIOptions" title="Container class for commands and options">YacmsCLIOptions</a></li>
@@ -206,6 +193,18 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a id="function_body"></a><div class="element clickable function  function_body" data-toggle="collapse" data-target=".function_body .collapse">
+<h2>body()
+        </h2>
+<pre>body($class, $content) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
 <a id="function_cfg"></a><div class="element clickable function  function_cfg" data-toggle="collapse" data-target=".function_cfg .collapse">
@@ -284,6 +283,17 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
+<a id="function_close"></a><div class="element clickable function  function_close" data-toggle="collapse" data-target=".function_close .collapse">
+<h2>close()
+        </h2>
+<pre>close($tagname) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$tagname</h4></div>
+</div></div>
+</div>
 <a id="function_collect"></a><div class="element clickable function  function_collect" data-toggle="collapse" data-target=".function_collect .collapse">
 <h2>Collect is improved array_map, it is able to run method of object</h2>
 <pre>collect(array $func, array $array, bool $dont_assoc) : array</pre>
@@ -356,38 +366,6 @@
 <div class="subelement response"><code>array</code></div>
 </div></div>
 </div>
-<a id="function_content_for"></a><div class="element clickable function  function_content_for" data-toggle="collapse" data-target=".function_content_for .collapse">
-<h2>content_for()
-        </h2>
-<pre>content_for($place, $content, $overwrite) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::content_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$place</h4></div>
-<div class="subelement argument"><h4>$content</h4></div>
-<div class="subelement argument"><h4>$overwrite</h4></div>
-</div></div>
-</div>
-<a id="function_content_from"></a><div class="element clickable function  function_content_from" data-toggle="collapse" data-target=".function_content_from .collapse">
-<h2>content_from()
-        </h2>
-<pre>content_from($place) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::content_from</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$place</h4></div>
-</div></div>
-</div>
 <a id="function_count_all"></a><div class="element clickable function  function_count_all" data-toggle="collapse" data-target=".function_count_all .collapse">
 <h2>count_all()
         </h2>
@@ -437,6 +415,33 @@
 <code>mixed</code><p>Default value to set</p></div>
 </div></div>
 </div>
+<a id="function_div"></a><div class="element clickable function  function_div" data-toggle="collapse" data-target=".function_div .collapse">
+<h2>Div tag alias</h2>
+<pre>div(string | array $class, string | array $content, string $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="function_doctype"></a><div class="element clickable function  function_doctype" data-toggle="collapse" data-target=".function_doctype .collapse">
+<h2>doctype()
+        </h2>
+<pre>doctype() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="function_find"></a><div class="element clickable function  function_find" data-toggle="collapse" data-target=".function_find .collapse">
 <h2>find()
         </h2>
@@ -482,6 +487,18 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
+</div></div>
+</div>
+<a id="function_footer"></a><div class="element clickable function  function_footer" data-toggle="collapse" data-target=".function_footer .collapse">
+<h2>footer()
+        </h2>
+<pre>footer($class, $content) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
 <a id="function_format_date"></a><div class="element clickable function  function_format_date" data-toggle="collapse" data-target=".function_format_date .collapse">
@@ -614,58 +631,68 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="function_heading"></a><div class="element clickable function  function_heading" data-toggle="collapse" data-target=".function_heading .collapse">
-<h2>heading()
+<a id="function_head"></a><div class="element clickable function  function_head" data-toggle="collapse" data-target=".function_head .collapse">
+<h2>head()
         </h2>
-<pre>heading($label, $save_level, $level) </pre>
+<pre>head($content) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::heading</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$save_level</h4></div>
-<div class="subelement argument"><h4>$level</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
-<a id="function_icon"></a><div class="element clickable function  function_icon" data-toggle="collapse" data-target=".function_icon .collapse">
-<h2>icon()
+<a id="function_html"></a><div class="element clickable function  function_html" data-toggle="collapse" data-target=".function_html .collapse">
+<h2>html()
         </h2>
-<pre>icon($icon, $size, array $attrs) </pre>
+<pre>html($lang, $class) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::icon</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$attrs</h4></div>
+<div class="subelement argument"><h4>$lang</h4></div>
+<div class="subelement argument"><h4>$class</h4></div>
 </div></div>
 </div>
-<a id="function_icon_for"></a><div class="element clickable function  function_icon_for" data-toggle="collapse" data-target=".function_icon_for .collapse">
-<h2>icon_for()
+<a id="function_htmlheader"></a><div class="element clickable function  function_htmlheader" data-toggle="collapse" data-target=".function_htmlheader .collapse">
+<h2>htmlheader()
         </h2>
-<pre>icon_for($icon, $size, $url, $label, $object) </pre>
+<pre>htmlheader($class, $content) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::icon_for</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
+<div class="subelement argument"><h4>$class</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
+</div>
+<a id="function_img"></a><div class="element clickable function  function_img" data-toggle="collapse" data-target=".function_img .collapse">
+<h2>IMG tag alias</h2>
+<pre>img(string $src, string $alt, string | array $class, string $id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$src</h4>
+<code>string</code><p>Path to image source</p></div>
+<div class="subelement argument">
+<h4>$alt</h4>
+<code>string</code><p>Alternative text</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the image</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute for image</p></div>
+</div></div>
+</div>
+<a id="function_introduce"></a><div class="element clickable function  function_introduce" data-toggle="collapse" data-target=".function_introduce .collapse">
+<h2>introduce()
+        </h2>
+<pre>introduce() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="function_is_yes"></a><div class="element clickable function  function_is_yes" data-toggle="collapse" data-target=".function_is_yes .collapse">
 <h2>Translate string containing something like 'yes' into bool</h2>
@@ -698,44 +725,6 @@
 <div class="subelement argument"><h4>$lang</h4></div>
 </div></div>
 </div>
-<a id="function_label_for"></a><div class="element clickable function  function_label_for" data-toggle="collapse" data-target=".function_label_for .collapse">
-<h2>label_for()
-        </h2>
-<pre>label_for($icon, $size, $label, $url, $object) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::label_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
-<a id="function_label_right_for"></a><div class="element clickable function  function_label_right_for" data-toggle="collapse" data-target=".function_label_right_for .collapse">
-<h2>label_right_for()
-        </h2>
-<pre>label_right_for($icon, $size, $label, $url, $object) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::label_right_for</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$icon</h4></div>
-<div class="subelement argument"><h4>$size</h4></div>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
 <a id="function_last"></a><div class="element clickable function  function_last" data-toggle="collapse" data-target=".function_last .collapse">
 <h2>Returns last item from array</h2>
 <pre>last(array $array) : mixed</pre>
@@ -751,34 +740,22 @@
 <div class="subelement response"><code>mixed</code></div>
 </div></div>
 </div>
-<a id="function_link_for"></a><div class="element clickable function  function_link_for" data-toggle="collapse" data-target=".function_link_for .collapse">
-<h2>link_for()
-        </h2>
-<pre>link_for($label, $url, $object) </pre>
+<a id="function_li"></a><div class="element clickable function  function_li" data-toggle="collapse" data-target=".function_li .collapse">
+<h2>LI tag alias</h2>
+<pre>li(string | array $content, string | array $class, string $id) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::link_for</td>
-</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$object</h4></div>
-</div></div>
-</div>
-<a id="function_logged_in"></a><div class="element clickable function  function_logged_in" data-toggle="collapse" data-target=".function_logged_in .collapse">
-<h2>logged_in()
-        </h2>
-<pre>logged_in() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\User::logged_in</td>
-</tr></table>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside</p></div>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the tag</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the tag</p></div>
 </div></div>
 </div>
 <a id="function_members_to_path"></a><div class="element clickable function  function_members_to_path" data-toggle="collapse" data-target=".function_members_to_path .collapse">
@@ -794,21 +771,6 @@
 </div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
-</div></div>
-</div>
-<a id="function_message"></a><div class="element clickable function  function_message" data-toggle="collapse" data-target=".function_message .collapse">
-<h2>message()
-        </h2>
-<pre>message($status, $title, $message, $autohide, $links) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$status</h4></div>
-<div class="subelement argument"><h4>$title</h4></div>
-<div class="subelement argument"><h4>$message</h4></div>
-<div class="subelement argument"><h4>$autohide</h4></div>
-<div class="subelement argument"><h4>$links</h4></div>
 </div></div>
 </div>
 <a id="function_out"></a><div class="element clickable function  function_out" data-toggle="collapse" data-target=".function_out .collapse">
@@ -854,19 +816,6 @@
 <div class="subelement argument">
 <h4>$purge</h4>
 <code>bool</code><p>Skip empty values</p></div>
-</div></div>
-</div>
-<a id="function_path"></a><div class="element clickable function  function_path" data-toggle="collapse" data-target=".function_path .collapse">
-<h2>path()
-        </h2>
-<pre>path() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Page::get_path</td>
-</tr></table>
 </div></div>
 </div>
 <a id="function_read"></a><div class="element clickable function  function_read" data-toggle="collapse" data-target=".function_read .collapse">
@@ -916,23 +865,6 @@
 </div>
 </div></div>
 </div>
-<a id="function_redirect"></a><div class="element clickable function  function_redirect" data-toggle="collapse" data-target=".function_redirect .collapse">
-<h2>redirect()
-        </h2>
-<pre>redirect($url, $code, $when) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Flow::redirect</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$url</h4></div>
-<div class="subelement argument"><h4>$code</h4></div>
-<div class="subelement argument"><h4>$when</h4></div>
-</div></div>
-</div>
 <a id="function_redirect_now"></a><div class="element clickable function  function_redirect_now" data-toggle="collapse" data-target=".function_redirect_now .collapse">
 <h2>redirect_now()
         </h2>
@@ -942,27 +874,11 @@
 <div class="long_description"></div>
 <table class="table table-bordered"><tr>
 <th>alias</th>
-<td>System\Http::redirect</td>
+<td>System\Http\Response::redirect</td>
 </tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$url</h4></div>
 <div class="subelement argument"><h4>$code</h4></div>
-</div></div>
-</div>
-<a id="function_section_heading"></a><div class="element clickable function  function_section_heading" data-toggle="collapse" data-target=".function_section_heading .collapse">
-<h2>section_heading()
-        </h2>
-<pre>section_heading($label, $level) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Template::section_heading</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$label</h4></div>
-<div class="subelement argument"><h4>$level</h4></div>
 </div></div>
 </div>
 <a id="function_sep"></a><div class="element clickable function  function_sep" data-toggle="collapse" data-target=".function_sep .collapse">
@@ -1001,21 +917,6 @@
 <code>string</code><p>Message that will be printed during the process</p></div>
 </div></div>
 </div>
-<a id="function_slot"></a><div class="element clickable function  function_slot" data-toggle="collapse" data-target=".function_slot .collapse">
-<h2>slot()
-        </h2>
-<pre>slot($name) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::slot</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$name</h4></div>
-</div></div>
-</div>
 <a id="function_soprintf"></a><div class="element clickable function  function_soprintf" data-toggle="collapse" data-target=".function_soprintf .collapse">
 <h2>Object version of stprintf - handles System\Model\Attr models</h2>
 <pre>soprintf(string $str, \System\Model\Attr $object, bool $strict, string $prefix) </pre>
@@ -1039,6 +940,26 @@
 <h4>$prefix</h4>
 <code>string</code>
 </div>
+</div></div>
+</div>
+<a id="function_span"></a><div class="element clickable function  function_span" data-toggle="collapse" data-target=".function_span .collapse">
+<h2>Span tag alias</h2>
+<pre>span(string | array $class, string | array $content, string $id) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="function_stprintf"></a><div class="element clickable function  function_stprintf" data-toggle="collapse" data-target=".function_stprintf .collapse">
@@ -1093,32 +1014,20 @@
 <div class="subelement argument"><h4>$str</h4></div>
 </div></div>
 </div>
-<a id="function_t_message"></a><div class="element clickable function  function_t_message" data-toggle="collapse" data-target=".function_t_message .collapse">
-<h2>t_message()
+<a id="function_to_json"></a><div class="element clickable function  function_to_json" data-toggle="collapse" data-target=".function_to_json .collapse">
+<h2>to_json()
         </h2>
-<pre>t_message($status, $title, $message, $autohide, $links) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$status</h4></div>
-<div class="subelement argument"><h4>$title</h4></div>
-<div class="subelement argument"><h4>$message</h4></div>
-<div class="subelement argument"><h4>$autohide</h4></div>
-<div class="subelement argument"><h4>$links</h4></div>
-</div></div>
-</div>
-<a id="function_title"></a><div class="element clickable function  function_title" data-toggle="collapse" data-target=".function_title .collapse">
-<h2>title()
-        </h2>
-<pre>title() </pre>
+<pre>to_json($value, $encode) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <table class="table table-bordered"><tr>
 <th>alias</th>
-<td>System\Output::title</td>
+<td>System\Template::to_json()</td>
 </tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$value</h4></div>
+<div class="subelement argument"><h4>$encode</h4></div>
 </div></div>
 </div>
 <a id="function_ucfirsts"></a><div class="element clickable function  function_ucfirsts" data-toggle="collapse" data-target=".function_ucfirsts .collapse">
@@ -1139,17 +1048,24 @@
 <code>string</code><p>Glue</p></div>
 </div></div>
 </div>
-<a id="function_user"></a><div class="element clickable function  function_user" data-toggle="collapse" data-target=".function_user .collapse">
-<h2>user()
-        </h2>
-<pre>user() </pre>
+<a id="function_ul"></a><div class="element clickable function  function_ul" data-toggle="collapse" data-target=".function_ul .collapse">
+<h2>UL tag alias</h2>
+<pre>ul(string | array $class, string | array $content, string $id) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\User::get_active</td>
-</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$class</h4>
+<code>string</code><code>array</code><p>Classname passed to the div</p></div>
+<div class="subelement argument">
+<h4>$content</h4>
+<code>string</code><code>array</code><p>Content rendered inside div</p></div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code>string</code><p>ID attribute of the div</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="function_v"></a><div class="element clickable function  function_v" data-toggle="collapse" data-target=".function_v .collapse">
@@ -1174,19 +1090,6 @@
 <div class="subelement argument">
 <h4>$return</h4>
 <code>bool</code><p>Return the value if true</p></div>
-</div></div>
-</div>
-<a id="function_yield"></a><div class="element clickable function  function_yield" data-toggle="collapse" data-target=".function_yield .collapse">
-<h2>yield()
-        </h2>
-<pre>yield() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>alias</th>
-<td>System\Output::yield</td>
-</tr></table>
 </div></div>
 </div>
 <h3>
@@ -1219,13 +1122,30 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<ul class="breadcrumb"><li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span><li><a href="../packages/core.html">core</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../packages/core.aliases.html">aliases</a>
+</li>
+</li></ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<div id="Stag" class="element ajax clickable class">
+<h1>Stag<a href="../classes/Stag.html">¶</a>
+</h1>
+<p class="short_description">Silent tag class</p>
+<div class="details collapse"></div>
+<a href="../classes/Stag.html" class="more">« More »</a>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:20+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

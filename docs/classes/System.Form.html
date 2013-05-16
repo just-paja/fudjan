@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -74,10 +72,18 @@
 <li class="method public inherited"><a href="#method_attr_required" title="attr_required :: Is attribute required"><span class="description">Is attribute required</span><pre>attr_required()</pre></a></li>
 <li class="method public inherited"><a href="#method_changed" title="changed :: "><span class="description">changed()
         </span><pre>changed()</pre></a></li>
+<li class="method public inherited"><a href="#method_check_properties" title="check_properties :: "><span class="description">check_properties()
+        </span><pre>check_properties()</pre></a></li>
 <li class="method public "><a href="#method_check_rendering_group" title="check_rendering_group :: Check if form container is on, start it otherwise"><span class="description">Check if form container is on, start it otherwise</span><pre>check_rendering_group()</pre></a></li>
+<li class="method public "><a href="#method_content_for" title="content_for :: "><span class="description">content_for()
+        </span><pre>content_for()</pre></a></li>
 <li class="method public inherited"><a href="#method_convert_attr_val" title="convert_attr_val :: Prepare data of a kind to be saved, mostly conversions"><span class="description">Prepare data of a kind to be saved, mostly conversions</span><pre>convert_attr_val()</pre></a></li>
-<li class="method public "><a href="#method_create_delete_checker" title="create_delete_checker :: "><span class="description">create_delete_checker()
-        </span><pre>create_delete_checker()</pre></a></li>
+<li class="method public "><a href="#method_from_module" title="from_module :: "><span class="description">from_module()
+        </span><pre>from_module()</pre></a></li>
+<li class="method public "><a href="#method_from_request" title="from_request :: "><span class="description">from_request()
+        </span><pre>from_request()</pre></a></li>
+<li class="method public "><a href="#method_from_response" title="from_response :: "><span class="description">from_response()
+        </span><pre>from_response()</pre></a></li>
 <li class="method public "><a href="#method_gen_obj_name" title="gen_obj_name :: Get generic object name"><span class="description">Get generic object name</span><pre>gen_obj_name()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_attr" title="get_attr :: Get attr definition"><span class="description">Get attr definition</span><pre>get_attr()</pre></a></li>
 <li class="method public "><a href="#method_get_attr_data" title="get_attr_data :: "><span class="description">get_attr_data()
@@ -123,8 +129,14 @@
 <li class="method public "><a href="#method_label" title="label :: Add label"><span class="description">Add label</span><pre>label()</pre></a></li>
 <li class="method public "><a href="#method_out" title="out :: Render form or add form to processing"><span class="description">Render form or add form to processing</span><pre>out()</pre></a></li>
 <li class="method public "><a href="#method_passed" title="passed :: Is the form ready for processing"><span class="description">Is the form ready for processing</span><pre>passed()</pre></a></li>
+<li class="method public "><a href="#method_renderer" title="renderer :: "><span class="description">renderer()
+        </span><pre>renderer()</pre></a></li>
 <li class="method public "><a href="#method_report_error" title="report_error :: "><span class="description">report_error()
         </span><pre>report_error()</pre></a></li>
+<li class="method public "><a href="#method_request" title="request :: "><span class="description">request()
+        </span><pre>request()</pre></a></li>
+<li class="method public "><a href="#method_response" title="response :: "><span class="description">response()
+        </span><pre>response()</pre></a></li>
 <li class="method public "><a href="#method_submit" title="submit :: Add common submit button"><span class="description">Add common submit button</span><pre>submit()</pre></a></li>
 <li class="method public "><a href="#method_tab" title="tab :: Start groupping input containers into tab"><span class="description">Start groupping input containers into tab</span><pre>tab()</pre></a></li>
 <li class="method public "><a href="#method_tab_end" title="tab_end :: Stop grouping inputs into current tab"><span class="description">Stop grouping inputs into current tab</span><pre>tab_end()</pre></a></li>
@@ -133,6 +145,7 @@
 <li class="method public "><a href="#method_tab_group_start" title="tab_group_start :: Start groupping tabs into a group"><span class="description">Start groupping tabs into a group</span><pre>tab_group_start()</pre></a></li>
 <li class="method public "><a href="#method_text" title="text :: "><span class="description">text()
         </span><pre>text()</pre></a></li>
+<li class="method public inherited"><a href="#method_to_json" title="to_json :: Encode object into json"><span class="description">Encode object into json</span><pre>to_json()</pre></a></li>
 <li class="method public inherited"><a href="#method_update_attrs" title="update_attrs :: Update attributes and distribute all data into object containers"><span class="description">Update attributes and distribute all data into object containers</span><pre>update_attrs()</pre></a></li>
 </ul>
 </li>
@@ -145,7 +158,7 @@
 <li class="method protected "><a href="#method_get_input_value_by_name" title="get_input_value_by_name :: "><span class="description">get_input_value_by_name()
         </span><pre>get_input_value_by_name()</pre></a></li>
 <li class="method protected "><a href="#method_setup_prefix" title="setup_prefix :: Set default form prefix"><span class="description">Set default form prefix</span><pre>setup_prefix()</pre></a></li>
-<li class="method protected "><a href="#method_take_data_from_input" title="take_data_from_input :: Lookup commited data in input class"><span class="description">Lookup commited data in input class</span><pre>take_data_from_input()</pre></a></li>
+<li class="method protected "><a href="#method_take_data_from_request" title="take_data_from_request :: Lookup commited data in input class"><span class="description">Lookup commited data in input class</span><pre>take_data_from_request()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header private">» Private
@@ -192,7 +205,10 @@
 <li class="property private "><a href="#property_methods_allowed" title="$methods_allowed :: "><span class="description"></span><pre>$methods_allowed</pre></a></li>
 <li class="property private "><a href="#property_objects" title="$objects :: "><span class="description"></span><pre>$objects</pre></a></li>
 <li class="property private "><a href="#property_prefix" title="$prefix :: "><span class="description"></span><pre>$prefix</pre></a></li>
+<li class="property private "><a href="#property_renderer" title="$renderer :: "><span class="description"></span><pre>$renderer</pre></a></li>
 <li class="property private "><a href="#property_rendering" title="$rendering :: "><span class="description"></span><pre>$rendering</pre></a></li>
+<li class="property private "><a href="#property_request" title="$request :: "><span class="description"></span><pre>$request</pre></a></li>
+<li class="property private "><a href="#property_response" title="$response :: "><span class="description"></span><pre>$response</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -354,6 +370,23 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement argument"><h4>$status</h4></div>
 </div></div>
 </div>
+<a id="method_check_properties"></a><div class="element clickable method public method_check_properties" data-toggle="collapse" data-target=".method_check_properties .collapse">
+<h2>check_properties()
+        </h2>
+<pre>check_properties($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::check_properties()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
+</div></div>
+</div>
 <a id="method_check_rendering_group"></a><div class="element clickable method public method_check_rendering_group" data-toggle="collapse" data-target=".method_check_rendering_group .collapse">
 <h2>Check if form container is on, start it otherwise</h2>
 <pre>check_rendering_group(string $type) : void</pre>
@@ -365,6 +398,18 @@ attribute types among others. This model will be your favourite.</p></div>
 <h4>$type</h4>
 <code>string</code>
 </div>
+</div></div>
+</div>
+<a id="method_content_for"></a><div class="element clickable method public method_content_for" data-toggle="collapse" data-target=".method_content_for .collapse">
+<h2>content_for()
+        </h2>
+<pre>content_for($place, $content) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$place</h4></div>
+<div class="subelement argument"><h4>$content</h4></div>
 </div></div>
 </div>
 <a id="method_convert_attr_val"></a><div class="element clickable method public method_convert_attr_val" data-toggle="collapse" data-target=".method_convert_attr_val .collapse">
@@ -385,15 +430,40 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement argument"><h4>$val</h4></div>
 </div></div>
 </div>
-<a id="method_create_delete_checker"></a><div class="element clickable method public method_create_delete_checker" data-toggle="collapse" data-target=".method_create_delete_checker .collapse">
-<h2>create_delete_checker()
+<a id="method_from_module"></a><div class="element clickable method public method_from_module" data-toggle="collapse" data-target=".method_from_module .collapse">
+<h2>from_module()
         </h2>
-<pre>create_delete_checker(array $data) </pre>
+<pre>from_module(\System\Module $module, array $attrs) </pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$data</h4></div>
+<div class="subelement argument"><h4>$module</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_from_request"></a><div class="element clickable method public method_from_request" data-toggle="collapse" data-target=".method_from_request .collapse">
+<h2>from_request()
+        </h2>
+<pre>from_request(\System\Http\Request $request, array $attrs) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$request</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_from_response"></a><div class="element clickable method public method_from_response" data-toggle="collapse" data-target=".method_from_response .collapse">
+<h2>from_response()
+        </h2>
+<pre>from_response(\System\Http\Response $response, array $attrs) </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$response</h4></div>
+<div class="subelement argument"><h4>$attrs</h4></div>
 </div></div>
 </div>
 <a id="method_gen_obj_name"></a><div class="element clickable method public method_gen_obj_name" data-toggle="collapse" data-target=".method_gen_obj_name .collapse">
@@ -837,6 +907,17 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
 </div>
+<a id="method_renderer"></a><div class="element clickable method public method_renderer" data-toggle="collapse" data-target=".method_renderer .collapse">
+<h2>renderer()
+        </h2>
+<pre>renderer(\System\Template\Renderer $renderer) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$renderer</h4></div>
+</div></div>
+</div>
 <a id="method_report_error"></a><div class="element clickable method public method_report_error" data-toggle="collapse" data-target=".method_report_error .collapse">
 <h2>report_error()
         </h2>
@@ -847,6 +928,28 @@ attribute types among others. This model will be your favourite.</p></div>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$input_name</h4></div>
 <div class="subelement argument"><h4>$msg</h4></div>
+</div></div>
+</div>
+<a id="method_request"></a><div class="element clickable method public method_request" data-toggle="collapse" data-target=".method_request .collapse">
+<h2>request()
+        </h2>
+<pre>request(\System\Http\Request $request) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$request</h4></div>
+</div></div>
+</div>
+<a id="method_response"></a><div class="element clickable method public method_response" data-toggle="collapse" data-target=".method_response .collapse">
+<h2>response()
+        </h2>
+<pre>response(\System\Http\Response $response) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$response</h4></div>
 </div></div>
 </div>
 <a id="method_submit"></a><div class="element clickable method public method_submit" data-toggle="collapse" data-target=".method_submit .collapse">
@@ -951,6 +1054,27 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement argument"><h4>$text</h4></div>
 </div></div>
 </div>
+<a id="method_to_json"></a><div class="element clickable method public method_to_json" data-toggle="collapse" data-target=".method_to_json .collapse">
+<h2>Encode object into json</h2>
+<pre>to_json(bool $encode) : string | array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::to_json()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$encode</h4>
+<code>bool</code><p>[true] $encode Encode into JSON string</p>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code><code>array</code>
+</div>
+</div></div>
+</div>
 <a id="method_update_attrs"></a><div class="element clickable method public method_update_attrs" data-toggle="collapse" data-target=".method_update_attrs .collapse">
 <h2>Update attributes and distribute all data into object containers</h2>
 <pre>update_attrs(array $update) : \System\Model\BasicModel</pre>
@@ -1034,9 +1158,9 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="method_take_data_from_input"></a><div class="element clickable method protected method_take_data_from_input" data-toggle="collapse" data-target=".method_take_data_from_input .collapse">
+<a id="method_take_data_from_request"></a><div class="element clickable method protected method_take_data_from_request" data-toggle="collapse" data-target=".method_take_data_from_request .collapse">
 <h2>Lookup commited data in input class</h2>
-<pre>take_data_from_input() : void</pre>
+<pre>take_data_from_request() : void</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -1256,9 +1380,27 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="property_renderer"> </a><div class="element clickable property private property_renderer" data-toggle="collapse" data-target=".property_renderer .collapse">
+<h2></h2>
+<pre>$renderer </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="property_rendering"> </a><div class="element clickable property private property_rendering" data-toggle="collapse" data-target=".property_rendering .collapse">
 <h2></h2>
 <pre>$rendering </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_request"> </a><div class="element clickable property private property_request" data-toggle="collapse" data-target=".property_request .collapse">
+<h2></h2>
+<pre>$request </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_response"> </a><div class="element clickable property private property_response" data-toggle="collapse" data-target=".property_response .collapse">
+<h2></h2>
+<pre>$response </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -1295,7 +1437,7 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:44+02:00.<br></footer></div>
 </div>
 </body>
 </html>

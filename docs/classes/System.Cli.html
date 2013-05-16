@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -68,12 +66,14 @@
                     <ul>
 <li class="method public "><a href="#method_checkout_console_size" title="checkout_console_size :: "><span class="description">checkout_console_size()
         </span><pre>checkout_console_size()</pre></a></li>
+<li class="method public "><a href="#method_do_over" title="do_over :: Iterate action over set of items and display progress"><span class="description">Iterate action over set of items and display progress</span><pre>do_over()</pre></a></li>
 <li class="method public "><a href="#method_get_height" title="get_height :: "><span class="description">get_height()
         </span><pre>get_height()</pre></a></li>
 <li class="method public "><a href="#method_get_width" title="get_width :: "><span class="description">get_width()
         </span><pre>get_width()</pre></a></li>
 <li class="method public "><a href="#method_init" title="init :: "><span class="description">init()
         </span><pre>init()</pre></a></li>
+<li class="method public "><a href="#method_progress" title="progress :: Show progress bar on cli"><span class="description">Show progress bar on cli</span><pre>progress()</pre></a></li>
 <li class="method public "><a href="#method_term_color" title="term_color :: Make text colored in terminal"><span class="description">Make text colored in terminal</span><pre>term_color()</pre></a></li>
 <li class="method public "><a href="#method_term_remove_color" title="term_remove_color :: "><span class="description">term_remove_color()
         </span><pre>term_remove_color()</pre></a></li>
@@ -117,6 +117,24 @@
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="method_do_over"></a><div class="element clickable method public method_do_over" data-toggle="collapse" data-target=".method_do_over .collapse">
+<h2>Iterate action over set of items and display progress</h2>
+<pre>do_over(array $items, \Closure $lambda, $message, array $extra, $silent) : void</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$items</h4>
+<code>array</code><p>Set of items</p></div>
+<div class="subelement argument">
+<h4>$lambda</h4>
+<code>\System\Closure</code><p>Action to perform</p></div>
+<div class="subelement argument"><h4>$message</h4></div>
+<div class="subelement argument"><h4>$extra</h4></div>
+<div class="subelement argument"><h4>$silent</h4></div>
+</div></div>
+</div>
 <a id="method_get_height"></a><div class="element clickable method public method_get_height" data-toggle="collapse" data-target=".method_get_height .collapse">
 <h2>get_height()
         </h2>
@@ -137,6 +155,23 @@
 <pre>init() </pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_progress"></a><div class="element clickable method public method_progress" data-toggle="collapse" data-target=".method_progress .collapse">
+<h2>Show progress bar on cli</h2>
+<pre>progress(int $done, int $total, $msg, $msglen) : void</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$done</h4>
+<code>int</code><p>Count of items, that are done</p></div>
+<div class="subelement argument">
+<h4>$total</h4>
+<code>int</code><p>Total count of items</p></div>
+<div class="subelement argument"><h4>$msg</h4></div>
+<div class="subelement argument"><h4>$msglen</h4></div>
+</div></div>
 </div>
 <a id="method_term_color"></a><div class="element clickable method public method_term_color" data-toggle="collapse" data-target=".method_term_color .collapse">
 <h2>Make text colored in terminal</h2>
@@ -206,7 +241,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

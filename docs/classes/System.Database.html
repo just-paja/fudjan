@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -78,6 +76,8 @@
         </span><pre>get_db()</pre></a></li>
 <li class="method public "><a href="#method_get_insert_id" title="get_insert_id :: "><span class="description">get_insert_id()
         </span><pre>get_insert_id()</pre></a></li>
+<li class="method public "><a href="#method_get_query_record" title="get_query_record :: "><span class="description">get_query_record()
+        </span><pre>get_query_record()</pre></a></li>
 <li class="method public "><a href="#method_init" title="init :: "><span class="description">init()
         </span><pre>init()</pre></a></li>
 <li class="method public "><a href="#method_is_connected" title="is_connected :: "><span class="description">is_connected()
@@ -88,6 +88,8 @@
         </span><pre>num2db()</pre></a></li>
 <li class="method public "><a href="#method_query" title="query :: "><span class="description">query()
         </span><pre>query()</pre></a></li>
+<li class="method public "><a href="#method_seed_initial_data" title="seed_initial_data :: "><span class="description">seed_initial_data()
+        </span><pre>seed_initial_data()</pre></a></li>
 <li class="method public "><a href="#method_simple_insert" title="simple_insert :: "><span class="description">simple_insert()
         </span><pre>simple_insert()</pre></a></li>
 <li class="method public "><a href="#method_simple_update" title="simple_update :: Perform a quick update"><span class="description">Perform a quick update</span><pre>simple_update()</pre></a></li>
@@ -104,8 +106,11 @@
 <li class="nav-header private">» Private
                     <ul>
 <li class="property private "><a href="#property_default_instance" title="$default_instance :: "><span class="description"></span><pre>$default_instance</pre></a></li>
+<li class="property private "><a href="#property_initial_data" title="$initial_data :: "><span class="description"></span><pre>$initial_data</pre></a></li>
 <li class="property private "><a href="#property_instances" title="$instances :: "><span class="description"></span><pre>$instances</pre></a></li>
 <li class="property private "><a href="#property_queries" title="$queries :: "><span class="description"></span><pre>$queries</pre></a></li>
+<li class="property private "><a href="#property_query_record" title="$query_record :: "><span class="description"></span><pre>$query_record</pre></a></li>
+<li class="property private "><a href="#property_ready" title="$ready :: "><span class="description"></span><pre>$ready</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -205,6 +210,13 @@
 <div class="subelement argument"><h4>$db_ident</h4></div>
 </div></div>
 </div>
+<a id="method_get_query_record"></a><div class="element clickable method public method_get_query_record" data-toggle="collapse" data-target=".method_get_query_record .collapse">
+<h2>get_query_record()
+        </h2>
+<pre>get_query_record() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="method_init"></a><div class="element clickable method public method_init" data-toggle="collapse" data-target=".method_init .collapse">
 <h2>init()
         </h2>
@@ -256,6 +268,13 @@
 <div class="subelement argument"><h4>$query</h4></div>
 <div class="subelement argument"><h4>$db_ident</h4></div>
 </div></div>
+</div>
+<a id="method_seed_initial_data"></a><div class="element clickable method public method_seed_initial_data" data-toggle="collapse" data-target=".method_seed_initial_data .collapse">
+<h2>seed_initial_data()
+        </h2>
+<pre>seed_initial_data() </pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_simple_insert"></a><div class="element clickable method public method_simple_insert" data-toggle="collapse" data-target=".method_simple_insert .collapse">
 <h2>simple_insert()
@@ -313,6 +332,12 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="property_initial_data"> </a><div class="element clickable property private property_initial_data" data-toggle="collapse" data-target=".property_initial_data .collapse">
+<h2></h2>
+<pre>$initial_data </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="property_instances"> </a><div class="element clickable property private property_instances" data-toggle="collapse" data-target=".property_instances .collapse">
 <h2></h2>
 <pre>$instances </pre>
@@ -322,6 +347,18 @@
 <a id="property_queries"> </a><div class="element clickable property private property_queries" data-toggle="collapse" data-target=".property_queries .collapse">
 <h2></h2>
 <pre>$queries </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_query_record"> </a><div class="element clickable property private property_query_record" data-toggle="collapse" data-target=".property_query_record .collapse">
+<h2></h2>
+<pre>$query_record </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_ready"> </a><div class="element clickable property private property_ready" data-toggle="collapse" data-target=".property_ready .collapse">
+<h2></h2>
+<pre>$ready </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -346,7 +383,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

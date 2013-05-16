@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -84,11 +82,11 @@
 <i class="icon-custom icon-property"></i> Properties
                     <ul></ul>
 </li>
-<li class="nav-header private">» Private
+<li class="nav-header protected">» Protected
                     <ul>
-<li class="property private "><a href="#property_first" title="$first :: "><span class="description"></span><pre>$first</pre></a></li>
-<li class="property private "><a href="#property_free" title="$free :: "><span class="description"></span><pre>$free</pre></a></li>
-<li class="property private "><a href="#property_res" title="$res :: "><span class="description"></span><pre>$res</pre></a></li>
+<li class="property protected "><a href="#property_first" title="$first :: "><span class="description"></span><pre>$first</pre></a></li>
+<li class="property protected "><a href="#property_free" title="$free :: "><span class="description"></span><pre>$free</pre></a></li>
+<li class="property protected "><a href="#property_res" title="$res :: "><span class="description"></span><pre>$res</pre></a></li>
 </ul>
 </li>
 </ul>
@@ -112,12 +110,13 @@
 <a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
 <h2>__construct()
         </h2>
-<pre>__construct($resource) </pre>
+<pre>__construct($resource, $freeable) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$resource</h4></div>
+<div class="subelement argument"><h4>$freeable</h4></div>
 </div></div>
 </div>
 <a id="method_fetch"></a><div class="element clickable method public method_fetch" data-toggle="collapse" data-target=".method_fetch .collapse">
@@ -167,19 +166,19 @@
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
-<a id="property_first"> </a><div class="element clickable property private property_first" data-toggle="collapse" data-target=".property_first .collapse">
+<a id="property_first"> </a><div class="element clickable property protected property_first" data-toggle="collapse" data-target=".property_first .collapse">
 <h2></h2>
 <pre>$first </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_free"> </a><div class="element clickable property private property_free" data-toggle="collapse" data-target=".property_free .collapse">
+<a id="property_free"> </a><div class="element clickable property protected property_free" data-toggle="collapse" data-target=".property_free .collapse">
 <h2></h2>
 <pre>$free </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_res"> </a><div class="element clickable property private property_res" data-toggle="collapse" data-target=".property_res .collapse">
+<a id="property_res"> </a><div class="element clickable property protected property_res" data-toggle="collapse" data-target=".property_res .collapse">
 <h2></h2>
 <pre>$res </pre>
 <div class="labels"></div>
@@ -191,7 +190,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

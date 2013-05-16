@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -67,14 +65,17 @@
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
 <li class="method public inherited"><a href="#method___construct" title="__construct :: Public constructor"><span class="description">Public constructor</span><pre>__construct()</pre></a></li>
-<li class="method public "><a href="#method___get" title="__get :: Get wrapper that reads dimensions or filesize on request"><span class="description">Get wrapper that reads dimensions or filesize on request</span><pre>__get()</pre></a></li>
+<li class="method public inherited"><a href="#method___get" title="__get :: Attribute getter"><span class="description">Attribute getter</span><pre>__get()</pre></a></li>
 <li class="method public inherited"><a href="#method___set" title="__set :: Attribute setter"><span class="description">Attribute setter</span><pre>__set()</pre></a></li>
 <li class="method public "><a href="#method_allow_save" title="allow_save :: Can image be saved?"><span class="description">Can image be saved?</span><pre>allow_save()</pre></a></li>
 <li class="method public inherited"><a href="#method_attr_exists" title="attr_exists :: Does attribute exist"><span class="description">Does attribute exist</span><pre>attr_exists()</pre></a></li>
 <li class="method public inherited"><a href="#method_attr_required" title="attr_required :: Is attribute required"><span class="description">Is attribute required</span><pre>attr_required()</pre></a></li>
 <li class="method public "><a href="#method_cache" title="cache :: Cache uploaded image in filesystem"><span class="description">Cache uploaded image in filesystem</span><pre>cache()</pre></a></li>
+<li class="method public "><a href="#method_calc_thumb_coords" title="calc_thumb_coords :: Calculate target thumb size and coordinates"><span class="description">Calculate target thumb size and coordinates</span><pre>calc_thumb_coords()</pre></a></li>
 <li class="method public inherited"><a href="#method_changed" title="changed :: "><span class="description">changed()
         </span><pre>changed()</pre></a></li>
+<li class="method public inherited"><a href="#method_check_properties" title="check_properties :: "><span class="description">check_properties()
+        </span><pre>check_properties()</pre></a></li>
 <li class="method public inherited"><a href="#method_convert_attr_val" title="convert_attr_val :: Prepare data of a kind to be saved, mostly conversions"><span class="description">Prepare data of a kind to be saved, mostly conversions</span><pre>convert_attr_val()</pre></a></li>
 <li class="method public "><a href="#method_from_json" title="from_json :: Create image instance from JSON"><span class="description">Create image instance from JSON</span><pre>from_json()</pre></a></li>
 <li class="method public "><a href="#method_from_path" title="from_path :: Create image instance from path."><span class="description">Create image instance from path.</span><pre>from_path()</pre></a></li>
@@ -92,6 +93,7 @@
 <li class="method public inherited"><a href="#method_get_attrs" title="get_attrs :: Join all attributes into single array (helper)"><span class="description">Join all attributes into single array (helper)</span><pre>get_attrs()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_data" title="get_data :: Get all object data"><span class="description">Get all object data</span><pre>get_data()</pre></a></li>
 <li class="method public "><a href="#method_get_format" title="get_format :: Get image format"><span class="description">Get image format</span><pre>get_format()</pre></a></li>
+<li class="method public "><a href="#method_get_image_resource" title="get_image_resource :: Get image GD resource"><span class="description">Get image GD resource</span><pre>get_image_resource()</pre></a></li>
 <li class="method public "><a href="#method_get_image_size" title="get_image_size :: Get size of image"><span class="description">Get size of image</span><pre>get_image_size()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_model_attr_desc" title="get_model_attr_desc :: "><span class="description">get_model_attr_desc()
         </span><pre>get_model_attr_desc()</pre></a></li>
@@ -112,6 +114,10 @@
 <li class="method public "><a href="#method_is_to_be_deleted" title="is_to_be_deleted :: Is image supposed to be deleted?"><span class="description">Is image supposed to be deleted?</span><pre>is_to_be_deleted()</pre></a></li>
 <li class="method public "><a href="#method_save" title="save :: Save image"><span class="description">Save image</span><pre>save()</pre></a></li>
 <li class="method public "><a href="#method_thumb" title="thumb :: Get image thumb url"><span class="description">Get image thumb url</span><pre>thumb()</pre></a></li>
+<li class="method public "><a href="#method_thumb_trans" title="thumb_trans :: "><span class="description">thumb_trans()
+        </span><pre>thumb_trans()</pre></a></li>
+<li class="method public "><a href="#method_to_html" title="to_html :: "><span class="description">to_html()
+        </span><pre>to_html()</pre></a></li>
 <li class="method public "><a href="#method_to_json" title="to_json :: Export image object to JSON"><span class="description">Export image object to JSON</span><pre>to_json()</pre></a></li>
 <li class="method public "><a href="#method_update_attrs" title="update_attrs :: Update attributes"><span class="description">Update attributes</span><pre>update_attrs()</pre></a></li>
 </ul>
@@ -124,7 +130,6 @@
 <li class="method private "><a href="#method_get_file_hash" title="get_file_hash :: Get md5 sum of file content"><span class="description">Get md5 sum of file content</span><pre>get_file_hash()</pre></a></li>
 <li class="method private "><a href="#method_get_thumb_path" title="get_thumb_path :: Get path of thumb according to size"><span class="description">Get path of thumb according to size</span><pre>get_thumb_path()</pre></a></li>
 <li class="method private "><a href="#method_make_thumb" title="make_thumb :: Create miniature of image"><span class="description">Create miniature of image</span><pre>make_thumb()</pre></a></li>
-<li class="method private "><a href="#method_prepare_image_dir" title="prepare_image_dir :: Checkout if image dir exists and is writeable"><span class="description">Checkout if image dir exists and is writeable</span><pre>prepare_image_dir()</pre></a></li>
 <li class="method private "><a href="#method_read_dimensions" title="read_dimensions :: Read image dimensions from image file"><span class="description">Read image dimensions from image file</span><pre>read_dimensions()</pre></a></li>
 </ul>
 </li>
@@ -152,7 +157,9 @@
 <li class="constant  "><a href="#constant_DIR_THUMBS" title="DIR_THUMBS :: "><span class="description">DIR_THUMBS</span><pre>DIR_THUMBS</pre></a></li>
 <li class="constant  "><a href="#constant_DIR_TMP" title="DIR_TMP :: "><span class="description">DIR_TMP</span><pre>DIR_TMP</pre></a></li>
 <li class="constant  "><a href="#constant_FILE_BAD_THUMB" title="FILE_BAD_THUMB :: "><span class="description">FILE_BAD_THUMB</span><pre>FILE_BAD_THUMB</pre></a></li>
+<li class="constant  "><a href="#constant_HEIGHT_DEFAULT" title="HEIGHT_DEFAULT :: "><span class="description">HEIGHT_DEFAULT</span><pre>HEIGHT_DEFAULT</pre></a></li>
 <li class="constant  "><a href="#constant_IMG_JPEG_OLD" title="IMG_JPEG_OLD :: "><span class="description">IMG_JPEG_OLD</span><pre>IMG_JPEG_OLD</pre></a></li>
+<li class="constant  "><a href="#constant_WIDTH_DEFAULT" title="WIDTH_DEFAULT :: "><span class="description">WIDTH_DEFAULT</span><pre>WIDTH_DEFAULT</pre></a></li>
 </ul>
 </li>
 </ul>
@@ -204,16 +211,17 @@ attribute types among others. This model will be your favourite.</p></div>
 </div></div>
 </div>
 <a id="method___get"></a><div class="element clickable method public method___get" data-toggle="collapse" data-target=".method___get .collapse">
-<h2>Get wrapper that reads dimensions or filesize on request</h2>
-<pre>__get(string $attr) : mixed</pre>
-<div class="labels"></div>
+<h2>Attribute getter</h2>
+<pre>__get($attr) : mixed</pre>
+<div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::__get()</td>
+</tr></table>
 <h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$attr</h4>
-<code>string</code>
-</div>
+<div class="subelement argument"><h4>$attr</h4></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>mixed</code></div>
 </div></div>
@@ -304,6 +312,32 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement response"><code><a href="../classes/System.Image.html">\System\Image</a></code></div>
 </div></div>
 </div>
+<a id="method_calc_thumb_coords"></a><div class="element clickable method public method_calc_thumb_coords" data-toggle="collapse" data-target=".method_calc_thumb_coords .collapse">
+<h2>Calculate target thumb size and coordinates</h2>
+<pre>calc_thumb_coords(int $w_org, int $h_org, int $w_new, int $h_new, bool $crop) : array</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$w_org</h4>
+<code>int</code><p>Original width</p></div>
+<div class="subelement argument">
+<h4>$h_org</h4>
+<code>int</code><p>Original height</p></div>
+<div class="subelement argument">
+<h4>$w_new</h4>
+<code>int</code><p>Desired width</p></div>
+<div class="subelement argument">
+<h4>$h_new</h4>
+<code>int</code><p>Desired height</p></div>
+<div class="subelement argument">
+<h4>$crop</h4>
+<code>bool</code><p>Crop image or change proportion</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
 <a id="method_changed"></a><div class="element clickable method public method_changed" data-toggle="collapse" data-target=".method_changed .collapse">
 <h2>changed()
         </h2>
@@ -317,6 +351,23 @@ attribute types among others. This model will be your favourite.</p></div>
 </tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$status</h4></div>
+</div></div>
+</div>
+<a id="method_check_properties"></a><div class="element clickable method public method_check_properties" data-toggle="collapse" data-target=".method_check_properties .collapse">
+<h2>check_properties()
+        </h2>
+<pre>check_properties($model) </pre>
+<div class="labels">
+<span class="label">Inherited</span><span class="label">Static</span>
+</div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\System\Model\Attr::check_properties()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$model</h4></div>
 </div></div>
 </div>
 <a id="method_convert_attr_val"></a><div class="element clickable method public method_convert_attr_val" data-toggle="collapse" data-target=".method_convert_attr_val .collapse">
@@ -379,7 +430,7 @@ attribute types among others. This model will be your favourite.</p></div>
 </div>
 <a id="method_gen_thumb"></a><div class="element clickable method public method_gen_thumb" data-toggle="collapse" data-target=".method_gen_thumb .collapse">
 <h2>Generate thumb using GD library</h2>
-<pre>gen_thumb(self $obj, int $w, int $h, bool $crop) : bool</pre>
+<pre>gen_thumb(self $obj, int $w_new, int $h_new, bool $crop, bool $transparent) : bool</pre>
 <div class="labels"><span class="label">Static</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -388,14 +439,17 @@ attribute types among others. This model will be your favourite.</p></div>
 <h4>$obj</h4>
 <code>self</code><p>Instance of image</p></div>
 <div class="subelement argument">
-<h4>$w</h4>
+<h4>$w_new</h4>
 <code>int</code><p>Width</p></div>
 <div class="subelement argument">
-<h4>$h</h4>
+<h4>$h_new</h4>
 <code>int</code><p>Height</p></div>
 <div class="subelement argument">
 <h4>$crop</h4>
 <code>bool</code><p>Crop</p></div>
+<div class="subelement argument">
+<h4>$transparent</h4>
+<code>bool</code><p>Keep image transparency</p></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
@@ -547,6 +601,23 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="long_description"></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_get_image_resource"></a><div class="element clickable method public method_get_image_resource" data-toggle="collapse" data-target=".method_get_image_resource .collapse">
+<h2>Get image GD resource</h2>
+<pre>get_image_resource(string $path, int $format) : resource</pre>
+<div class="labels"><span class="label">Static</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$path</h4>
+<code>string</code><p>Path to image</p></div>
+<div class="subelement argument">
+<h4>$format</h4>
+<code>int</code><p>GD format constant</p></div>
+<h3>Returns</h3>
+<div class="subelement response"><code>resource</code></div>
 </div></div>
 </div>
 <a id="method_get_image_size"></a><div class="element clickable method public method_get_image_size" data-toggle="collapse" data-target=".method_get_image_size .collapse">
@@ -758,7 +829,7 @@ attribute types among others. This model will be your favourite.</p></div>
 </div>
 <a id="method_thumb"></a><div class="element clickable method public method_thumb" data-toggle="collapse" data-target=".method_thumb .collapse">
 <h2>Get image thumb url</h2>
-<pre>thumb(int $width, int $height, bool $crop) : string</pre>
+<pre>thumb(int $width, int $height, bool $crop, $transparent) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -773,16 +844,48 @@ attribute types among others. This model will be your favourite.</p></div>
 <h4>$crop</h4>
 <code>bool</code><p>Crop image if it does not fit (width, height):original(width, height) ratio</p>
 </div>
+<div class="subelement argument"><h4>$transparent</h4></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="method_to_json"></a><div class="element clickable method public method_to_json" data-toggle="collapse" data-target=".method_to_json .collapse">
-<h2>Export image object to JSON</h2>
-<pre>to_json() : string</pre>
+<a id="method_thumb_trans"></a><div class="element clickable method public method_thumb_trans" data-toggle="collapse" data-target=".method_thumb_trans .collapse">
+<h2>thumb_trans()
+        </h2>
+<pre>thumb_trans($width, $height, $crop) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$width</h4></div>
+<div class="subelement argument"><h4>$height</h4></div>
+<div class="subelement argument"><h4>$crop</h4></div>
+</div></div>
+</div>
+<a id="method_to_html"></a><div class="element clickable method public method_to_html" data-toggle="collapse" data-target=".method_to_html .collapse">
+<h2>to_html()
+        </h2>
+<pre>to_html($w, $h, $crop, $transparent) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$w</h4></div>
+<div class="subelement argument"><h4>$h</h4></div>
+<div class="subelement argument"><h4>$crop</h4></div>
+<div class="subelement argument"><h4>$transparent</h4></div>
+</div></div>
+</div>
+<a id="method_to_json"></a><div class="element clickable method public method_to_json" data-toggle="collapse" data-target=".method_to_json .collapse">
+<h2>Export image object to JSON</h2>
+<pre>to_json(bool $encode) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$encode</h4>
+<code>bool</code><p>Return encoded string</p></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
@@ -808,7 +911,7 @@ attribute types among others. This model will be your favourite.</p></div>
 </div>
 <a id="method_check_thumb"></a><div class="element clickable method private method_check_thumb" data-toggle="collapse" data-target=".method_check_thumb .collapse">
 <h2>Check if thumb already exists</h2>
-<pre>check_thumb(int $width, int $height, bool $crop, bool $gen) : bool</pre>
+<pre>check_thumb(int $width, int $height, bool $crop, bool $gen, $transparent) : bool</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -826,6 +929,7 @@ attribute types among others. This model will be your favourite.</p></div>
 <div class="subelement argument">
 <h4>$gen</h4>
 <code>bool</code><p>Generate image if it does not exist</p></div>
+<div class="subelement argument"><h4>$transparent</h4></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>bool</code></div>
 </div></div>
@@ -871,7 +975,7 @@ attribute types among others. This model will be your favourite.</p></div>
 </div>
 <a id="method_get_thumb_path"></a><div class="element clickable method private method_get_thumb_path" data-toggle="collapse" data-target=".method_get_thumb_path .collapse">
 <h2>Get path of thumb according to size</h2>
-<pre>get_thumb_path(int $width, int $height, bool $crop) : string</pre>
+<pre>get_thumb_path(int $width, int $height, bool $crop, $transparent) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -886,13 +990,14 @@ attribute types among others. This model will be your favourite.</p></div>
 <h4>$crop</h4>
 <code>bool</code><p>Crop image if it does not fit (width, height):original(width, height) ratio</p>
 </div>
+<div class="subelement argument"><h4>$transparent</h4></div>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a id="method_make_thumb"></a><div class="element clickable method private method_make_thumb" data-toggle="collapse" data-target=".method_make_thumb .collapse">
 <h2>Create miniature of image</h2>
-<pre>make_thumb(int $width, int $height, bool $crop) </pre>
+<pre>make_thumb(int $width, int $height, bool $crop, $transparent) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
@@ -908,22 +1013,7 @@ attribute types among others. This model will be your favourite.</p></div>
 <code>bool</code><p>Crop image if it does not fit (width, height):original(width, height) ratio
 return bool</p>
 </div>
-</div></div>
-</div>
-<a id="method_prepare_image_dir"></a><div class="element clickable method private method_prepare_image_dir" data-toggle="collapse" data-target=".method_prepare_image_dir .collapse">
-<h2>Checkout if image dir exists and is writeable</h2>
-<pre>prepare_image_dir(string $path) : string</pre>
-<div class="labels"><span class="label">Static</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$path</h4>
-<code>string</code>
-</div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>string</code>Path to write to</div>
+<div class="subelement argument"><h4>$transparent</h4></div>
 </div></div>
 </div>
 <a id="method_read_dimensions"></a><div class="element clickable method private method_read_dimensions" data-toggle="collapse" data-target=".method_read_dimensions .collapse">
@@ -1050,9 +1140,21 @@ return bool</p>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="constant_HEIGHT_DEFAULT"> </a><div class="element clickable constant  constant_HEIGHT_DEFAULT" data-toggle="collapse" data-target=".constant_HEIGHT_DEFAULT .collapse">
+<h2>HEIGHT_DEFAULT</h2>
+<pre>HEIGHT_DEFAULT </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="constant_IMG_JPEG_OLD"> </a><div class="element clickable constant  constant_IMG_JPEG_OLD" data-toggle="collapse" data-target=".constant_IMG_JPEG_OLD .collapse">
 <h2>IMG_JPEG_OLD</h2>
 <pre>IMG_JPEG_OLD </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="constant_WIDTH_DEFAULT"> </a><div class="element clickable constant  constant_WIDTH_DEFAULT" data-toggle="collapse" data-target=".constant_WIDTH_DEFAULT .collapse">
+<h2>WIDTH_DEFAULT</h2>
+<pre>WIDTH_DEFAULT </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -1063,7 +1165,7 @@ return bool</p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:44+02:00.<br></footer></div>
 </div>
 </body>
 </html>

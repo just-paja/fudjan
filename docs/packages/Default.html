@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -69,8 +67,12 @@
 <a href="../packages/Default.html" title="Default"><i class="icon-folder-open"></i>Default</a><ul class="nav nav-list nav-packages"></ul>
 </li>
 <li class="nav-header">
+<i class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#function_dump_table" title="dump_table :: "><span class="description">dump_table()
+        </span><pre>dump_table</pre></a></li>
+<li class="nav-header">
 <i class="icon-custom icon-interface"></i> Interfaces</li>
-<li><a href="#DriverInterface" title="">DriverInterface</a></li>
+<li><a href="#Ifce" title="">Ifce</a></li>
 <li><a href="#Ifce" title="">Ifce</a></li>
 <li class="nav-header">
 <i class="icon-custom icon-class"></i> Classes</li>
@@ -78,19 +80,25 @@
 <li><a href="#Column" title="">Column</a></li>
 <li><a href="#Database" title="">Database</a></li>
 <li><a href="#Table" title="">Table</a></li>
+<li><a href="#Column" title="">Column</a></li>
+<li><a href="#Database" title="">Database</a></li>
+<li><a href="#Table" title="">Table</a></li>
 <li><a href="#Relation" title="Attribute class ihnerited widely across pwf.">Relation</a></li>
 <li><a href="#Attr" title="Attribute class ihnerited widely across pwf.">Attr</a></li>
-<li><a href="#Flow" title="Class that manages modules in form of queue.">Flow</a></li>
-<li><a href="#Query" title="">Query</a></li>
 <li><a href="#SMS" title="">SMS</a></li>
 <li><a href="#Request" title="">Request</a></li>
 <li><a href="#Response" title="Attribute class ihnerited widely across pwf.">Response</a></li>
 <li><a href="#Init" title="">Init</a></li>
 <li><a href="#Loader" title="">Loader</a></li>
+<li><a href="#Query" title="">Query</a></li>
+<li><a href="#MysqliResult" title="">MysqliResult</a></li>
 <li><a href="#Mysqli" title="">Mysqli</a></li>
+<li><a href="#PdoResult" title="">PdoResult</a></li>
+<li><a href="#Pdo" title="">Pdo</a></li>
 <li><a href="#Result" title="">Result</a></li>
 <li><a href="#Text" title="Simple database model that manages attributes, fetching and saving
 data and also database relations: belongs_to, has_one, has_many.">Text</a></li>
+<li><a href="#Renderer" title="Attribute class ihnerited widely across pwf.">Renderer</a></li>
 <li><a href="#Tag" title="">Tag</a></li>
 <li><a href="#Archive" title="Handles archives.">Archive</a></li>
 <li><a href="#Text" title="Attribute class ihnerited widely across pwf.">Text</a></li>
@@ -103,8 +111,8 @@ data and also database relations: belongs_to, has_one, has_many.">Text</a></li>
 <li><a href="#Output" title="">Output</a></li>
 <li><a href="#Settings" title="">Settings</a></li>
 <li><a href="#Error" title="">Error</a></li>
-<li><a href="#Input" title="">Input</a></li>
 <li><a href="#AccessDenied" title="">AccessDenied</a></li>
+<li><a href="#Offcom" title="">Offcom</a></li>
 <li><a href="#Connection" title="">Connection</a></li>
 <li><a href="#Format" title="">Format</a></li>
 <li><a href="#Argument" title="">Argument</a></li>
@@ -119,17 +127,18 @@ data and also database relations: belongs_to, has_one, has_many.">Text</a></li>
 <li><a href="#NotFound" title="">NotFound</a></li>
 <li><a href="#Permissions" title="">Permissions</a></li>
 <li><a href="#Database" title="Class responsible for managing database connections and common simple queries.">Database</a></li>
-<li><a href="#Http" title="">Http</a></li>
 <li><a href="#Cli" title="Container class encapsulating methods used on console">Cli</a></li>
 <li><a href="#Setup" title="">Setup</a></li>
 <li><a href="#Status" title="">Status</a></li>
 <li><a href="#Json" title="">Json</a></li>
 <li><a href="#Page" title="Attribute class ihnerited widely across pwf.">Page</a></li>
 <li><a href="#Minifier" title="">Minifier</a></li>
-<li><a href="#Message" title="">Message</a></li>
 <li><a href="#Locales" title="">Locales</a></li>
 <li><a href="#Apc" title="">Apc</a></li>
 <li><a href="#Runtime" title="">Runtime</a></li>
+<li><a href="#Request" title="Attribute class ihnerited widely across pwf.">Request</a></li>
+<li><a href="#Response" title="Attribute class ihnerited widely across pwf.">Response</a></li>
+<li><a href="#Flow" title="Class that manages modules in form of queue.">Flow</a></li>
 <li><a href="#Gps" title="">Gps</a></li>
 <li><a href="#Form" title="Attribute class ihnerited widely across pwf.">Form</a></li>
 <li><a href="#Template" title="">Template</a></li>
@@ -137,23 +146,18 @@ data and also database relations: belongs_to, has_one, has_many.">Text</a></li>
 <li><a href="#Migration" title="Simple database model that manages attributes, fetching and saving
 data and also database relations: belongs_to, has_one, has_many.">Migration</a></li>
 <li><a href="#Cache" title="Caching data using variety of drivers">Cache</a></li>
+<li><a href="#Package" title="Santa package handling">Package</a></li>
+<li><a href="#Cli" title="CLI methods for santa">Cli</a></li>
+<li><a href="#Version" title="Attribute class ihnerited widely across pwf.">Version</a></li>
 <li><a href="#Contact" title="User contact model">Contact</a></li>
 <li><a href="#Group" title="Simple database model that manages attributes, fetching and saving
 data and also database relations: belongs_to, has_one, has_many.">Group</a></li>
 <li><a href="#Info" title="Simple database model that manages attributes, fetching and saving
 data and also database relations: belongs_to, has_one, has_many.">Info</a></li>
-<li><a href="#Setup" title="Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.">Setup</a></li>
-<li><a href="#Category" title="Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.">Category</a></li>
-<li><a href="#Variable" title="Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.">Variable</a></li>
-<li><a href="#Package" title="Santa package handling">Package</a></li>
-<li><a href="#Cli" title="CLI methods for santa">Cli</a></li>
 <li><a href="#Tag" title="">Tag</a></li>
-<li><a href="#Stag" title="">Stag</a></li>
 <li class="nav-header">
 <i class="icon-custom icon-constant"></i> Constants</li>
+<li class="constant  "><a href="#constant_H_STATUS_DUMP" title="H_STATUS_DUMP :: "><span class="description">H_STATUS_DUMP</span><pre>H_STATUS_DUMP</pre></a></li>
 <li class="constant  "><a href="#constant_YACMS_ENV" title="YACMS_ENV :: "><span class="description">YACMS_ENV</span><pre>YACMS_ENV</pre></a></li>
 </ul>
 </div>
@@ -163,6 +167,19 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 </li></ul>
 <div class="package-indent">
 <h3>
+<i class="icon-custom icon-function"></i> Functions</h3>
+<a id="function_dump_table"></a><div class="element clickable function  function_dump_table" data-toggle="collapse" data-target=".function_dump_table .collapse">
+<h2>dump_table()
+        </h2>
+<pre>dump_table(array $values) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$values</h4></div>
+</div></div>
+</div>
+<h3>
 <i class="icon-custom icon-class"></i> Classes and interfaces</h3>
 <div id="Ifce" class="element ajax clickable interface">
 <h1>Ifce<a href="../classes/System.Cache.Ifce.html">¶</a>
@@ -171,75 +188,75 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <div class="details collapse"></div>
 <a href="../classes/System.Cache.Ifce.html" class="more">« More »</a>
 </div>
-<div id="DriverInterface" class="element ajax clickable interface">
-<h1>DriverInterface<a href="../classes/System.Database.Driver.DriverInterface.html">¶</a>
+<div id="Ifce" class="element ajax clickable interface">
+<h1>Ifce<a href="../classes/System.Database.Driver.Ifce.html">¶</a>
 </h1>
 <p class="short_description"></p>
 <div class="details collapse"></div>
-<a href="../classes/System.Database.Driver.DriverInterface.html" class="more">« More »</a>
+<a href="../classes/System.Database.Driver.Ifce.html" class="more">« More »</a>
 </div>
 <div id="Attr" class="element ajax clickable class">
-<h1>Attr<a href="../classes/Database.Attr.html">¶</a>
+<h1>Attr<a href="../classes/Helper.Database.Attr.html">¶</a>
 </h1>
 <p class="short_description">Attribute class ihnerited widely across pwf.</p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Attr.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Attr.html" class="more">« More »</a>
 </div>
 <div id="Column" class="element ajax clickable class">
-<h1>Column<a href="../classes/Database.Mysqli.Column.html">¶</a>
+<h1>Column<a href="../classes/Helper.Database.Mysqli.Column.html">¶</a>
 </h1>
 <p class="short_description"></p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Mysqli.Column.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Mysqli.Column.html" class="more">« More »</a>
 </div>
 <div id="Database" class="element ajax clickable class">
-<h1>Database<a href="../classes/Database.Mysqli.Database.html">¶</a>
+<h1>Database<a href="../classes/Helper.Database.Mysqli.Database.html">¶</a>
 </h1>
 <p class="short_description"></p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Mysqli.Database.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Mysqli.Database.html" class="more">« More »</a>
 </div>
 <div id="Table" class="element ajax clickable class">
-<h1>Table<a href="../classes/Database.Mysqli.Table.html">¶</a>
+<h1>Table<a href="../classes/Helper.Database.Mysqli.Table.html">¶</a>
 </h1>
 <p class="short_description"></p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Mysqli.Table.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Mysqli.Table.html" class="more">« More »</a>
+</div>
+<div id="Column" class="element ajax clickable class">
+<h1>Column<a href="../classes/Helper.Database.Pdo.Column.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Helper.Database.Pdo.Column.html" class="more">« More »</a>
+</div>
+<div id="Database" class="element ajax clickable class">
+<h1>Database<a href="../classes/Helper.Database.Pdo.Database.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Helper.Database.Pdo.Database.html" class="more">« More »</a>
+</div>
+<div id="Table" class="element ajax clickable class">
+<h1>Table<a href="../classes/Helper.Database.Pdo.Table.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/Helper.Database.Pdo.Table.html" class="more">« More »</a>
 </div>
 <div id="Relation" class="element ajax clickable class">
-<h1>Relation<a href="../classes/Database.Relation.html">¶</a>
+<h1>Relation<a href="../classes/Helper.Database.Relation.html">¶</a>
 </h1>
 <p class="short_description">Attribute class ihnerited widely across pwf.</p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Relation.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Relation.html" class="more">« More »</a>
 </div>
 <div id="Structure" class="element ajax clickable class">
-<h1>Structure<a href="../classes/Database.Structure.html">¶</a>
+<h1>Structure<a href="../classes/Helper.Database.Structure.html">¶</a>
 </h1>
 <p class="short_description">Container class that is responsible for handling database structure</p>
 <div class="details collapse"></div>
-<a href="../classes/Database.Structure.html" class="more">« More »</a>
-</div>
-<div id="Cli" class="element ajax clickable class">
-<h1>Cli<a href="../classes/Santa.Cli.html">¶</a>
-</h1>
-<p class="short_description">CLI methods for santa</p>
-<div class="details collapse"></div>
-<a href="../classes/Santa.Cli.html" class="more">« More »</a>
-</div>
-<div id="Package" class="element ajax clickable class">
-<h1>Package<a href="../classes/Santa.Package.html">¶</a>
-</h1>
-<p class="short_description">Santa package handling</p>
-<div class="details collapse"></div>
-<a href="../classes/Santa.Package.html" class="more">« More »</a>
-</div>
-<div id="Stag" class="element ajax clickable class">
-<h1>Stag<a href="../classes/Stag.html">¶</a>
-</h1>
-<p class="short_description"></p>
-<div class="details collapse"></div>
-<a href="../classes/Stag.html" class="more">« More »</a>
+<a href="../classes/Helper.Database.Structure.html" class="more">« More »</a>
 </div>
 <div id="Archive" class="element ajax clickable class">
 <h1>Archive<a href="../classes/System.Archive.html">¶</a>
@@ -296,6 +313,34 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Database.Driver.Mysqli.html" class="more">« More »</a>
+</div>
+<div id="MysqliResult" class="element ajax clickable class">
+<h1>MysqliResult<a href="../classes/System.Database.Driver.MysqliResult.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Driver.MysqliResult.html" class="more">« More »</a>
+</div>
+<div id="Pdo" class="element ajax clickable class">
+<h1>Pdo<a href="../classes/System.Database.Driver.Pdo.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Driver.Pdo.html" class="more">« More »</a>
+</div>
+<div id="PdoResult" class="element ajax clickable class">
+<h1>PdoResult<a href="../classes/System.Database.Driver.PdoResult.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Driver.PdoResult.html" class="more">« More »</a>
+</div>
+<div id="Query" class="element ajax clickable class">
+<h1>Query<a href="../classes/System.Database.Query.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Database.Query.html" class="more">« More »</a>
 </div>
 <div id="Result" class="element ajax clickable class">
 <h1>Result<a href="../classes/System.Database.Result.html">¶</a>
@@ -395,6 +440,13 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <div class="details collapse"></div>
 <a href="../classes/System.Error.NotFound.html" class="more">« More »</a>
 </div>
+<div id="Offcom" class="element ajax clickable class">
+<h1>Offcom<a href="../classes/System.Error.Offcom.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/System.Error.Offcom.html" class="more">« More »</a>
+</div>
 <div id="Permissions" class="element ajax clickable class">
 <h1>Permissions<a href="../classes/System.Error.Permissions.html">¶</a>
 </h1>
@@ -408,13 +460,6 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Error.Wtf.html" class="more">« More »</a>
-</div>
-<div id="Flow" class="element ajax clickable class">
-<h1>Flow<a href="../classes/System.Flow.html">¶</a>
-</h1>
-<p class="short_description">Class that manages modules in form of queue.</p>
-<div class="details collapse"></div>
-<a href="../classes/System.Flow.html" class="more">« More »</a>
 </div>
 <div id="Form" class="element ajax clickable class">
 <h1>Form<a href="../classes/System.Form.html">¶</a>
@@ -472,12 +517,26 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <div class="details collapse"></div>
 <a href="../classes/System.Gps.html" class="more">« More »</a>
 </div>
-<div id="Http" class="element ajax clickable class">
-<h1>Http<a href="../classes/System.Http.html">¶</a>
+<div id="Request" class="element ajax clickable class">
+<h1>Request<a href="../classes/System.Http.Request.html">¶</a>
 </h1>
-<p class="short_description"></p>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
 <div class="details collapse"></div>
-<a href="../classes/System.Http.html" class="more">« More »</a>
+<a href="../classes/System.Http.Request.html" class="more">« More »</a>
+</div>
+<div id="Response" class="element ajax clickable class">
+<h1>Response<a href="../classes/System.Http.Response.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Http.Response.html" class="more">« More »</a>
+</div>
+<div id="Flow" class="element ajax clickable class">
+<h1>Flow<a href="../classes/System.Http.Response.Flow.html">¶</a>
+</h1>
+<p class="short_description">Class that manages modules in form of queue.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Http.Response.Flow.html" class="more">« More »</a>
 </div>
 <div id="Init" class="element ajax clickable class">
 <h1>Init<a href="../classes/System.Init.html">¶</a>
@@ -485,13 +544,6 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Init.html" class="more">« More »</a>
-</div>
-<div id="Input" class="element ajax clickable class">
-<h1>Input<a href="../classes/System.Input.html">¶</a>
-</h1>
-<p class="short_description"></p>
-<div class="details collapse"></div>
-<a href="../classes/System.Input.html" class="more">« More »</a>
 </div>
 <div id="Json" class="element ajax clickable class">
 <h1>Json<a href="../classes/System.Json.html">¶</a>
@@ -513,13 +565,6 @@ data and also database relations: belongs_to, has_one, has_many.">Variable</a></
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Locales.html" class="more">« More »</a>
-</div>
-<div id="Message" class="element ajax clickable class">
-<h1>Message<a href="../classes/System.Message.html">¶</a>
-</h1>
-<p class="short_description"></p>
-<div class="details collapse"></div>
-<a href="../classes/System.Message.html" class="more">« More »</a>
 </div>
 <div id="Migration" class="element ajax clickable class">
 <h1>Migration<a href="../classes/System.Migration.html">¶</a>
@@ -571,19 +616,33 @@ data and also database relations: belongs_to, has_one, has_many.</p>
 <div class="details collapse"></div>
 <a href="../classes/System.Page.html" class="more">« More »</a>
 </div>
-<div id="Query" class="element ajax clickable class">
-<h1>Query<a href="../classes/System.Query.html">¶</a>
-</h1>
-<p class="short_description"></p>
-<div class="details collapse"></div>
-<a href="../classes/System.Query.html" class="more">« More »</a>
-</div>
 <div id="Resource" class="element ajax clickable class">
 <h1>Resource<a href="../classes/System.Resource.html">¶</a>
 </h1>
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Resource.html" class="more">« More »</a>
+</div>
+<div id="Cli" class="element ajax clickable class">
+<h1>Cli<a href="../classes/System.Santa.Cli.html">¶</a>
+</h1>
+<p class="short_description">CLI methods for santa</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Santa.Cli.html" class="more">« More »</a>
+</div>
+<div id="Package" class="element ajax clickable class">
+<h1>Package<a href="../classes/System.Santa.Package.html">¶</a>
+</h1>
+<p class="short_description">Santa package handling</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Santa.Package.html" class="more">« More »</a>
+</div>
+<div id="Version" class="element ajax clickable class">
+<h1>Version<a href="../classes/System.Santa.Package.Version.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Santa.Package.Version.html" class="more">« More »</a>
 </div>
 <div id="Settings" class="element ajax clickable class">
 <h1>Settings<a href="../classes/System.Settings.html">¶</a>
@@ -612,6 +671,13 @@ data and also database relations: belongs_to, has_one, has_many.</p>
 <p class="short_description"></p>
 <div class="details collapse"></div>
 <a href="../classes/System.Template.html" class="more">« More »</a>
+</div>
+<div id="Renderer" class="element ajax clickable class">
+<h1>Renderer<a href="../classes/System.Template.Renderer.html">¶</a>
+</h1>
+<p class="short_description">Attribute class ihnerited widely across pwf.</p>
+<div class="details collapse"></div>
+<a href="../classes/System.Template.Renderer.html" class="more">« More »</a>
 </div>
 <div id="Tag" class="element ajax clickable class">
 <h1>Tag<a href="../classes/System.Template.Tag.html">¶</a>
@@ -651,30 +717,6 @@ data and also database relations: belongs_to, has_one, has_many.</p>
 <div class="details collapse"></div>
 <a href="../classes/System.User.Info.html" class="more">« More »</a>
 </div>
-<div id="Setup" class="element ajax clickable class">
-<h1>Setup<a href="../classes/System.User.Setup.html">¶</a>
-</h1>
-<p class="short_description">Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.</p>
-<div class="details collapse"></div>
-<a href="../classes/System.User.Setup.html" class="more">« More »</a>
-</div>
-<div id="Category" class="element ajax clickable class">
-<h1>Category<a href="../classes/System.User.Setup.Category.html">¶</a>
-</h1>
-<p class="short_description">Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.</p>
-<div class="details collapse"></div>
-<a href="../classes/System.User.Setup.Category.html" class="more">« More »</a>
-</div>
-<div id="Variable" class="element ajax clickable class">
-<h1>Variable<a href="../classes/System.User.Setup.Variable.html">¶</a>
-</h1>
-<p class="short_description">Simple database model that manages attributes, fetching and saving
-data and also database relations: belongs_to, has_one, has_many.</p>
-<div class="details collapse"></div>
-<a href="../classes/System.User.Setup.Variable.html" class="more">« More »</a>
-</div>
 <div id="Tag" class="element ajax clickable class">
 <h1>Tag<a href="../classes/Tag.html">¶</a>
 </h1>
@@ -684,6 +726,12 @@ data and also database relations: belongs_to, has_one, has_many.</p>
 </div>
 <h3>
 <i class="icon-custom icon-constant"></i> Constants</h3>
+<a id="constant_H_STATUS_DUMP"> </a><div class="element clickable constant  constant_H_STATUS_DUMP" data-toggle="collapse" data-target=".constant_H_STATUS_DUMP .collapse">
+<h2>H_STATUS_DUMP</h2>
+<pre>H_STATUS_DUMP </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="constant_YACMS_ENV"> </a><div class="element clickable constant  constant_YACMS_ENV" data-toggle="collapse" data-target=".constant_YACMS_ENV .collapse">
 <h2>YACMS_ENV</h2>
 <pre>YACMS_ENV </pre>
@@ -696,7 +744,7 @@ data and also database relations: belongs_to, has_one, has_many.</p>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:20+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>

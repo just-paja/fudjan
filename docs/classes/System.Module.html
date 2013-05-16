@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -67,16 +65,28 @@
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
 <li class="method public "><a href="#method___construct" title="__construct :: Public constructor"><span class="description">Public constructor</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method_accessible" title="accessible :: "><span class="description">accessible()
+        </span><pre>accessible()</pre></a></li>
+<li class="method public "><a href="#method_bind_to_response" title="bind_to_response :: "><span class="description">bind_to_response()
+        </span><pre>bind_to_response()</pre></a></li>
 <li class="method public "><a href="#method_eval_conds" title="eval_conds :: Evaluate conditions if the module can be used"><span class="description">Evaluate conditions if the module can be used</span><pre>eval_conds()</pre></a></li>
+<li class="method public "><a href="#method_exec" title="exec :: Run module"><span class="description">Run module</span><pre>exec()</pre></a></li>
 <li class="method public "><a href="#method_exists" title="exists :: Check if module exists"><span class="description">Check if module exists</span><pre>exists()</pre></a></li>
+<li class="method public "><a href="#method_form" title="form :: "><span class="description">form()
+        </span><pre>form()</pre></a></li>
+<li class="method public "><a href="#method_form_checker" title="form_checker :: "><span class="description">form_checker()
+        </span><pre>form_checker()</pre></a></li>
 <li class="method public "><a href="#method_get_all" title="get_all :: Get all modules"><span class="description">Get all modules</span><pre>get_all()</pre></a></li>
 <li class="method public "><a href="#method_get_id" title="get_id :: Get module id unique on a page"><span class="description">Get module id unique on a page</span><pre>get_id()</pre></a></li>
 <li class="method public "><a href="#method_get_name" title="get_name :: Get module name"><span class="description">Get module name</span><pre>get_name()</pre></a></li>
 <li class="method public "><a href="#method_get_new_id" title="get_new_id :: Create new module id"><span class="description">Create new module id</span><pre>get_new_id()</pre></a></li>
 <li class="method public "><a href="#method_get_path" title="get_path :: Get local path to module"><span class="description">Get local path to module</span><pre>get_path()</pre></a></li>
-<li class="method public "><a href="#method_make" title="make :: Run module"><span class="description">Run module</span><pre>make()</pre></a></li>
+<li class="method public "><a href="#method_partial" title="partial :: Insert template into output queue"><span class="description">Insert template into output queue</span><pre>partial()</pre></a></li>
 <li class="method public "><a href="#method_req" title="req :: Require variable input."><span class="description">Require variable input.</span><pre>req()</pre></a></li>
-<li class="method public "><a href="#method_template" title="template :: Insert template into output queue"><span class="description">Insert template into output queue</span><pre>template()</pre></a></li>
+<li class="method public "><a href="#method_request" title="request :: "><span class="description">request()
+        </span><pre>request()</pre></a></li>
+<li class="method public "><a href="#method_response" title="response :: "><span class="description">response()
+        </span><pre>response()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -96,6 +106,8 @@
 <li class="property private "><a href="#property_locals" title="$locals :: Attributes of modules"><span class="description"></span><pre>$locals</pre></a></li>
 <li class="property private "><a href="#property_parents" title="$parents :: Attributes of modules"><span class="description"></span><pre>$parents</pre></a></li>
 <li class="property private "><a href="#property_path" title="$path :: Attributes of modules"><span class="description"></span><pre>$path</pre></a></li>
+<li class="property private "><a href="#property_request" title="$request :: Attributes of modules"><span class="description"></span><pre>$request</pre></a></li>
+<li class="property private "><a href="#property_response" title="$response :: Attributes of modules"><span class="description"></span><pre>$response</pre></a></li>
 <li class="property private "><a href="#property_slot" title="$slot :: Attributes of modules"><span class="description"></span><pre>$slot</pre></a></li>
 </ul>
 </li>
@@ -149,6 +161,24 @@
 <div class="subelement response"><code><a href="../classes/System.Module.html">\System\Module</a></code></div>
 </div></div>
 </div>
+<a id="method_accessible"></a><div class="element clickable method public method_accessible" data-toggle="collapse" data-target=".method_accessible .collapse">
+<h2>accessible()
+        </h2>
+<pre>accessible() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_bind_to_response"></a><div class="element clickable method public method_bind_to_response" data-toggle="collapse" data-target=".method_bind_to_response .collapse">
+<h2>bind_to_response()
+        </h2>
+<pre>bind_to_response(\System\Http\Response $response) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$response</h4></div>
+</div></div>
+</div>
 <a id="method_eval_conds"></a><div class="element clickable method public method_eval_conds" data-toggle="collapse" data-target=".method_eval_conds .collapse">
 <h2>Evaluate conditions if the module can be used</h2>
 <pre>eval_conds(array $conds) : bool</pre>
@@ -164,6 +194,12 @@
 <div class="subelement response"><code>bool</code></div>
 </div></div>
 </div>
+<a id="method_exec"></a><div class="element clickable method public method_exec" data-toggle="collapse" data-target=".method_exec .collapse">
+<h2>Run module</h2>
+<pre>exec() : void</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="method_exists"></a><div class="element clickable method public method_exists" data-toggle="collapse" data-target=".method_exists .collapse">
 <h2>Check if module exists</h2>
 <pre>exists(string $mod) </pre>
@@ -175,6 +211,28 @@
 <h4>$mod</h4>
 <code>string</code>
 </div>
+</div></div>
+</div>
+<a id="method_form"></a><div class="element clickable method public method_form" data-toggle="collapse" data-target=".method_form .collapse">
+<h2>form()
+        </h2>
+<pre>form(array $attrs) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$attrs</h4></div>
+</div></div>
+</div>
+<a id="method_form_checker"></a><div class="element clickable method public method_form_checker" data-toggle="collapse" data-target=".method_form_checker .collapse">
+<h2>form_checker()
+        </h2>
+<pre>form_checker(array $data) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$data</h4></div>
 </div></div>
 </div>
 <a id="method_get_all"></a><div class="element clickable method public method_get_all" data-toggle="collapse" data-target=".method_get_all .collapse">
@@ -226,11 +284,21 @@
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="method_make"></a><div class="element clickable method public method_make" data-toggle="collapse" data-target=".method_make .collapse">
-<h2>Run module</h2>
-<pre>make() : void</pre>
+<a id="method_partial"></a><div class="element clickable method public method_partial" data-toggle="collapse" data-target=".method_partial .collapse">
+<h2>Insert template into output queue</h2>
+<pre>partial(string $name, array $locals) : void</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$name</h4>
+<code>string</code><p>Template name begining at /lib/template/partial</p>
+</div>
+<div class="subelement argument">
+<h4>$locals</h4>
+<code>array</code><p>Local variables for the template</p></div>
+</div></div>
 </div>
 <a id="method_req"></a><div class="element clickable method public method_req" data-toggle="collapse" data-target=".method_req .collapse">
 <h2>Require variable input.</h2>
@@ -247,21 +315,19 @@
 <div class="subelement response"></div>
 </div></div>
 </div>
-<a id="method_template"></a><div class="element clickable method public method_template" data-toggle="collapse" data-target=".method_template .collapse">
-<h2>Insert template into output queue</h2>
-<pre>template(string $name, array $locals) : void</pre>
+<a id="method_request"></a><div class="element clickable method public method_request" data-toggle="collapse" data-target=".method_request .collapse">
+<h2>request()
+        </h2>
+<pre>request() </pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$name</h4>
-<code>string</code><p>Template name begining at /lib/template/partial</p>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<div class="subelement argument">
-<h4>$locals</h4>
-<code>array</code><p>Local variables for the template</p></div>
-</div></div>
+<a id="method_response"></a><div class="element clickable method public method_response" data-toggle="collapse" data-target=".method_response .collapse">
+<h2>response()
+        </h2>
+<pre>response() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
@@ -385,6 +451,18 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="property_request"> </a><div class="element clickable property private property_request" data-toggle="collapse" data-target=".property_request .collapse">
+<h2></h2>
+<pre>$request </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_response"> </a><div class="element clickable property private property_response" data-toggle="collapse" data-target=".property_response .collapse">
+<h2></h2>
+<pre>$response </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 <a id="property_slot"> </a><div class="element clickable property private property_slot" data-toggle="collapse" data-target=".property_slot .collapse">
 <h2></h2>
 <pre>$slot </pre>
@@ -406,7 +484,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:44+02:00.<br></footer></div>
 </div>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phpDocumentor » \Database\Mysqli\Table</title>
+<title>phpDocumentor » \Helper\Database\Mysqli\Column</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -20,14 +20,12 @@
 <a href="#api" class="dropdown-toggle" data-toggle="dropdown">
                                     API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a>Namespaces</a></li>
-<li><a href="../namespaces/Database.html"><i class="icon-th"></i> Database</a></li>
-<li><a href="../namespaces/Santa.html"><i class="icon-th"></i> Santa</a></li>
+<li><a href="../namespaces/Helper.html"><i class="icon-th"></i> Helper</a></li>
 <li><a href="../namespaces/System.html"><i class="icon-th"></i> System</a></li>
 <li><a href="../namespaces/global.html"><i class="icon-th"></i> global</a></li>
 <li><a>Packages</a></li>
 <li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
 <li><a href="../packages/core.html"><i class="icon-folder-open"></i> core</a></li>
-<li><a href="../packages/init.html"><i class="icon-folder-open"></i> init</a></li>
 <li><a href="../packages/system.html"><i class="icon-folder-open"></i> system</a></li>
 </ul>
 </li>
@@ -39,13 +37,13 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">776</span></a></li>
+                <span class="label label-info">840</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">3</span>
 </li></ul></a></li>
 <li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
-                <span class="label label-info">2</span></a></li>
+                <span class="label label-info">1</span></a></li>
 </ul>
 </li>
 </ul></div>
@@ -68,37 +66,25 @@
                     <ul>
 <li class="method public "><a href="#method___construct" title="__construct :: "><span class="description">__construct()
         </span><pre>__construct()</pre></a></li>
-<li class="method public "><a href="#method_add_attr" title="add_attr :: "><span class="description">add_attr()
-        </span><pre>add_attr()</pre></a></li>
-<li class="method public "><a href="#method_add_column" title="add_column :: "><span class="description">add_column()
-        </span><pre>add_column()</pre></a></li>
-<li class="method public "><a href="#method_add_index" title="add_index :: "><span class="description">add_index()
-        </span><pre>add_index()</pre></a></li>
-<li class="method public "><a href="#method_db" title="db :: "><span class="description">db()
-        </span><pre>db()</pre></a></li>
-<li class="method public "><a href="#method_drop_index" title="drop_index :: "><span class="description">drop_index()
-        </span><pre>drop_index()</pre></a></li>
+<li class="method public "><a href="#method_drop" title="drop :: "><span class="description">drop()
+        </span><pre>drop()</pre></a></li>
 <li class="method public "><a href="#method_exists" title="exists :: "><span class="description">exists()
         </span><pre>exists()</pre></a></li>
-<li class="method public "><a href="#method_get_column" title="get_column :: "><span class="description">get_column()
-        </span><pre>get_column()</pre></a></li>
-<li class="method public "><a href="#method_get_columns" title="get_columns :: "><span class="description">get_columns()
-        </span><pre>get_columns()</pre></a></li>
-<li class="method public "><a href="#method_get_indexes" title="get_indexes :: "><span class="description">get_indexes()
-        </span><pre>get_indexes()</pre></a></li>
+<li class="method public "><a href="#method_get_cfg" title="get_cfg :: "><span class="description">get_cfg()
+        </span><pre>get_cfg()</pre></a></li>
 <li class="method public "><a href="#method_get_save_query" title="get_save_query :: "><span class="description">get_save_query()
         </span><pre>get_save_query()</pre></a></li>
-<li class="method public "><a href="#method_has_column" title="has_column :: "><span class="description">has_column()
-        </span><pre>has_column()</pre></a></li>
-<li class="method public "><a href="#method_name" title="name :: "><span class="description">name()
-        </span><pre>name()</pre></a></li>
+<li class="method public "><a href="#method_rename" title="rename :: "><span class="description">rename()
+        </span><pre>rename()</pre></a></li>
 <li class="method public "><a href="#method_save" title="save :: "><span class="description">save()
         </span><pre>save()</pre></a></li>
+<li class="method public "><a href="#method_set_cfg" title="set_cfg :: "><span class="description">set_cfg()
+        </span><pre>set_cfg()</pre></a></li>
+<li class="method public "><a href="#method_table" title="table :: "><span class="description">table()
+        </span><pre>table()</pre></a></li>
+<li class="method public "><a href="#method_use_loaded_cfg" title="use_loaded_cfg :: "><span class="description">use_loaded_cfg()
+        </span><pre>use_loaded_cfg()</pre></a></li>
 </ul>
-</li>
-<li class="nav-header private">» Private
-                    <ul><li class="method private "><a href="#method_load_columns" title="load_columns :: "><span class="description">load_columns()
-        </span><pre>load_columns()</pre></a></li></ul>
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties
@@ -106,25 +92,33 @@
 </li>
 <li class="nav-header private">» Private
                     <ul>
-<li class="property private "><a href="#property_columns" title="$columns :: "><span class="description"></span><pre>$columns</pre></a></li>
-<li class="property private "><a href="#property_comment" title="$comment :: "><span class="description"></span><pre>$comment</pre></a></li>
-<li class="property private "><a href="#property_db" title="$db :: "><span class="description"></span><pre>$db</pre></a></li>
+<li class="property private "><a href="#property_attr_names" title="$attr_names :: "><span class="description"></span><pre>$attr_names</pre></a></li>
+<li class="property private "><a href="#property_attrs" title="$attrs :: "><span class="description"></span><pre>$attrs</pre></a></li>
+<li class="property private "><a href="#property_cols_no_default" title="$cols_no_default :: "><span class="description"></span><pre>$cols_no_default</pre></a></li>
+<li class="property private "><a href="#property_complex_types" title="$complex_types :: "><span class="description"></span><pre>$complex_types</pre></a></li>
+<li class="property private "><a href="#property_default" title="$default :: "><span class="description"></span><pre>$default</pre></a></li>
+<li class="property private "><a href="#property_drop" title="$drop :: "><span class="description"></span><pre>$drop</pre></a></li>
 <li class="property private "><a href="#property_name" title="$name :: "><span class="description"></span><pre>$name</pre></a></li>
+<li class="property private "><a href="#property_renamed" title="$renamed :: "><span class="description"></span><pre>$renamed</pre></a></li>
+<li class="property private "><a href="#property_table" title="$table :: "><span class="description"></span><pre>$table</pre></a></li>
 </ul>
 </li>
 </ul>
 </div>
 <div class="span8">
-<a id="\Database\Mysqli\Table"></a><ul class="breadcrumb">
+<a id="\Helper\Database\Mysqli\Column"></a><ul class="breadcrumb">
 <li>
 <a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
 </li>
-<li><a href="../namespaces/Database.html">Database</a></li>
+<li><a href="../namespaces/Helper.html">Helper</a></li>
 <li>
-<span class="divider">\</span><a href="../namespaces/Database.Mysqli.html">Mysqli</a>
+<span class="divider">\</span><a href="../namespaces/Helper.Database.html">Database</a>
+</li>
+<li>
+<span class="divider">\</span><a href="../namespaces/Helper.Database.Mysqli.html">Mysqli</a>
 </li>
 <li class="active">
-<span class="divider">\</span><a href="../classes/Database.Mysqli.Table.html">Table</a>
+<span class="divider">\</span><a href="../classes/Helper.Database.Mysqli.Column.html">Column</a>
 </li>
 </ul>
 <div class="element class"><div class="details">
@@ -133,100 +127,34 @@
 <a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
 <h2>__construct()
         </h2>
-<pre>__construct(\Database\Mysqli\Database $db, $name) </pre>
+<pre>__construct(\Helper\Database\Mysqli\Table $table, $name, array $cfg) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$db</h4></div>
-<div class="subelement argument"><h4>$name</h4></div>
-</div></div>
-</div>
-<a id="method_add_attr"></a><div class="element clickable method public method_add_attr" data-toggle="collapse" data-target=".method_add_attr .collapse">
-<h2>add_attr()
-        </h2>
-<pre>add_attr(\Database\Attr $attr) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$attr</h4></div>
-</div></div>
-</div>
-<a id="method_add_column"></a><div class="element clickable method public method_add_column" data-toggle="collapse" data-target=".method_add_column .collapse">
-<h2>add_column()
-        </h2>
-<pre>add_column($name, $cfg) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
+<div class="subelement argument"><h4>$table</h4></div>
 <div class="subelement argument"><h4>$name</h4></div>
 <div class="subelement argument"><h4>$cfg</h4></div>
 </div></div>
 </div>
-<a id="method_add_index"></a><div class="element clickable method public method_add_index" data-toggle="collapse" data-target=".method_add_index .collapse">
-<h2>add_index()
+<a id="method_drop"></a><div class="element clickable method public method_drop" data-toggle="collapse" data-target=".method_drop .collapse">
+<h2>drop()
         </h2>
-<pre>add_index($col) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$col</h4></div>
-</div></div>
-</div>
-<a id="method_db"></a><div class="element clickable method public method_db" data-toggle="collapse" data-target=".method_db .collapse">
-<h2>db()
-        </h2>
-<pre>db() </pre>
+<pre>drop() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
-</div>
-<a id="method_drop_index"></a><div class="element clickable method public method_drop_index" data-toggle="collapse" data-target=".method_drop_index .collapse">
-<h2>drop_index()
-        </h2>
-<pre>drop_index($col) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$col</h4></div>
-</div></div>
 </div>
 <a id="method_exists"></a><div class="element clickable method public method_exists" data-toggle="collapse" data-target=".method_exists .collapse">
 <h2>exists()
         </h2>
-<pre>exists($db_ident) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$db_ident</h4></div>
-</div></div>
-</div>
-<a id="method_get_column"></a><div class="element clickable method public method_get_column" data-toggle="collapse" data-target=".method_get_column .collapse">
-<h2>get_column()
-        </h2>
-<pre>get_column($name) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$name</h4></div>
-</div></div>
-</div>
-<a id="method_get_columns"></a><div class="element clickable method public method_get_columns" data-toggle="collapse" data-target=".method_get_columns .collapse">
-<h2>get_columns()
-        </h2>
-<pre>get_columns() </pre>
+<pre>exists() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="method_get_indexes"></a><div class="element clickable method public method_get_indexes" data-toggle="collapse" data-target=".method_get_indexes .collapse">
-<h2>get_indexes()
+<a id="method_get_cfg"></a><div class="element clickable method public method_get_cfg" data-toggle="collapse" data-target=".method_get_cfg .collapse">
+<h2>get_cfg()
         </h2>
-<pre>get_indexes() </pre>
+<pre>get_cfg() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -237,23 +165,16 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="method_has_column"></a><div class="element clickable method public method_has_column" data-toggle="collapse" data-target=".method_has_column .collapse">
-<h2>has_column()
+<a id="method_rename"></a><div class="element clickable method public method_rename" data-toggle="collapse" data-target=".method_rename .collapse">
+<h2>rename()
         </h2>
-<pre>has_column($name) </pre>
+<pre>rename($name) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$name</h4></div>
 </div></div>
-</div>
-<a id="method_name"></a><div class="element clickable method public method_name" data-toggle="collapse" data-target=".method_name .collapse">
-<h2>name()
-        </h2>
-<pre>name() </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
 <a id="method_save"></a><div class="element clickable method public method_save" data-toggle="collapse" data-target=".method_save .collapse">
 <h2>save()
@@ -262,30 +183,70 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="method_load_columns"></a><div class="element clickable method private method_load_columns" data-toggle="collapse" data-target=".method_load_columns .collapse">
-<h2>load_columns()
+<a id="method_set_cfg"></a><div class="element clickable method public method_set_cfg" data-toggle="collapse" data-target=".method_set_cfg .collapse">
+<h2>set_cfg()
         </h2>
-<pre>load_columns() </pre>
+<pre>set_cfg(array $cfg) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$cfg</h4></div>
+</div></div>
+</div>
+<a id="method_table"></a><div class="element clickable method public method_table" data-toggle="collapse" data-target=".method_table .collapse">
+<h2>table()
+        </h2>
+<pre>table() </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="method_use_loaded_cfg"></a><div class="element clickable method public method_use_loaded_cfg" data-toggle="collapse" data-target=".method_use_loaded_cfg .collapse">
+<h2>use_loaded_cfg()
+        </h2>
+<pre>use_loaded_cfg($cfg) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$cfg</h4></div>
+</div></div>
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
-<a id="property_columns"> </a><div class="element clickable property private property_columns" data-toggle="collapse" data-target=".property_columns .collapse">
+<a id="property_attr_names"> </a><div class="element clickable property private property_attr_names" data-toggle="collapse" data-target=".property_attr_names .collapse">
 <h2></h2>
-<pre>$columns </pre>
+<pre>$attr_names </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_comment"> </a><div class="element clickable property private property_comment" data-toggle="collapse" data-target=".property_comment .collapse">
+<a id="property_attrs"> </a><div class="element clickable property private property_attrs" data-toggle="collapse" data-target=".property_attrs .collapse">
 <h2></h2>
-<pre>$comment </pre>
+<pre>$attrs </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
-<a id="property_db"> </a><div class="element clickable property private property_db" data-toggle="collapse" data-target=".property_db .collapse">
+<a id="property_cols_no_default"> </a><div class="element clickable property private property_cols_no_default" data-toggle="collapse" data-target=".property_cols_no_default .collapse">
 <h2></h2>
-<pre>$db </pre>
+<pre>$cols_no_default </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_complex_types"> </a><div class="element clickable property private property_complex_types" data-toggle="collapse" data-target=".property_complex_types .collapse">
+<h2></h2>
+<pre>$complex_types </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_default"> </a><div class="element clickable property private property_default" data-toggle="collapse" data-target=".property_default .collapse">
+<h2></h2>
+<pre>$default </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_drop"> </a><div class="element clickable property private property_drop" data-toggle="collapse" data-target=".property_drop .collapse">
+<h2></h2>
+<pre>$drop </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -295,13 +256,25 @@
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
+<a id="property_renamed"> </a><div class="element clickable property private property_renamed" data-toggle="collapse" data-target=".property_renamed .collapse">
+<h2></h2>
+<pre>$renamed </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_table"> </a><div class="element clickable property private property_table" data-toggle="collapse" data-target=".property_table .collapse">
+<h2></h2>
+<pre>$table </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
 </div></div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2013-03-12T16:39:21+01:00.<br></footer></div>
+            generated on 2013-05-16T14:54:43+02:00.<br></footer></div>
 </div>
 </body>
 </html>
