@@ -4,6 +4,8 @@ namespace System\Template
 {
 	class Renderer extends \System\Model\Attr
 	{
+		const URL_ICON_PREFIX = '/share/icons';
+
 		protected static $attrs = array(
 			"format"               => array('varchar'),
 			"start_time"           => array('float'),
@@ -428,8 +430,9 @@ namespace System\Template
 		 * 	"strict" => Be strict when checking path - dont count subdirectories
 		 * 	 other   => HTML attributes that will be passed to the tag
 		 * )
+		 * @return string
 		 */
-		public function link($label, $url, array $object = array())
+		public function link($url, $label, array $object = array())
 		{
 			def($object['no-tag'], false);
 			def($object['strict'], false);
@@ -459,36 +462,88 @@ namespace System\Template
 		}
 
 
-		public function icon($icon, $size='32', array $attrs = array())
+		public function link_ext($url, $label, array $object = array())
 		{
-			@list($width, $height) = explode('x', $size, 2);
-			!$height && $height = $width;
-			$icon = ($icon instanceof Image) ? $icon->thumb(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
+			def($object['class'], array());
 
-			return '<span class="icon isize-'.$size.'" '.\Tag::html_attrs('span', $attrs).'style="background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px"></span>';
+			if (!is_array($object['class'])) {
+				$object['class'] = explode(' ', $object['class']);
+			}
+
+			$object['class'][] = 'ext';
+			return $this->link($url, $label, $object);
+		}
+
+
+		/** Render icon
+		 * @param string|\System\Image $icon   Icon name ([theme/]type/name) or object
+		 * @param string               $size   Icon size, eg '32' or '32x32'
+		 * @param array                $object Other attributes passed to icon object
+		 * @return string
+		 */
+		public function icon($icon, $size='32', array $object = array())
+		{
+			@list($w, $h) = explode('x', $size, 2);
+			!$h && $h = $w;
+
+			$icon = $icon instanceof Image ?
+				$icon->thumb(intval($w), intval($h), def($object['crop'], false)):
+				self::URL_ICON_PREFIX.'/'.$size.'/'.$icon;
+
+			return \Stag::span(array(
+				"class" => 'icon isize-'.$size,
+				"style" => 'background-image:url('.$icon.'); width:'.$w.'px; height:'.$h.'px',
+			));
 		}
 
 
 		/** Render icon as link
-		 * @param string $icon Icon name (theme/type/name)
+		 * @param string|\System\Image $icon   Icon name ([theme/]type/name) or object
 		 * @param string $url  URL to refer to
 		 * @param array  $object Additional data (
 		 * 	"size"  => Icon size, default is 32
 		 * 	other   => HTML attributes that will be passed to the link tag
 		 * )
+		 * @return string
 		 */
-		public function icon_for($icon, $url, array $object = array())
+		public function icon_for($url, $icon, $size='32', array $object = array())
 		{
-			def($object['size'], 32);
+			return $this->link($url, $this->icon($icon, $size), $object);
+		}
 
-			@list($width, $height) = explode('x', $object['size'], 2);
-			!$height && $height = $width;
-			$icon = ($icon instanceof Image) ? $icon->thumb_trans(intval($width), intval($height), !empty($attrs['crop'])):self::DIR_ICONS.'/'.$size.'/'.$icon;
 
-			return $this->link(Stag::span(array(
-				"class" => 'icon isize-'.$size,
-				"style" => 'background-image:url('.$icon.'); width:'.$width.'px; height:'.$height.'px',
-			));
+		/** Label with icon as link
+		 * @param string              $url
+		 * @param string              $label
+		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
+		 * @param string              $size
+		 * @param array               $object
+		 * @return string
+		 */
+		public function label_for($url, $label, $icon, $size='32', array $object = array())
+		{
+			$html = array(span('label', $label), $this->icon($icon, $size));
+
+			if (def($object['label_left'], false)) {
+				$html = array_reverse($html);
+			}
+
+			return $this->link($url, $html, $object);
+		}
+
+
+		/** Label with icon as link, name on left
+		 * @param string              $url
+		 * @param string              $label
+		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
+		 * @param string              $size
+		 * @param array               $object
+		 * @return string
+		 */
+		public function label_for_left($url, $label, $icon, $size='32', array $object = array())
+		{
+			$object['label_left'] = true;
+			return $this->label_for($url, $label, $icon, $size, $object);
 		}
 	}
 }
