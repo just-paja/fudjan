@@ -123,7 +123,13 @@ namespace System
 										$str .= $path[$letter];
 									}
 
-									$str .= $arg;
+									if (is_object($arg)) {
+										if ($arg instanceof \System\Model\Database) {
+											$val = $arg->get_seoname();
+										} else throw new \System\Error\Argument(sprintf("Argument '%s' passed to reverse build route '%s' must be string or instance of System::Model::Database", $num, $name), sprintf("Instance of '%s' was given.", get_class($arg)));
+									} else $val = $arg;
+
+									$str .= $val;
 								}
 
 								$start = $route_args[$num][1];
