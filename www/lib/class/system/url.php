@@ -28,11 +28,12 @@ namespace System
 
 		/** Returns model ID from URL
 		 * @param string $str
-		 * @return in ID
+		 * @return int ID
 		 */
 		public static function get_seoid($str)
 		{
-			return (int) end(explode('-', $str));
+			$str = explode('-', $str);
+			return (int) end($str);
 		}
 
 	}
