@@ -555,5 +555,16 @@ namespace System\Template
 			$object['label_left'] = true;
 			return $this->label_for($url, $label, $icon, $size, $object);
 		}
+
+
+
+		/** Create form object from this renderer
+		 * @param array $attrs
+		 * @return \System\Form
+		 */
+		public function form(array $attrs = array())
+		{
+			return \System\Form::from_renderer($this, $attrs);
+		}
 	}
 }

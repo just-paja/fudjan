@@ -28,6 +28,7 @@ namespace System
 		protected $data_hidden   = array();
 
 		private $objects = array();
+		private $ignored = array();
 		private $renderer, $response, $request;
 		private $rendering = array(
 			"group"     => false,
@@ -70,6 +71,12 @@ namespace System
 		}
 
 
+		public static function from_renderer(\System\Template\Renderer $ren, array $attrs = array())
+		{
+			return self::from_response($ren->response(), $attrs);
+		}
+
+
 		public static function from_request(\System\Http\Request $request, array $attrs = array())
 		{
 			$attrs['request'] = $request;
@@ -101,7 +108,6 @@ namespace System
 			}
 
 			$this->method = strtolower($this->method);
-			$this->class = array_merge((array) $this->class, array('yaform'));
 			$this->take_data_from_request();
 
 			$this->hidden('submited', true);
@@ -170,29 +176,19 @@ namespace System
 		 * @param array $attrs Input attributes
 		 * @return mixed
 		 */
-		protected function get_input_value($attrs)
+		public function get_input_value($attrs)
 		{
-			$value = null;
-
-			if (isset($attrs['value'])) {
-				$value = $this->data_default[$attrs['name']] = $attrs['value'];
-			} else if (isset($this->data_default[$attrs['name']])) {
-				$value = $this->data_default[$attrs['name']];
-			}
-
-			if ($this->submited) {
-				if (isset($this->data_commited[$attrs['name']])) {
-					$value = $this->data_commited[$attrs['name']];
-				} else {
-					unset($attrs['value']);
-				}
-			}
-
-			return $value;
+			return $this->get_input_value_by_name($attrs['name']);
 		}
 
 
-		protected function get_input_value_by_name($name, $default = false)
+		public function set_input_value($name, $value)
+		{
+			$this->data_default[$name] = $value;
+		}
+
+
+		public function get_input_value_by_name($name, $default = false)
 		{
 			$value = null;
 
@@ -290,6 +286,15 @@ namespace System
 		 * @return bool
 		 */
 		public function passed()
+		{
+			return $this->submited;
+		}
+
+
+		/** Is the form ready for processing
+		 * @return bool
+		 */
+		public function submited()
 		{
 			return $this->submited;
 		}
@@ -397,9 +402,10 @@ namespace System
 
 		/** Add input
 		 * @param array $attrs
+		 * @param bool  $detached Return input detached from the form
 		 * @return System\Form\Input
 		 */
-		public function input(array $attrs)
+		public function input(array $attrs, $detached = false)
 		{
 			if (in_array($attrs['type'], self::$inputs_button)) {
 				$this->check_rendering_group('buttons');
@@ -407,6 +413,7 @@ namespace System
 				$this->check_rendering_group('inputs');
 			}
 
+			$el = null;
 			$attrs['form'] = &$this;
 			$attrs['value'] = $this->get_input_value($attrs);
 
@@ -433,21 +440,39 @@ namespace System
 				$attrs['value'] = $this->get_image_input_value($attrs);
 			}
 
+			if ($attrs['type'] === 'action') {
+				$el = new \System\Form\Widget\Action($attrs);
+			}
+
 			if ($attrs['type'] === 'location') {
-				$attrs['tools'] = $this->get_location_input_tools($attrs);
-				$attrs['value'] = $this->get_location_input_value($attrs);
+				$el = new \System\Form\Widget\Location($attrs);
 			}
 
 			if ($attrs['type'] === 'gps') {
-				$attrs['tools'] = $this->get_gps_input_tools($attrs);
-				$attrs['value'] = $this->get_gps_input_value($attrs);
+				$el = new \System\Form\Widget\Gps($attrs);
 			}
 
 			if (in_array($attrs['type'], self::$inputs_datetime)) {
 				$attrs['value'] = $this->get_datetime_input_value($attrs);
 			}
 
-			return $this->rendering['group']->add_element(new \System\Form\Input($attrs));
+			if (is_null($el)) {
+				$el = new \System\Form\Input($attrs);
+			}
+
+			return $detached ? $el:$this->attach($el);
+		}
+
+
+		public function get_rendering_container()
+		{
+			return $this->rendering['group'];
+		}
+
+
+		public function attach(\System\Form\Element $el)
+		{
+			$this->get_rendering_container()->add_element($el);
 		}
 
 
@@ -560,96 +585,34 @@ namespace System
 				"label"    => l('form_location_input_addr'),
 			);
 
-			$input_site_attrs = array(
-				"name"     => $attrs['name'].'_site',
-				"type"     => 'url',
-				"label"    => l('form_location_input_site'),
-			);
-
 			$input_gps_attrs = array(
 				"name"     => $attrs['name'].'_gps',
 				"type"     => 'gps',
 				"label"    => l('form_location_input_gps'),
 			);
 
-			$value = $this->get_input_value($attrs);
-
-			if ($value instanceof \System\Location) {
-				$input_name_attrs['value'] = $value->name;
-				$input_addr_attrs['value'] = $value->addr;
-				$input_site_attrs['value'] = $value->site;
-				$input_gps_attrs['value']  = $value->gps;
-			}
-
 			$input_gps_attrs['tools'] = $this->get_gps_input_tools($input_gps_attrs);
-
-			$input_action_attrs['value'] = $this->get_input_value($input_action_attrs);
-			$input_name_attrs['value']   = $this->get_input_value($input_name_attrs);
-			$input_addr_attrs['value']   = $this->get_input_value($input_addr_attrs);
-			$input_site_attrs['value']   = $this->get_input_value($input_site_attrs);
-			$input_gps_attrs['value']    = $this->get_gps_input_value($input_gps_attrs);
-
 
 			$input_action = new \System\Form\Input($input_action_attrs);
 			$input_name   = new \System\Form\Input($input_name_attrs);
 			$input_addr   = new \System\Form\Input($input_addr_attrs);
-			$input_site   = new \System\Form\Input($input_site_attrs);
 			$input_gps    = new \System\Form\Input($input_gps_attrs);
-
 
 			$input_action->use_form($this);
 			$input_name->use_form($this);
 			$input_addr->use_form($this);
-			$input_site->use_form($this);
 			$input_gps->use_form($this);
 
 			$inputs = array();
 
 			if (count($opts) !== 1) {
-				$inputs[] = $input_action;
+				$inputs['action'] = $input_action;
 			}
 
-			$inputs[] = $input_name;
-			$inputs[] = $input_addr;
-			$inputs[] = $input_site;
-			$inputs[] = $input_gps;
+			$inputs['name'] = $input_name;
+			$inputs['addr'] = $input_addr;
+			$inputs['gps'] = $input_gps;
 			return $inputs;
-		}
-
-
-		private function get_gps_input_tools(array $attrs)
-		{
-			$input_lat_attrs = array(
-				"name"     => $attrs['name'].'_lat',
-				"type"     => 'text',
-				"label"    => l('form_gps_input_lat'),
-				"required" => !empty($attrs['required']),
-			);
-
-			$input_lng_attrs = array(
-				"name"     => $attrs['name'].'_lng',
-				"type"     => 'text',
-				"label"    => l('form_gps_input_lng'),
-				"required" => !empty($attrs['required']),
-			);
-
-			$value = $this->get_input_value($attrs);
-
-			if ($value instanceof \System\Gps) {
-				$input_lat_attrs['value'] = $value->latf();
-				$input_lng_attrs['value'] = $value->lngf();
-			}
-
-			$input_lat_attrs['value'] = number_format($this->get_input_value($input_lat_attrs), 20);
-			$input_lng_attrs['value'] = number_format($this->get_input_value($input_lng_attrs), 20);
-
-			$input_lat = new \System\Form\Input($input_lat_attrs);
-			$input_lng = new \System\Form\Input($input_lng_attrs);
-
-			$input_lat->use_form($this);
-			$input_lng->use_form($this);
-
-			return array($input_lat, $input_lng);
 		}
 
 
@@ -657,18 +620,28 @@ namespace System
 		{
 			$value = $this->get_input_value($attrs);
 
+			if ($value instanceof \System\Location) {
+				$attrs['tools']['name']->value = $value->name;
+				$attrs['tools']['addr']->value = $value->addr;
+				$attrs['tools']['gps']->value  = $value->gps;
+			} else {
+				$attrs['tools']['action']->value = $this->get_input_value($attrs['tools']['action']->get_data());
+				$attrs['tools']['name']->value   = $this->get_input_value($attrs['tools']['name']->get_data());
+				$attrs['tools']['addr']->value   = $this->get_input_value($attrs['tools']['addr']->get_data());
+				$attrs['tools']['gps']->value    = $this->get_gps_input_value($attrs['tools']['gps']->get_data());
+			}
+
+
 			if ($this->submited) {
 				$name_action = $attrs['name'].'_action';
 				$name_name   = $attrs['name'].'_name';
 				$name_addr   = $attrs['name'].'_addr';
 				$name_gps    = $attrs['name'].'_gps';
-				$name_site   = $attrs['name'].'_site';
 
 				$action = $this->get_input_value_by_name($name_action);
 				$name   = $this->get_input_value_by_name($name_name);
 				$addr   = $this->get_input_value_by_name($name_addr);
 				$gps    = $this->get_input_value_by_name($name_gps);
-				$site   = $this->get_input_value_by_name($name_site);
 
 				if (is_null($action)) {
 					$action = $this->data_default[$name_action];
@@ -686,33 +659,12 @@ namespace System
 							"name" => $name,
 							"addr" => $addr,
 							"gps"  => $gps,
-							"site" => $site,
 						));
 					}
 				}
 
-				unset($this->data_commited[$name_action], $this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps], $this->data_commited[$name_site]);
+				unset($this->data_commited[$name_action], $this->data_commited[$name_name], $this->data_commited[$name_addr], $this->data_commited[$name_gps]);
 				$this->data_commited[$attrs['name']] = $value;
-			}
-
-			return $value;
-		}
-
-
-		private function get_gps_input_value(array $attrs)
-		{
-			$value = $this->get_input_value($attrs);
-
-			if ($this->submited) {
-				$name_lat = $attrs['name'].'_lat';
-				$name_lng = $attrs['name'].'_lng';
-
-				$this->data_commited[$attrs['name']] = $value = \System\Gps::from_array(array(
-					"lat" => $this->get_input_value_by_name($name_lat),
-					"lng" => $this->get_input_value_by_name($name_lng),
-				));
-
-				unset($this->data_commited[$name_lat], $this->data_commited[$name_lng]);
 			}
 
 			return $value;
@@ -897,7 +849,13 @@ namespace System
 			if ($this->submited) {
 				$data = $this->data_commited;
 			} else {
-				$data = &$this->data_default;
+				$data = $this->data_default;
+			}
+
+			foreach ($this->ignored as $name) {
+				if (isset($data[$name])) {
+					unset($data[$name]);
+				}
 			}
 
 			return $data;
@@ -975,6 +933,32 @@ namespace System
 			}
 
 			return $this->request;
+		}
+
+
+		public function ignore_input($name)
+		{
+			if (!in_array($name, $this->ignored)) {
+				$this->ignored[] = $name;
+			}
+
+			return $this;
+		}
+
+
+		public function ignore_inputs(array $names)
+		{
+			foreach ($names as $name) {
+				$this->ignore_input($name);
+			}
+
+			return $this;
+		}
+
+
+		public function use_value($name, $val)
+		{
+			$this->data_commited[$name] = $val;
 		}
 	}
 }

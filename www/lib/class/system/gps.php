@@ -16,6 +16,19 @@ namespace System
 		private $data = array("lat" => null, "lng" => null);
 
 
+		/** Public constructor
+		 * @param array $data Pass input data
+		 * @return $this
+		 */
+		public function __construct(array $data = array())
+		{
+			if ($data) {
+				$this->data['lat'] = $data['lat'];
+				$this->data['lng'] = $data['lng'];
+			}
+		}
+
+
 		/** Get latitude
 		 * @param float $val Set latitude to this val
 		 * @return float

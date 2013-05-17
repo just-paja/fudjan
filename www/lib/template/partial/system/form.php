@@ -14,6 +14,8 @@ foreach ((array) $f->class as $c) {
 	$cclass[] = $c.'_outer';
 }
 
+echo \System\Form\Renderer::render($ren, $f);
+exit;
 Tag::div(array("id" => $f->id.'-container', "class" => array_merge(array('pwform'), $cclass)));
 
 	Tag::a(array("name" => $f->anchor, "id" => $f->anchor, "close" => true));

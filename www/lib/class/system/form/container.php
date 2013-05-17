@@ -25,7 +25,7 @@ namespace System\Form
 		);
 
 		protected static $type_models = array(
-			self::TYPE_INPUTS    => array('System\\Form\\Input', 'System\\Form\\Label', 'System\\Form\\Text'),
+			self::TYPE_INPUTS    => array('System\\Form\\Input', 'System\\Form\\Widget', 'System\\Form\\Label', 'System\\Form\\Text'),
 			self::TYPE_BUTTONS   => array('System\\Form\\Input'),
 			self::TYPE_TAB_GROUP => array('System\\Form\\Container'),
 			self::TYPE_TAB       => array('System\\Form\\Container'),
@@ -37,9 +37,9 @@ namespace System\Form
 		/** Public constructor
 		 * @param array $dataray
 		 */
-		protected function construct(array $dataray)
+		protected function construct()
 		{
-			$this->use_form($this->opts['form']);
+			parent::construct();
 
 			if (!$this->type) {
 				throw new \System\Error\Form('You must set form container type');
@@ -61,8 +61,17 @@ namespace System\Form
 		 */
 		public function add_element(\System\Form\Element $el)
 		{
-			$el->form = $this->form;
-			if (in_array(get_class($el), $this->get_expected_class())) {
+			$el->form($this->form());
+			$fits = false;
+
+			foreach ($this->get_expected_class() as $cname) {
+				if ($el instanceof $cname) {
+					$fits = true;
+					break;
+				}
+			}
+
+			if ($fits) {
 				$this->elements[$el->name] = $el;
 			} else throw new \System\Error\Form(sprintf(
 				'Form container %s cannot accomodate element of type %s',
@@ -88,7 +97,7 @@ namespace System\Form
 		 */
 		private function generate_name()
 		{
-			$this->name = implode(\System\Form::SEPARATOR_ID, array($this->type, $this->form->get_count($this->type)));
+			$this->name = implode(\System\Form::SEPARATOR_ID, array($this->type, $this->form()->get_count($this->type)));
 		}
 
 

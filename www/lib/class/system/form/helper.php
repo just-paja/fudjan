@@ -10,12 +10,6 @@ namespace System\Form
 		}
 
 
-		private static function is_label_on_right($el)
-		{
-			return !$el->multiple && in_array($el->type, array('checkbox', 'radio'));
-		}
-
-
 		public static function render_input(\System\Form\Input $el, $output = true)
 		{
 			$el->content = $el->is_value_content() ? $el->value:$el->content;
@@ -24,7 +18,7 @@ namespace System\Form
 			$data = $el->get_data();
 			$data['output'] = false;
 			$data['close']  = true;
-			$data['name']   = $el->get_form()->get_prefix().$data['name'];
+			$data['name']   = $el->form()->get_prefix().$data['name'];
 
 			if ($el->kind == 'select') {
 				$data['content'] = self::get_select_opts_html($el);
@@ -53,8 +47,8 @@ namespace System\Form
 
 			} elseif ($el->type === 'search_tool') {
 
-				$el->get_form()->content_for('scripts', 'pwf/form/search_tool');
-				$el->get_form()->content_for('styles',  'pwf/form/search_tool');
+				$el->form()->content_for('scripts', 'pwf/form/search_tool');
+				$el->form()->content_for('styles',  'pwf/form/search_tool');
 				$input = self::get_search_tool_html($el);
 
 			} elseif ($el->type === 'image') {
@@ -63,20 +57,15 @@ namespace System\Form
 
 			} elseif ($el->type === 'location') {
 
-				$el->get_form()->content_for('scripts', 'pwf/form/autocompleter');
-				$el->get_form()->content_for('scripts', 'pwf/form/location_picker');
-				$el->get_form()->content_for('styles',  'pwf/form/autocompleter');
+				$el->form()->content_for('scripts', 'pwf/form/autocompleter');
+				$el->form()->content_for('scripts', 'pwf/form/location_picker');
+				$el->form()->content_for('styles',  'pwf/form/autocompleter');
 				$input = self::get_location_input_html($el);
-
-			} elseif ($el->type === 'gps') {
-				$el->get_form()->content_for('scripts', 'pwf/form/jquery.gmap');
-				$el->get_form()->content_for('scripts', 'pwf/form/gps');
-				$input = self::get_gps_input_html($el);
 
 			} else {
 
 				if (in_array($el->type, array('datetime', 'date', 'time'))) {
-					$el->get_form()->content_for('scripts', 'pwf/form/datetime_picker');
+					$el->form()->content_for('scripts', 'pwf/form/datetime_picker');
 
 					if ($el->value instanceof \DateTime) {
 						$tz = new \DateTimeZone('UTC');
@@ -110,7 +99,7 @@ namespace System\Form
 			}
 
 			$errors = '';
-			$error_list = $el->get_form()->get_errors($el->name);
+			$error_list = $el->form()->get_errors($el->name);
 
 			if (!empty($error_list)) {
 				$error_list_attrs = array(
@@ -131,6 +120,7 @@ namespace System\Form
 				echo $label_and_input.$info.$errors;
 			} else return $label_and_input.$info.$errors;
 		}
+
 
 
 		public static function get_image_input_html(\System\Form\Input $el)
@@ -211,7 +201,7 @@ namespace System\Form
 						"output"  => false,
 						"style"   => 'display:none',
 						"content" => json_encode(array(
-							"name"        => $el->get_form()->get_prefix().$el->name,
+							"name"        => $el->form()->get_prefix().$el->name,
 							"model"       => $el->model,
 							"conds"       => $el->conds,
 							"display"     => $el->display,
@@ -266,8 +256,8 @@ namespace System\Form
 			$input = array();
 			$opts = array();
 			$iname = $el->type === 'radio' ?
-				$el->get_form()->get_prefix().$el->name:
-				$el->get_form()->get_prefix().$el->name.'[]';
+				$el->form()->get_prefix().$el->name:
+				$el->form()->get_prefix().$el->name.'[]';
 
 			foreach ($el->options as $id=>$opt) {
 				if (is_object($opt)) {
@@ -285,7 +275,7 @@ namespace System\Form
 						\Tag::input(array(
 							"output"  => false,
 							"name"    => $iname,
-							"id"      => $el->get_form()->get_prefix().$el->name.'_'.$id,
+							"id"      => $el->form()->get_prefix().$el->name.'_'.$id,
 							"value"   => $id,
 							"type"    => $el->type,
 							"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
@@ -293,7 +283,7 @@ namespace System\Form
 						\Tag::label(array(
 							"output"  => false,
 							"content" => $lbl,
-							"for"     => $el->get_form()->get_prefix().$el->name.'_'.$id,
+							"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
 						)),
 					)
 				));
@@ -307,105 +297,6 @@ namespace System\Form
 		}
 
 
-		public static function render_label(\System\Form\Label $el)
-		{
-			\Tag::label($el->get_data());
-		}
-
-
-		public static function render_element(\System\Form\Element $el)
-		{
-			switch (get_class($el)) {
-				case 'System\Form\Container':
-				{
-					switch ($el->type) {
-						case \System\Form\Container::TYPE_INPUTS:
-						case \System\Form\Container::TYPE_BUTTONS:
-						{
-							\Tag::fieldset(array("class" => $el->type.'_container'));
-
-								if ($el->label) {
-									\Tag::div(array("class" => 'group_label', "content" => $el->label));
-								}
-
-								\Tag::ul($el->get_data());
-									foreach ($el->get_elements() as $name=>$object) {
-										\Tag::li(array("class" => self::get_object_class($object)));
-										self::render_element($object);
-										\Tag::close('li');
-									}
-								\Tag::close('ul');
-							\Tag::close('fieldset');
-							break;
-						}
-						case \System\Form\Container::TYPE_TAB:
-						{
-							\Tag::div(array("class" => array('tab', $el->name)));
-							\Tag::div(array("class" => 'tab_label', "content" => $el->label));
-							\Tag::div(array("class" => 'tab_content'));
-
-							foreach ($el->get_elements() as $el) {
-								self::render_element($el);
-							}
-
-							\Tag::close('div');
-							\Tag::close('div');
-							break;
-						}
-						case \System\Form\Container::TYPE_TAB_GROUP:
-						{
-							$el->get_form()->content_for('styles', 'pwf/form/tabs');
-							$el->get_form()->content_for('scripts', 'pwf/form/tab_manager');
-							\Tag::div(array("class" => array('tab_group', $el->name)));
-
-							foreach ($el->get_elements() as $el) {
-								self::render_element($el);
-							}
-
-							\Tag::close('div');
-							break;
-						}
-					}
-					break;
-				}
-				case 'System\Form\Input':
-				{
-					self::render_input($el);
-					break;
-				}
-				case 'System\Form\Label':
-				{
-					self::render_label($el);
-					break;
-				}
-				case 'System\Form\Text':
-				{
-					self::render_label(new Label(array("content" => $el->label)));
-					\Tag::div(array("class" => array('input-container'), "content" => $el->content));
-					break;
-				}
-			}
-		}
-
-
-		public static function get_object_class(\System\Form\Element $el)
-		{
-			$base_class = 'element';
-			$class = array();
-
-			if ($el instanceof \System\Form\Input) {
-				$base_class = $el->kind;
-				$class[] = 'input-'.$el->id;
-				$class[] = 'input-'.(self::is_label_on_right($el) ? 'left':'right');
-			} elseif ($el instanceof \System\Form\Label) {
-				$base_class = 'label';
-			} elseif ($el instanceof \System\Form\Text) {
-				$base_class = 'text';
-			}
-
-			$class[] = 'form-'.$base_class;
-			return $class;
-		}
 	}
 }
 

@@ -35,6 +35,10 @@ namespace System\Form
 			"thumb_size" => array("varchar"),
 			"disallow_upload" => array("bool"),
 			"allow_url"  => array("bool"),
+
+			// Widget specific
+			'ident' => array("varchar"),
+
 		);
 
 		protected static $required = array(
@@ -61,12 +65,6 @@ namespace System\Form
 			'password',
 		);
 
-		const ACTION_KEEP     = 0;
-		const ACTION_UPLOAD   = 1;
-		const ACTION_URL      = 2;
-		const ACTION_NONE     = 3;
-		const ACTION_NEW      = 4;
-		const ACTION_EDIT     = 5;
 
 		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
 
@@ -84,9 +82,13 @@ namespace System\Form
 			),
 		);
 
+		protected $tools = array();
+
 
 		protected function construct()
 		{
+			parent::construct();
+
 			if ($this->type == 'rte') {
 				$this->kind = 'textarea';
 			}
