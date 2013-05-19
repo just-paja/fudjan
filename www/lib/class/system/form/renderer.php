@@ -104,14 +104,18 @@ namespace System\Form
 			$tools  = $el->get_tools();
 			$inputs = array();
 
-			foreach ($tools as $tool) {
-				$inputs[] = li(self::render_element($ren, $tool));
+			if (count($tools) > 1) {
+				foreach ($tools as $tool) {
+					$inputs[] = li(self::render_element($ren, $tool));
+				}
+
+				$tools_html = ul('widget-tools', $inputs);
+			} else {
+				$keys = array_keys($tools);
+				$tools_html = self::render_element($ren, $tools[$keys[0]]);
 			}
 
-			$content = array(
-				self::label($el->form(), $el->label),
-				ul('widget-tools', $inputs),
-			);
+			$content = array(self::label($el->form(), $el->label), $tools_html);
 			return div('input-container input-'.$el::IDENT, $content);
 		}
 
@@ -148,9 +152,9 @@ namespace System\Form
 				$data['class'] = array_merge((array) $el->class, array('rte'));
 			}
 
-			if ($el->multiple && in_array($el->type, array('checkbox', 'radio'))) {
+			if ($el->multiple && $el->type == 'checkbox' || $el->type == 'radio') {
 
-				$input = self::get_multi_input_html($el);
+				$input = self::render_multi_input_html($el);
 
 			} elseif ($el->type === 'search_tool') {
 
@@ -308,6 +312,43 @@ namespace System\Form
 				div('tab_label', $el->label),
 				div('tab_content', $output),
 			));
+		}
+
+
+		private static function render_multi_input_html(\System\Form\Input $el)
+		{
+			$input = array();
+			$opts = array();
+			$iname = $el->type === 'radio' ?
+				$el->form()->get_prefix().$el->name:
+				$el->form()->get_prefix().$el->name.'[]';
+
+			foreach ($el->options as $id=>$opt) {
+				if (is_object($opt)) {
+					if ($opt instanceof \System\Model\Attr) {
+						$id  = $opt->id;
+						$lbl = $opt->name;
+					} else throw new \System\Error\Form('Form options set passed as object must inherit System\Model\Attr');
+				} else {
+					$lbl = $opt;
+				}
+
+				$opts[] = li(array(
+					\Stag::input(array(
+						"name"    => $iname,
+						"id"      => $el->form()->get_prefix().$el->name.'_'.$id,
+						"value"   => $id,
+						"type"    => $el->type,
+						"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
+					)),
+					\Stag::label(array(
+						"content" => $lbl,
+						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
+					)),
+				));
+			}
+
+			return ul('options', $opts);
 		}
 	}
 }
