@@ -68,7 +68,9 @@ namespace System\Form\Widget
 
 			if (count($opts) > 1) {
 				$tools[0]['options'] = $opts;
-				$tools[0]['value']   = $value;
+				if (!$this->form()->submited()) {
+					$tools[0]['value'] = $value;
+				}
 				parent::init_tools($tools);
 			}
 		}

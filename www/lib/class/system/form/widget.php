@@ -118,6 +118,13 @@ namespace System\Form
 						$value[$tool->ident] = $v;
 						$empty = $empty && !$v;
 					}
+
+					if (!$empty && isset($value['action'])) {
+						v($value['action']);
+						if ($value['action'] == \System\Form\Widget\Action::NONE) {
+							$value = null;
+						}
+					}
 				} else {
 					$keys  = array_keys($this->tools);
 					$value = $this->form()->get_input_value_by_name($this->tools[$keys[0]]->name);
