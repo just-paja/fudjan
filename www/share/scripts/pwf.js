@@ -2,24 +2,26 @@ var pwf = function()
 {
 	return new function()
 	{
-		var self = this;
 		this.module_status = {};
-		var init_later = [];
-
-
-		var init = function() {
-			return true;
-		};
+		var
+			self = this,
+			init_later = [],
+			init_scan  = [];
 
 
 		this.register = function(name, module)
 		{
 			if (typeof module == 'function' && typeof this[name] == 'undefined') {
 				this[name] = new module();
+
 				if (typeof this[name].init == 'function') {
 					if (!(this.module_status[name] = this[name].init())) {
 						init_later.push(name);
 					}
+				}
+
+				if (typeof this[name].scan == 'function') {
+					init_scan.push(name);
 				}
 			}
 		};
@@ -36,7 +38,26 @@ var pwf = function()
 			}
 		};
 
-		this.ready = init();
+
+		/** Perform a scan of element for all modules with scan method
+		 * @param jQuery el
+		 */
+		this.scan = function(el)
+		{
+			if (typeof el === 'undefined') {
+				throw 'You must pass jQuery object referencing HTML element.';
+			} else {
+				for (var i = 0; i < init_scan.length; i++) {
+					this[init_scan[i]].scan(el);
+				}
+			}
+		};
+
+
+		this.get_scan_list = function()
+		{
+			return init_scan;
+		};
 	};
 }();
 
