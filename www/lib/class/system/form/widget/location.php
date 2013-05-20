@@ -7,7 +7,7 @@ namespace System\Form\Widget
 		const KIND  = 'input';
 		const TYPE  = 'location';
 		const MODEL = '\System\Location';
-		const IDENT = 'gps';
+		const IDENT = 'location';
 
 		protected static $attrs = array();
 
