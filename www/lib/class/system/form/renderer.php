@@ -184,6 +184,10 @@ namespace System\Form
 					$data['value'] = true;
 				}
 
+				if (any($data['value']) && gettype($data['value']) == 'double') {
+					$data['value'] = number_format($data['value'], 15);
+				}
+
 				$input = \Tag::div(array("content" => \Tag::$html_element($data), "class" => array('input-container'), "output" => false));
 			}
 
