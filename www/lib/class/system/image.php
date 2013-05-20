@@ -538,5 +538,19 @@ namespace System
 			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans($w, $h, $crop):$this->thumb($w, $h, $crop);
 			return \Stag::img(array("src" => $path, "alt" => ''));
 		}
+
+
+
+		public static function from_form($value)
+		{
+			$img = new self(array(
+				"file_path" => $value['file']['tmp_name'],
+				"file_name" => $value['file']['name'],
+				"tmp"       => true,
+				"src"       => 'upload',
+			));
+
+			return $img->cache();
+		}
 	}
 }

@@ -94,7 +94,11 @@ namespace System\Form
 				$object_model = $this::MODEL;
 
 				if (!($value instanceof $object_model)) {
-					$value = new $object_model($value);
+					if (is_callable($object_model, 'from_form')) {
+						$value = $object_model::from_form($value);
+					} else {
+						$value = new $object_model($value);
+					}
 				}
 			}
 
@@ -120,7 +124,6 @@ namespace System\Form
 					}
 
 					if (!$empty && isset($value['action'])) {
-						v($value['action']);
 						if ($value['action'] == \System\Form\Widget\Action::NONE) {
 							$value = null;
 						}
