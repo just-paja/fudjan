@@ -161,7 +161,7 @@ namespace System\Template
 				$debug = true;
 			}
 
-			if ($debug && !\System\Status::on_cli()) {
+			if ($debug && strpos($this->format, 'html') !== false && !\System\Status::on_cli()) {
 				echo '<!--Slot: "'.$name.'"-->';
 			}
 
