@@ -3,6 +3,7 @@
 	"std":"D, d M Y G:i:s e",
 	"sql":"Y-m-d H:i:s",
 	"sql-date":"Y-m-d",
+	"sql-time":"h:i:s",
 	"human":"d.m.Y G:i",
 	"human-date":"d.m.",
 	"human-time":"G:i",
