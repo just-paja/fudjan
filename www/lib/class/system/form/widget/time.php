@@ -18,11 +18,14 @@ namespace System\Form\Widget
 				"type"  => 'time',
 				"label" => 'form_input_time',
 				"value" => '#{time}',
-
+				"class" => 'timepicker',
 			)
 		);
 
-		protected static $resources = array();
+		protected static $resources = array(
+			'scripts' => array('pwf/form/time_picker'),
+			'styles' => array('pwf/form/timepicker'),
+		);
 
 
 		protected function init_tools(array $tools = null)
