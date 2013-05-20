@@ -71,7 +71,7 @@ pwf.register('gps', function()
 		}
 
 		if (typeof binder.lat !== 'undefined' && typeof binder.lng !== 'undefined') {
-			binder.lat.parents('.gps-options').first().hide();
+			binder.lat.parents('.widget-tools').first().hide();
 			binder.lat.parents('.input-gps').css('display', 'block');
 			binder = this.create_map(binder);
 		}
