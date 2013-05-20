@@ -5,8 +5,7 @@
  * @package modules
  */
 
-$response->format = 'json';
-cfgs(array('dev', 'debug'), false);
+$renderer->format = 'json';
 
 $model   = \System\Loader::get_class_from_model($request->post('model'));
 $conds   = $request->post('conds');
