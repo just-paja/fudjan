@@ -33,12 +33,6 @@ namespace System\Form
 		}
 
 
-		private function flush()
-		{
-			$this->output = array();
-		}
-
-
 		private static function render_element(\System\Template\Renderer $ren, \System\Form\Element $el)
 		{
 			switch (get_class($el)) {
@@ -88,35 +82,46 @@ namespace System\Form
 		private static function render_text(\System\Template\Renderer $ren, \System\Form\Text $el)
 		{
 			return
-				self::render_label($ren, new Label(array("content" => $el->label))).
-				div(array('input-container'), $el->content);
+				div('form-text', array(
+					self::render_label($ren, new Label(array("content" => $el->label))),
+					div(array('input-container'), $el->content)
+				));
 		}
 
 
 		/** Render widget
 		 * @param \System\Form\Widget $el Widget instance
-		 * @return string
+		 * @return string|null
 		 */
 		public static function render_widget(\System\Template\Renderer $ren, \System\Form\Widget $el)
 		{
 			$el->use_resources($ren);
 
-			$tools  = $el->get_tools();
-			$inputs = array();
+			$tools      = $el->get_tools();
+			$inputs     = array();
+			$tools_html = null;
 
 			if (count($tools) > 1) {
 				foreach ($tools as $tool) {
-					$inputs[] = li(self::render_element($ren, $tool));
+					$tool_html = self::render_element($ren, $tool);
+
+					if (!is_null($tool_html)) {
+						$inputs[] = li($tool_html, self::get_object_class($tool));
+					}
 				}
 
 				$tools_html = ul('widget-tools', $inputs);
-			} else {
+			} else if (any($tools)) {
 				$keys = array_keys($tools);
 				$tools_html = self::render_element($ren, $tools[$keys[0]]);
 			}
 
-			$content = array(self::label($el->form(), $el->label), $tools_html);
-			return div('input-container input-'.$el::IDENT, $content);
+			if (is_null($tools_html)) {
+				return null;
+			} else {
+				$content = array(self::label($el->form(), $el->label), $tools_html);
+				return div('input-container input-'.$el::IDENT, $content);
+			}
 		}
 
 
@@ -146,43 +151,26 @@ namespace System\Form
 				"for"     => $el->id,
 			)):'';
 
-			if ($el->type === 'rte') {
-				$el->form->content_for('styles', 'pwf/form/rte');
-				$el->form->content_for('scripts', 'pwf/lib/rte');
-				$data['class'] = array_merge((array) $el->class, array('rte'));
-			}
-
 			if ($el->multiple && $el->type == 'checkbox' || $el->type == 'radio') {
 
 				$input = self::render_multi_input_html($el);
 
-			} elseif ($el->type === 'search_tool') {
-
-				$el->form()->content_for('scripts', 'pwf/form/search_tool');
-				$el->form()->content_for('styles',  'pwf/form/search_tool');
-				$input = self::get_search_tool_html($el);
-
-			} elseif ($el->type === 'image') {
-
-				$input = self::get_image_input_html($el);
-
-			} elseif ($el->type === 'location') {
-
-				$el->form()->content_for('scripts', 'pwf/form/autocompleter');
-				$el->form()->content_for('scripts', 'pwf/form/location_picker');
-				$el->form()->content_for('styles',  'pwf/form/autocompleter');
-				$input = self::get_location_input_html($el);
-
 			} else {
 
-				if (in_array($el->type, array('datetime', 'date', 'time'))) {
-					$el->form()->content_for('scripts', 'pwf/form/datetime_picker');
+				if (in_array($el->type, array('date', 'time'))) {
 
 					if ($el->value instanceof \DateTime) {
 						$tz = new \DateTimeZone('UTC');
 						$el->value->modify('+'.$el->value->getOffset().' seconds');
 						$el->value->setTimezone($tz);
-						$data['value'] = format_date($el->value, 'html5-full');
+
+						if ($el->type == 'date') {
+							$data['value'] = format_date($el->value, 'sql-date');
+						}
+
+						if ($el->type == 'time') {
+							$data['value'] = format_date($el->value, 'sql-time');
+						}
 					}
 				}
 
@@ -246,6 +234,8 @@ namespace System\Form
 				$base_class = $el->kind;
 				$class[] = 'input-'.$el->id;
 				$class[] = 'input-'.(self::is_label_on_right($el) ? 'left':'right');
+			} elseif ($el instanceof \System\Form\Widget) {
+				$base_class = 'widget';
 			} elseif ($el instanceof \System\Form\Label) {
 				$base_class = 'label';
 			} elseif ($el instanceof \System\Form\Text) {
@@ -270,7 +260,11 @@ namespace System\Form
 
 			$attrs = $el->get_data();
 			foreach ($el->get_elements() as $name=>$object) {
-				$attrs['content'][] = li(self::render_element($ren, $object), self::get_object_class($object));
+				$element_html = self::render_element($ren, $object);
+
+				if (!is_null($element_html)) {
+					$attrs['content'][] = li($element_html, self::get_object_class($object));
+				}
 			}
 
 			return \Stag::fieldset(array(

@@ -7,13 +7,14 @@ namespace System\Form
 		private $form;
 
 
-		protected function construct()
+		public function __construct(array $dataray = array())
 		{
-			if (isset($this->opts['form']) && is_object($this->opts['form']) && $this->opts['form'] instanceof \System\Form) {
-				$f = $this->opts['form'];
-				unset($this->opts['form']);
-				$this->form($f);
+			if (isset($dataray['form']) && is_object($dataray['form']) && $dataray['form'] instanceof \System\Form) {
+				$this->form = $dataray['form'];
+				unset($dataray['form']);
 			} else throw new \System\Error\Argument("You must pass instance of 'System\Form' into element attributes.");
+
+			parent::__construct($dataray);
 		}
 
 

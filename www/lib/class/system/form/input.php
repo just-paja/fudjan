@@ -24,21 +24,8 @@ namespace System\Form
 			"options"      => array('array'),
 			"class"        => array('array'),
 
-			// Search tool specific
-			"model"    => array("varchar"),
-			"conds"    => array("array"),
-			"display"  => array("array"),
-			"filter"   => array("array"),
-			"has"      => array("array"),
-
-			// Image input specific
-			"thumb_size" => array("varchar"),
-			"disallow_upload" => array("bool"),
-			"allow_url"  => array("bool"),
-
 			// Widget specific
 			'ident' => array("varchar"),
-
 		);
 
 		protected static $required = array(
@@ -54,7 +41,6 @@ namespace System\Form
 			'text',
 			'number',
 			'date',
-			'datetime',
 			'file',
 			'range',
 			'url',
@@ -68,27 +54,12 @@ namespace System\Form
 
 		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
 
-		protected static $input_opts = array(
-			"image" => array(
-				self::ACTION_KEEP   => "form_image_input_keep",
-				self::ACTION_NONE   => "form_image_input_none",
-				self::ACTION_UPLOAD => "form_image_input_upload",
-				self::ACTION_URL    => "form_image_input_url",
-			),
-			"location" => array(
-				self::ACTION_NEW      => "form_location_input_new",
-				self::ACTION_EDIT     => "form_location_input_edit",
-				self::ACTION_NONE     => "form_location_input_none",
-			),
-		);
 
 		protected $tools = array();
 
 
 		protected function construct()
 		{
-			parent::construct();
-
 			if ($this->type == 'rte') {
 				$this->kind = 'textarea';
 			}
@@ -140,7 +111,15 @@ namespace System\Form
 
 		public function has_label()
 		{
-			return !in_array($this->kind, self::$kinds_no_label);
+			$has = !in_array($this->kind, self::$kinds_no_label);
+
+			if ($has && $this->parent) {
+				if ($this->parent->get_tool_count() <= 1) {
+					$has = false;
+				}
+			}
+
+			return $has;
 		}
 
 

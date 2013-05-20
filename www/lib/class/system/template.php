@@ -50,7 +50,6 @@ namespace System
 		}
 
 
-
 		/** Format and translate datetime format
 		 * @param mixed  $date
 		 * @param string $format Format name

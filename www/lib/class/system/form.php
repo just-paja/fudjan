@@ -46,7 +46,6 @@ namespace System
 		);
 		protected $errors = array();
 
-		private static $inputs_datetime = array("datetime", "date", "time");
 		private static $inputs_button = array("button", "submit");
 
 
@@ -415,7 +414,12 @@ namespace System
 
 			$el = null;
 			$attrs['form'] = &$this;
-			$attrs['value'] = $this->get_input_value($attrs);
+
+			if (isset($attrs['value'])) {
+				$this->use_value($attrs['name'], $attrs['value']);
+			}
+
+			$attrs['value'] = $this->get_input_value_by_name($attrs['name']);
 
 			if ($attrs['type'] == 'checkbox') {
 				$this->checkboxes[] = $attrs['name'];
@@ -434,26 +438,16 @@ namespace System
 				}
 			}
 
-			if ($attrs['type'] === 'image') {
-				!isset($attrs['thumb_size']) && ($attrs['thumb_size'] = \System\Form\Input::IMAGE_INPUT_SIZE_DEFAULT);
-				$attrs['tools'] = $this->get_image_input_tools($attrs);
-				$attrs['value'] = $this->get_image_input_value($attrs);
-			}
+			if ($attrs['type'] === 'action')   $el = new \System\Form\Widget\Action($attrs);
+			if ($attrs['type'] === 'gps')      $el = new \System\Form\Widget\Gps($attrs);
+			if ($attrs['type'] === 'image')    $el = new \System\Form\Widget\Image($attrs);
+			if ($attrs['type'] === 'location') $el = new \System\Form\Widget\Location($attrs);
+			if ($attrs['type'] === 'datetime') $el = new \System\Form\Widget\DateTime($attrs);
 
-			if ($attrs['type'] === 'action') {
-				$el = new \System\Form\Widget\Action($attrs);
-			}
-
-			if ($attrs['type'] === 'location') {
-				$el = new \System\Form\Widget\Location($attrs);
-			}
-
-			if ($attrs['type'] === 'gps') {
-				$el = new \System\Form\Widget\Gps($attrs);
-			}
-
-			if (in_array($attrs['type'], self::$inputs_datetime)) {
-				$attrs['value'] = $this->get_datetime_input_value($attrs);
+			// Recursion prevention
+			if (!isset($attrs['parent']) || !($attrs['parent'] instanceof \System\Form\Widget\Date || $attrs['parent'] instanceof \System\Form\Widget\Time)) {
+				if ($attrs['type'] === 'date') $el = new \System\Form\Widget\Date($attrs);
+				if ($attrs['type'] === 'time') $el = new \System\Form\Widget\Time($attrs);
 			}
 
 			if (is_null($el)) {
@@ -958,7 +952,11 @@ namespace System
 
 		public function use_value($name, $val)
 		{
-			$this->data_commited[$name] = $val;
+			if ($this->submited()) {
+				$this->data_commited[$name] = $val;
+			} else {
+				$this->data_default[$name] = $val;
+			}
 		}
 	}
 }

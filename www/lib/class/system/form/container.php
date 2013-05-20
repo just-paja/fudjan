@@ -39,8 +39,6 @@ namespace System\Form
 		 */
 		protected function construct()
 		{
-			parent::construct();
-
 			if (!$this->type) {
 				throw new \System\Error\Form('You must set form container type');
 			}
