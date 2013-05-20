@@ -40,7 +40,8 @@ namespace System\Form\Widget
 
 		protected function init_tools(array $tools = null)
 		{
-			$value = $this->form()->get_input_value_by_name($this->parent->name);
+			$par_value = $this->form()->get_input_value_by_name($this->parent->name);
+			$value = null;
 			$opts  = $this->options;
 			$tools = self::$inputs;
 
@@ -50,7 +51,7 @@ namespace System\Form\Widget
 				}
 			}
 
-			if (is_null($value) && isset($opts[self::KEEP])) {
+			if (is_null($par_value) && isset($opts[self::KEEP])) {
 				unset($opts[self::KEEP]);
 			}
 
@@ -58,11 +59,11 @@ namespace System\Form\Widget
 				unset($opts[self::NONE]);
 			}
 
-			if (is_null($value) && isset($opts[self::EDIT])) {
+			if (is_null($par_value) && isset($opts[self::EDIT])) {
 				unset($opts[self::EDIT]);
 			}
 
-			if (is_null($value)) {
+			if (is_null($par_value)) {
 				$value = self::CREATE;
 			}
 
