@@ -78,8 +78,31 @@ namespace System\Form
 				$attrs['form']   = $this->form();
 				$attrs['parent'] = $this;
 
+				if (empty($attrs['value'])) {
+					if (count($tools) === 1) {
+						$attrs['value'] = $value;
+					} else {
+						if (is_array($value) && isset($value[$attrs['ident']])) {
+							$attrs['value'] = $value[$attrs['ident']];
+						}
+
+						if ($value instanceof \System\Model\Attr) {
+							$ident = $attrs['ident'];
+							$val = $value->$ident;
+
+							if (any($val)) {
+								$attrs['value'] = $val;
+							}
+						}
+					}
+				}
+
 				if (!$this->form()->submited() && isset($attrs['value'])) {
 					$this->form()->use_value($attrs['name'], $attrs['value']);
+				}
+
+				if ($this->required && isset($attrs['required']) && $attrs['required']) {
+					$attrs['required'] = $this->required;
 				}
 
 				$value = $this->form()->get_input_value_by_name($this->name);
