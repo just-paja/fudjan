@@ -12,10 +12,11 @@ namespace System\Form\Widget
 
 		protected static $inputs = array(
 			array(
-				"ident"    => 'rte',
-				"name"     => '%s_rte',
-				"type"     => 'textarea',
-				"label"    => 'form_input_text',
+				"ident" => 'rte',
+				"name"  => '%s_rte',
+				"type"  => 'textarea',
+				"label" => 'form_input_text',
+				"class" => 'rte',
 			)
 		);
 

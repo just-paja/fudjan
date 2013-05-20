@@ -438,6 +438,7 @@ namespace System
 				}
 			}
 
+			if ($attrs['type'] === 'rte')      $el = new \System\Form\Widget\Rte($attrs);
 			if ($attrs['type'] === 'action')   $el = new \System\Form\Widget\Action($attrs);
 			if ($attrs['type'] === 'gps')      $el = new \System\Form\Widget\Gps($attrs);
 			if ($attrs['type'] === 'image')    $el = new \System\Form\Widget\Image($attrs);
