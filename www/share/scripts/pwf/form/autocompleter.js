@@ -122,13 +122,9 @@ pwf.register('autocompleter', function() {
 
 						var t = text.join(' ');
 						li.html('<span class="inner">' + t + '</span>');
-						v(this.attr('callback_item'));
 						li.bind('click', {"ac":this, "label":t, "data":data[i], "extra":this.attr('callback_attrs')}, this.attr('callback_item'));
 						this.el('list').append(li);
 					}
-
-
-					v(this.el('list'));
 				}
 
 				this.el('container').append(this.el('list'));
