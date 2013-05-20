@@ -21,7 +21,7 @@ pwf.register('date_picker', function()
 
 	this.is_ready = function()
 	{
-		return $('body').length == 1;
+		return $.isReady;
 	};
 
 
@@ -153,11 +153,12 @@ pwf.register('date_picker', function()
 
 		controls.append([cpp, cp, cd, cn, cnn]);
 
-		cnn.bind('click', {"els":els, "date":date, "cal":tar}, callback_calendar_cpp);
+		cpp.bind('click', {"els":els, "date":date, "cal":tar}, callback_calendar_cpp);
 		cnn.bind('click', {"els":els, "date":date, "cal":tar}, callback_calendar_cnn);
 
 		cp.bind('click', {"els":els, "date":date, "cal":tar}, callback_calendar_cp);
 		cn.bind('click', {"els":els, "date":date, "cal":tar}, callback_calendar_cn);
+		tar.unbind('click').bind('click', callback_void);
 
 		for (var i = 0; i<day_def.length; i++) {
 			head.append('<li class="day">'+day_def[i][1]+'</li>');
@@ -179,6 +180,13 @@ pwf.register('date_picker', function()
 		}
 
 		tar.html([controls, head, body, cleaner]);
+	};
+
+
+	var callback_void = function(e)
+	{
+		e.stopPropagation();
+		e.preventDefault();
 	};
 
 
