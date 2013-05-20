@@ -140,7 +140,7 @@ namespace System\Http
 		public function send_headers()
 		{
 			if (!\System\Status::on_cli()) {
-				$mime = \System\Output::get_mime($this->format);
+				$mime = \System\Output::get_mime($this->renderer()->format);
 
 				if ($this->status == self::OK && empty($this->content)) {
 					$this->status(self::NO_CONTENT);
