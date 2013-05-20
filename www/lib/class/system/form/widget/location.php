@@ -17,24 +17,28 @@ namespace System\Form\Widget
 				"name"     => '%s_action',
 				"type"     => 'action',
 				"label"    => 'form_location_input_action',
+				"required" => true,
 			),
 			array(
 				"ident"    => 'name',
 				"name"     => '%s_name',
 				"type"     => 'text',
 				"label"    => 'form_location_input_name',
+				"required" => true,
 			),
 			array(
 				"ident"    => 'addr',
 				"name"     => '%s_addr',
 				"type"     => 'text',
 				"label"    => 'form_location_input_addr',
+				"required" => true,
 			),
 			array(
 				"ident"    => 'gps',
 				"name"     => '%s_gps',
 				"type"     => 'gps',
 				"label"    => 'form_location_input_gps',
+				"required" => true,
 			),
 		);
 
