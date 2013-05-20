@@ -442,6 +442,7 @@ namespace System
 			if ($attrs['type'] === 'action')   $el = new \System\Form\Widget\Action($attrs);
 			if ($attrs['type'] === 'gps')      $el = new \System\Form\Widget\Gps($attrs);
 			if ($attrs['type'] === 'image')    $el = new \System\Form\Widget\Image($attrs);
+			if ($attrs['type'] === 'search')   $el = new \System\Form\Widget\Search($attrs);
 			if ($attrs['type'] === 'location') $el = new \System\Form\Widget\Location($attrs);
 			if ($attrs['type'] === 'datetime') $el = new \System\Form\Widget\DateTime($attrs);
 

@@ -16,7 +16,14 @@ namespace System\Form\Widget
 			"has"      => array("array"),
 		);
 
-		protected static $inputs = array();
+		protected static $inputs = array(
+			array(
+				"ident" => 'search',
+				"name"  => '%s_search',
+				"type"  => 'text',
+				"label" => 'form_input_search',
+			),
+		);
 
 		protected static $resources = array(
 			"scripts" => array('pwf/form/search_tool'),
