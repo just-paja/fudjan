@@ -94,7 +94,7 @@ namespace System\Form
 				$object_model = $this::MODEL;
 
 				if (!($value instanceof $object_model)) {
-					if (is_callable($object_model, 'from_form')) {
+					if (method_exists($object_model, 'from_form')) {
 						$value = $object_model::from_form($value);
 					} else {
 						$value = new $object_model($value);
