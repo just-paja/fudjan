@@ -32,7 +32,7 @@ namespace System\Form
 			'name', 'kind',
 		);
 
-		protected static $kinds = array('input', 'textarea', 'select', 'button', 'search_tool');
+		protected static $kinds = array('input', 'textarea', 'select', 'button');
 		protected static $kinds_content_value = array('textarea');
 		protected static $kinds_no_label = array('button');
 		protected static $types = array(
@@ -52,18 +52,11 @@ namespace System\Form
 		);
 
 
-		const IMAGE_INPUT_SIZE_DEFAULT = '100x100';
-
-
 		protected $tools = array();
 
 
 		protected function construct()
 		{
-			if ($this->type == 'rte') {
-				$this->kind = 'textarea';
-			}
-
 			!$this->type && self::get_default_type();
 			!$this->kind && self::get_default_kind();
 			$this->kind = in_array($this->type, self::$kinds) ?
