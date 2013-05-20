@@ -20,7 +20,7 @@ pwf.register('rte', function() {
 
 	this.is_ready = function()
 	{
-		return $('body').length >= 1;
+		return $.isReady;
 	};
 
 
