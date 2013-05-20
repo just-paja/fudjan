@@ -73,6 +73,7 @@ pwf.register('date_picker', function()
 
 		els.inner.append(els.input);
 		els.input.unbind('click.'+widget).bind('click.'+widget, els, callback_open_calendar);
+		els.input.unbind('keyup.'+widget).bind('keyup.'+widget, els, callback_keyup);
 
 		if (els.target.attr('required')) {
 			els['cleaner'] = $('<span class="icon clear" style=""></span>');
@@ -89,6 +90,54 @@ pwf.register('date_picker', function()
 
 		e.data.input.val('');
 		e.data.target.val('');
+	};
+
+
+	var callback_keyup = function(e)
+	{
+		e.stopPropagation();
+		e.preventDefault();
+
+		hide_cal(e.data);
+
+		var val   = e.data.input.val();;
+		var date  = null;
+		var empty = val == '';
+
+		val = val.split('.');
+
+		if (!empty) {
+			if (val.length === 3) {
+				val[0] = parseInt(val[0]);
+				val[1] = parseInt(val[1]);
+				val[2] = parseInt(val[2]);
+
+				if (!isNaN(val[0]) && !isNaN(val[1]) && !isNaN(val[2]) && val[2] > 1900) {
+					date = new Date(Date.UTC(val[2], val[1]-1, val[0]));
+				}
+			}
+
+			if (date !== null && is_date_valid(date)) {
+				try {
+					use_value(e.data, date);
+				} catch(e) {
+					show_error(e.data);
+				}
+			} else show_error(e.data);
+		}
+	};
+
+
+	var is_date_valid = function(d)
+	{
+		return d !== null && !isNaN(d.getTime());
+	};
+
+
+	var show_error = function(els)
+	{
+		els.container.addClass('error');
+		els.target.val('');
 	};
 
 
@@ -211,6 +260,7 @@ pwf.register('date_picker', function()
 		hide_cal(els);
 		els.target.val(sys);
 		els.input.val(human);
+		els.container.removeClass('error');
 	};
 
 
