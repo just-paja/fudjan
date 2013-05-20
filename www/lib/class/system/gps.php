@@ -2,7 +2,7 @@
 
 namespace System
 {
-	class Gps
+	class Gps extends \System\Model\Attr
 	{
 		const GMAP_TYPE_ROADMAP   = 'roadmap';
 		const GMAP_TYPE_SATELLITE = 'satellite';
@@ -13,20 +13,10 @@ namespace System
 		const MAP_HEIGHT_DEFAULT = 200;
 
 
-		private $data = array("lat" => null, "lng" => null);
-
-
-		/** Public constructor
-		 * @param array $data Pass input data
-		 * @return $this
-		 */
-		public function __construct(array $data = array())
-		{
-			if ($data) {
-				$this->data['lat'] = $data['lat'];
-				$this->data['lng'] = $data['lng'];
-			}
-		}
+		protected static $attrs = array(
+			"lat" => array('float'),
+			"lng" => array('float'),
+		);
 
 
 		/** Get latitude
