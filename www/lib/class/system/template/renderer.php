@@ -482,7 +482,7 @@ namespace System\Template
 		public function link_for($url_name, $label, array $object = array())
 		{
 			def($object['args'], array());
-			return $this->link($this->response()->get_url($url_name, $object['args']), $label, $object);
+			return $this->link($this->response()->url($url_name, $object['args']), $label, $object);
 		}
 
 
