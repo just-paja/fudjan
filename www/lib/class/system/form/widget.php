@@ -58,6 +58,7 @@ namespace System\Form
 			$model = get_class($this);
 			$tools = is_null($tools) ? $model::$inputs:$tools;
 			$value = $this->form()->get_input_value_by_name($this->name);
+			$widget_tools = array();
 
 			foreach ($tools as $attrs) {
 				foreach ($attrs as $attr_name=>&$attr_val) {
@@ -101,18 +102,31 @@ namespace System\Form
 					$this->form()->use_value($attrs['name'], $attrs['value']);
 				}
 
+				// Mark tool required or not according to widget status
 				if ($this->required && isset($attrs['required']) && $attrs['required']) {
-					$attrs['required'] = $this->required;
+					// Widgets with action tool
+					if (isset($widget_tools['action']) && !is_null($value)) {
+						$attrs['required'] = $this->form()->get_input_value_by_name($widget_tools['action']->name) === \System\Form\Widget\Action::KEEP;
+					} else {
+						$attrs['required'] = $this->required;
+					}
 				} else {
 					$attrs['required'] = false;
 				}
 
 				$value = $this->form()->get_input_value_by_name($this->name);
 
-				$this->tools[$attrs['ident']] = $this->form()->input($attrs, true);
+				$widget_tools[$attrs['ident']] = $this->form()->input($attrs, true);
 				$obj = $this->form()->ignore_input($attrs['name']);
 			}
 
+			$this->tools = $widget_tools;
+			$this->guess_value();
+		}
+
+
+		protected function guess_value()
+		{
 			$value = $this->assemble_value();
 
 			if (!is_null($this::MODEL) && $value) {

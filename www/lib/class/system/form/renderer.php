@@ -137,7 +137,7 @@ namespace System\Form
 			$data['name']   = $el->form()->get_prefix().$data['name'];
 
 			if ($el->kind == 'select') {
-				$data['content'] = self::get_select_opts_html($el);
+				$data['content'] = self::render_select_opts($ren, $el);
 				unset($data['options']);
 			}
 
@@ -223,6 +223,40 @@ namespace System\Form
 		}
 
 
+		public static function render_select_opts(\System\Template\Renderer $ren, \System\Form\Input $el)
+		{
+			$opts = array();
+
+			if (!$el->required) {
+				$opts[] = \Stag::option(array(
+					"content"  => ' - - - ',
+					"value"    => '',
+					"selected" => !$el->value,
+				));
+			}
+
+			foreach ($el->options as $id=>$opt) {
+				if (is_object($opt)) {
+					if ($opt instanceof \System\Model\Attr) {
+						$label = $opt->get_name();
+						$id    = $opt->id;
+					} else throw new \System\Error\Form(sprintf("Form options set passed as object must inherit System\Model\Attr. Instance of '%s' given.", get_class($opt)));
+				} else {
+					$label = $opt;
+				}
+
+				$opts[] = \Stag::option(array(
+					"content"  => $label,
+					"value"    => $id,
+					"close"    => true,
+					"selected" => $el->value == $id,
+				));
+			}
+
+			return $opts;
+		}
+
+
 		private static function is_label_on_right($el)
 		{
 			return !$el->multiple && in_array($el->type, array('checkbox', 'radio'));
@@ -284,8 +318,8 @@ namespace System\Form
 		 */
 		private static function render_container_tab_group(\System\Template\Renderer $ren, \System\Form\Container $el)
 		{
-			$el->renderer()->content_for('styles', 'pwf/form/tabs');
-			$el->renderer()->content_for('scripts', 'pwf/form/tab_manager');
+			$ren->content_for('styles', 'pwf/form/tabs');
+			$ren->content_for('scripts', 'pwf/form/tab_manager');
 			$output = array();
 
 			foreach ($el->get_elements() as $el) {
