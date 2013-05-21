@@ -20,11 +20,11 @@ namespace System
 		/** Attributes */
 		static protected $attrs = array(
 			"login"       => array('varchar', "is_unique" => true),
-			"nick"        => array('varchar'),
 			"first_name"  => array('varchar'),
 			"last_name"   => array('varchar'),
+			"nick"        => array('varchar', "is_null" => true),
 			"password"    => array('password', "default" => ''),
-			"avatar"      => array('image'),
+			"avatar"      => array('image', "is_null" => true),
 			"last_login"  => array('datetime', "default" => 0),
 			"com_email"   => array('bool', "default" => true),
 			"com_sms"     => array('bool', "default" => false),
