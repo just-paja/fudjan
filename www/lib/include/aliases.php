@@ -121,6 +121,23 @@ namespace
 	}
 
 
+	/** Menu tag alias
+	 * @param string|array $class   Classname passed to the div
+	 * @param string|array $content Content rendered inside div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function menu($class, $content = null, $id = null)
+	{
+		return Tag::tag('ul', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
 	/** LI tag alias
 	 * @param string|array $content Content rendered inside
 	 * @param string|array $class   Classname passed to the tag
