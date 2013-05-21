@@ -129,7 +129,7 @@ namespace
 	 */
 	function menu($class, $content = null, $id = null)
 	{
-		return Tag::tag('ul', array(
+		return Tag::tag('menu', array(
 			"class"   => $class,
 			"content" => $content,
 			"id"      => $id,
