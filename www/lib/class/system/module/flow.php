@@ -3,7 +3,7 @@
 /** System flow
  * @package system
  */
-namespace System\Http\Response
+namespace System\Module
 {
 	/** Class that manages modules in form of queue.
 	 * @used-by \System\Page
@@ -43,18 +43,31 @@ namespace System\Http\Response
 		private $response;
 
 
+		/** Response
+		 * @param \System\Module\DataBus
+		 */
+		private $dbus;
+
+
 		/** Class init
 		 * @return void
 		 */
 		public function __construct(\System\Http\Response $response, array $modules = array())
 		{
 			$this->response = $response;
+			$this->dbus = new \System\Module\DataBus($this);
 
-			foreach ($modules as $mod) {
+			foreach ($modules as $name=>$mod) {
 				if ($mod instanceof \System\Module) {
 					$this->enqueue($mod);
 				} else {
-					$this->add($mod[0], isset($mod[1]) ? $mod[1]:array(), isset($mod[2]) ? $mod[2]:array());
+					$locals = isset($mod[1]) ? $mod[1]:array();
+
+					if (!is_numeric($name)) {
+						$locals['module_id'] = $name;
+					}
+
+					$this->add($mod[0], $locals, isset($mod[2]) ? $mod[2]:array());
 				}
 			}
 		}
@@ -81,7 +94,7 @@ namespace System\Http\Response
 		 */
 		public function enqueue(\System\Module $module)
 		{
-			$this->queue[] = $module->bind_to_response($this->response());
+			$this->queue[] = $module->bind_to_flow($this);
 		}
 
 
@@ -123,7 +136,7 @@ namespace System\Http\Response
 		/** Enqueue redirect. Passing REDIRECT_NOW will exit pwf and redirect immediately. Otherwise according to queue.
 		 * @param string $url  URL to redirect to
 		 * @param int    $code HTTP Status code to send
-		 * @param int    $when When to redirect, one of (\System\Flow::REDIRECT_LATER,\System\Flow::REDIRECT_AFTER_MODULES,\System\Flow::REDIRECT_NOW)
+		 * @param int    $when When to redirect, one of (\System\Module\Flow::REDIRECT_LATER,\System\Module\Flow::REDIRECT_AFTER_MODULES,\System\Module\Flow::REDIRECT_NOW)
 		 * @return void
 		 */
 		public function redirect($url, $code=\System\Http\Response::FOUND, $when=self::REDIRECT_AFTER_MODULES)
@@ -148,6 +161,15 @@ namespace System\Http\Response
 		public function get_queue()
 		{
 			return $this->queue;
+		}
+
+
+		/** Get dbus instance
+		 * @return \System\Module\Dbus
+		 */
+		public function dbus()
+		{
+			return $this->dbus;
 		}
 	}
 }

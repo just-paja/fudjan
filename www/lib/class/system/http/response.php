@@ -37,10 +37,10 @@ namespace System\Http
 			"page"       => array('object', "model" => '\System\Page'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
+			"flow"       => array('object', "model" => '\System\Module\Flow'),
 		);
 
 		private $layout    = array();
-		private $flow;
 		private $status = self::OK;
 		private $headers = array();
 		private $content = null;
@@ -103,7 +103,7 @@ namespace System\Http
 			$response = self::from_request($request);
 			$response->update_attrs($page->get_data());
 			$response->page = $page;
-			$response->flow = new \System\Http\Response\Flow($response, $page->modules);
+			$response->flow = new \System\Module\Flow($response, $page->modules);
 
 			if ($request->cli) {
 				$response->format = 'txt';
@@ -119,7 +119,7 @@ namespace System\Http
 		public function exec()
 		{
 			$this->low_level_debug();
-			$this->flow->exec();
+			$this->flow()->exec();
 			return $this;
 		}
 
@@ -197,7 +197,7 @@ namespace System\Http
 
 
 		/** Get flow object
-		 * @return \System\Http\Response\Flow
+		 * @return \System\Module\Flow
 		 */
 		public function flow()
 		{

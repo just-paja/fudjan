@@ -27,7 +27,7 @@ namespace System
 		static private $array_forced_locals = array("conds", "opts");
 
 		/** Attributes of modules */
-		private $id, $path, $locals, $slot, $parents, $request, $response;
+		private $id, $path, $locals, $slot, $parents, $request, $response, $flow;
 
 
 		/** Public constructor
@@ -109,7 +109,7 @@ namespace System
 							$propagated = array();
 
 							if (any($this->parents)) {
-								$propagated = DataBus::get_data($this->parents);
+								$propagated = $this->dbus()->get_data($this->parents);
 								$locals = array_merge($locals, $propagated);
 							}
 
@@ -155,14 +155,17 @@ namespace System
 
 						$required = require($path);
 
-						if (any($propagate)) {
-							DataBus::save_data($this, $propagate);
-						}
-
 						return !!$required;
 					} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". Permission denied.', $this->get_path()));
 				} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". File is not readable.', $this->get_path()));
 			} else throw new \System\Error\File(sprintf('Module not found: "%s", expected on path "%s".', $this->get_path(), $path));
+		}
+
+
+		private function propagate($name, $data)
+		{
+			$this->dbus()->add_data($this, $name, $data);
+			return $this;
 		}
 
 
@@ -268,10 +271,12 @@ namespace System
 		}
 
 
-		public function bind_to_response(\System\Http\Response $response)
+		public function bind_to_flow(\System\Module\Flow $flow)
 		{
-			$this->response = $response;
-			$this->request  = $response->request();
+			$this->response = $flow->response();
+			$this->request  = $flow->response()->request();
+			$this->flow     = $flow;
+			$this->dbus     = $flow->dbus();
 			return $this;
 		}
 
@@ -285,6 +290,15 @@ namespace System
 		public function request()
 		{
 			return $this->request;
+		}
+
+
+		/** Get dbus instance
+		 * @return \System\Module\Dbus
+		 */
+		public function dbus()
+		{
+			return $this->dbus;
 		}
 	}
 }
