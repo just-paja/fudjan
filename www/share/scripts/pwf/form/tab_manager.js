@@ -16,7 +16,7 @@ pwf.register('tab_manager', function() {
 
 	this.is_ready = function()
 	{
-		return $('body').length >= 1;
+		return $.isReady;
 	};
 
 

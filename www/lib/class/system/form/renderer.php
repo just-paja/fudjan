@@ -38,6 +38,7 @@ namespace System\Form
 			switch (get_class($el)) {
 				case 'System\Form\Container':
 				{
+
 					switch ($el->type) {
 						case \System\Form\Container::TYPE_INPUTS:
 						case \System\Form\Container::TYPE_BUTTONS:
@@ -337,8 +338,8 @@ namespace System\Form
 		{
 			$output = array();
 
-			foreach ($el->get_elements() as $el) {
-				$output[] = self::render_element($ren, $el);
+			foreach ($el->get_elements() as $group) {
+				$output[] = self::render_element($ren, $group);
 			}
 
 			return div(array('tab', $el->name), array(
