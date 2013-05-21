@@ -271,4 +271,10 @@ namespace
 	{
 		return \System\Template::to_json($value, $encode);
 	}
+
+	/** @alias System\Template::to_html() */
+	function to_html($value)
+	{
+		return \System\Template::to_html($value);
+	}
 }
