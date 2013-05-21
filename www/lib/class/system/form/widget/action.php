@@ -85,7 +85,9 @@ namespace System\Form\Widget
 				parent::init_tools($tools);
 			}
 
-			$this->form()->use_value($this->name, $value);
+			if (!$this->form()->submited()) {
+				$this->form()->use_value($this->name, $value);
+			}
 		}
 
 
