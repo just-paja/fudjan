@@ -274,5 +274,18 @@ namespace System\Http
 				}
 			}
 		}
+
+
+		/** Shortcut for get_url
+		 * @param String $name
+		 * @param array  $args
+		 * @param int    $variation
+		 * @return String
+		 */
+		public function url($name, array $args = array(), $variation = 0)
+		{
+			return \System\Router::get_url($this->request()->host, $name, $args, $variation);
+		}
+
 	}
 }

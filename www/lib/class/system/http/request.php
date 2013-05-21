@@ -259,17 +259,5 @@ namespace System\Http
 		{
 			return !!$this->user()->id;
 		}
-
-
-		/** Shortcut for get_url
-		 * @param String $name
-		 * @param array  $args
-		 * @param int    $variation
-		 * @return String
-		 */
-		public function url($name, array $args = array(), $variation = 0)
-		{
-			return \System\Router::get_url($this->host, $name, $args, $variation);
-		}
 	}
 }
