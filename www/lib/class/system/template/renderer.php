@@ -427,8 +427,8 @@ namespace System\Template
 
 
 		/** Render link (tag <a/>)
-		 * @param string $label  Label to render with
 		 * @param string $url    URL to refer to
+		 * @param string $label  Label to render with
 		 * @param array  $object Additional data (
 		 * 	"no-tag" => Render <span/> instead of <a/> if active
 		 * 	"strict" => Be strict when checking path - dont count subdirectories
@@ -468,6 +468,21 @@ namespace System\Template
 				$object['href'] = $url;
 				return \STag::a($object);
 			}
+		}
+
+
+		/** Render link (tag <a/>) with reverse url
+		 * @param string $url_name  URL that will be reversed
+		 * @param string $label    Label to render with
+		 * @param array  $object   Aditional data (
+		 * 	"args" => Arguments to pass to reverse render
+		 * 	other  => same as ::link() function
+		 * )
+		 */
+		public function link_for($url_name, $label, array $object = array())
+		{
+			def($object['args'], array());
+			return $this->link(\System\Router::get_url($url_name, $object['args']), $label, $object);
 		}
 
 
