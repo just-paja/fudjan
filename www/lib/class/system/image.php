@@ -543,14 +543,18 @@ namespace System
 
 		public static function from_form($value)
 		{
-			$img = new self(array(
-				"file_path" => $value['file']['tmp_name'],
-				"file_name" => $value['file']['name'],
-				"tmp"       => true,
-				"src"       => 'upload',
-			));
+			if (any($value['file'])) {
+				$img = new self(array(
+					"file_path" => $value['file']['tmp_name'],
+					"file_name" => $value['file']['name'],
+					"tmp"       => true,
+					"src"       => 'upload',
+				));
 
-			return $img->cache();
+				return $img->cache();
+			} else {
+				return null;
+			}
 		}
 	}
 }

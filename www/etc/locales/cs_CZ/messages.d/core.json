@@ -11,6 +11,10 @@
 	"form_image_input_file":"Nahrát",
 	"form_image_input_url":"URL obrázku",
 
+	"form_widget_action_create":"Nový",
+	"form_widget_action_none":"Žádný",
+	"form_input_image_file":"Soubor s obrázkem",
+
 	"form_location_input_action":"Operace s místem",
 	"form_location_input_none":"Žádné místo",
 	"form_location_input_edit":"Upravit stávající",

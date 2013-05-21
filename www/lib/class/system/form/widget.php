@@ -103,6 +103,8 @@ namespace System\Form
 
 				if ($this->required && isset($attrs['required']) && $attrs['required']) {
 					$attrs['required'] = $this->required;
+				} else {
+					$attrs['required'] = false;
 				}
 
 				$value = $this->form()->get_input_value_by_name($this->name);
@@ -142,8 +144,21 @@ namespace System\Form
 				if (count($this->tools) > 1) {
 					foreach ($this->tools as $tool) {
 						$v = $this->form()->get_input_value_by_name($tool->name);
+
+						if (is_array($v)) {
+							if (any($v['error'])) {
+								$v = null;
+								$this->form()->use_value($tool->name, $v);
+							}
+						}
+
 						$value[$tool->ident] = $v;
-						$empty = $empty && !$v;
+
+						if (empty($v)) {
+							break;
+						} else {
+							$empty = false;
+						}
 					}
 
 					if (!$empty && isset($value['action'])) {

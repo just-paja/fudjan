@@ -31,6 +31,7 @@
 	margin:0;
 	padding:0;
 }
+
 .pwform ul li ul{padding:5px 0 0}
 .pwform ul li{margin:5px 0}
 .pwform ul li ul li{margin-left:15px}
@@ -40,6 +41,7 @@
 .pwform .input-text, .pwform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
 	width:250px;
 }
+
 .pwform .textarea .form-input {
 	vertical-align:bottom;
 	margin-left:7px;
@@ -154,27 +156,36 @@
 	width:auto;
 }
 
-.pwform .input-image {
+
+.pwform .input-image .input-content .image {
+	float:left;
 }
 
-.pwform .input-image .im-options li {
-	line-height:23px;
-	margin-left:10px;
+.pwform .input-image .widget-tools {
+	float:left;
+	padding-top:0;
 }
-.pwform .input-image .im-options {
+
+.pwform .input-image .widget-tools li {
+	margin-top:0;
+	margin-left:0;
+}
+
+.pwform .input-image .widget-tools .form-widget {
 	display:inline-block;
 	vertical-align:top;
 	border:1px solid rgba(0,0,0,0.05);
 	background:rgba(0,0,0,0.025);
+	padding:5px 10px;
 }
 
-.pwform .input-image .im-options .options {
-	max-width:75%;
-	height:auto;
-	vertical-align:top;
+.pwform .input-image .widget-tools label.input-label-left {
+	width:auto;
+	margin-right:5px;
 }
-.pwform .input-image .im-options .options,
-.pwform .input-image .im-options .options li
+
+.pwform .input-image .widget-tools .options,
+.pwform .input-image .widget-tools .options li
 {
 	vertical-align:top;
 	display:inline-block;
@@ -194,6 +205,20 @@
 .pwform .input-image a {
 	display:inline-block;
 }
+
+.pwform .widget-action label { display:none; }
+.pwform .widget-action .options li {
+	padding:0;
+	margin:0 10px 0 0;
+}
+
+.pwform .widget-action .options li:last-child { margin:0; }
+
+.pwform .widget-action .options label {
+	display:inline-block;
+	width:auto;
+}
+
 
 .pwform .input-image img {
 	margin:0 8px 0 0;

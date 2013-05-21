@@ -12,6 +12,10 @@ namespace System\Form\Widget
 		const CREATE = 4;
 		const EDIT   = 5;
 
+		const KIND  = 'widget';
+		const TYPE  = 'action';
+		const IDENT = 'action';
+
 		protected static $attrs = array(
 			"options" => array('list'),
 		);
@@ -25,7 +29,7 @@ namespace System\Form\Widget
 			self::EDIT   => "form_widget_action_edit",
 		);
 
-		protected static $default_opts = array(self::KEEP, self::CREATE, self::EDIT, self::NONE);
+		protected static $default_opts = array(self::NONE, self::KEEP, self::CREATE, self::EDIT);
 
 		protected static $inputs = array(
 			array(
@@ -38,6 +42,11 @@ namespace System\Form\Widget
 		);
 
 
+
+		/** Init all widget inputs
+		 * @param array $tools List of inputs
+		 * @return void
+		 */
 		protected function init_tools(array $tools = null)
 		{
 			$par_value = $this->form()->get_input_value_by_name($this->parent->name);
@@ -64,7 +73,7 @@ namespace System\Form\Widget
 			}
 
 			if (is_null($par_value)) {
-				$value = self::CREATE;
+				$value = isset($opts[self::NONE]) ? self::NONE:self::CREATE;
 			}
 
 			if (count($opts) > 1) {
@@ -72,8 +81,11 @@ namespace System\Form\Widget
 				if (!$this->form()->submited()) {
 					$tools[0]['value'] = $value;
 				}
+
 				parent::init_tools($tools);
 			}
+
+			$this->form()->use_value($this->name, $value);
 		}
 
 

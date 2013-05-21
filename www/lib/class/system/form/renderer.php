@@ -33,7 +33,7 @@ namespace System\Form
 		}
 
 
-		private static function render_element(\System\Template\Renderer $ren, \System\Form\Element $el)
+		public static function render_element(\System\Template\Renderer $ren, \System\Form\Element $el)
 		{
 			switch (get_class($el)) {
 				case 'System\Form\Container':
@@ -240,6 +240,7 @@ namespace System\Form
 				$class[] = 'input-'.(self::is_label_on_right($el) ? 'left':'right');
 			} elseif ($el instanceof \System\Form\Widget) {
 				$base_class = 'widget';
+				$class[] = 'widget-'.$el::IDENT;
 			} elseif ($el instanceof \System\Form\Label) {
 				$base_class = 'label';
 			} elseif ($el instanceof \System\Form\Text) {
@@ -340,7 +341,7 @@ namespace System\Form
 						"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
 					)),
 					\Stag::label(array(
-						"content" => $lbl,
+						"content" => l($lbl),
 						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
 					)),
 				));
