@@ -153,7 +153,7 @@ namespace System\Form
 
 			if ($el->multiple && $el->type == 'checkbox' || $el->type == 'radio') {
 
-				$input = self::render_multi_input_html($el);
+				$input = self::render_multi_input_html($ren, $el);
 
 			} else {
 
@@ -282,7 +282,7 @@ namespace System\Form
 		/** Render tab group
 		 * @param \System\Form\Container $el Group instance
 		 */
-		private static function render_container_tab_group(\System\Form\Container $el)
+		private static function render_container_tab_group(\System\Template\Renderer $ren, \System\Form\Container $el)
 		{
 			$el->renderer()->content_for('styles', 'pwf/form/tabs');
 			$el->renderer()->content_for('scripts', 'pwf/form/tab_manager');
@@ -299,7 +299,7 @@ namespace System\Form
 		/** Render tab
 		 * @param \System\Form\Container $el Tab instance
 		 */
-		private static function render_container_tab(\System\Form\Container $el)
+		private static function render_container_tab(\System\Template\Renderer $ren, \System\Form\Container $el)
 		{
 			$output = array();
 
@@ -314,7 +314,7 @@ namespace System\Form
 		}
 
 
-		private static function render_multi_input_html(\System\Form\Input $el)
+		private static function render_multi_input_html(\System\Template\Renderer $ren, \System\Form\Input $el)
 		{
 			$input = array();
 			$opts = array();
