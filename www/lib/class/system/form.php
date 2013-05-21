@@ -755,8 +755,13 @@ namespace System
 		public function text($label, $text)
 		{
 			$this->check_rendering_group('inputs');
-			$attrs['form'] = &$this;
-			return $this->rendering['group']->add_element(new Form\Text(array("name" => crc32($label), "label" => $label, "content" => $text)));
+
+			return $this->rendering['group']->add_element(new Form\Text(array(
+				"form" => $this,
+				"name" => crc32($label),
+				"label" => $label,
+				"content" => $text)
+			));
 		}
 
 

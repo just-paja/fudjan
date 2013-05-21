@@ -84,7 +84,7 @@ namespace System\Form
 		{
 			return
 				div('form-text', array(
-					self::render_label($ren, new Label(array("content" => $el->label))),
+					self::label($el->form(), $el->label),
 					div(array('input-container'), $el->content)
 				));
 		}
