@@ -558,6 +558,51 @@ namespace System\Template
 		}
 
 
+		/** Label with icon as link using reverse urls
+		 * @param string              $url
+		 * @param string              $label
+		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
+		 * @param string              $size
+		 * @param array               $object
+		 * @return string
+		 */
+		public function label_for_url($url, $label, $icon, $size='32', array $object = array())
+		{
+			def($args, def($object['args'], array()));
+			unset($object['args']);
+
+			return $this->label_for($this->url($url, $args), $label, $icon, $size, $object);
+		}
+
+
+		/** Icon as link using reverse urls
+		 * @param string              $url
+		 * @param string              $label
+		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
+		 * @param string              $size
+		 * @param array               $object
+		 * @return string
+		 */
+		public function icon_for_url($url, $icon, $size='32', array $object = array())
+		{
+			def($args, def($object['args'], array()));
+			unset($object['args']);
+
+			return $this->icon_for($this->url($url, $args), $icon, $size, $object);
+		}
+
+
+		/** URL alias for reponse::url
+		 * @param string $name Named route name
+		 * @param array  $args Arguments for route
+		 * @return string
+		 */
+		public function url($name, array $args = array())
+		{
+			return $this->response()->url($name, $args);
+		}
+
+
 		/** Label with icon as link, name on left
 		 * @param string              $url
 		 * @param string              $label
