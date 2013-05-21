@@ -483,7 +483,7 @@ namespace System\Template
 		{
 			def($args, def($object['args'], array()));
 			unset($object['args']);
-			return $this->link($this->response()->url($url_name, $object['args']), $label, $object);
+			return $this->link($this->response()->url($url_name, $args), $label, $object);
 		}
 
 
