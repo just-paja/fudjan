@@ -237,7 +237,7 @@ namespace System\Http
 		 */
 		public function user()
 		{
-			if ($this->user instanceof self) {
+			if ($this->user instanceof \System\User) {
 				return $this->user;
 			} elseif (any($_SESSION[\System\User::COOKIE_USER])) {
 				$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
