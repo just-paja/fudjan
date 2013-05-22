@@ -354,4 +354,13 @@ namespace
 	function collect_names(array $list) {
 		return collect(array('this', 'get_name'), $list);
 	}
+
+
+	/** Transform into std argument array
+	 * @return array
+	 */
+	function args()
+	{
+		return array("args" => func_get_args());
+	}
 }
