@@ -29,7 +29,14 @@ namespace System\Form
 			$form_attrs['content'] = $output;
 
 			unset($form_attrs['class'], $form_attrs['id']);
-			return div(array_merge(array('pwform'), (array) $form->class), \Stag::form($form_attrs), $form->id);
+			$content = array();
+
+			if ($form->heading) {
+				$content[] = $ren->heading($form->heading);
+			}
+
+			$content[] = \Stag::form($form_attrs);
+			return div(array_merge(array('pwform'), (array) $form->class), $content, $form->id);
 		}
 
 
