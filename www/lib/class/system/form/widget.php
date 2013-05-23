@@ -179,6 +179,10 @@ namespace System\Form
 						if ($value['action'] == \System\Form\Widget\Action::NONE) {
 							$value = null;
 						}
+
+						if ($value['action'] == \System\Form\Widget\Action::KEEP) {
+							$value = $this->form()->get_input_value_by_name($this->name, true);
+						}
 					}
 				} else {
 					$keys  = array_keys($this->tools);

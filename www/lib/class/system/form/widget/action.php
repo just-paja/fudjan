@@ -5,12 +5,12 @@ namespace System\Form\Widget
 {
 	class Action extends \System\Form\Widget
 	{
-		const KEEP   = 0;
-		const UPLOAD = 1;
-		const URL    = 2;
-		const NONE   = 3;
-		const CREATE = 4;
-		const EDIT   = 5;
+		const KEEP   = 1;
+		const UPLOAD = 2;
+		const URL    = 3;
+		const NONE   = 4;
+		const CREATE = 5;
+		const EDIT   = 6;
 
 		const KIND  = 'widget';
 		const TYPE  = 'action';
@@ -49,10 +49,16 @@ namespace System\Form\Widget
 		 */
 		protected function init_tools(array $tools = null)
 		{
-			$par_value = $this->form()->get_input_value_by_name($this->parent->name);
-			$value = null;
+			if ($this->form()->submited()) {
+				$value = $this->form()->get_input_value_by_name($this->name.'_action');
+			} else {
+				$value = null;
+			}
+
+			$par_value = $this->form()->get_input_value_by_name($this->parent->name, $value == self::KEEP);
 			$opts  = $this->options;
 			$tools = self::$inputs;
+
 
 			if (empty($opts)) {
 				foreach (self::$default_opts as $opt) {
@@ -72,8 +78,16 @@ namespace System\Form\Widget
 				unset($opts[self::EDIT]);
 			}
 
-			if (is_null($par_value)) {
-				$value = isset($opts[self::NONE]) ? self::NONE:self::CREATE;
+			if (is_null($value)) {
+				if ($this->form()->submited()) {
+					$value = $this->form()->get_input_value_by_name($this->name.'_action');
+				} else {
+					if (is_null($par_value)) {
+						$value = isset($opts[self::NONE]) ? self::NONE:self::CREATE;
+					} else {
+						$value = self::KEEP;
+					}
+				}
 			}
 
 			if (count($opts) > 1) {
