@@ -407,7 +407,7 @@ namespace System\Database
 				$result->fetch_model($this->assoc_with_model, $key):
 				$result->fetch_assoc($key, $value);
 
-			return $this->return_first ? reset($data):$data;
+			return $this->return_first ? (any($data) ? reset($data):null):$data;
 		}
 
 
