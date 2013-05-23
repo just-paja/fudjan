@@ -477,7 +477,11 @@ namespace System\Model
 		 */
 		public function get_seoname()
 		{
-			return $this->id ? \System\Url::gen_seoname($this->name).'-'.$this->id:null;
+			if ($this->has_attr('name')) {
+				return $this->id ? \System\Url::gen_seoname($this->name).'-'.$this->id:null;
+			} else {
+				return $this->id;
+			}
 		}
 
 
