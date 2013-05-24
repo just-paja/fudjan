@@ -479,8 +479,11 @@ namespace System
 		public function label($text, \System\Form\Input &$for = null)
 		{
 			$this->check_rendering_group('inputs');
-			$attrs['form'] = &$this;
-			return $this->rendering['group']->add_element(new Form\Label(array("content" => $text, "input" => $for)));
+			return $this->rendering['group']->add_element(new Form\Label(array(
+				"content" => $text,
+				"input"   => $for,
+				"form"    => $this,
+			)));
 		}
 
 
