@@ -61,7 +61,7 @@ namespace System\Form
 				}
 
 				case 'System\Form\Input': return self::render_input($ren, $el);
-				case 'System\Form\Label': return self::render_label($ren, $el);
+				case 'System\Form\Label': return self::render_label($el);
 				case 'System\Form\Text':  return self::render_text($ren, $el);
 
 				default:
