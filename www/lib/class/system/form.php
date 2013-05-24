@@ -631,14 +631,6 @@ namespace System
 		}
 
 
-		public function content_for($place, $content)
-		{
-			if ($this->renderer) {
-				$this->renderer()->content_for($place, $content);
-			}
-		}
-
-
 		public function renderer(\System\Template\Renderer $renderer = null)
 		{
 			if (!is_null($renderer)) {
