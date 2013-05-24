@@ -35,6 +35,10 @@ namespace System\Form
 				$content[] = $ren->heading($form->heading);
 			}
 
+			if ($form->desc) {
+				$content[] = \Stag::p(array("content" => $form->desc));
+			}
+
 			$content[] = \Stag::form($form_attrs);
 			return div(array_merge(array('pwform'), (array) $form->class), $content, $form->id);
 		}
