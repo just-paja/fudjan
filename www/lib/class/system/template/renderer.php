@@ -595,11 +595,24 @@ namespace System\Template
 		/** URL alias for reponse::url
 		 * @param string $name Named route name
 		 * @param array  $args Arguments for route
+		 * @param int    $var  Variation number of URL
 		 * @return string
 		 */
-		public function url($name, array $args = array())
+		public function url($name, array $args = array(), $var = 0)
 		{
 			return $this->response()->url($name, $args);
+		}
+
+
+		/** Return uniform resource locator
+		 * @param string $name Named route name
+		 * @param array  $args Arguments for route
+		 * @return string
+		 */
+		public function uri($name, array $args = array(), $var = 0)
+		{
+			$rq = $this->response()->request();
+			return ($rq->secure ? 'https':'http').'://'.$rq->host.$this->url($name, $args, $var);
 		}
 
 
