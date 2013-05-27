@@ -12,9 +12,16 @@ namespace System\Template
 			"response"             => array('object', "model" => '\System\Http\Response'),
 			"heading_layout_level" => array('int', "default" => 1),
 			"heading_level"        => array('int', "default" => null, "is_null" => true),
+			"keywords"             => array('varchar'),
+			"desc"                 => array('text'),
+			"robots"               => array('varchar'),
+			"copyright"            => array('varchar'),
+			"author"               => array('varchar'),
 		);
 
+		private static $meta_tags = array("description", "keywords", "author", "copyright", "robots");
 		private static $resource_filter = array('scripts', 'styles');
+
 		private $templates_used = array();
 		private $templates;
 		private $layout;
@@ -27,17 +34,16 @@ namespace System\Template
 		 */
 		public static function from_response(\System\Http\Response $response)
 		{
-			$renderer = new self(array(
-				"response" => $response,
-				"format"   => $response->format
-			));
+			$renderer = new self($response->opts);
+			$renderer->format = $response->format;
+			$renderer->no_debug = $response->no_debug;
+			$renderer->response = $response;
 
-			if ($response->page) {
-				$renderer->layout = $response->page->layout;
+			if ($response->layout) {
+				$renderer->layout = $response->layout;
 			}
 
-			$renderer->flush();
-			return $renderer;
+			return $renderer->flush();
 		}
 
 
@@ -55,11 +61,8 @@ namespace System\Template
 			);
 
 			if ($this->response()->page) {
-				$this->content_for('title', $this->response()->page->title);
-
-				foreach ($this->response()->page->get_meta() as $meta) {
-					$this->content_for("meta", $meta);
-				}
+				$this->content_for('title', $this->response()->title);
+				$this->process_meta();
 			}
 
 			return $this;
@@ -600,7 +603,7 @@ namespace System\Template
 		 */
 		public function url($name, array $args = array(), $var = 0)
 		{
-			return $this->response()->url($name, $args);
+			return \System\Router::get_url($this->response()->request()->host, $name, $args, $var);
 		}
 
 
@@ -656,6 +659,26 @@ namespace System\Template
 
 			$f->submit(isset($data['submit']) ? $data['submit']:l('delete'));
 			return $f;
+		}
+
+
+		/** Get page metadata from routes and add it into streamed output.
+		 * @return $this
+		 */
+		private function process_meta()
+		{
+			$dataray = array();
+
+			foreach ((array) self::$meta_tags as $name) {
+				if (any($this->data[$name])) {
+					$this->content_for('meta', array(
+						"name"    => $name,
+						"content" => $this->data[$name]
+					));
+				}
+			}
+
+			return $this;
 		}
 	}
 }

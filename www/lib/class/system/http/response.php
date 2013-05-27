@@ -30,18 +30,17 @@ namespace System\Http
 
 		protected static $attrs = array(
 			"format"     => array('varchar'),
-			"lang"       => array('varchar'),
-			"layout"     => array('array'),
 			"no_debug"   => array('bool'),
-			"start_time" => array('float'),
-			"page"       => array('object', "model" => '\System\Page'),
+			"title"      => array('varchar'),
+			"flow"       => array('object', "model" => '\System\Module\Flow'),
+			"groups"     => array('list'),
+			"modules"    => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
-			"flow"       => array('object', "model" => '\System\Module\Flow'),
+			"start_time" => array('float'),
 		);
 
-		private $layout    = array();
-		private $status = self::OK;
+		private $status  = self::OK;
 		private $headers = array();
 		private $content = null;
 
@@ -80,35 +79,15 @@ namespace System\Http
 		 * @param \System\Http\Request $request
 		 * @return self
 		 */
-		public static function from_request(\System\Http\Request $request)
+		public static function from_request(\System\Http\Request $request, array $attrs = array())
 		{
-			$response = new self(array(
-				"format"     => cfg("output", 'format_default'),
-				"lang"       => \System\Locales::get_lang(),
-				"start_time" => microtime(true),
-			));
+			def($attrs['format'], cfg("output", 'format_default'));
+			def($attrs['lang'], \System\Locales::get_lang());
+			def($attrs['start_time'], microtime(true));
 
-			$response->request = $request;
-			return $response;
-		}
-
-
-		/** Create response from page and request
-		 * @param \System\Http\Request $requset
-		 * @param \System\Page         $page
-		 * @return self
-		 */
-		public static function from_page(\System\Http\Request $request, \System\Page $page)
-		{
-			$response = self::from_request($request);
-			$response->update_attrs($page->get_data());
-			$response->page = $page;
-			$response->flow = new \System\Module\Flow($response, $page->modules);
-
-			if ($request->cli) {
-				$response->format = 'txt';
-			}
-
+			$response = new self($attrs);
+			$response->data['request'] = $request;
+			$response->data['flow'] = new \System\Module\Flow($response, $response->modules);
 			return $response;
 		}
 
@@ -140,6 +119,7 @@ namespace System\Http
 		public function send_headers()
 		{
 			if (!\System\Status::on_cli()) {
+				session_write_close();
 				$mime = \System\Output::get_mime($this->renderer()->format);
 
 				if ($this->status == self::OK && empty($this->content)) {
@@ -165,11 +145,12 @@ namespace System\Http
 
 
 		/** Send response content to output
-		 * @return void
+		 * @return $this
 		 */
-		public function display()
+		public function send_content()
 		{
 			echo $this->content;
+			return $this;
 		}
 
 
@@ -179,7 +160,7 @@ namespace System\Http
 		public function renderer()
 		{
 			if (!$this->renderer) {
-				$this->renderer = \System\Template\Renderer::from_response($this);
+				$this->data['renderer'] = \System\Template\Renderer::from_response($this);
 			}
 
 			return $this->renderer;
@@ -287,5 +268,23 @@ namespace System\Http
 			return \System\Router::get_url($this->request()->host, $name, $args, $variation);
 		}
 
+
+		/** Is the response readable?
+		 * @return bool
+		 */
+		public function is_readable()
+		{
+			if (!$this->request()->user()->is_root() && !empty($this->groups)) {
+				foreach ($this->request()->user()->get_group_ids() as $id) {
+					if (in_array($id, $this->groups)) {
+						return true;
+					}
+				}
+
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

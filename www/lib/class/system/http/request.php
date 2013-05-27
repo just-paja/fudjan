@@ -17,6 +17,7 @@ namespace System\Http
 			"post"     => array('list'),
 			"secure"   => array('bool'),
 			"user"     => array('object', "model" => '\System\User'),
+			"locales"  => array('object', "model" => '\System\Locales'),
 		);
 
 
@@ -57,7 +58,7 @@ namespace System\Http
 		/** Get page by request path
 		 * @return \System\Page|bool
 		 */
-		public function get_page()
+		public function create_response()
 		{
 			$this->args = array();
 
@@ -65,7 +66,7 @@ namespace System\Http
 				$attrs = isset($path[1]) ? $path[1]:array();
 				$attrs['request'] = $this;
 
-				return new \System\Page($attrs);
+				return \System\Http\Response::from_request($this, $attrs);
 			}
 
 			return false;

@@ -101,8 +101,8 @@ namespace System
 
 			try {
 				$request = \System\Http\Request::from_hit();
-				$page = new \System\Page($error_page);
-				$response = \System\Http\Response::from_page($request, $page);
+				$response = $request->create_response();
+				$response->update_attrs($error_page);
 
 				if (!self::on_cli()) {
 					$response->status($e->get_http_status());
@@ -113,7 +113,7 @@ namespace System
 				}
 
 				$response->renderer()->partial($error_page['partial'], array("desc" => $e));
-				$response->render()->send_headers()->display();
+				$response->render()->send_headers()->send_content();
 				self::report('error', $e);
 
 			} catch (\Exception $exc) {
