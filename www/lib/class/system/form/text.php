@@ -8,7 +8,7 @@ namespace System\Form
 			"id"      => array("varchar"),
 			"class"   => array("varchar"),
 			"label"   => array("varchar"),
-			"content" => array("varchar"),
+			"content" => array("text"),
 		);
 	}
 }
