@@ -92,7 +92,7 @@ namespace System\Offcom
 		 */
 		public function get_sender()
 		{
-			return is_null($this->from) ? cfg('offcom', 'default', 'email_sender'):$this->from;
+			return is_null($this->from) ? cfg('offcom', 'default', 'sender'):$this->from;
 		}
 
 
@@ -154,9 +154,11 @@ namespace System\Offcom
 			$body = implode("\n", $body);
 			$this->status = self::STATUS_SENDING;
 
-			if (mail($rcpt, $this->get_encoded_subject(), '', $body)) {
-				$this->status = self::STATUS_SENT;
-			} else $this->status = self::STATUS_FAILED;
+			if (cfg('dev', 'disable', 'offcom')) {
+				if (mail($rcpt, $this->get_encoded_subject(), '', $body)) {
+					$this->status = self::STATUS_SENT;
+				} else $this->status = self::STATUS_FAILED;
+			}
 
 			return $this->status;
 		}

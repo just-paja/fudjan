@@ -1,7 +1,5 @@
 {
 	"default":{
-		"email_sender":"robot@localhost"
-	},
-
-	"enable-email":true
+		"sender":"robot@localhost"
+	}
 }

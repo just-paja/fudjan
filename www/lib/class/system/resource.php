@@ -294,7 +294,7 @@ namespace System
 		{
 			if (is_null(self::$serial)) {
 				try {
-					$debug = cfg('dev', 'debug') && cfg('dev', 'disable-serial');
+					$debug = cfg('dev', 'debug') && cfg('dev', 'disable', 'serial');
 				} catch(\System\Error $e) {
 					$debug = true;
 				}
