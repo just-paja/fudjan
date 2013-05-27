@@ -98,20 +98,23 @@ namespace System\Model
 		public function __set($attr, $value)
 		{
 			if ($this->has_attr($attr)) {
-				$null_error = false;
+				$def = self::get_attr(get_class($this), $attr);
 
-				if (is_null($value)) {
-					$def = self::get_attr(get_class($this), $attr);
+				if (!isset($def['writeable']) || $def['writeable']) {
+					$null_error = false;
 
-					if (empty($def['is_null'])) {
-						if (any($def['default'])) {
-							$value = $def['default'];
+					if (is_null($value)) {
+
+						if (empty($def['is_null'])) {
+							if (any($def['default'])) {
+								$value = $def['default'];
+							}
 						}
 					}
-				}
 
-				$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
-				$this->changed = true;
+					$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
+					$this->changed = true;
+				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_class($this)));
 			} else $this->opts[$attr] = $value;
 
 			return $this;
