@@ -107,7 +107,7 @@ namespace System\Offcom
 				}
 			}
 
-			if (self::isAddrValid($this->get_sender())) {
+			if (!self::isAddrValid($this->get_sender())) {
 				throw new \System\Error\Format(sprintf('Sender "%s" is not formatted according to RFC 2822.', $this->get_sender()));
 			}
 
