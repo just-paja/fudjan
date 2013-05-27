@@ -146,7 +146,7 @@ namespace System\Offcom
 			}
 
 			foreach ($headers as $header=>$value) {
-				$headers_str[] = ucfirsts($header).": ".$value;
+				$headers_str[] = ucfirsts($header, '-', '-').": ".$value;
 			}
 
 			$body[] = implode("\n", $headers_str)."\n";
