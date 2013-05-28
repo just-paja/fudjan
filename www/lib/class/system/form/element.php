@@ -26,5 +26,11 @@ namespace System\Form
 
 			return $this->form;
 		}
+
+
+		public function is_valid()
+		{
+			return true;
+		}
 	}
 }
