@@ -81,6 +81,12 @@ namespace System\Form
 		}
 
 
+		/** Render text element
+		 * @param \System\Form $form
+		 * @param string       $el
+		 * @param mixed        $for
+		 * @return string
+		 */
 		public static function label(\System\Form $form, $text, $for = null)
 		{
 			return self::render_label(new \System\Form\Label(array(
@@ -91,6 +97,11 @@ namespace System\Form
 		}
 
 
+		/** Render text element
+		 * @param \System\Template\Renderer $ren
+		 * @param \System\Form\Text         $el
+		 * @return string
+		 */
 		private static function render_text(\System\Template\Renderer $ren, \System\Form\Text $el)
 		{
 			return
@@ -128,10 +139,12 @@ namespace System\Form
 				$tools_html = self::render_element($ren, $tools[$keys[0]]);
 			}
 
+			$errors = self::render_error_list($ren, $el);
+
 			if (is_null($tools_html)) {
 				return null;
 			} else {
-				$content = array(self::label($el->form(), $el->label), $tools_html);
+				$content = array(self::label($el->form(), $el->label), $tools_html, $errors);
 				return div('input-container input-'.$el::IDENT, $content);
 			}
 		}
@@ -213,25 +226,30 @@ namespace System\Form
 				));
 			}
 
-			$errors = '';
-			$error_list = $el->form()->get_errors($el->name);
-
-			if (!empty($error_list)) {
-				$error_list_attrs = array(
-					"content" => array(),
-					"class"   => 'errors',
-					"output"  => false,
-				);
-
-				foreach ($error_list as $e) {
-					$error_list_attrs['content'][] = \Tag::li(array("content" => $e, "output"  => false));
-				}
-
-				$errors = \Stag::ul($error_list_attrs);
-			}
+			$errors = self::render_error_list($ren, $el);
 
 			$label_and_input = $label_on_right ? $input.$label:$label.$input;
 			return $label_and_input.$info.$errors;
+		}
+
+
+		public static function render_error_list(\System\Template\Renderer $ren, \System\Form\Element $el)
+		{
+			$errors = '';
+			$error_list = $el->form()->get_errors($el->name);
+
+
+			if (any($error_list)) {
+				$error_lis = array();
+
+				foreach ($error_list as $e) {
+					$error_lis[] = li($e);
+				}
+
+				$errors = ul('errors', $error_lis);
+			}
+
+			return $errors;
 		}
 
 
