@@ -142,6 +142,7 @@
 .pwform .errors li {
 	padding:0;
 	margin:0 10px;
+	color:#f00;
 }
 
 .pwform .input-label-right {
