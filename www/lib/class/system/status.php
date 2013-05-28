@@ -101,8 +101,7 @@ namespace System
 
 			try {
 				$request = \System\Http\Request::from_hit();
-				$response = $request->create_response();
-				$response->update_attrs($error_page);
+				$response = $request->create_response($error_page);
 
 				if (!self::on_cli()) {
 					$response->status($e->get_http_status());
