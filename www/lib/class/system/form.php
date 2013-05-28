@@ -431,8 +431,6 @@ namespace System
 			$attrs['value'] = $this->get_input_value_by_name($attrs['name']);
 
 			if ($attrs['type'] == 'checkbox') {
-				$this->checkboxes[] = $attrs['name'];
-
 				// Preset value to checkbox since checkboxes are not sending any value if not checked
 				if (!isset($this->data_commited[$attrs['name']])) {
 					$this->data_commited[$attrs['name']] = null;
