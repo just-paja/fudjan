@@ -57,7 +57,7 @@ namespace System\Form
 		 * @param \System\Form\Element $el
 		 * @return void;
 		 */
-		public function add_element(\System\Form\Element $el)
+		public function &add_element(\System\Form\Element $el)
 		{
 			$el->form($this->form());
 			$fits = false;
@@ -102,6 +102,18 @@ namespace System\Form
 		public function get_elements()
 		{
 			return $this->elements;
+		}
+
+
+		public function is_valid()
+		{
+			$valid = true;
+
+			foreach ($this->elements as $el) {
+				$valid = $valid && $el->is_valid();
+			}
+
+			return $valid;
 		}
 	}
 }
