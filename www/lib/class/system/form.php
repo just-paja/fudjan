@@ -19,6 +19,10 @@ namespace System
 			"anchor"   => array('varchar'),
 			"bool"     => array('no_prefix'),
 			"class"    => array('array'),
+			"prefix"   => array('varchar'),
+			"renderer" => array('object', "model" => '\System\Template\Renderer'),
+			"response" => array('object', "model" => '\System\Http\Response'),
+			"request"  => array('object', "model" => '\System\Http\Request'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
@@ -26,25 +30,17 @@ namespace System
 		protected $data_default  = array();
 		protected $data_commited = array();
 		protected $data_hidden   = array();
+		protected $errors        = array();
 
+		private $counts  = array();
 		private $objects = array();
-		private $ignored = array();
-		private $renderer, $response, $request;
+		private $inputs  = array();
+		private $ignored = array('submited');
 		private $rendering = array(
 			"group"     => false,
 			"tab_group" => false,
 			"tab"       => false,
 		);
-
-		private $prefix = '';
-
-		protected $checkboxes = array();
-		protected $counts = array(
-			'inputs'    => 1,
-			"tab_group" => 0,
-			'tab'       => 0,
-		);
-		protected $errors = array();
 
 		private static $inputs_button = array("button", "submit");
 
@@ -99,11 +95,6 @@ namespace System
 
 			if (is_array($this->default)) {
 				$this->data_default = $this->default;
-			}
-
-			if ($this->opts['request']) {
-				$this->request = $this->opts['request'];
-				unset($this->opts['request']);
 			}
 
 			$this->method = strtolower($this->method);
@@ -203,6 +194,12 @@ namespace System
 		}
 
 
+		public function input_value($name, $default = false)
+		{
+			return $this->get_input_value_by_name($name, $default);
+		}
+
+
 		/** Get generic ID for this form
 		 * @return string
 		 */
@@ -286,7 +283,7 @@ namespace System
 		 */
 		public function passed()
 		{
-			return $this->submited;
+			return $this->submited() && $this->is_valid();
 		}
 
 
@@ -296,6 +293,18 @@ namespace System
 		public function submited()
 		{
 			return $this->submited;
+		}
+
+
+		public function is_valid()
+		{
+			$valid = true;
+
+			foreach ($this->objects as $object) {
+				$valid = $valid && $object->is_valid();
+			}
+
+			return $valid;
 		}
 
 
@@ -468,7 +477,8 @@ namespace System
 
 		public function attach(\System\Form\Element $el)
 		{
-			$this->get_rendering_container()->add_element($el);
+			$this->inputs[$el->name] = &$this->get_rendering_container()->add_element($el);
+			return $this->inputs[$el->name];
 		}
 
 
@@ -570,7 +580,11 @@ namespace System
 				$this->errors[$input_name] = array();
 			}
 
-			$this->errors[$input_name][] = $msg;
+			if (!in_array($msg, $this->errors[$input_name])) {
+				$this->errors[$input_name][] = $msg;
+			}
+
+			return $this;
 		}
 
 
@@ -588,13 +602,15 @@ namespace System
 				$data = $this->data_default;
 			}
 
-			foreach ($this->ignored as $name) {
-				if (isset($data[$name])) {
-					unset($data[$name]);
+			$out = array();
+
+			foreach ($data as $key=>$value) {
+				if (!in_array($key, $this->ignored)) {
+					$out[$key] = $value;
 				}
 			}
 
-			return $data;
+			return $out;
 		}
 
 
@@ -605,7 +621,7 @@ namespace System
 					$error_list = &$this->errors[$name];
 				} else $error_list = array();
 			} else {
-				$error_list = &$this->errors;
+				$error_list = $this->errors;
 			}
 
 			return $error_list;
@@ -691,6 +707,14 @@ namespace System
 			} else {
 				$this->data_default[$name] = $val;
 			}
+		}
+
+
+		public function &get_input($name)
+		{
+			if (isset($this->inputs[$name])) {
+				return $this->inputs[$name];
+			} else throw new \System\Error\Argument(sprintf("Input '%s' was not registered inside this form.", $name));
 		}
 	}
 }
