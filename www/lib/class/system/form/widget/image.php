@@ -62,8 +62,9 @@ namespace System\Form\Widget
 			}
 
 			$tools_html = ul('widget-tools', $inputs);
+			$errors = \System\Form\Renderer::render_error_list($ren, $this);
 			$content[] = $tools_html;
-			return div('input-container input-'.$this::IDENT, array($label, div('input-content', $content), span('cleaner', '')));
+			return div('input-container input-'.$this::IDENT, array($label, div('input-content', $content), $errors, span('cleaner', '')));
 		}
 	}
 }
