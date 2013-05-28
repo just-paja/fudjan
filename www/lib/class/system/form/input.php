@@ -116,17 +116,16 @@ namespace System\Form
 		}
 
 
-		public static function get_input_opts($type)
+		public function is_valid()
 		{
-			if (isset(self::$input_opts[$type])) {
-				$opts = array();
+			$valid = true;
 
-				foreach (self::$input_opts[$type] as $label=>$opt) {
-					$opts[$label] = l($opt);
-				}
+			if ($this->required && !$this->form()->input_value($this->name)) {
+				$this->form()->report_error($this->name, l('form_input_empty'));
+				$valid = false;
+			}
 
-				return $opts;
-			} else throw new \System\Error\Form("There are no options for input '".$type."'");
+			return $valid;
 		}
 	}
 }
