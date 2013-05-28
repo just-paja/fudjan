@@ -33,7 +33,7 @@ namespace System\Form\Widget
 
 		protected static $inputs = array(
 			array(
-				"ident"   => 'action',
+				"ident"   => 'action_select',
 				"name"    => '%s_action',
 				"type"    => 'radio',
 				"is_null" => false,
@@ -81,6 +81,12 @@ namespace System\Form\Widget
 			if (is_null($value)) {
 				if ($this->form()->submited()) {
 					$value = $this->form()->get_input_value_by_name($this->name.'_action');
+
+					if (is_null($value)) {
+						if (count($opts) === 1) {
+							$value = reset($opts);
+						}
+					}
 				} else {
 					if (is_null($par_value)) {
 						$value = isset($opts[self::NONE]) ? self::NONE:self::CREATE;
@@ -99,9 +105,11 @@ namespace System\Form\Widget
 				parent::init_tools($tools);
 			}
 
-			if (!$this->form()->submited()) {
-				$this->form()->use_value($this->name, $value);
-			}
+			$this->form()->ignore_input($this->name.'_action');
+
+			//~ if (!$this->form()->submited()) {
+			$this->form()->use_value($this->name, $value);
+			//~ }
 		}
 
 
