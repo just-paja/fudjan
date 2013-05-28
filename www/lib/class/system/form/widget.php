@@ -60,7 +60,20 @@ namespace System\Form
 			$value = $this->form()->get_input_value_by_name($this->name);
 			$widget_tools = array();
 
-			foreach ($tools as $attrs) {
+			foreach ($tools as $key=>$attrs) {
+				if (!isset($attrs['ident'])) {
+					throw new \System\Error\Model(sprintf("You must define attribute ident for widget tool '%s' of widget '%s'.", $key, get_class($this)));
+				}
+
+				// Model validation
+				if ($attrs['ident'] == 'action') {
+					if (empty($attrs['type'])) {
+						$attrs['type'] = 'action';
+					} elseif ($attrs['type'] != 'action') {
+						throw new \System\Error\Model(sprintf("Widget tool ident 'action' is reserved for action widget in widget '%s'!", get_class($this)));
+					}
+				}
+
 				foreach ($attrs as $attr_name=>&$attr_val) {
 					$matches = array();
 
@@ -104,10 +117,11 @@ namespace System\Form
 
 				// Mark tool required or not according to widget status
 				if ($this->required && isset($attrs['required']) && $attrs['required']) {
-					// Widgets with action tool
-					if (isset($widget_tools['action']) && !is_null($value)) {
-						$attrs['required'] = $this->form()->get_input_value_by_name($widget_tools['action']->name) === \System\Form\Widget\Action::KEEP;
+					if (isset($widget_tools['action'])) {
+						// Widgets with action tool
+						$attrs['required'] = $this->form()->input_value($widget_tools['action']->name) != \System\Form\Widget\Action::KEEP;
 					} else {
+						// Widgets without action tool
 						$attrs['required'] = $this->required;
 					}
 				} else {
@@ -238,6 +252,22 @@ namespace System\Form
 		public function get_tool_count()
 		{
 			return count($this->tools);
+		}
+
+
+		public function is_valid()
+		{
+			$valid = true;
+
+			if ($this->form()->submited()) {
+				if ($this->required && is_null($this->form()->input_value($this->name))) {
+					v($this->form()->input_value($this->name));
+					$this->form()->report_error($this->name, l('form_input_empty'));
+					$valid = false;
+				}
+			}
+
+			return $valid;
 		}
 	}
 }
