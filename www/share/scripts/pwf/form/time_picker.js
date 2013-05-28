@@ -70,6 +70,15 @@ pwf.register('time_picker', function()
 			}
 		}
 
+		if (el.val()) {
+			var val = el.val().split(':');
+
+			if (val.length === 3) {
+				els.hours.val(val[0]);
+				els.minutes.val(val[1]);
+			}
+		}
+
 		els.hours.bind('keyup.'+widget, {"els":els, "type":'hours'}, callback_keyup);
 		els.minutes.bind('keyup.'+widget, {"els":els, "type":'minutes'}, callback_keyup);
 
