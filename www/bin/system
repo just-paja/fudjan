@@ -119,7 +119,7 @@
 		public static function htaccess()
 		{
 			\System\Init::basic();
-			vout(l('Updating .htaccess rules'));
+			vout('Updating .htaccess rules');
 			System\Router::update_rewrite();
 		}
 	}

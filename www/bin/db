@@ -167,7 +167,7 @@
 					"Size"           => System\Template::convert_value('information', $size['size']),
 					"Free space"     => System\Template::convert_value('information', $size['free']),
 					"Structure"      => $stat,
-					"Last migrated"  => $mlast_date ? $mlast_date->format('Y-m-d H:i:s'):l('never'),
+					"Last migrated"  => $mlast_date ? $mlast_date->format('Y-m-d H:i:s'):'never',
 					"New migrations" => $mcount,
 				));
 				vout("");

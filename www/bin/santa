@@ -139,7 +139,7 @@
 			\System\Init::basic();
 			$packages = \System\Santa::get_all_installed();
 			self::print_packages($packages);
-			out(sprintf(l('Found %s installed packages.'), count($packages)));
+			out(sprintf('Found %s installed packages.', count($packages)));
 		}
 
 
@@ -152,7 +152,7 @@
 			$updates = System\Santa::get_update_list();
 
 			if (any($updates)) {
-				out(sprintf(l('Updates available: %s'), count($updates)));
+				out(sprintf('Updates available: %s', count($updates)));
 
 				self::print_packages($updates);
 			} else {
@@ -451,7 +451,7 @@
 				}
 
 				passthru(ROOT.'/bin/system'.(CLIOptions::get('verbose') ? ' -v':'').' htaccess');
-			} else out(l('There are no upgrades for selected packages.'));
+			} else out('There are no upgrades for selected packages.');
 
 		}
 
