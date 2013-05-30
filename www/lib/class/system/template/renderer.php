@@ -55,8 +55,13 @@ namespace System\Template
 			$this->content = array(
 				"title"   => '',
 				"meta"    => array(),
-				"styles"  => array(),
-				"scripts" => array(),
+				"styles"  => array('pwf/elementary'),
+				"scripts" => array(
+					'lib/jquery',
+					'lib/functions',
+					'pwf',
+					'pwf/storage',
+				),
 				"output"  => array(),
 			);
 
@@ -82,18 +87,14 @@ namespace System\Template
 				$debug = true;
 			}
 
+			$this->response->flush();
+
 			if ($debug && !$this->response->no_debug) {
 				$this->partial('system/status');
-				$this->content_for('styles', 'pwf/elementary');
 				$this->content_for('styles', 'pwf/devbar');
-				$this->content_for('scripts', 'lib/jquery');
-				$this->content_for('scripts', 'lib/functions');
-				$this->content_for('scripts', 'pwf');
-				$this->content_for('scripts', 'pwf/storage');
 				$this->content_for('scripts', 'pwf/devbar');
 			}
 
-			$this->response->flush();
 			ob_start();
 			empty($this->layout) ? $this->slot():$this->yield();
 			$this->content_for('output', ob_get_clean());
