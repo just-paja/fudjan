@@ -1,15 +1,10 @@
 {
 
-	"std":"D, d M Y G:i:s e",
-	"sql":"Y-m-d G:i:s",
-	"sql-date":"Y-m-d",
 	"human":"d.m.Y G:i",
 	"human-date":"d.m.",
 	"human-time":"G:i",
 	"human-full-date":"D j. F Y",
 	"human-full-datetime":"l j. F Y G:i",
-	"html5":"Y-m-d\\TH:i",
-	"html5-full":"Y-m-d\\TH:i:sP",
 
 	"days":{
 		"1":"monday",
