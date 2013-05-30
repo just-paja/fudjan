@@ -276,7 +276,7 @@ namespace System\Form
 				}
 
 				$opts[] = \Stag::option(array(
-					"content"  => $label,
+					"content"  => $ren->trans($label),
 					"value"    => $id,
 					"close"    => true,
 					"selected" => $el->value == $id,
