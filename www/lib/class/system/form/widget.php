@@ -86,7 +86,7 @@ namespace System\Form
 				$attrs['name'] = sprintf($attrs['name'], $this->name);
 
 				if (any($attrs['label'])) {
-					$attrs['label'] = l($attrs['label']);
+					$attrs['label'] = $attrs['label'];
 				}
 
 				$attrs['form']   = $this->form();
@@ -262,7 +262,7 @@ namespace System\Form
 			if ($this->form()->submited()) {
 				if ($this->required && is_null($this->form()->input_value($this->name))) {
 					v($this->form()->input_value($this->name));
-					$this->form()->report_error($this->name, l('form_input_empty'));
+					$this->form()->report_error($this->name, 'form_input_empty');
 					$valid = false;
 				}
 			}

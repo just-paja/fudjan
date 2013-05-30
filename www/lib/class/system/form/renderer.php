@@ -190,11 +190,11 @@ namespace System\Form
 						$el->value->setTimezone($tz);
 
 						if ($el->type == 'date') {
-							$data['value'] = format_date($el->value, 'sql-date');
+							$data['value'] = $ren->format_date($el->value, 'sql-date', \System\Locales::TRANS_NONE);
 						}
 
 						if ($el->type == 'time') {
-							$data['value'] = format_date($el->value, 'sql-time');
+							$data['value'] = $ren->format_date($el->value, 'sql-time', \System\Locales::TRANS_NONE);
 						}
 					}
 				}
@@ -405,7 +405,7 @@ namespace System\Form
 						"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
 					)),
 					\Stag::label(array(
-						"content" => l($lbl),
+						"content" => $ren->trans($lbl),
 						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
 					)),
 				));

@@ -365,5 +365,39 @@ namespace System
 
 			} else throw new \System\Error\Argument(sprintf("Method format_date accepts only date type arguments. Instance of DateTime or utime number. '%s' was given.", gettype($date)));
 		}
+
+
+		/** Get class translation from class format
+		 * @param string $class_name Class name in class format
+		 * @param bool   $plural     Return plural
+		 * @return string
+		 */
+		public function trans_class_name($class_name, $plural = false)
+		{
+			return $this->trans('model_'.\System\Loader::get_link_from_class($class_name).($plural ? '_plural':''));
+		}
+
+
+
+		/** Get translated attribute name
+		 * @param string $model
+		 * @param string $attr
+		 * @return string
+		 */
+		public function trans_model_attr_name($model, $attr)
+		{
+			return $this->trans('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
+		}
+
+
+		/** Get translated attribute description
+		 * @param string $model
+		 * @param string $attr
+		 * @return string
+		 */
+		public function trans_model_attr_desc($model, $attr)
+		{
+			return $this->trans('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+		}
 	}
 }

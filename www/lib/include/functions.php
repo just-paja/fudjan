@@ -226,9 +226,7 @@ namespace
 		$vals = array('', '');
 
 		foreach($data as $k => $v) {
-			if ($v instanceof DateTime) {
-				$v = format_date($v, 'human');
-			} elseif (is_object($v)) {
+			if (is_object($v)) {
 				$v = '{object}';
 			} elseif (is_array($v)) {
 				$v = implode(', ', $v);

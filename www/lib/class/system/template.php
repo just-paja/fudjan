@@ -50,26 +50,11 @@ namespace System
 		}
 
 
-		/** Format and translate datetime format
-		 * @param mixed  $date
-		 * @param string $format Format name
-		 * @return string
-		 */
-		public static function format_date($date, $format = 'std')
+		public static function is_date($arg)
 		{
-			if (is_null($date)) {
-				$date = new \DateTime();
-			}
-
-			if ($date instanceof \DateTime) {
-				$d = $date->format(\System\Locales::get('date:'.$format));
-				return strpos($format, 'html5') === 0 ? $d:\System\Locales::translate_date($d);
-			} elseif(is_numeric($date)) {
-				$d = date(\System\Locales::get('date:'.$format), $date);
-				return strpos($format, 'html5') === 0 ? $d:\System\Locales::translate_date($d);
-			} else {
-				return $date;
-			}
+			return
+				$arg instanceof \DateTime ||
+				is_numeric($arg);
 		}
 
 
@@ -136,18 +121,18 @@ namespace System
 		 * @param mixed $value
 		 * @return string
 		 */
-		public static function to_html($value)
+		public static function to_html(\System\Template\Renderer $ren, $value)
 		{
 			if (is_object($value) && method_exists($value, 'to_html')) {
 				return $value->to_html();
 			}
 
 			if ($value instanceof \DateTime) {
-				return format_date($value, 'human');
+				return $ren->format_date($value, 'human');
 			}
 
 			if (gettype($value) == 'boolean') {
-				return span($value = $value ? 'yes':'no', l($value));
+				return span($value = $value ? 'yes':'no', $ren->trans($value));
 			}
 
 			if (gettype($value) == 'float') {
@@ -183,7 +168,7 @@ namespace System
 				}
 
 				if ($value instanceof \DateTime) {
-					return format_date($value, 'sql');
+					return $value->format('Y-m-d H:i:s');
 				}
 
 				return $value;
@@ -196,7 +181,7 @@ namespace System
 		 * @param string $name
 		 * @param bool $force
 		 */
-		public static function find($name, $type = self::TYPE_LAYOUT, $format = null)
+		public static function find($name, $type = self::TYPE_LAYOUT, $format = null, $locale = null)
 		{
 			$base = ROOT;
 			$temp = null;
@@ -207,7 +192,7 @@ namespace System
 				case 'partial': $base .= self::DIR_PARTIAL.'/'; break;
 			}
 
-			file_exists($temp = $base.self::get_filename($name, $format, \System\Locales::get_lang())) ||
+			file_exists($temp = $base.self::get_filename($name, $format, $locale)) ||
 			file_exists($temp = $base.self::get_filename($name, $format)) ||
 			file_exists($temp = $base.self::get_filename($name)) ||
 			$temp = false;

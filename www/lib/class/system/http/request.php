@@ -9,6 +9,7 @@ namespace System\Http
 			"path"     => array('varchar'),
 			"agent"    => array('varchar'),
 			"query"    => array('varchar'),
+			"lang"     => array('varchar', "is_null" => true),
 			"referrer" => array('varchar'),
 			"time"     => array('float'),
 			"cli"      => array('bool'),
@@ -17,7 +18,6 @@ namespace System\Http
 			"post"     => array('list'),
 			"secure"   => array('bool'),
 			"user"     => array('object', "model" => '\System\User'),
-			"locales"  => array('object', "model" => '\System\Locales'),
 		);
 
 

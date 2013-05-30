@@ -53,8 +53,8 @@ namespace System\Form\Widget
 			if (is_array($value)) {
 				$val = array();
 
-				if (isset($value['date'])) $val[] = format_date($value['date'], 'sql-date');
-				if (isset($value['time'])) $val[] = format_date($value['time'], 'sql-time');
+				if (isset($value['date'])) $val[] = $this->form()->response->locales()->format_date($value['date'], 'sql-date', \System\Locales::TRANS_NONE);
+				if (isset($value['time'])) $val[] = $this->form()->response->locales()->format_date($value['time'], 'sql-time', \System\Locales::TRANS_NONE);
 
 				if (any($value)) {
 					$value = new \DateTime(implode(' ', $val));

@@ -57,7 +57,7 @@ namespace System
 				self::$tree[$repo] = $tmp['tree'];
 				\System\Directory::check(ROOT.self::DIR_TREE);
 				\System\File::put(self::get_repo_file($repo), json_encode(self::$tree[$repo]));
-			} else throw new \System\Error\Connection(l('Fetching recent tree data failed'), sprintf(l('HTTP error %s '), $data->status));
+			} else throw new \System\Error\Connection('Fetching recent tree data failed', sprintf('HTTP error %s ', $data->status));
 		}
 
 
@@ -234,7 +234,7 @@ namespace System
 				));
 
 				return $pkg;
-			} else throw new \System\Error\File(sprintf(l('Cannot load package metadata from directory "%s"'), $path));
+			} else throw new \System\Error\File(sprintf('Cannot load package metadata from directory "%s"', $path));
 		}
 
 

@@ -680,5 +680,31 @@ namespace System\Template
 
 			return $this;
 		}
+
+
+		public function locales()
+		{
+			return $this->response()->locales();
+		}
+
+
+		public function lang()
+		{
+			return $this->response()->locales()->get_lang();
+		}
+
+
+		public function trans($str)
+		{
+			$args = func_get_args();
+			array_shift($args);
+			return $this->response()->locales()->trans($str, $args);
+		}
+
+
+		public function format_date($date, $format = 'std', $translate = true)
+		{
+			return $this->response()->locales()->format_date($date, $format, $translate);
+		}
 	}
 }

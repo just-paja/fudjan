@@ -47,7 +47,7 @@ namespace System
 		{
 			return new self(array(
 				"user_id" => 0,
-				"nick"    => l('anonymous'),
+				"nick"    => 'Anonymous',
 				"image"   => \System\Image::from_path("/share/pixmaps/pwf/anonymous_user.png"),
 			));
 		}

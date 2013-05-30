@@ -62,15 +62,6 @@ namespace System
 		}
 
 
-		/** Get module name
-		 * @return string
-		 */
-		public function get_name()
-		{
-			return t('module_name', $this->path);
-		}
-
-
 		/** Get module id unique on a page
 		 * @return string
 		 */

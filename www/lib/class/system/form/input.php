@@ -121,7 +121,7 @@ namespace System\Form
 			$valid = true;
 
 			if ($this->required && !$this->form()->input_value($this->name)) {
-				$this->form()->report_error($this->name, l('form_input_empty'));
+				$this->form()->report_error($this->name, 'form_input_empty');
 				$valid = false;
 			}
 

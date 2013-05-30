@@ -74,17 +74,6 @@ namespace System
 		}
 
 
-		/** Get class translation from class format
-		 * @param string $class_name Class name in class format
-		 * @param bool   $plural     Return plural
-		 * @return string
-		 */
-		public static function get_class_trans($class_name, $plural = false)
-		{
-			return l('model_'.self::get_link_from_class($class_name).($plural ? '_plural':''));
-		}
-
-
 		/** Get class name in model format from class format
 		 * @param string $class_name
 		 * @return string

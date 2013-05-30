@@ -34,6 +34,7 @@ namespace System\Http
 			"title"      => array('varchar'),
 			"flow"       => array('object', "model" => '\System\Module\Flow'),
 			"groups"     => array('list'),
+			"locales"    => array('object', "model" => '\System\Locales'),
 			"modules"    => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
@@ -82,12 +83,12 @@ namespace System\Http
 		public static function from_request(\System\Http\Request $request, array $attrs = array())
 		{
 			def($attrs['format'], cfg("output", 'format_default'));
-			def($attrs['lang'], \System\Locales::get_lang());
 			def($attrs['start_time'], microtime(true));
 
 			$response = new self($attrs);
 			$response->data['request'] = $request;
-			$response->data['flow'] = new \System\Module\Flow($response, $response->modules);
+			$response->data['flow']    = new \System\Module\Flow($response, $response->modules);
+			$response->data['locales'] = new \System\Locales($request->lang);
 			return $response;
 		}
 
@@ -164,6 +165,12 @@ namespace System\Http
 			}
 
 			return $this->renderer;
+		}
+
+
+		public function locales()
+		{
+			return $this->locales;
 		}
 
 

@@ -141,7 +141,7 @@ namespace System
 
 		public function get_filename()
 		{
-			return format_date($this->date, "sql-date").'-'.$this->seoname.'.php';
+			return $this->date->format('Y-m-d H:i:s').'-'.$this->seoname.'.php';
 		}
 
 

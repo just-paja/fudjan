@@ -479,28 +479,6 @@ namespace System\Model
 		}
 
 
-		/** Get translated attribute name
-		 * @param string $model
-		 * @param string $attr
-		 * @return string
-		 */
-		public static function get_model_attr_name($model, $attr)
-		{
-			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
-		}
-
-
-		/** Get translated attribute description
-		 * @param string $model
-		 * @param string $attr
-		 * @return string
-		 */
-		public static function get_model_attr_desc($model, $attr)
-		{
-			return l('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
-		}
-
-
 		/** Get attribute value
 		 * @param string $attr
 		 * @return mixed

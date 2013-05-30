@@ -284,7 +284,7 @@ namespace System\Santa\Package
 
 				if ($data->ok()) {
 					\System\File::put($this->get_package_path(), $data->content);
-				} else throw new \System\Error\Connection(l('Fetching package'), sprintf(l('HTTP error %s '), $data->status));
+				} else throw new \System\Error\Connection('Fetching package', sprintf('HTTP error %s ', $data->status));
 			}
 
 			return $this->is_downloaded();
