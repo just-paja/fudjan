@@ -255,6 +255,7 @@ namespace System\Http
 					$response = $this;
 					$request  = $this->request();
 					$renderer = $this->renderer();
+					$locales  = $this->locales();
 					$flow     = $this->flow();
 					$ren      = &$renderer;
 
