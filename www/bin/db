@@ -167,7 +167,7 @@
 					"Size"           => System\Template::convert_value('information', $size['size']),
 					"Free space"     => System\Template::convert_value('information', $size['free']),
 					"Structure"      => $stat,
-					"Last migrated"  => $mlast_date ? format_date($mlast_date, 'sql'):l('never'),
+					"Last migrated"  => $mlast_date ? $mlast_date->format('Y-m-d H:i:s'):l('never'),
 					"New migrations" => $mcount,
 				));
 				vout("");
@@ -506,7 +506,7 @@
 				$db_ident = cfg('database', 'default');
 				$db_name  = cfg('database', 'list', $db_ident, 'database');
 
-				$file = ROOT."/var/backups/".str_replace(" ", "-", format_date(time(), "sql"))."_".$db_name.".sql";
+				$file = ROOT."/var/backups/".str_replace(" ", "-", date("Y-m-d H:i:s")."_".$db_name.".sql";
 				out("Creating backup of '".$db_name."' in '".$file."'");
 				self::backup($file);
 			}
@@ -603,7 +603,7 @@
 		{
 			$pad = str_repeat(' ', $padding);
 			foreach ($mig as $m) {
-					out($pad.'['.format_date($m->date, 'sql-date').'] '.$m->name);
+					out($pad.'['.$m->date->format('Y-m-d').'] '.$m->name);
 					vout($pad.'     Status: '.$m->status);
 					vout($pad.'    MD5 sum: '.$m->md5_sum);
 					vout($pad.'       Desc: '.$m->desc);

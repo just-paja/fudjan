@@ -69,7 +69,7 @@ namespace System
 					$date = new \Datetime(intval($fname[0]).'-'.intval($fname[1]).'-'.intval($fname[2]));
 					$name = \System\File::remove_postfix($fname[3]);
 
-					if (!in_array(format_date($date, "sql-date").'-'.$name, $old)) {
+					if (!in_array($date->format("Y-m-d").'-'.$name, $old)) {
 						$temp = &$items[];
 						$temp = new self(array(
 							"file"    => $file,
@@ -141,7 +141,7 @@ namespace System
 
 		public function get_filename()
 		{
-			return $this->date->format('Y-m-d H:i:s').'-'.$this->seoname.'.php';
+			return $this->date->format('Y-m-d').'-'.$this->seoname.'.php';
 		}
 
 

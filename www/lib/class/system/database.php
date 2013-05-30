@@ -197,7 +197,7 @@ namespace System
 
 				if (is_object($value)) {
 					switch (get_class($value)) {
-						case 'DateTime': $value = "'".format_date($value, 'sql')."'"; break;
+						case 'DateTime': $value = "'".$value->format('Y-m-d H:i:s')."'"; break;
 						case 'System\Image': $value = "'".$value->to_json()."'"; break;
 						case 'System\Video\Youtube': $value = "'".$value->to_sql()."'"; break;
 						case 'System\Gps': $value = $value->to_sql(); break;
