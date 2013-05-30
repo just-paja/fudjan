@@ -367,7 +367,9 @@ namespace System
 				if (is_null($date)) {
 					$date = new \DateTime();
 				} elseif (is_numeric($date)) {
-					$date = new \DateTime($date);
+					$helper = new \DateTime();
+					$helper->setTimestamp($date);
+					$date = $helper;
 				}
 
 				$local_format = \System\Locales::get_path('date:'.$format);
