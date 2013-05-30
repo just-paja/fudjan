@@ -1,7 +1,13 @@
 <?
 
+/** System locale settings
+ * @package system
+ */
 namespace System
 {
+	/** System locale settings
+	 * @package system
+	 */
 	class Locales
 	{
 		const DIR = '/etc/locales';
@@ -9,48 +15,139 @@ namespace System
 		const DIR_MODULES = '/modules.d';
 		const ENCODING = 'UTF-8';
 		const LANG_DEFAULT = 'en_US';
+		const TZ_DEFAULT = 'Europe/Prague';
 		const KEY_MESSAGES = 'messages';
 
-		private static $lang;
-		private static $messages = array();
-		private static $files = array();
+		const TRANS_NONE = 0;
+		const TRANS_STD  = 1;
+		const TRANS_INF  = 2;
 
 
-		/** Class init
+		/** Loaded files */
+		private $files = array();
+
+		private $locale;
+		private $lang;
+		private $date_trans;
+
+		/** Loaded messages */
+		private $messages = array();
+
+		/** Static messages */
+		private static $messages_static = array(
+			"date" => array(
+				"std"        => 'D, d M Y G:i:s e',
+				"sql"        => 'Y-m-d H:i:s',
+				"sql-date"   => 'Y-m-d',
+				"sql-time"   => 'H:i:s',
+				"html5"      => 'Y-m-d\\TH:i:s',
+				"html5-full" => 'Y-m-d\\TH:i:sP',
+			)
+		);
+
+
+		/** Class init. Inits mb extension and sets default timezone for dates
 		 * @return void
 		 */
 		public static function init()
 		{
 			mb_language('uni');
 			mb_internal_encoding(self::ENCODING);
-			date_default_timezone_set(cfg('locales', 'timezone'));
-			self::set_locale();
+			date_default_timezone_set(self::get_default_timezone());
+		}
+
+
+		/** Is selected locale available
+		 * @param string $locale
+		 * @return bool
+		 */
+		public static function is_locale_available($locale)
+		{
+			if (strpos($locale, '_')) {
+				return is_dir(ROOT.self::DIR.'/'.$locale);
+			} else throw new \System\Error\Format(sprintf("Locale format must respect RFC 5646 and RFC 4647 (eg. en_US). Accepting underscore or dash. '%s' was given.", $locale));
+		}
+
+
+		/** Get default language, if settings fail, skip
+		 * @return string
+		 */
+		public static function get_default_lang()
+		{
+			try {
+				return cfg('locales', 'default_lang');
+			} catch (\System\Error\Config $e) {
+				return self::LANG_DEFAULT;
+			}
+		}
+
+
+		/** Get default language, if settings fail, skip
+		 * @return string
+		 */
+		public static function get_default_timezone()
+		{
+			try {
+				return cfg('locales', 'timezone');
+			} catch (\System\Error\Config $e) {
+				return self::TZ_DEFAULT;
+			}
+		}
+
+
+		/** Public constructor
+		 * @return $this
+		 */
+		public function __construct($locale = null)
+		{
+			$this->set_locale($locale);
+		}
+
+
+		/** Set a locale to object
+		 * @param string $locale
+		 * @return $this
+		 */
+		public function set_locale($locale = null)
+		{
+			if (!is_null($locale)) {
+				$locale = str_replace('-', '_', $locale);
+			}
+
+			$this->locale = (is_null($locale) || !self::is_locale_available($locale)) ? self::get_default_lang():$locale;
+			$parts = explode('_', $this->locale);
+			$this->lang = $parts[0];
+			$this->load_messages();
+			setlocale(LC_ALL, $this->locale.'.'.self::ENCODING);
+
+			return $this;
+		}
+
+
+		/** Get locale description
+		 * @return string
+		 */
+		public function get_locale()
+		{
+			return $this->locale;
+		}
+
+
+		/** Get language description
+		 * @return string
+		 */
+		public function get_lang()
+		{
+			return $this->lang;
 		}
 
 
 		/** Get list of all loaded locale files
 		 * @return array
 		 */
-		public static function get_loaded_files()
+		public function get_loaded_files()
 		{
-			return self::$files;
-		}
-
-
-		/** Set locale by configured language
-		 * @return void
-		 */
-		private static function set_locale()
-		{
-			$lang = self::get_lang();
-			$lang_parts = explode('_', $lang);
-
-			if (isset($lang_parts[1])) {
-				$lang_parts[1] = strtoupper($lang_parts[1]);
-			}
-
-			$lang = implode('_', $lang_parts);
-			setlocale(LC_ALL, self::get_lang().'.'.self::ENCODING);
+			return $this->files;
 		}
 
 
@@ -59,18 +156,25 @@ namespace System
 		 * @param null|string $force_lang Use this language
 		 * @return mixed
 		 */
-		public static function get($str, $force_lang = NULL)
+		public function get_path($str)
 		{
-			$lang = $force_lang ? $force_lang:self::get_lang();
-			$src = &self::$messages[$lang];
+			$src = &$this->messages;
 
 			if (strpos($str, ':')) {
 				list($module, $str) = explode(':', $str, 2);
-				self::load($module, $lang);
-				$src = &self::$messages[$lang][$module];
+				$this->load_module($module);
+				$src = &$this->messages[$module];
 			}
 
-			return isset($src[$str]) ? $src[$str]:$str;
+			if (isset($src[$str])) {
+				return $src[$str];
+			}
+
+			if (isset(self::$messages_static[$module][$str])) {
+				return self::$messages_static[$module][$str];
+			}
+
+			return null;
 		}
 
 
@@ -78,9 +182,9 @@ namespace System
 		 * @param string $lang
 		 * @return array
 		 */
-		public static function get_all_messages($lang = null)
+		public function get_messages()
 		{
-			return self::$messages[is_null($lang) ? self::get_lang():$lang];
+			return $this->messages;
 		}
 
 
@@ -89,23 +193,15 @@ namespace System
 		 * @param null|string $force_lang
 		 * @return string
 		 */
-		public static function translate($str, $force_lang = NULL)
+		public function trans($str, array $args = array())
 		{
-			$lang = is_null($force_lang) ? self::get_lang():$force_lang;
-			self::load_messages($lang);
-			return isset(self::$messages[$lang][self::KEY_MESSAGES][$str]) ? self::$messages[$lang][self::KEY_MESSAGES][$str]:$str;
-		}
+			$msg = isset($this->messages[self::KEY_MESSAGES][$str]) ? $this->messages[self::KEY_MESSAGES][$str]:$str;
 
-
-		/** Translate and replace arguments if necessary
-		 * @param string $str
-		 * @param array  $data Data to replace
-		 * @return string
-		 */
-		public static function translate_and_replace($str, array $data)
-		{
-			unset($data[0]);
-			return vsprintf(self::translate($str), $data);
+			if (empty($args)) {
+				return $msg;
+			} else {
+				return vsprintf($msg, $args);
+			}
 		}
 
 
@@ -114,58 +210,53 @@ namespace System
 		 * @param null|string $force_lang
 		 * @return void
 		 */
-		private static function load($module, $force_lang = NULL)
+		public function load_module($module)
 		{
 			if ($module === self::KEY_MESSAGES) {
 				throw new \System\Error\Argument(sprintf('Locales module must not be named %s', $module));
 			}
 
-			$lang = $force_lang ? $force_lang:self::get_lang();
-
-			if (!isset(self::$messages[$lang][$module])) {
-				if (!file_exists($f = ($p = ROOT.self::DIR.'/'.$lang.self::DIR_MODULES.'/'.$module).'.json')) {
+			if (!isset($this->messages[$module])) {
+				if (!file_exists($f = ($p = ROOT.self::DIR.'/'.$this->locale.self::DIR_MODULES.'/'.$module).'.json')) {
 					$f = $p.'.core.json';
 				}
 
-				self::$messages[$lang][$module] = \System\Json::read($f);
-				self::$files[$lang][] = str_replace(ROOT, '', $f);
+				$this->messages[$module] = \System\Json::read($f);
+				$this->files[] = str_replace(ROOT, '', $f);
 
-				if (empty(self::$messages[$lang][$module])) {
-					Status::report('error', sprintf('Locales module %s/%s is empty or broken', $lang, $module));
+				if (empty($this->messages[$module])) {
+					Status::report('error', sprintf('Locales module %s/%s is empty or broken', $this->locale, $module));
 				}
 			}
 		}
 
 
-		/** Get language and locale settings shortcut
-		 * @return string
-		 */
-		static function get_lang()
+		private function load_date_translations()
 		{
-			if (self::$lang) {
-				return self::$lang;
-			} else {
-				if (any($_SESSION['lang'])) {
-					return $_SESSION['lang'];
-				} else {
-					try {
-						return cfg("locales", 'default_lang');
-					} catch (\System\Error $e) {
-						return self::LANG_DEFAULT;
-					}
-				}
+			if (is_null($this->date_trans)) {
+				$this->date_trans = array(
+					"find" => array_merge(
+						$this->get_path('date:days', self::LANG_DEFAULT),
+						$this->get_path('date:days-short', self::LANG_DEFAULT),
+						$this->get_path('date:months', self::LANG_DEFAULT),
+						$this->get_path('date:months-short', self::LANG_DEFAULT)
+					),
+
+					"replace" => array_merge(
+						$this->get_path('date:days'),
+						$this->get_path('date:days-short'),
+						$this->get_path('date:months'),
+						$this->get_path('date:months-short')
+					),
+
+					"replace_hard" => array_merge(
+						$this->get_path('date:days'),
+						$this->get_path('date:days-short'),
+						$this->get_path('date:months-date'),
+						$this->get_path('date:months-short')
+					),
+				);
 			}
-		}
-
-
-		/** Set locale environment
-		 * @param string $lang
-		 * @return string Resulted language
-		 */
-		static function set_lang($lang)
-		{
-			$_SESSION['lang'] = self::$lang = $lang;
-			return self::$lang;
 		}
 
 
@@ -174,42 +265,14 @@ namespace System
 		 * @param bool $hard
 		 * @return string
 		 */
-		public static function translate_date($date, $hard = false)
+		public function translate_date($date, $hard = false)
 		{
-			static $find, $replace_std, $replace_hard;
-
-			if (!isset($find))
-			{
-				$find = array_merge(
-					Locales::get('date:days', self::LANG_DEFAULT),
-					Locales::get('date:days-short', self::LANG_DEFAULT),
-					Locales::get('date:months', self::LANG_DEFAULT),
-					Locales::get('date:months-short', self::LANG_DEFAULT)
-				);
-
-				$replace_std = array_merge(
-					Locales::get('date:days'),
-					Locales::get('date:days-short'),
-					Locales::get('date:months'),
-					Locales::get('date:months-short')
-				);
-
-				$replace_hard = array_merge(
-					Locales::get('date:days'),
-					Locales::get('date:days-short'),
-					Locales::get('date:months-date'),
-					Locales::get('date:months-short')
-				);
-			}
-
+			$replace_key = 'replace';
 			if ($hard) {
-				$replace = &$replace_std;
-			} else {
-				$replace = &$replace_hard;
+				$replace_key = 'replace_hard';
 			}
 
-			$date = str_replace($find, $replace, strtolower($date));
-			return $date;
+			return str_replace($this->date_trans['find'], $this->date_trans[$replace_key], strtolower($date));
 		}
 
 
@@ -217,14 +280,16 @@ namespace System
 		 * @param string $lang
 		 * @return void
 		 */
-		private static function load_messages($lang)
+		private function load_messages()
 		{
-			($d = !isset(self::$messages[$lang][self::KEY_MESSAGES])) && \System\Json::read_dist(
-				ROOT.self::DIR.'/'.$lang.self::DIR_MESSAGES,
-				self::$messages[$lang][self::KEY_MESSAGES],
-				false,
-				self::$files[$lang]
-			);
+			if (!isset($this->messages[self::KEY_MESSAGES])) {
+				\System\Json::read_dist(
+					ROOT.self::DIR.'/'.$this->locale.self::DIR_MESSAGES,
+					$this->messages[self::KEY_MESSAGES],
+					false,
+					$this->files
+				);
+			}
 		}
 
 
@@ -271,6 +336,34 @@ namespace System
 			}
 
 			return $d;
+		}
+
+
+		/** Format and translate datetime format
+		 * @param DateTime|int|null $date      Date to format. Takes current time if null.
+		 * @param string            $format    Format name or format directly
+		 * @param int               $translate 0 for no translation, 1 for standart translation, 2 for special translation
+		 * @return string
+		 */
+		public function format_date($date, $format = 'std', $translate = self::TRANS_STD)
+		{
+			if (\System\Template::is_date($date)) {
+				if (is_null($date)) {
+					$date = new \DateTime();
+				} elseif (is_numeric($date)) {
+					$date = new \DateTime($date);
+				}
+
+				$local_format = \System\Locales::get_path('date:'.$format);
+				$d = $date->format(is_null($local_format) ? $format:$local_format);
+
+				if ($translate == self::TRANS_NONE) {
+					return $d;
+				} else {
+					return $this->translate_date($d, $translate == self::TRANS_INF);
+				}
+
+			} else throw new \System\Error\Argument(sprintf("Method format_date accepts only date type arguments. Instance of DateTime or utime number. '%s' was given.", gettype($date)));
 		}
 	}
 }
