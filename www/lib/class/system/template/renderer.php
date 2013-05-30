@@ -143,6 +143,7 @@ namespace System\Template
 				$renderer = $this;
 				$response = $this->response();
 				$request  = $this->response()->request();
+				$locales  = $this->response()->locales();
 				$ren      = &$renderer;
 
 				if (file_exists($f = \System\Template::find($name, \System\Template::TYPE_LAYOUT, $this->format))) {
@@ -203,6 +204,7 @@ namespace System\Template
 				$response = $this->response();
 				$flow     = $this->response()->flow();
 				$request  = $this->response()->request();
+				$locales  = $this->response()->locales();
 				$ren      = &$renderer;
 
 				include($temp);

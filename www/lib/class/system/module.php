@@ -141,6 +141,7 @@ namespace System
 						$renderer = $this->response()->renderer();
 						$request  = $this->response()->request();
 						$flow     = $this->response()->flow();
+						$locales  = $this->response()->locales();
 
 						$ren = &$renderer;
 
