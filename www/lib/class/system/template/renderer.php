@@ -659,7 +659,7 @@ namespace System\Template
 				$f->text($i, $text);
 			}
 
-			$f->submit(isset($data['submit']) ? $data['submit']:l('delete'));
+			$f->submit(isset($data['submit']) ? $data['submit']:$this->locales()->trans('delete'));
 			return $f;
 		}
 
