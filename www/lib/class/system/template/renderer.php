@@ -60,7 +60,7 @@ namespace System\Template
 				"output"  => array(),
 			);
 
-			if ($this->response()->page) {
+			if ($this->response()) {
 				$this->content_for('title', $this->response()->title);
 				$this->process_meta();
 			}
