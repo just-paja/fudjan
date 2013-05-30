@@ -88,7 +88,7 @@ namespace System\Http
 			$response = new self($attrs);
 			$response->data['request'] = $request;
 			$response->data['flow']    = new \System\Module\Flow($response, $response->modules);
-			$response->data['locales'] = new \System\Locales($request->lang);
+			$response->data['locales'] = \System\Locales::create($request->lang)->make_syswide();
 			return $response;
 		}
 

@@ -54,7 +54,8 @@ namespace System
 		{
 			return
 				$arg instanceof \DateTime ||
-				is_numeric($arg);
+				is_numeric($arg) ||
+				is_null($arg);
 		}
 
 

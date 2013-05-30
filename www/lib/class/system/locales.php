@@ -95,12 +95,10 @@ namespace System
 		}
 
 
-		/** Public constructor
-		 * @return $this
-		 */
-		public function __construct($locale = null)
+		public static function create($locale)
 		{
-			$this->set_locale($locale);
+			$obj = new self();
+			return $obj->set_locale($locale);
 		}
 
 
@@ -118,8 +116,13 @@ namespace System
 			$parts = explode('_', $this->locale);
 			$this->lang = $parts[0];
 			$this->load_messages();
-			setlocale(LC_ALL, $this->locale.'.'.self::ENCODING);
+			return $this;
+		}
 
+
+		public function make_syswide()
+		{
+			setlocale(LC_ALL, $this->locale.'.'.self::ENCODING);
 			return $this;
 		}
 
@@ -231,15 +234,19 @@ namespace System
 		}
 
 
+		/** Prepare data for translating datetimes
+		 * @return $this
+		 */
 		private function load_date_translations()
 		{
 			if (is_null($this->date_trans)) {
+				$def = self::create(self::LANG_DEFAULT);
 				$this->date_trans = array(
 					"find" => array_merge(
-						$this->get_path('date:days', self::LANG_DEFAULT),
-						$this->get_path('date:days-short', self::LANG_DEFAULT),
-						$this->get_path('date:months', self::LANG_DEFAULT),
-						$this->get_path('date:months-short', self::LANG_DEFAULT)
+						$def->get_path('date:days'),
+						$def->get_path('date:days-short'),
+						$def->get_path('date:months'),
+						$def->get_path('date:months-short')
 					),
 
 					"replace" => array_merge(
@@ -257,6 +264,8 @@ namespace System
 					),
 				);
 			}
+
+			return $this;
 		}
 
 
@@ -267,6 +276,7 @@ namespace System
 		 */
 		public function translate_date($date, $hard = false)
 		{
+			$this->load_date_translations();
 			$replace_key = 'replace';
 			if ($hard) {
 				$replace_key = 'replace_hard';
