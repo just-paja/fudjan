@@ -226,11 +226,6 @@ namespace
 
 
 	// Template
-	/** @alias System\Template::format_date */
-	function format_date($datetime = null, $format = 'std') {
-		return System\Template::format_date($datetime, $format);
-	}
-
 	/** @alias System\Template::get_css_color */
 	function get_css_color($color) {
 		return System\Template::get_css_color($color);
@@ -244,16 +239,6 @@ namespace
 	/** @alias System\Locales::strlen_binary */
 	function strlen_binary($str) {
 		return System\Locales::strlen_binary($str);
-	}
-
-	/** @alias System\Locales::translate */
-	function l($str, $lang = null) {
-		return System\Locales::translate($str, $lang);
-	}
-
-	/** @alias System\Locales::translate_and_replace */
-	function t($str) {
-		return System\Locales::translate_and_replace($str, func_get_args());
 	}
 
 	/** @alias System\Settings::get */
