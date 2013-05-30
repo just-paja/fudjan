@@ -506,7 +506,7 @@
 				$db_ident = cfg('database', 'default');
 				$db_name  = cfg('database', 'list', $db_ident, 'database');
 
-				$file = ROOT."/var/backups/".str_replace(" ", "-", date("Y-m-d H:i:s")."_".$db_name.".sql";
+				$file = ROOT."/var/backups/".str_replace(" ", "-", date("Y-m-d H:i:s"))."_".$db_name.".sql";
 				out("Creating backup of '".$db_name."' in '".$file."'");
 				self::backup($file);
 			}
