@@ -29,6 +29,7 @@ namespace System
 		private $locale;
 		private $lang;
 		private $date_trans;
+		private $response;
 
 		/** Loaded messages */
 		private $messages = array();
@@ -95,9 +96,11 @@ namespace System
 		}
 
 
-		public static function create($locale)
+		public static function create(\System\Http\Response $response, $locale)
 		{
 			$obj = new self();
+			$obj->response = $response;
+
 			return $obj->set_locale($locale);
 		}
 
@@ -240,7 +243,7 @@ namespace System
 		private function load_date_translations()
 		{
 			if (is_null($this->date_trans)) {
-				$def = self::create(self::LANG_DEFAULT);
+				$def = self::create($this->response, self::LANG_DEFAULT);
 				$this->date_trans = array(
 					"find" => array_merge(
 						$def->get_path('date:days'),
