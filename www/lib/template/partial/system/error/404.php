@@ -4,5 +4,5 @@
  * @package errors
  */
 
-echo $renderer->heading(l('core_page_not_found'));
-Tag::p(array("class" => 'desc', "content" => l('core_page_not_found_text')));
+echo $renderer->heading($ren->trans('core_page_not_found'));
+Tag::p(array("class" => 'desc', "content" => $ren->trans('core_page_not_found_text')));

@@ -1,8 +1,8 @@
 <?
 
 echo doctype();
-echo html(\System\Locales::get_lang());
-	echo head($renderer->content_from('head'));
+echo html($ren->lang());
+	echo head($ren->content_from('head'));
 
 	echo body();
 

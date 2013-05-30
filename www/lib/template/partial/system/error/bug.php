@@ -15,10 +15,10 @@ $trace   = 'core_bug_report_trace';
 $reason  = 'core_bug_report_reason';
 
 try {
-	$heading = l($heading);
-	$info    = l($info);
-	$trace   = l($trace);
-	$reason  = l($reason);
+	$heading = $ren->trans($heading);
+	$info    = $ren->trans($info);
+	$trace   = $ren->trans($trace);
+	$reason  = $ren->trans($reason);
 } catch(Exception $e) {}
 
 
