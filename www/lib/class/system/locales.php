@@ -195,19 +195,22 @@ namespace System
 
 
 		/** Translate string
-		 * @param string      $str
-		 * @param null|string $force_lang
+		 * @param string       $str
+		 * @param array|string $args Arguments to paste into the string. If not array, all arguments after str are written inside.
 		 * @return string
 		 */
-		public function trans($str, array $args = array())
+		public function trans($str, $args = null)
 		{
 			$msg = isset($this->messages[self::KEY_MESSAGES][$str]) ? $this->messages[self::KEY_MESSAGES][$str]:$str;
 
-			if (empty($args)) {
-				return $msg;
-			} else {
+			if (is_array($args) || (!is_null($args) && func_num_args() > 1)) {
+				if (!is_array($args)) {
+					$args = func_get_args();
+					array_shift($args);
+				}
+
 				return vsprintf($msg, $args);
-			}
+			} else return $msg;
 		}
 
 
