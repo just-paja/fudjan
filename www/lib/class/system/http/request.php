@@ -28,7 +28,7 @@ namespace System\Http
 		{
 			if (\System\Status::on_cli()) {
 				$data = array(
-					"time"   => $_SERVER['REQUEST_TIME_FLOAT'],
+					"time"   => def($_SERVER['REQUEST_TIME_FLOAT'], microtime(true)),
 					"cli"    => true,
 					"secure" => false,
 				);
@@ -40,7 +40,7 @@ namespace System\Http
 					"referrer" => def($_SERVER['HTTP_REFERER']),
 					"agent"    => $_SERVER['HTTP_USER_AGENT'],
 					"query"    => $_SERVER['QUERY_STRING'],
-					"time"     => $_SERVER['REQUEST_TIME_FLOAT'],
+					"time"     => def($_SERVER['REQUEST_TIME_FLOAT'], microtime(true)),
 					"secure"   => any($_SERVER['HTTPS']),
 				);
 
