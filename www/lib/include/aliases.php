@@ -258,8 +258,8 @@ namespace
 	}
 
 	/** @alias System\Template::to_html() */
-	function to_html($value)
+	function to_html(\System\Template\Renderer $ren, $value)
 	{
-		return \System\Template::to_html($value);
+		return \System\Template::to_html($ren, $value);
 	}
 }
