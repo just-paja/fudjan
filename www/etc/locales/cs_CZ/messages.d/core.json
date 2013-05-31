@@ -17,6 +17,9 @@
 	"form_widget_action_edit":"Upravit",
 	"form_input_image_file":"Soubor s obrázkem",
 
+	"form_input_datetime_date":"Datum",
+	"form_input_datetime_time":"Čas",
+
 	"form_location_input_action":"Operace s místem",
 	"form_location_input_none":"Žádné místo",
 	"form_location_input_edit":"Upravit stávající",

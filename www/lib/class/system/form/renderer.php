@@ -144,7 +144,7 @@ namespace System\Form
 			if (is_null($tools_html)) {
 				return null;
 			} else {
-				$content = array(self::label($el->form(), $el->label), $tools_html, $errors);
+				$content = array(self::label($el->form(), $ren->trans($el->label)), $tools_html, $errors);
 				return div('input-container input-'.$el::IDENT, $content);
 			}
 		}
@@ -172,7 +172,7 @@ namespace System\Form
 
 			$label = $el->has_label() ? \Stag::label(array(
 				"class"   => array('input-label', 'input-label-'.($label_on_right ? 'right':'left')),
-				"content" => $el->label.($label_on_right ? '':':'),
+				"content" => $ren->trans($el->label).($label_on_right ? '':':'),
 				"for"     => $el->id,
 			)):'';
 
