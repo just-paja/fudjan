@@ -3,10 +3,12 @@
 	border-radius:3px;
 	background:#fff;
 	padding:4px 4px;
+	line-height:100%;
 }
 
 .timepicker .inner input {
 	width:25px;
+	height:auto;
 	text-align:center;
 	border:none;
 	background:none;

@@ -8,6 +8,7 @@
 	border-radius:3px;
 	background:#fff;
 	padding:4px 8px;
+	height:23px;
 }
 
 .pwform .input-container {
@@ -15,11 +16,11 @@
 	vertical-align:top;
 }
 
-.pwform .label,
-.pwform .input,
+.pwform label,
+.pwform .input-container,
 .pwform .errors
 {
-	line-height:14px;
+	line-height:23px;
 }
 
 .pwform .input {

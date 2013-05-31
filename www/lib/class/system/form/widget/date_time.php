@@ -31,7 +31,9 @@ namespace System\Form\Widget
 			),
 		);
 
-		protected static $resources = array();
+		protected static $resources = array(
+			"styles" => array('pwf/form/datetimepicker'),
+		);
 
 
 		protected function init_tools(array $tools = null)
