@@ -1,0 +1,15 @@
+.timepicker .inner {
+	border:1px solid #999;
+	border-radius:3px;
+	background:#fff;
+	padding:4px 4px;
+}
+
+.timepicker .inner input {
+	width:25px;
+	text-align:center;
+	border:none;
+	background:none;
+	padding:0 2px;
+	margin:0;
+}
