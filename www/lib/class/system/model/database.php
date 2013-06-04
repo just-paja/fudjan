@@ -320,9 +320,9 @@ namespace System\Model
 			$type = false;
 
 			if (self::attr_is_rel($model, $attr)) {
-				if     (is_array($model::$has_many)   && array_key_exists($attr, $model::$has_many))   $type = 'has-many';
-				elseif (is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))    $type = 'has-one';
-				elseif (is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to)) $type = 'belongs-to';
+				if     (is_array($model::$has_many)   && array_key_exists($attr, $model::$has_many))   $type = self::REL_HAS_MANY;
+				elseif (is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))    $type = self::REL_HAS_ONE;
+				elseif (is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to)) $type = self::REL_BELONGS_TO;
 			}
 
 			return $type;
@@ -340,8 +340,9 @@ namespace System\Model
 			if (self::attr_is_rel($model, $name)) {
 				$type = self::get_rel_type($model, $name);
 
-				if ($type != 'has-many') {
+				if ($type != self::REL_HAS_MANY) {
 					$this->$name = $value;
+
 					return $this;
 				}
 			}
@@ -390,7 +391,7 @@ namespace System\Model
 			$type = self::get_rel_type($model, $rel);
 
 			if (empty($this->opts[$rel.'-fetched'])) {
-				if ($type == 'has-many') {
+				if ($type == self::REL_HAS_MANY) {
 
 					$join_alias = 't0';
 					$rel_attrs = $model::$has_many[$rel];
@@ -412,7 +413,7 @@ namespace System\Model
 					$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
 					return $helper;
 
-				} elseif ($type == 'has-one') {
+				} elseif ($type == self::REL_HAS_ONE) {
 
 					$rel_attrs = $model::$has_one[$rel];
 					if (any($rel_attrs['foreign_key'])) {
@@ -429,7 +430,7 @@ namespace System\Model
 					$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
 					$this->opts[$rel.'-fetched'] = true;
 
-				} elseif ($type == 'belongs-to') {
+				} elseif ($type == self::REL_BELONGS_TO) {
 
 					$rel_attrs = $model::$belongs_to[$rel];
 					$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
