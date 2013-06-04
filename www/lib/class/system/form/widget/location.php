@@ -47,5 +47,21 @@ namespace System\Form\Widget
 			'scripts' => array('pwf/form/autocompleter', 'pwf/form/location_picker'),
 			'styles'  => array('pwf/form/autocompleter'),
 		);
+
+
+		protected function guess_value()
+		{
+			parent::guess_value();
+			$value = $this->form()->input_value($this->name);
+			$model = self::MODEL;
+
+			if ($value instanceof $model) {
+				$loc = get_first(self::MODEL)->where(array("name" => $value->name))->fetch();
+
+				if ($loc) {
+					$this->form()->use_value($this->name, $loc);
+				}
+			}
+		}
 	}
 }
