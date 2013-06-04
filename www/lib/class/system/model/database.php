@@ -341,10 +341,10 @@ namespace System\Model
 				$type = self::get_rel_type($model, $name);
 
 				if ($type != self::REL_HAS_MANY) {
-					$this->$name = $value;
-
-					return $this;
+					$this->set_rel_single_value($name, $value);
 				}
+
+				return $this;
 			}
 
 			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
@@ -352,6 +352,33 @@ namespace System\Model
 			}
 
 			return parent::__set($name, $value);
+		}
+
+
+		protected function set_rel_single_value($name, $value)
+		{
+			$model = get_class($this);
+			$type = self::get_rel_type($model, $name);
+			$def = self::get_rel_def($model, $name);
+
+			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
+				if (is_object($value)) {
+					if ($value instanceof $def['model']) {
+						$this->$name = $value;
+
+						if ($type == self::REL_BELONGS_TO) {
+							$idc = self::get_attr_name_from_belongs_to_rel($name, $def);
+							$this->$idc = $value->id;
+						}
+					} else throw new \System\Error\Argument(sprintf(
+						"Value for attr '%s' of model '%s' must be instance of '%s' by definition. Instance of '%s' was given.",
+						$name, $model, $def['model'], get_class($value)
+					));
+				} else throw new \System\Error\Argument(sprintf(
+					"Value for attr '%s' of model '%s' which is '%s' relation must be object that inherits System\Model\Database. '%s' was given.",
+					$name, $model, $type, gettype($value)
+				));
+			}
 		}
 
 
