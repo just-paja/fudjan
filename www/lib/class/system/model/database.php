@@ -398,7 +398,7 @@ namespace System\Model
 		{
 			$model = get_class($this);
 			if (self::attr_is_rel($model, $attr)) {
-				return $this->get_rel($model, $attr);
+				return $this->get_rel($attr);
 			} else {
 
 				if ($attr == 'author' && isset($model::$attrs['int']) && in_array('id_author', $model::$attrs['int'])) {
@@ -416,73 +416,100 @@ namespace System\Model
 		}
 
 
-		/** Get relation data
-		 * @param   mixed  $model Instance or class name of model
+		/** Relation getter for all supported relation types.
 		 * @param   string $rel   Name of the relation
-		 * @return mixed Relation data, usually array of BasicModels
+		 * @return null|\System\Model\Database|\System\Database\Query Depends on relation type
 		 */
-		public function get_rel($model, $rel)
+		protected function get_rel($rel)
 		{
+			$model = get_class($this);
 			$type = self::get_rel_type($model, $rel);
 
-			if (empty($this->opts[$rel.'-fetched'])) {
-				if ($type == self::REL_HAS_MANY) {
+			if ($type == self::REL_HAS_MANY) {
+				return $this->get_rel_has_many($rel);
+			} elseif ($type == self::REL_HAS_ONE) {
+				return $this->get_rel_has_one($rel);
+			} elseif ($type == self::REL_BELONGS_TO) {
+				return $this->get_rel_belongs_to($rel);
+			} else throw new \System\Error\Argument(sprintf(
+				"Attribute '%s' of model '%s' is not a relation of any kind.",
+				$model, $rel
+			));
+		}
 
-					$join_alias = 't0';
-					$rel_attrs = $model::$has_many[$rel];
-					$helper = get_all($rel_attrs['model'], array(), array());
 
-					if (any($rel_attrs['is_bilinear'])) {
-						$join_alias = 't_'.$rel;
-						$table_name = self::get_bilinear_table_name($model, $rel_attrs);
-						$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
-					}
+		/** Relation getter for has_many relations. Returns query object
+		 * @param string $rel Relation name
+		 * @return System\Database\Query
+		 */
+		protected function get_rel_has_many($rel)
+		{
+			$model = get_class($this);
+			$rel_attrs = self::get_rel_def($model, $rel);
+			$join_alias = 't0';
+			$helper = get_all($rel_attrs['model'], array(), array());
 
-					self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
-
-					$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
-
-					$helper->where(array($idc => $this->id), $join_alias);
-					$helper->assoc_with($rel_attrs['model']);
-
-					$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
-					return $helper;
-
-				} elseif ($type == self::REL_HAS_ONE) {
-
-					$rel_attrs = $model::$has_one[$rel];
-					if (any($rel_attrs['foreign_key'])) {
-						$conds = array($rel_attrs['foreign_key'] => $this->id);
-					} else {
-						$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:self::get_id_col($model);
-						$conds = array($idc => $this->id);
-					}
-
-					if ($rel_attrs['conds']) {
-						$conds = array_merge($rel_attrs['conds'], $conds);
-					}
-
-					$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
-					$this->opts[$rel.'-fetched'] = true;
-
-				} elseif ($type == self::REL_BELONGS_TO) {
-
-					$rel_attrs = $model::$belongs_to[$rel];
-					$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
-					$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
-
-					$conds = array($idf => $this->$idl);
-
-					if (any($rel_attrs['conds'])) {
-						$conds = array_merge($rel_attrs['conds'], $conds);
-					}
-
-					$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
-					$this->opts[$rel.'-fetched'] = true;
-
-				}
+			if (any($rel_attrs['is_bilinear'])) {
+				$join_alias = 't_'.$rel;
+				$table_name = self::get_bilinear_table_name($model, $rel_attrs);
+				$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
 			}
 
+			self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
+
+			$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
+
+			$helper->where(array($idc => $this->id), $join_alias);
+			$helper->assoc_with($rel_attrs['model']);
+
+			$this->id ? $helper->cancel_ignore():$helper->ignore_query(array());
+			return $helper;
+		}
+
+
+		/** Relation getter for has_one relations. Saves the value inside this object and returns the value.
+		 * @param string $rel Relation name
+		 * @return null|object
+		 */
+		protected function get_rel_has_one($rel)
+		{
+			$model = get_class($this);
+			$rel_attrs = self::get_rel_def($model, $rel);
+
+			if (any($rel_attrs['foreign_key'])) {
+				$conds = array($rel_attrs['foreign_key'] => $this->id);
+			} else {
+				$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:self::get_id_col($model);
+				$conds = array($idc => $this->id);
+			}
+
+			if ($rel_attrs['conds']) {
+				$conds = array_merge($rel_attrs['conds'], $conds);
+			}
+
+			$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
+			return $this->$rel;
+		}
+
+
+		/** Relation getter for belongs_to relations. Saves the value inside this object and returns the value.
+		 * @param string $rel Relation name
+		 * @return null|object
+		 */
+		protected function get_rel_belongs_to($rel)
+		{
+			$model = get_class($this);
+			$rel_attrs = self::get_rel_def($model, $rel);
+			$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
+			$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
+
+			$conds = array($idf => $this->$idl);
+
+			if (any($rel_attrs['conds'])) {
+				$conds = array_merge($rel_attrs['conds'], $conds);
+			}
+
+			$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
 			return $this->$rel;
 		}
 
