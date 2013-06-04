@@ -329,10 +329,11 @@ namespace System\Model
 		}
 
 
-		/** Attribute handler, setter
+		/** Public attribute handler, setter override for database model. Handles extra relations.
 		 * @param string $name  Attribute handler
 		 * @param mixed  $value Value to be set
 		 * @return BasicModel
+		 * @see \System\Model\Attr::__set()
 		 */
 		public function __set($name, $value)
 		{
@@ -355,6 +356,11 @@ namespace System\Model
 		}
 
 
+		/** Sets value for relations that lead to single object. Called internally by __set on belongs_to and has_one relations
+		 * @param string                 $name  Attribute name
+		 * @param \System\Model\Database $value Value object
+		 * @return $this
+		 */
 		protected function set_rel_single_value($name, $value)
 		{
 			$model = get_class($this);
@@ -379,6 +385,8 @@ namespace System\Model
 					$name, $model, $type, gettype($value)
 				));
 			}
+
+			return $this;
 		}
 
 
