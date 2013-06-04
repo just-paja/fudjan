@@ -397,22 +397,16 @@ namespace System\Model
 		public function __get($attr)
 		{
 			$model = get_class($this);
+
 			if (self::attr_is_rel($model, $attr)) {
 				return $this->get_rel($attr);
 			} else {
-
-				if ($attr == 'author' && isset($model::$attrs['int']) && in_array('id_author', $model::$attrs['int'])) {
-					$model::$belongs_to['author'] = array("model" => '\System\User', "local-key" => 'id_author');
-					return self::__get($attr);
-				}
-
 				if ($attr == 'id' || $attr == self::get_id_col(get_class($this))) {
 					return def($this->data[self::get_id_col(get_class($this))], 0);
 				}
 
 				return parent::__get($attr);
 			}
-
 		}
 
 
