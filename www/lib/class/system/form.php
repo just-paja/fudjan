@@ -35,7 +35,7 @@ namespace System
 		private $counts  = array();
 		private $objects = array();
 		private $inputs  = array();
-		private $ignored = array('submited');
+		private $ignored = array('submited', 'button_submited');
 		private $rendering = array(
 			"group"     => false,
 			"tab_group" => false,
