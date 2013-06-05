@@ -967,6 +967,12 @@ namespace System\Model
 		}
 
 
+		public static function get_model_attrs($model)
+		{
+			return $model::$attrs;
+		}
+
+
 		/** Instance version of model_attr_exist
 		 * @param string $attr Name of attribute
 		 * @return bool
