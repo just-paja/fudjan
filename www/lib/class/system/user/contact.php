@@ -10,6 +10,8 @@ namespace System\User
 	 */
 	class Contact extends \System\Model\Database
 	{
+		const ALLOW_RELATION_DELETE = true;
+
 		const STD_EMAIL   = 1;
 		const STD_MOBILE  = 2;
 		const STD_WEBSITE = 3;
@@ -27,7 +29,7 @@ namespace System\User
 		const SOCIAL_GOOGLE_PLUS = 13;
 
 		protected static $attrs = array(
-			"user" => array('belongs_to', "model" => 'System\User', "is_null" => true, "is_natural" => true),
+			"user" => array('belongs_to', "model" => 'System\User'),
 			"type"    => array('int', "is_unsigned" => true, "options" => array(
 				self::STD_EMAIL          => 'contact_type_email',
 				self::STD_MOBILE         => 'contact_type_mobile',
