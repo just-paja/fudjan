@@ -104,10 +104,16 @@ namespace System\Model
 				foreach ($model::$attrs as $attr_name=>$def) {
 					if ($def[0] === self::REL_BELONGS_TO) {
 						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
-						self::add_attribute($model, $rel_attr_name, array('int', "is_unsigned" => true, "is_index" => true));
+						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def());
 					}
 				}
 			}
+		}
+
+
+		public static function get_default_belongs_to_def()
+		{
+			return array('int', "is_unsigned" => true, "is_index" => true);
 		}
 
 
@@ -493,11 +499,14 @@ namespace System\Model
 				$join_alias = 't_'.$rel;
 				$table_name = self::get_bilinear_table_name($model, $rel_attrs);
 				$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
+				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
+			} else {
+				$foreign = self::get_rel_bound_to($model, $rel);
+				$idc = self::get_belongs_to_id($rel_attrs['model'], $foreign);
 			}
 
 			self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
 
-			$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
 
 			$helper->where(array($idc => $this->id), $join_alias);
 			$helper->assoc_with($rel_attrs['model']);
@@ -913,12 +922,9 @@ namespace System\Model
 		{
 			$relations = array();
 
-			foreach (self::$relation_types as $type) {
-				if (isset($model::$$type)) {
-					foreach ($model::$$type as $rel_name => $rel_def) {
-						$rel_def['type'] = $type;
-						$relations[$rel_name] = $rel_def;
-					}
+			foreach ($model::$attrs as $attr=>$def) {
+				if (self::is_rel($model, $attr)) {
+					$relations[$attr] = $def;
 				}
 			}
 
