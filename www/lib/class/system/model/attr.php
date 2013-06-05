@@ -52,7 +52,7 @@ namespace System\Model
 		 */
 		public function __construct(array $dataray = array())
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			self::check_properties($model);
 
 			$this->update_attrs($dataray);
@@ -68,7 +68,7 @@ namespace System\Model
 				$this->construct($dataray);
 			}
 
-			$this->changed = false;
+			unset($this->opts['changed']);
 		}
 
 
@@ -79,14 +79,14 @@ namespace System\Model
 		public function __get($attr)
 		{
 			if (!in_array($attr, array('data', 'opts'))) {
-				$model = get_class($this);
+				$model = get_model($this);
 				$attr == 'id' && isset($model::$id_col) && $attr = $model::$id_col;
 
 				return $this->has_attr($attr) ?
 					$this->get_attr_value($attr):(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
 			}
 
-			throw new \System\Error\Argument(sprintf('Trying to access internal private attribute "%s" for model "%s"', $attr, get_class($this)));
+			throw new \System\Error\Argument(sprintf('Trying to access internal private attribute "%s" for model "%s"', $attr, get_model($this)));
 		}
 
 
@@ -98,7 +98,7 @@ namespace System\Model
 		public function __set($attr, $value)
 		{
 			if ($this->has_attr($attr)) {
-				$def = self::get_attr(get_class($this), $attr);
+				$def = self::get_attr(get_model($this), $attr);
 
 				if (!isset($def['writeable']) || $def['writeable']) {
 					$null_error = false;
@@ -112,9 +112,9 @@ namespace System\Model
 						}
 					}
 
-					$this->data[$attr] = self::convert_attr_val(get_class($this), $attr, $value);
+					$this->data[$attr] = self::convert_attr_val(get_model($this), $attr, $value);
 					$this->changed = true;
-				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_class($this)));
+				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_model($this)));
 			} else $this->opts[$attr] = $value;
 
 			return $this;
@@ -170,7 +170,7 @@ namespace System\Model
 		 */
 		public function has_attr($attr)
 		{
-			return self::attr_exists(get_class($this), $attr);
+			return self::attr_exists(get_model($this), $attr);
 		}
 
 
@@ -180,7 +180,7 @@ namespace System\Model
 		 */
 		public function attr_required($attr)
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			return in_array($attr, $model::$required);
 		}
 
@@ -227,13 +227,9 @@ namespace System\Model
 		 */
 		public static function get_attr_type($model, $attr)
 		{
-			foreach ($model::$attrs as $type=>$attr_set) {
-				if (in_array($attr, $attr_set)) {
-					return $type;
-				}
-			}
-
-			return false;
+			if (self::attr_exists($model, $attr)) {
+				return $model::$attrs[$attr][0];
+			} else throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist.', $attr, $model));
 		}
 
 
@@ -244,17 +240,21 @@ namespace System\Model
 		 */
 		public static function get_attr($model, $attr)
 		{
-			$attr_data = &$model::$attrs[$attr];
+			if (self::attr_exists($model, $attr)) {
+				$attr_data = &$model::$attrs[$attr];
 
-			if (in_array($attr_data[0], array('varchar', 'password'))) {
-				if (!isset($attr_data['length'])) $attr_data['length'] = 255;
+				if (in_array($attr_data[0], array('varchar', 'password'))) {
+					if (!isset($attr_data['length'])) $attr_data['length'] = 255;
+				}
+
+				if ($attr_data[0] === 'text') {
+					if (!isset($attr_data['length'])) $attr_data['length'] = 65535;
+				}
+
+				return $attr_data;
 			}
 
-			if ($attr_data[0] === 'text') {
-				if (!isset($attr_data['length'])) $attr_data['length'] = 65535;
-			}
-
-			return $attr_data;
+			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, $model));
 		}
 
 
@@ -445,7 +445,7 @@ namespace System\Model
 				$this->changed = !!$status;
 			}
 
-			return $this->changed;
+			return !!$this->changed;
 		}
 
 
@@ -455,7 +455,7 @@ namespace System\Model
 		 */
 		public function get_attr_name($attr)
 		{
-			return self::get_model_attr_name(get_class($this), $attr);
+			return self::get_model_attr_name(get_model($this), $attr);
 		}
 
 
@@ -465,7 +465,7 @@ namespace System\Model
 		 */
 		public function get_attr_desc($attr)
 		{
-			return self::get_model_attr_desc(get_class($this), $attr);
+			return self::get_model_attr_desc(get_model($this), $attr);
 		}
 
 
