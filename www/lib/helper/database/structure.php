@@ -110,7 +110,8 @@ namespace Helper\Database
 
 			if (any($relations)) {
 				foreach ($relations as $rel) {
-					if ($rel->type == 'has_many' && $rel->is_bilinear()) {
+					if ($rel->type == \System\Model\Database::REL_HAS_MANY && $rel->is_bilinear) {
+
 						self::sync_bilinear_relation_table($rel);
 					}
 				}
@@ -133,7 +134,6 @@ namespace Helper\Database
 				\Helper\Database\Attr::from_def("created_at", array("type" => 'datetime', "default" => 0)),
 				\Helper\Database\Attr::from_def("updated_at", array("type" => 'datetime', "default" => 0)),
 			);
-
 
 			foreach ($attrs as $attr) {
 				if (!$table->has_column($attr->name)) {

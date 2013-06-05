@@ -32,6 +32,7 @@ namespace Helper\Database
 		 */
 		public static function get_from_model($model)
 		{
+			\System\Model\Database::check_relations($model);
 			$result = array();
 			$attrs  = $model::get_attr_def($model);
 			$relations = \Helper\Database\Relation::get_from_model($model);
@@ -44,21 +45,10 @@ namespace Helper\Database
 				"is_autoincrement" => true,
 			));
 
-			foreach ($relations as $rel) {
-				if ($rel->type === 'belongs_to') {
-					$name = $rel->is_natural ? \System\Model\Database::get_id_col($rel->model):('id_'.$rel->name);
-					$result[$name] = self::from_def($name, array(
-						"name"        => $name,
-						"type"        => 'int',
-						"is_unsigned" => true,
-						"is_null"     => $rel->is_null,
-						"is_index"    => true,
-					));
-				}
-			}
-
 			foreach ($attrs as $name => $def) {
-				$result[$name] = self::from_def($name, $def);
+				if (!\System\Model\Database::is_rel($model, $name)) {
+					$result[$name] = self::from_def($name, $def);
+				}
 			}
 
 			foreach (self::$default_cols as $name => $def) {

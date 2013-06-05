@@ -17,7 +17,7 @@ namespace Helper\Database
 
 
 		protected static $allowed_types = array(
-			'has_one', 'belongs_to', 'has_many',
+			\System\Model\Database::REL_BELONGS_TO, \System\Model\Database::REL_HAS_MANY, \System\Model\Database::REL_HAS_ONE
 		);
 
 		private $bilinear_rel;
@@ -40,6 +40,7 @@ namespace Helper\Database
 			$def['parent'] = $parent;
 			$def['name'] = $name;
 			def($def['is_master'], false);
+			$def['type'] = $def[0];
 
 			if (strpos($def['model'], '\\') === 0) {
 				$def['model'] = substr($def['model'], 1);
