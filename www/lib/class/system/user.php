@@ -107,7 +107,7 @@ namespace System
 				$ids = collect_ids($this->groups->fetch());
 
 				if (any($ids)) {
-					$conds[] = "id_system_user_group IN (".implode(',', $ids).")";
+					$conds[] = "id_group IN (".implode(',', $ids).")";
 				}
 
 				$this->rights = get_all("\System\User\Perm")
