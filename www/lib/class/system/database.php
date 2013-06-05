@@ -283,9 +283,9 @@ namespace System
 					} catch(\System\Error\Database $e) {}
 
 					foreach ($data_set as $attr=>$val) {
-						if (is_array($val) && \System\Model\Database::attr_is_rel($model, $attr)) {
-							if (\System\Model\Database::get_rel_type($model, $attr) == 'has-many') {
-								$def = \System\Model\Database::get_rel_def($model, $attr);
+						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
+							if (\System\Model\Database::get_attr_type($model, $attr) == 'has-many') {
+								$def = \System\Model\Database::get_attr($model, $attr);
 
 								if (any($def['is_bilinear']) && any($def['is_master'])) {
 									unset($obj->$attr);
