@@ -104,16 +104,16 @@ namespace System\Model
 				foreach ($model::$attrs as $attr_name=>$def) {
 					if ($def[0] === self::REL_BELONGS_TO) {
 						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
-						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def());
+						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name));
 					}
 				}
 			}
 		}
 
 
-		public static function get_default_belongs_to_def()
+		public static function get_default_belongs_to_def($name)
 		{
-			return array('int', "is_unsigned" => true, "is_index" => true);
+			return array('int', "is_unsigned" => true, "is_index" => true, "is_generated" => true, "rel" => $name);
 		}
 
 
