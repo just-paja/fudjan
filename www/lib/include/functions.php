@@ -361,4 +361,16 @@ namespace
 	{
 		return array("args" => func_get_args());
 	}
+
+
+	function get_model($obj)
+	{
+		if (is_object($obj)) {
+			$model = get_class($obj);
+		} else if (is_string($obj)) {
+			$model = strpos($obj, '\\') === 0 ? $obj:('\\'.$obj);
+		}
+
+		return $model;
+	}
 }
