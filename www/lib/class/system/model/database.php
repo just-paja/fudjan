@@ -20,6 +20,8 @@ namespace System\Model
 		const REL_HAS_ONE    = 'has_one';
 		const REL_HAS_MANY   = 'has_many';
 
+		const ALLOW_RELATION_DELETE = false;
+
 		/** string Model table name */
 		static protected $table;
 
@@ -35,14 +37,18 @@ namespace System\Model
 		/** Allowed model relation types */
 		static protected $relation_types = array(self::REL_BELONGS_TO, self::REL_HAS_ONE, self::REL_HAS_MANY);
 
+
+		static private $models_checked = array();
+
+
 		/** Model belongs_to relations */
-		static protected $belongs_to;
+		//~ static protected $belongs_to;
 
 		/** Model has_one relations */
-		static protected $has_one;
+		//~ static protected $has_one;
 
 		/** Model has_many relations */
-		static protected $has_many;
+		//~ static protected $has_many;
 
 		/** Detault conditions for get_all */
 		static private $quick_conds = array(
@@ -50,6 +56,9 @@ namespace System\Model
 			"deleted" => false,
 			"used"    => true,
 		);
+
+
+		protected $relations = array();
 
 
 		/** Get name of associated table
@@ -75,7 +84,8 @@ namespace System\Model
 		 */
 		public static function attr_exists($model, $attr)
 		{
-			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr) || self::is_model_belongs_to_id($model, $attr);
+			self::check_relations($model);
+			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr);
 		}
 
 
@@ -84,47 +94,44 @@ namespace System\Model
 		 * @param string $attr
 		 * @return bool
 		 */
-		public static function is_model_belongs_to_id($model, $attr)
+		public static function check_relations($model)
 		{
-			$is_true = false;
-			$name = null;
+			if (!isset(self::$models_checked[$model])) {
+				self::$models_checked[$model] = true;
+				$is_true = false;
+				$name = null;
 
-			if (any($model::$belongs_to)) {
-				foreach ($model::$belongs_to as $rel_name=>$rel) {
-					$rel_attr_name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
-					if ($attr == $rel_attr_name) {
-						$is_true = true;
-						$name = $rel_attr_name;
+				foreach ($model::$attrs as $attr_name=>$def) {
+					if ($def[0] === self::REL_BELONGS_TO) {
+						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
+						self::add_attribute($model, $rel_attr_name, array('int', "is_unsigned" => true, "is_index" => true));
 					}
-
-					if ($is_true) break;
 				}
 			}
-
-			if ($is_true) {
-				if (!isset($model::$attrs[$name])) {
-					$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_index" => true);
-				}
-			}
-
-			return $is_true;
 		}
 
 
-		/** Get attribute name from definition of belongs_to relation
-		 * @param string $rel_name Name of relation
-		 * @param array  $rel      Relation definition
-		 * @return string|bool     Returns false on failure
-		 */
-		public static function get_attr_name_from_belongs_to_rel($rel_name, array $rel)
+		private static function add_attribute($model, $attr, array $def)
 		{
-			if (any($rel['foreign_key'])) {
-				return $rel['foreign_key'];
-			} else {
-				return any($rel['is_natural']) ? self::get_id_col($rel['model']):"id_".$rel_name;
+			$model::$attrs[$attr] = $def;
+		}
+
+
+		public static function get_belongs_to_id($model, $attr)
+		{
+			if (self::is_rel($model, $attr)) {
+				$def = self::get_attr($model, $attr);
+
+				if ($def[0] === self::REL_BELONGS_TO) {
+					if (any($def['foreign_key'])) {
+						return $def['foreign_key'];
+					} else {
+						return empty($def['is_natural']) ? ("id_".$attr):self::get_id_col($def['model']);
+					}
+				}
 			}
 
-			return false;
+			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" is not belongs_to relation.', $model, $attr));
 		}
 
 
@@ -301,31 +308,14 @@ namespace System\Model
 		 * @param string $attr  Name of atribute
 		 * @return bool
 		 */
-		public static function attr_is_rel($model, $attr)
+		public static function is_rel($model, $attr)
 		{
-			return
-					 (isset($model::$has_many)   && is_array($model::$has_many)  && array_key_exists($attr, $model::$has_many))
-				|| (isset($model::$has_one)    && is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))
-				|| (isset($model::$belongs_to) && is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to));
-		}
-
-
-		/** Get type of model relation
-		 * @param mixed  $model Class or instance of desired model
-		 * @param string $attr  Name of relation
-		 * @return string, false on failure
-		 */
-		public static function get_rel_type($model, $attr)
-		{
-			$type = false;
-
-			if (self::attr_is_rel($model, $attr)) {
-				if     (is_array($model::$has_many)   && array_key_exists($attr, $model::$has_many))   $type = self::REL_HAS_MANY;
-				elseif (is_array($model::$has_one)    && array_key_exists($attr, $model::$has_one))    $type = self::REL_HAS_ONE;
-				elseif (is_array($model::$belongs_to) && array_key_exists($attr, $model::$belongs_to)) $type = self::REL_BELONGS_TO;
+			if (self::attr_exists($model, $attr)) {
+				$def = self::get_attr($model, $attr);
+				return in_array($def[0], self::$relation_types);
 			}
 
-			return $type;
+			return false;
 		}
 
 
@@ -335,24 +325,74 @@ namespace System\Model
 		 * @return BasicModel
 		 * @see \System\Model\Attr::__set()
 		 */
-		public function __set($name, $value)
+		public function __set($attr, $value)
 		{
-			$model = get_class($this);
-			if (self::attr_is_rel($model, $name)) {
-				$type = self::get_rel_type($model, $name);
+			$model = get_model($this);
 
-				if ($type != self::REL_HAS_MANY) {
-					$this->set_rel_single_value($name, $value);
+			if (self::is_rel($model, $attr)) {
+				$type = self::get_attr_type($model, $attr);
+
+				if ($type == self::REL_HAS_MANY) {
+					$this->set_rel_has_many($attr, $value);
+				} else {
+					$this->set_rel_single_value($attr, $value);
 				}
 
 				return $this;
 			}
 
-			if ($name == 'id' || $name == self::get_id_col(get_class($this))) {
-				$this->data[self::get_id_col(get_class($this))] = intval($value);
+			if ($attr == 'id' || $attr == self::get_id_col(get_model($this))) {
+				$this->data[self::get_id_col(get_model($this))] = intval($value);
 			}
 
-			return parent::__set($name, $value);
+			return parent::__set($attr, $value);
+		}
+
+
+		public function set_rel_has_many($attr, $value)
+		{
+			$invalid = false;
+
+			if (is_array($value)) {
+				$corrected = array();
+				$model = get_model($this);
+				$def = self::get_attr($model, $attr);
+
+				foreach ($value as $val) {
+					if (is_object($val)) {
+						$corrected[] = $val;
+					} else {
+						if (gettype($val) == 'string') {
+							$val = intval($val);
+						}
+
+						if (gettype($val) == 'integer' && $val > 0) {
+							$corrected[] = $val;
+						} else {
+							$invalid = true;
+							break;
+						}
+					}
+				}
+
+				if ($invalid) {
+					if (is_object($val)) {
+						$report_val = 'Instance of '.get_model($value);
+					} else {
+						$report_val = gettype($val);
+					}
+
+					throw new \System\Error\Model(sprintf(
+						"Invalid value was given to has_many relation '%s' of model '%s'. Values must be instances of '%s' or int greater than zero. '%s' was given.",
+						$attr, $model, $def['model'], $report_val
+					));
+				}
+
+				$this->relations[$attr] = $value;
+			} else throw new \System\Error\Model(sprintf(
+				"Value given to has_many relations must be array. Type of '%s' was supplied to attribute '%s' of model '%s'.",
+				gettype($value), $attr, get_model($this)
+			));
 		}
 
 
@@ -361,24 +401,25 @@ namespace System\Model
 		 * @param \System\Model\Database $value Value object
 		 * @return $this
 		 */
-		protected function set_rel_single_value($name, $value)
+		public function set_rel_single_value($name, $value)
 		{
-			$model = get_class($this);
-			$type = self::get_rel_type($model, $name);
-			$def = self::get_rel_def($model, $name);
+			$model = get_model($this);
+			$type = self::get_attr_type($model, $name);
+			$def = self::get_attr($model, $name);
 
 			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
 				if (is_object($value)) {
 					if ($value instanceof $def['model']) {
-						$this->$name = $value;
+						$this->relations[$name] = $value;
 
 						if ($type == self::REL_BELONGS_TO) {
-							$idc = self::get_attr_name_from_belongs_to_rel($name, $def);
+							$idc = self::get_belongs_to_id($model, $name);
 							$this->$idc = $value->id;
 						}
+
 					} else throw new \System\Error\Argument(sprintf(
 						"Value for attr '%s' of model '%s' must be instance of '%s' by definition. Instance of '%s' was given.",
-						$name, $model, $def['model'], get_class($value)
+						$name, $model, $def['model'], get_model($value)
 					));
 				} else throw new \System\Error\Argument(sprintf(
 					"Value for attr '%s' of model '%s' which is '%s' relation must be object that inherits System\Model\Database. '%s' was given.",
@@ -396,13 +437,12 @@ namespace System\Model
 		 */
 		public function __get($attr)
 		{
-			$model = get_class($this);
-
-			if (self::attr_is_rel($model, $attr)) {
+			$model = get_model($this);
+			if (self::is_rel($model, $attr)) {
 				return $this->get_rel($attr);
 			} else {
-				if ($attr == 'id' || $attr == self::get_id_col(get_class($this))) {
-					return def($this->data[self::get_id_col(get_class($this))], 0);
+				if ($attr == 'id' || $attr == self::get_id_col(get_model($this))) {
+					return def($this->data[self::get_id_col(get_model($this))], 0);
 				}
 
 				return parent::__get($attr);
@@ -416,16 +456,22 @@ namespace System\Model
 		 */
 		protected function get_rel($rel)
 		{
-			$model = get_class($this);
-			$type = self::get_rel_type($model, $rel);
+			$model = get_model($this);
 
-			if ($type == self::REL_HAS_MANY) {
-				return $this->get_rel_has_many($rel);
-			} elseif ($type == self::REL_HAS_ONE) {
-				return $this->get_rel_has_one($rel);
-			} elseif ($type == self::REL_BELONGS_TO) {
-				return $this->get_rel_belongs_to($rel);
-			} else throw new \System\Error\Argument(sprintf(
+			if (self::is_rel($model, $rel)) {
+				$type = self::get_attr_type($model, $rel);
+
+				if ($type == self::REL_HAS_MANY) {
+					return $this->get_rel_has_many($rel);
+				} elseif ($type == self::REL_HAS_ONE) {
+					return $this->get_rel_has_one($rel);
+				} elseif ($type == self::REL_BELONGS_TO) {
+					return $this->get_rel_belongs_to($rel);
+				} else throw new \System\Error\Argument(sprintf(
+					"Attribute '%s' of model '%s' is not a relation of any known type.",
+					$model, $rel
+				));
+			} throw new \System\Error\Argument(sprintf(
 				"Attribute '%s' of model '%s' is not a relation of any kind.",
 				$model, $rel
 			));
@@ -438,8 +484,8 @@ namespace System\Model
 		 */
 		protected function get_rel_has_many($rel)
 		{
-			$model = get_class($this);
-			$rel_attrs = self::get_rel_def($model, $rel);
+			$model = get_model($this);
+			$rel_attrs = self::get_attr($model, $rel);
 			$join_alias = 't0';
 			$helper = get_all($rel_attrs['model'], array(), array());
 
@@ -467,22 +513,25 @@ namespace System\Model
 		 */
 		protected function get_rel_has_one($rel)
 		{
-			$model = get_class($this);
-			$rel_attrs = self::get_rel_def($model, $rel);
+			if (empty($this->relations[$rel])) {
+				$model = get_model($this);
+				$rel_attrs = self::get_attr($model, $rel);
 
-			if (any($rel_attrs['foreign_key'])) {
-				$conds = array($rel_attrs['foreign_key'] => $this->id);
-			} else {
-				$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:self::get_id_col($model);
-				$conds = array($idc => $this->id);
+				if (any($rel_attrs['foreign_key'])) {
+					$conds = array($rel_attrs['foreign_key'] => $this->id);
+				} else {
+					$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:self::get_id_col($model);
+					$conds = array($idc => $this->id);
+				}
+
+				if ($rel_attrs['conds']) {
+					$conds = array_merge($rel_attrs['conds'], $conds);
+				}
+
+				$this->relations[$rel] = get_first($rel_attrs['model'], $conds)->fetch();
 			}
 
-			if ($rel_attrs['conds']) {
-				$conds = array_merge($rel_attrs['conds'], $conds);
-			}
-
-			$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
-			return $this->$rel;
+			return $this->relations[$rel];
 		}
 
 
@@ -492,19 +541,22 @@ namespace System\Model
 		 */
 		protected function get_rel_belongs_to($rel)
 		{
-			$model = get_class($this);
-			$rel_attrs = self::get_rel_def($model, $rel);
-			$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
-			$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
+			if (empty($this->relations[$rel])) {
+				$model = get_model($this);
+				$rel_attrs = self::get_attr($model, $rel);
+				$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
+				$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
 
-			$conds = array($idf => $this->$idl);
+				$conds = array($idf => $this->$idl);
 
-			if (any($rel_attrs['conds'])) {
-				$conds = array_merge($rel_attrs['conds'], $conds);
+				if (any($rel_attrs['conds'])) {
+					$conds = array_merge($rel_attrs['conds'], $conds);
+				}
+
+				$this->relations[$rel] = get_first($rel_attrs['model'], $conds)->fetch();
 			}
 
-			$this->$rel = get_first($rel_attrs['model'], $conds)->fetch();
-			return $this->$rel;
+			return $this->relations[$rel];
 		}
 
 
@@ -547,7 +599,7 @@ namespace System\Model
 		 */
 		public function update_check()
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			$e = false;
 
 			if (isset($model::$required)) {
@@ -568,7 +620,8 @@ namespace System\Model
 		public function save()
 		{
 			$this->run_tasks(\System\Model\Callback::BEFORE_SAVE);
-			$model = get_class($this);
+			$model = get_model($this);
+
 			if ($this->update_check()) {
 
 				if (isset($model::$attrs['pass'])) {
@@ -613,14 +666,148 @@ namespace System\Model
 					\System\Database::simple_update(self::get_table($model), self::get_id_col($model), $this->id, $data);
 				} else {
 					$id = \System\Database::simple_insert(self::get_table($model), $data);
+
 					if ($id) {
-						return $this->update_attrs(array(self::get_id_col($model) => $id));
+						$this->id = $id;
 					} else throw new \System\Error\Database('Could not save model.');
 				}
 			}
 
+			$this->save_relations();
+
 			$this->run_tasks(\System\Model\Callback::AFTER_SAVE);
 			return $this;
+		}
+
+
+		public function save_relations()
+		{
+			$model = get_model($this);
+
+			foreach ($model::$attrs as $attr=>$def) {
+				if ($def[0] == self::REL_HAS_MANY) {
+					$this->save_relation_hasmany($attr);
+				}
+
+				if ($def[0] == self::REL_HAS_ONE) {
+				}
+			}
+		}
+
+
+		protected function save_relation_hasmany($attr)
+		{
+			if (isset($this->relations[$attr])) {
+				$model   = get_model($this);
+				$def     = self::get_attr($model, $attr);
+				$value   = $this->validate_relation_hasmany($attr);
+				$new     = collect_ids($value);
+				$current = collect_ids($this->$attr->fetch());
+
+				$ids_save = array_diff($new, $current);
+				$ids_delete = array_diff($current, $new);
+
+				if (!empty($def['is_bilinear'])) {
+					$table_name = self::get_bilinear_table_name($model, $def);
+
+					if (any($def['is_master'])) {
+						$id_col = self::get_id_col($model);
+						$foreign_key = self::get_id_col($def['model']);
+					} else {
+						$id_col = self::get_id_col($def['model']);
+						$foreign_key = self::get_id_col($model);
+					}
+
+					$ids_save = array_filter($ids_save);
+					$ids_delete = array_filter($ids_delete);
+
+					if (any($ids_delete)) {
+						$q1 = new \System\Database\Query(array("table" => $table_name));
+						$q1
+							->where(array($id_col => $this->id), $table_name)
+							->where_in($foreign_key, $ids_delete, $table_name)
+							->delete();
+					}
+
+					if (any($ids_save)) {
+						$q2 = new \System\Database\Query(array("table" => $table_name, "cols" => array($id_col, $foreign_key)));
+
+						foreach ($ids_save as $id) {
+							$q2->add_insert_data(array($foreign_key => $id, $id_col => $this->id));
+						}
+
+						$q2->insert();
+					}
+				} else {
+					$model = get_model($this);
+					$foreign = self::get_rel_bound_to($model, $attr);
+					$foreign_key = self::get_attr($def['model'], $foreign);
+					$idc = self::get_belongs_to_id($def['model'], $foreign);
+
+					if (any($ids_delete)) {
+						$model_id = self::get_id_col($def['model']);
+
+						if (!empty($foreign_key['is_null'])) {
+							$objects = $this->$attr->where_in($model_id, $ids_delete)->fetch();
+
+							foreach ($objects as $obj) {
+								$obj->$idc = null;
+								$obj->save();
+							}
+						} else {
+							if ($def['model']::ALLOW_RELATION_DELETE) {
+								$objects = $this->$attr->where_in($model_id, $ids_delete)->fetch();
+
+								foreach ($objects as $obj) {
+									$obj->drop();
+								}
+							} else throw new \System\Error\Model(
+								sprintf("Cannot delete objects of model '%s' by has_many relation change.", $model),
+								sprintf(
+									"Set 'is_null' attribute of relation '%s' of model '%s' to true or define class constant called 'ALLOW_RELATION_DELETE' to model '%s'",
+									$foreign, $def['model'], $def['model']
+								)
+							);
+						}
+					}
+
+					foreach ($value as $obj) {
+						$obj->$idc = $this->id;
+						$obj->save();
+					}
+				}
+			}
+		}
+
+
+		/** Assign and save relation by IDs
+		 * @param string $rel_name Name of relation
+		 * @param array  $ids_new  List of new IDs - others will be deleted
+		 * @return $this
+		 */
+		public function validate_relation_hasmany($attr)
+		{
+			if (isset($this->relations[$attr])) {
+				$model     = get_model($this);
+				$def       = self::get_attr($model, $attr);
+				$value     = $this->relations[$attr];
+				$corrected = array();
+
+				foreach ($this->relations[$attr] as $val) {
+					if (gettype($val) == 'integer') {
+						$obj = find($def['model'], $val);
+
+						if ($obj) {
+							$corrected[] = find($def['model'], $val);
+						} else throw new \System\Error\Model(sprintf(
+							"Cannot assign object '%s#%s' to instance of '%s'. Object does not exist.",
+							$def['model'], $val, $model
+						));
+					}
+				}
+
+				return $corrected;
+			} else return array();
 		}
 
 
@@ -652,7 +839,7 @@ namespace System\Model
 		 */
 		public function drop()
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			return \System\Database\Query::simple_delete(self::get_table($model), array(self::get_id_col($model) => $this->id));
 		}
 
@@ -664,7 +851,7 @@ namespace System\Model
 		public static function get_quick_conds($model)
 		{
 			if (is_object($model)) {
-				$model = get_class($model);
+				$model = get_model($model);
 			}
 
 			$conds = array();
@@ -689,7 +876,7 @@ namespace System\Model
 		 */
 		public function reload()
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			if ($this->id) {
 				$this->update_attrs(get_first($model, array(self::get_id_col($model) => $this->id))->assoc_with_no_model()->fetch());
 			}
@@ -739,26 +926,6 @@ namespace System\Model
 		}
 
 
-		/** Get definition of relation
-		 * @param string $model
-		 * @param string $rel
-		 * @return array
-		 */
-		public static function get_rel_def($model, $rel)
-		{
-			if (isset($model::$has_many) && isset($model::$has_many[$rel])) {
-				!isset($model::$has_many[$rel]['name']) && $model::$has_many[$rel]['name'] = $rel;
-				return $model::$has_many[$rel];
-			} elseif (isset($model::$has_one) && isset($model::$has_one[$rel])) {
-				!isset($model::$has_one[$rel]['name']) && $model::$has_one[$rel]['name'] = $rel;
-				return $model::$has_one[$rel];
-			} elseif (isset($model::$belongs_to) && isset($model::$belongs_to[$rel])) {
-				!isset($model::$belongs_to[$rel]['name']) && $model::$belongs_to[$rel]['name'] = $rel;
-				return $model::$belongs_to[$rel];
-			} else throw new \System\Error\Database("Relation '".$rel."' does not exist.");
-		}
-
-
 		/** Get list of model attributes
 		 * @param string $model      Name of model class
 		 * @param bool   $sql_format Format names to sql
@@ -774,19 +941,15 @@ namespace System\Model
 						$attrs[$attr] = 'AsWKT('.$attr.')';
 					} else {
 						if ($attr != self::get_id_col($model)) {
-							$attrs[] = $attr;
+							if (self::is_rel($model, $attr)) {
+								$type = self::get_attr_type($model, $attr);
+
+								if ($type === self::REL_BELONGS_TO) {
+									$attrs[] = self::get_belongs_to_id($model, $attr);
+								}
+
+							} else $attrs[] = $attr;
 						}
-					}
-				}
-			}
-
-			if (any($model::$belongs_to)) {
-				foreach ($model::$belongs_to as $rel_name=>$rel) {
-					$name = self::get_attr_name_from_belongs_to_rel($rel_name, $rel);
-
-					if (empty($model::$attrs[$name])) {
-						$model::$attrs[$name] = array("int", "is_unsigned" => true, "is_index" => true);
-						$attrs[] = $name;
 					}
 				}
 			}
@@ -798,81 +961,13 @@ namespace System\Model
 		}
 
 
-		/** Save relation
-		 * @param string $model      Name of model
-		 * @param string $model_id   ID of object
-		 * @param string $rel_name   Name of relation
-		 * @param array  $ids_save   List of IDs to keep/save
-		 * @param array  $ids_delete List of IDs to delete
-		 * @return  void
-		 */
-		private function relation_save($model, $model_id, $rel_name, array $ids_save, array $ids_delete)
-		{
-			if (isset($model::$has_many[$rel_name])) {
-				$def = $model::$has_many[$rel_name];
-
-				if (isset($def['is_bilinear'])) {
-					$table_name = self::get_bilinear_table_name($model, $def);
-
-					if (any($def['is_master'])) {
-						$id_col = self::get_id_col($model);
-						$foreign_key = self::get_id_col($def['model']);
-					} else {
-						$id_col = self::get_id_col($def['model']);
-						$foreign_key = self::get_id_col($model);
-					}
-
-					$ids_save = array_filter($ids_save);
-					$ids_delete = array_filter($ids_delete);
-
-					if (any($ids_delete)) {
-						$q1 = new \System\Database\Query(array("table" => $table_name));
-						$q1
-							->where(array($id_col => $model_id), $table_name)
-							->where_in($foreign_key, $ids_delete, $table_name)
-							->delete();
-					}
-
-					if (any($ids_save)) {
-						$q2 = new \System\Database\Query(array("table" => $table_name, "cols" => array($id_col, $foreign_key)));
-
-						foreach ($ids_save as $id) {
-							$q2->add_insert_data(array($foreign_key => $id, $id_col => $model_id));
-						}
-
-						$q2->insert();
-					}
-				} else throw new \System\Error\Database("Relation must be bilinear!");
-			}
-		}
-
-
-		/** Assign and save relation by IDs
-		 * @param string $rel_name Name of relation
-		 * @param array  $ids_new  List of new IDs - others will be deleted
-		 * @return $this
-		 */
-		public function assign_rel($rel_name, array $ids_new)
-		{
-			$model = get_class($this);
-
-			if (isset($model::$has_many[$rel_name])) {
-				$def = $model::$has_many[$rel_name];
-				$items_current = collect_ids($this->$rel_name->fetch());
-				self::relation_save($model, $this->id, $rel_name, array_diff($ids_new, $items_current), array_diff($items_current, $ids_new));
-			}
-
-			return $this;
-		}
-
-
 		/** Instance version of model_attr_exist
 		 * @param string $attr Name of attribute
 		 * @return bool
 		 */
 		public function has_attr($attr)
 		{
-			return self::attr_exists(get_class($this), $attr);
+			return self::attr_exists(get_model($this), $attr);
 		}
 
 
@@ -882,7 +977,7 @@ namespace System\Model
 		 */
 		public function __construct(array $update = array())
 		{
-			$model = get_class($this);
+			$model = get_model($this);
 			parent::check_properties($model);
 
 			if (!array_key_exists($idc = self::get_id_col($model), $model::$attrs)) {
@@ -972,39 +1067,24 @@ namespace System\Model
 		 */
 		public static function get_rel_bound_to($model, $rel)
 		{
-			$def = self::get_rel_def($model, $rel);
+			$def = self::get_attr($model, $rel);
+			$match = array();
 
-			if (isset($def['model']::$belongs_to)) {
-				$match = array();
-
-				foreach ($def['model']::$belongs_to as $rel_name=>$rel_def) {
-					if ($rel_def['model'] == $model) {
-						$match[] = $rel_name;
+			foreach ($def['model']::$attrs as $attr=>$def_attr) {
+				if ($def_attr[0] == self::REL_BELONGS_TO) {
+					if ($def_attr['model'] == $model) {
+						$match[] = $attr;
 					}
 				}
+			}
 
-				if (any($match)) {
-					if (count($match) === 1) {
-						return $match[0];
-					} else throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
-				} else return false;
-			} else throw new \System\Error\Model(sprintf('Model "%s" has no belongs_to relations.', $def['model']));
-		}
+			if (any($match)) {
+				if (count($match) === 1) {
+					return $match[0];
+				} else throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
+			}
 
-
-		/** Get definition of relation bound to another relation
-		 * @param string $model
-		 * @param string $rel
-		 * @return array
-		 */
-		public static function get_rel_bound_to_def($model, $rel)
-		{
-			$type = self::get_rel_type($model, $rel);
-
-			if ($target = self::get_rel_bound_to($model, $rel)) {
-				$def = self::get_rel_def($model, $rel);
-				return self::get_rel_def($def['model'], $target);
-			} else throw new \System\Error\Model(sprintf('Relation bound to "%s::%s::%s" was not found.', $model, $type, $rel));
+			return false;
 		}
 	}
 }
