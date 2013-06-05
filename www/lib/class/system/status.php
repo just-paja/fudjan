@@ -103,7 +103,9 @@ namespace System
 				$request = \System\Http\Request::from_hit();
 				$response = $request->create_response($error_page);
 
-				if (!self::on_cli()) {
+				if (self::on_cli()) {
+					$response->renderer()->format = 'txt';
+				} else {
 					$response->status($e->get_http_status());
 				}
 
