@@ -14,17 +14,12 @@ namespace System
 	{
 		/** Model attributes */
 		protected static $attrs = array(
-			"name" => array("varchar", "is_unique" => true),
-			"addr" => array("varchar"),
-			"gps"  => array("point"),
-			"desc" => array("text", "default" => ''),
-			"site" => array("url", "default" => ''),
-		);
-
-
-		/** Model relations */
-		protected static $belongs_to = array(
-			"user" => array("model" => '\System\User'),
+			"name"   => array("varchar", "is_unique" => true),
+			"addr"   => array("varchar"),
+			"gps"    => array("point"),
+			"desc"   => array("text", "default" => ''),
+			"site"   => array("url", "default" => ''),
+			"author" => array('belongs_to', "model" => '\System\User'),
 		);
 
 

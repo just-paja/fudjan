@@ -28,13 +28,10 @@ namespace System
 			"last_login"  => array('datetime', "default" => 0),
 			"com_email"   => array('bool', "default" => true),
 			"com_sms"     => array('bool', "default" => false),
+			"groups"      => array('has_many', "model" => '\System\User\Group', "is_bilinear" => true, "is_master" => true),
+			"contacts"    => array('has_many', "model" => '\System\User\Contact')
 		);
 
-		/** Relations */
-		static protected $has_many = array(
-			"groups" => array("model" => '\System\User\Group', "is_bilinear" => true, "is_master" => true),
-			"contacts" => array("model" => '\System\User\Contact')
-		);
 
 		/** Rights are cached here, within the object */
 		private $rights;

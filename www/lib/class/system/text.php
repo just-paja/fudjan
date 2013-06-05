@@ -17,6 +17,7 @@ namespace System
 			"name"    => array('varchar'),
 			"text"    => array('text'),
 			"visible" => array('bool'),
+			"author"  => array('belongs_to', "model" => 'System\User'),
 		);
 	}
 }

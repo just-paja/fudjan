@@ -17,19 +17,10 @@ namespace System\User
 		 * @param array
 		 */
 		static protected $attrs = array(
-			"id_system_user_group" => array('int', "is_unsigned" => true),
-			"id_author"     => array('int', "is_unsigned" => true),
-			"type"          => array('varchar'),
-			"trigger"       => array('varchar'),
-			"public"        => array('bool'),
-		);
-
-
-		/** Model belongs to relations
-		 * @param array
-		 */
-		static protected $belongs_to = array(
-			"group" => array("model" => '\System\User\Group'),
+			"group"     => array('belongs_to', "model" => '\System\User\Group'),
+			"type"      => array('varchar'),
+			"trigger"   => array('varchar'),
+			"public"    => array('bool'),
 		);
 	}
 }

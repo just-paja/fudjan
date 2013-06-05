@@ -27,6 +27,7 @@ namespace System\User
 		const SOCIAL_GOOGLE_PLUS = 13;
 
 		protected static $attrs = array(
+			"user" => array('belongs_to', "model" => 'System\User', "is_null" => true, "is_natural" => true),
 			"type"    => array('int', "is_unsigned" => true, "options" => array(
 				self::STD_EMAIL          => 'contact_type_email',
 				self::STD_MOBILE         => 'contact_type_mobile',
@@ -46,10 +47,6 @@ namespace System\User
 			"name"    => array('varchar'),
 			"visible" => array('bool'),
 			"public"  => array('bool'),
-		);
-
-		protected static $belongs_to = array(
-			"user" => array("model" => '\System\User', "is_natural" => true),
 		);
 
 		private static $internal_types = array(
