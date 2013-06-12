@@ -336,9 +336,11 @@ namespace System\Form
 				}
 			}
 
-			return \Stag::fieldset(array(
-				"class"   => array_merge($el->class, array($el->type.'_container', 'group_'.$el->name)),
-				"content" => array($label, \Stag::ul($attrs))
+			$content = empty($attrs['content']) ? null:\Stag::ul($attrs);
+
+			return (is_null($content) && is_null($label)) ? null:\Stag::fieldset(array(
+				"class"   => array_merge($el->class_outer, array($el->type.'_container', 'group_'.$el->name)),
+				"content" => array($label, $content)
 			));
 		}
 
