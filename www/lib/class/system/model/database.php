@@ -1097,7 +1097,7 @@ namespace System\Model
 		 */
 		public function to_html(\System\Template\Renderer $ren)
 		{
-			return sprintf('%s %s (#%s)', $ren->locales()->trans_class_name(get_class($ren)), $this->get_name(), $this->id);
+			return sprintf('%s %s (#%s)', $ren->locales()->trans_class_name(get_class($this)), $this->get_name(), $this->id);
 		}
 	}
 }

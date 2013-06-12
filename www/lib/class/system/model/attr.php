@@ -522,7 +522,7 @@ namespace System\Model
 		 */
 		public function to_html(\System\Template\Renderer $ren)
 		{
-			return sprintf('%s', $ren->locales()->trans_class_name(get_class($ren)));
+			return sprintf('%s', $ren->locales()->trans_class_name(get_class($this)));
 		}
 	}
 }
