@@ -10,12 +10,13 @@ namespace System\Form
 		const TYPE_TAB       = 'tab';
 
 		protected static $attrs = array(
-			"id"    => array('varchar'),
-			"title" => array('varchar'),
-			"name"  => array('varchar'),
-			"label" => array('varchar'),
-			"type"  => array('varchar'),
-			"class" => array('array'),
+			"id"          => array('varchar'),
+			"title"       => array('varchar'),
+			"name"        => array('varchar'),
+			"label"       => array('varchar'),
+			"type"        => array('varchar'),
+			"class"       => array('list'),
+			"class_outer" => array('list'),
 		);
 
 		protected static $types = array(
@@ -47,6 +48,7 @@ namespace System\Form
 				$this->class = array();
 			}
 
+			$this->class = array_merge((array) $this->class, array($this->type));
 			!$this->name && $this->generate_name();
 		}
 
