@@ -374,7 +374,7 @@ namespace System
 		/** Start groupping input containers into tab
 		 * @param string $label Tab label
 		 * @param string $name  Tab name, usefull for JS calls
-		 * @return $this
+		 * @return \System\Form\Container
 		 */
 		public function tab($label, $name = null)
 		{
@@ -391,10 +391,8 @@ namespace System
 
 			$this->counts[$el->type] ++;
 			if (($this->rendering[\System\Form\Container::TYPE_TAB_GROUP] instanceof \System\Form\Container) && $this->rendering[\System\Form\Container::TYPE_TAB_GROUP]->type == \System\Form\Container::TYPE_TAB_GROUP) {
-				$this->rendering[$el->type] = $this->rendering[\System\Form\Container::TYPE_TAB_GROUP]->add_element($el);
+				return $this->rendering[$el->type] = $this->rendering[\System\Form\Container::TYPE_TAB_GROUP]->add_element($el);
 			} else throw new \System\Error\Form('You must put tab into tab group.');
-
-			return $this;
 		}
 
 
