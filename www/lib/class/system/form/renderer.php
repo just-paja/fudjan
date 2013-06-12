@@ -321,10 +321,10 @@ namespace System\Form
 		 */
 		private static function render_container_inputs(\System\Template\Renderer $ren, \System\Form\Container $el)
 		{
-			$output = array();
+			$label = '';
 
 			if ($el->label) {
-				$output = div('group_label', $el->label);
+				$label = div('group_label', $el->label);
 			}
 
 			$attrs = $el->get_data();
@@ -337,8 +337,8 @@ namespace System\Form
 			}
 
 			return \Stag::fieldset(array(
-				"class"   => $el->type.'_container',
-				"content" => \Stag::ul($attrs),
+				"class"   => array($el->type.'_container', 'group_'.$el->name),
+				"content" => array($label, \Stag::ul($attrs))
 			));
 		}
 
