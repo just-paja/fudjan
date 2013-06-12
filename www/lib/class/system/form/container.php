@@ -47,8 +47,6 @@ namespace System\Form
 				$this->class = array();
 			}
 
-			$this->class = array_merge($this->class, array($this->type));
-
 			!$this->name && $this->generate_name();
 		}
 

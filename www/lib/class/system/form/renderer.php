@@ -337,7 +337,7 @@ namespace System\Form
 			}
 
 			return \Stag::fieldset(array(
-				"class"   => array($el->type.'_container', 'group_'.$el->name),
+				"class"   => array_merge($el->class, array($el->type.'_container', 'group_'.$el->name)),
 				"content" => array($label, \Stag::ul($attrs))
 			));
 		}
