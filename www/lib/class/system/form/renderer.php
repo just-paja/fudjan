@@ -399,13 +399,13 @@ namespace System\Form
 				}
 
 				$opts[] = li(array(
-					\Stag::input(array(
+					div('input-container', \Stag::input(array(
 						"name"    => $iname,
 						"id"      => $el->form()->get_prefix().$el->name.'_'.$id,
 						"value"   => $id,
 						"type"    => $el->type,
 						"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
-					)),
+					))),
 					\Stag::label(array(
 						"content" => $ren->trans($lbl),
 						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
