@@ -67,7 +67,7 @@ namespace System
 		 * @param int $type
 		 * @return string
 		 */
-		public function to_html($w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
+		public function to_html(\System\Template\Renderer $ren, $w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
 		{
 			return $this->gps->to_html($w, $h, $type);
 		}

@@ -533,7 +533,7 @@ namespace System
 		}
 
 
-		public function to_html($w = self::WIDTH_DEFAULT, $h = null, $crop = true, $transparent = null)
+		public function to_html(\System\Template\Renderer $ren, $w = self::WIDTH_DEFAULT, $h = null, $crop = true, $transparent = null)
 		{
 			$path = ((is_null($transparent) || $transparent) && $this->get_format() == 3) ? $this->thumb_trans($w, $h, $crop):$this->thumb($w, $h, $crop);
 			return \Stag::img(array("src" => $path, "alt" => ''));

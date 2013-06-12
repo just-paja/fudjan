@@ -125,7 +125,7 @@ namespace System
 		public static function to_html(\System\Template\Renderer $ren, $value)
 		{
 			if (is_object($value) && method_exists($value, 'to_html')) {
-				return $value->to_html();
+				return $value->to_html($ren);
 			}
 
 			if ($value instanceof \DateTime) {

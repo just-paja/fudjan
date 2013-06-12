@@ -50,7 +50,7 @@ namespace System\Form\Widget
 			$content  = array();
 
 			if ($value) {
-				$content[] = div('image', $ren->link($value->get_path(), $value->to_html(), array("class" => 'lightbox')));
+				$content[] = div('image', $ren->link($value->get_path(), $value->to_html($ren), array("class" => 'lightbox')));
 			}
 
 			foreach ($tools as $tool) {
