@@ -410,7 +410,7 @@ namespace System\Form
 						"content" => $ren->trans($lbl),
 						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
 					)),
-				));
+				), 'input-left');
 			}
 
 			return ul('options', $opts);
