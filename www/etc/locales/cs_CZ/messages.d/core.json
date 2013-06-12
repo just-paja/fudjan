@@ -106,5 +106,9 @@
 	"page_not_found":"Stránka nenalezena",
 	"not_implemented":"Neimplementováno",
 
+	"attr_author":"Autor",
+	"attr_created_at":"Vytvořeno",
+	"attr_updated_at":"Poslední úprava",
+
 	"end":""
 }

@@ -46,6 +46,8 @@ namespace System
 			)
 		);
 
+		private static $attrs_common = array('author', 'created_at', 'updated_at');
+
 
 		/** Class init. Inits mb extension and sets default timezone for dates
 		 * @return void
@@ -404,7 +406,7 @@ namespace System
 		 */
 		public function trans_model_attr_name($model, $attr)
 		{
-			return $this->trans('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr);
+			return $this->trans(self::get_common_attr_trans_name($model, $attr));
 		}
 
 
@@ -416,6 +418,17 @@ namespace System
 		public function trans_model_attr_desc($model, $attr)
 		{
 			return $this->trans('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+		}
+
+
+		/** Get string constant for common attributes
+		 * @param string $model
+		 * @param string $attr
+		 * @return string
+		 */
+		public static function get_common_attr_trans_name($model, $attr)
+		{
+			return 'attr_'.(in_array($attr, self::$attrs_common) ? $attr:(\System\Loader::get_link_from_class($model).'_'.$attr));
 		}
 	}
 }
