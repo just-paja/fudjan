@@ -514,5 +514,15 @@ namespace System\Model
 				throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
 			}
 		}
+
+
+		/** Convert attr model to html
+		 * @param \System\Template\Renderer $ren
+		 * @return string
+		 */
+		public function to_html(\System\Template\Renderer $ren)
+		{
+			return sprintf('%s', $ren->locales()->trans_class_name(get_class($ren)));
+		}
 	}
 }

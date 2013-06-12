@@ -41,15 +41,6 @@ namespace System\Model
 		static private $models_checked = array();
 
 
-		/** Model belongs_to relations */
-		//~ static protected $belongs_to;
-
-		/** Model has_one relations */
-		//~ static protected $has_one;
-
-		/** Model has_many relations */
-		//~ static protected $has_many;
-
 		/** Detault conditions for get_all */
 		static private $quick_conds = array(
 			"visible" => true,
@@ -1097,6 +1088,16 @@ namespace System\Model
 			}
 
 			return false;
+		}
+
+
+		/** Convert attr model to html
+		 * @param \System\Template\Renderer $ren
+		 * @return string
+		 */
+		public function to_html(\System\Template\Renderer $ren)
+		{
+			return sprintf('%s %s (#%s)', $ren->locales()->trans_class_name(get_class($ren)), $this->get_name(), $this->id);
 		}
 	}
 }
