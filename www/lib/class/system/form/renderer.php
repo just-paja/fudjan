@@ -373,7 +373,7 @@ namespace System\Form
 				$output[] = self::render_element($ren, $group);
 			}
 
-			return div(array('tab', $el->name), array(
+			return div(array_merge($el->class, $el->class_outer, array($el->name)), array(
 				div('tab_label', $el->label),
 				div('tab_content', $output),
 			));
