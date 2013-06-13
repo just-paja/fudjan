@@ -1093,5 +1093,14 @@ namespace System\Model
 		{
 			return sprintf('%s %s (#%s)', $ren->locales()->trans_class_name(get_class($this)), $this->get_name(), $this->id);
 		}
+
+
+		/** Convert model to string
+		 * @return string
+		 */
+		public function __toString()
+		{
+			return sprintf('[%s#%s]', \System\Loader::get_model_from_class(get_class($this)), $this->is_new() ? 'new':$this->id);
+		}
 	}
 }

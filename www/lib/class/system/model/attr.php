@@ -532,5 +532,14 @@ namespace System\Model
 		{
 			return sprintf('%s', $ren->locales()->trans_class_name(get_class($this)));
 		}
+
+
+		/** Convert model to string
+		 * @return string
+		 */
+		public function __toString()
+		{
+			return sprintf('[%s]', \System\Loader::get_model_from_class(get_class($this)));
+		}
 	}
 }
