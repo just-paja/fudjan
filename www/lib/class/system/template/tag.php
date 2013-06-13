@@ -10,6 +10,7 @@ namespace System\Template
 			'#source'   => array('src'),
 			'#links'    => array('href'),
 			'#sizeable' => array('width', 'height'),
+			'table'     => array('cellspacing', 'cellpadding'),
 			'iframe'    => array('frameborder', 'allowfullscreen'),
 			'meta'      => array('name', 'content', 'http-equiv', 'charset'),
 			'form'      => array('method', 'action', 'enctype'),
