@@ -104,7 +104,7 @@ namespace System\Model
 
 		public static function get_default_belongs_to_def($name)
 		{
-			return array('int', "is_unsigned" => true, "is_index" => true, "is_generated" => true, "rel" => $name);
+			return array('int', "is_unsigned" => true, "is_index" => true, "is_fake" => true, "is_generated" => true, "rel" => $name);
 		}
 
 
@@ -955,12 +955,6 @@ namespace System\Model
 			!in_array('updated_at', $attrs) && $attrs[] = 'updated_at';
 
 			return $attrs;
-		}
-
-
-		public static function get_model_attrs($model)
-		{
-			return $model::$attrs;
 		}
 
 

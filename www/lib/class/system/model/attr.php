@@ -207,7 +207,15 @@ namespace System\Model
 		 */
 		public static function get_model_attrs($model)
 		{
-			return self::get_attrs($model::$attrs);
+			$attrs = array();
+
+			foreach ($model::$attrs as $attr=>$def) {
+				if (empty($def['is_fake'])) {
+					$attrs[$attr] = $def;
+				}
+			}
+
+			return $attrs;
 		}
 
 
