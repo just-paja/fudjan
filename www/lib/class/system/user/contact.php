@@ -68,5 +68,13 @@ namespace System\User
 			$opts = self::get_type_options();
 			return str_replace('contact_type_', '', $opts[$this->type]);
 		}
+
+
+		public function to_html(\System\Template\Renderer $ren)
+		{
+			return $this->name ?
+				sprintf('%s (%s): %s', $ren->locales()->trans($this->get_type_name()), $this->name, $this->ident):
+				sprintf('%s: %s', $ren->locales()->trans($this->get_type_name()), $this->ident);
+		}
 	}
 }
