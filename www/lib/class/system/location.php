@@ -50,13 +50,13 @@ namespace System
 		 * @param string $type
 		 * @return string
 		 */
-		public function map_html($w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
+		public function map_html(\System\Template\Renderer $ren, $w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
 		{
 			return \Tag::a(array(
 				"output"  => false,
 				"class"   => 'location_map',
 				"href"    => $this->map_link(),
-				"content" => $this->to_html($w, $h, $type)
+				"content" => $this->to_html($ren, $w, $h, $type)
 			));
 		}
 
@@ -69,7 +69,7 @@ namespace System
 		 */
 		public function to_html(\System\Template\Renderer $ren, $w = \System\Gps::MAP_WIDTH_DEFAULT, $h = \System\Gps::MAP_HEIGHT_DEFAULT, $type = \System\Gps::GMAP_TYPE_ROADMAP)
 		{
-			return $this->gps->to_html($w, $h, $type);
+			return $this->gps->to_html($ren, $w, $h, $type);
 		}
 	}
 }
