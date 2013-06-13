@@ -128,6 +128,16 @@ namespace System
 				return $value->to_html($ren);
 			}
 
+			if (is_array($value)) {
+				$content = array();
+
+				foreach ($value as $val) {
+					$content[] = li(self::to_html($ren, $value));
+				}
+
+				return ul('plain inline', $content);
+			}
+
 			if ($value instanceof \DateTime) {
 				return $ren->format_date($value, 'human');
 			}
