@@ -15,5 +15,11 @@ namespace System\User
 		{
 			return $this->users->count();
 		}
+
+
+		public function to_html(\System\Template\Renderer $ren)
+		{
+			return $this->name;
+		}
 	}
 }
