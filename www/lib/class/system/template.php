@@ -132,7 +132,7 @@ namespace System
 				$content = array();
 
 				foreach ($value as $val) {
-					$content[] = li(self::to_html($ren, $value));
+					$content[] = li(self::to_html($ren, $val));
 				}
 
 				return ul('plain inline', $content);
