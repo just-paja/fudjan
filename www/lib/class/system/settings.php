@@ -170,7 +170,7 @@ namespace System
 		private static function check_cache()
 		{
 			$name = self::get_cache_filename();
-			return is_file($name) && filemtime($name) > time() - self::CACHE_TTL;
+			return is_file($name) && (filemtime($name) > time() - self::CACHE_TTL);
 		}
 
 
