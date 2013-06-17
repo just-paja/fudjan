@@ -27,6 +27,8 @@ namespace System
 		/** Is the module initialized and ready */
 		private static $ready = false;
 
+		const CACHE_TTL = 3600;
+
 		/** Default version data to be used */
 		private static $version_default = array(
 			"name"    => "pwf",
@@ -168,7 +170,7 @@ namespace System
 		private static function check_cache()
 		{
 			$name = self::get_cache_filename();
-			return is_file($name) && filemtime($name) > time() - 2;
+			return is_file($name) && filemtime($name) > time() - self::CACHE_TTL;
 		}
 
 
