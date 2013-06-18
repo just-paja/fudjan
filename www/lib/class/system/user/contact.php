@@ -47,7 +47,7 @@ namespace System\User
 			)),
 			"ident"   => array('varchar'),
 			"name"    => array('varchar'),
-			"visible" => array('bool'),
+			"spam"    => array('bool'),
 			"public"  => array('bool'),
 		);
 
