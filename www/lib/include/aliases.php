@@ -184,9 +184,71 @@ namespace
 
 	function head($content = null)
 	{
-		return Tag::tag('html', array(
+		return Tag::tag('head', array(
 			"content" => $content,
 			"output" => false,
+		));
+	}
+
+
+	function table($class = null, $content = null)
+	{
+		return Tag::tag('table', array(
+			"content"     => $content,
+			"class"       => $class,
+			"cellspacing" => 0,
+			"cellpadding" => 0,
+			"output"      => false
+		));
+	}
+
+
+	function tbody($class = null, $content = null)
+	{
+		return Tag::tag('tbody', array(
+			"content" => $content,
+			"class"   => $class,
+			"output"  => false
+		));
+	}
+
+
+	function thead($class = null, $content = null)
+	{
+		return Tag::tag('thead', array(
+			"content" => $content,
+			"class"   => $class,
+			"output"  => false
+		));
+	}
+
+
+	function th($class = null, $content = null)
+	{
+		return Tag::tag('th', array(
+			"content" => $content,
+			"class"   => $class,
+			"output"  => false
+		));
+	}
+
+
+	function td($class = null, $content = null)
+	{
+		return Tag::tag('td', array(
+			"content" => $content,
+			"class"   => $class,
+			"output"  => false
+		));
+	}
+
+
+	function tr($class = null, $content = null)
+	{
+		return Tag::tag('tr', array(
+			"content" => $content,
+			"class"   => $class,
+			"output"  => false
 		));
 	}
 
