@@ -369,6 +369,8 @@ namespace
 			$model = get_class($obj);
 		} else if (is_string($obj)) {
 			$model = strpos($obj, '\\') === 0 ? $obj:('\\'.$obj);
+		} else {
+			throw new \System\Error\Argument(sprintf('Function get_model accepts object or string as first argument. "%s" was given.', gettype($obj)));
 		}
 
 		return $model;
