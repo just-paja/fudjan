@@ -82,8 +82,16 @@ namespace System\Http
 		 */
 		public static function from_request(\System\Http\Request $request, array $attrs = array())
 		{
-			def($attrs['format'], cfg("output", 'format_default'));
+			def($attrs['format'], null);
 			def($attrs['start_time'], microtime(true));
+
+			if (is_null($attrs['format'])) {
+				try {
+					$attrs['format'] = cfg("output", 'format_default');
+				} catch (\System\Error $e) {
+					$attrs['format'] = 'html';
+				}
+			}
 
 			$response = new self($attrs);
 			$response->data['request'] = $request;
