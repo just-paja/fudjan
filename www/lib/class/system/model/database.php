@@ -405,7 +405,7 @@ namespace System\Model
 			$def = self::get_attr($model, $name);
 
 			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
-				if (is_object($value)) {
+				if (is_object($value) || (!empty($def['is_null'])) && is_null($value)) {
 					if ($value instanceof $def['model']) {
 						$this->relations[$name] = $value;
 
