@@ -168,10 +168,10 @@ echo div('status devbar');
 						dump_table($ren, $_COOKIE),
 					)),
 
-					div('datadump', array(
+					isset($_SESSION) ? div('datadump', array(
 						$ren->heading_static($ren->trans('dump_bar_input_data_session')),
 						dump_table($ren, $_SESSION),
-					)),
+					)):'',
 				))),
 			), 'status-input');
 
