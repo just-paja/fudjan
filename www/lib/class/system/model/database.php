@@ -403,15 +403,16 @@ namespace System\Model
 			$model = get_model($this);
 			$type = self::get_attr_type($model, $name);
 			$def = self::get_attr($model, $name);
+			$is_null = !empty($def['is_null']) && is_null($value);
 
 			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
-				if (is_object($value) || (!empty($def['is_null'])) && is_null($value)) {
-					if ($value instanceof $def['model']) {
+				if (is_object($value) || $is_null) {
+					if (($value instanceof $def['model']) || $is_null) {
 						$this->relations[$name] = $value;
 
 						if ($type == self::REL_BELONGS_TO) {
 							$idc = self::get_belongs_to_id($model, $name);
-							$this->$idc = $value->id;
+							$this->$idc = $is_null ? null:$value->id;
 						}
 
 					} else throw new \System\Error\Argument(sprintf(
