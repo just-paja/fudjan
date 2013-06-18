@@ -55,7 +55,16 @@ namespace System
 					self::load_cache();
 				} else {
 					self::reload();
-					self::cache();
+
+					try {
+						$cache = cfg('cache', 'settings');
+					} catch(\System\Error $e) {
+						$cache = false;
+					}
+
+					if ($cache) {
+						self::cache();
+					}
 				}
 
 				self::$ready = true;

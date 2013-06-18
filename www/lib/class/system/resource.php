@@ -83,6 +83,12 @@ namespace System
 			} else {
 				ob_start();
 
+				try {
+					$cache = cfg('cache', 'resources');
+				} catch (\System\Error $e) {
+					$cache = false;
+				}
+
 				foreach ($files[self::KEY_FOUND] as $file) {
 					include $file;
 				}
@@ -92,7 +98,10 @@ namespace System
 				}
 
 				$content = \System\Minifier::process($info['type'], ob_get_clean());
-				\System\File::put(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
+
+				if ($cache) {
+					\System\File::put(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
+				}
 			}
 
 			return $content;
