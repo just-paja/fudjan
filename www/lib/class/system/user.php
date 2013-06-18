@@ -26,8 +26,6 @@ namespace System
 			"password"    => array('password', "default" => ''),
 			"avatar"      => array('image', "default" => '/share/pixmaps/pwf/anonymous_user.png'),
 			"last_login"  => array('datetime', "default" => 0),
-			"com_email"   => array('bool', "default" => true),
-			"com_sms"     => array('bool', "default" => false),
 			"groups"      => array('has_many', "model" => '\System\User\Group', "is_bilinear" => true, "is_master" => true),
 			"contacts"    => array('has_many', "model" => '\System\User\Contact')
 		);
