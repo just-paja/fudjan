@@ -110,5 +110,38 @@
 	"attr_created_at":"Vytvořeno",
 	"attr_updated_at":"Poslední úprava",
 
+
+	"time_moment_ago":"před okamžikem",
+	"time_seconds_ago":"před %d vteřinami",
+	"time_minute_ago":"před minutou",
+	"time_minutes_ago":"před %d minutami",
+	"time_hour_ago":"před hodinou",
+	"time_hours_ago":"před %d hodinami",
+	"time_yesterday":"včera",
+	"time_days_ago":"před %d dny",
+	"time_week_ago":"před týdnem",
+	"time_weeks_ago":"před %d týdny",
+	"time_month_ago":"před měsícem",
+	"time_months_ago":"před %d měsíci",
+	"time_year_ago":"před rokem",
+	"time_years_ago":"před %d roky",
+	"time_long_ago":"kdysi dávno",
+
+	"time_in_a_moment":"za okamžik",
+	"time_in_a_few_seconds":"za pár vteřin",
+	"time_in_seconds":"za %d vteřin",
+	"time_in_a_minute":"za minutu",
+	"time_in_minutes":"za %d minut",
+	"time_in_an_hour":"za hodinu",
+	"time_in_hours":"za %d hodin",
+	"time_tommorow":"zítra",
+	"time_in_days":"za %d dní",
+	"time_in_a_week":"za týden",
+	"time_in_weeks":"za %d týdny",
+	"time_in_a_month":"za měsíc",
+	"time_in_months":"za %d měsíců",
+	"time_in_a_year":"za rok",
+	"time_in_years":"za %d let",
+
 	"end":""
 }
