@@ -87,9 +87,10 @@ namespace System\Form
 		 * @param mixed        $for
 		 * @return string
 		 */
-		public static function label(\System\Form $form, $text, $for = null)
+		public static function label(\System\Form $form, $text, $class = null, $for = null)
 		{
 			return self::render_label(new \System\Form\Label(array(
+				"class"   => $class,
 				"content" => $text,
 				"form"    => $form,
 				"for"     => $for,
@@ -144,11 +145,10 @@ namespace System\Form
 			if (is_null($tools_html)) {
 				return null;
 			} else {
-				$content = array(self::label($el->form(), $ren->trans($el->label)), $tools_html, $errors);
+				$content = array(self::label($el->form(), $ren->trans($el->label), 'label-widget'), $tools_html, $errors);
 				return div('input-container input-'.$el::IDENT, $content);
 			}
 		}
-
 
 
 		public static function render_input(\System\Template\Renderer $ren, \System\Form\Input $el)
@@ -406,10 +406,7 @@ namespace System\Form
 						"type"    => $el->type,
 						"checked" => is_array($el->value) && in_array($id, $el->value) || $el->value == $id,
 					))),
-					\Stag::label(array(
-						"content" => $ren->trans($lbl),
-						"for"     => $el->form()->get_prefix().$el->name.'_'.$id,
-					)),
+					self::label($el->form(), $ren->trans($lbl), 'label-right', $el->form()->get_prefix().$el->name.'_'.$id),
 				), 'input-left');
 			}
 

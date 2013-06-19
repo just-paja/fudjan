@@ -9,13 +9,13 @@
 	"form_image_input_url":"Použít URL",
 	"form_image_input_drop":"Smazat obrázek",
 	"form_image_input_file":"Nahrát",
-	"form_image_input_url":"URL obrázku",
+	"form_input_image_url":"URL obrázku",
+	"form_input_image_file":"Soubor s obrázkem",
 
 	"form_widget_action_keep":"Ponechat",
 	"form_widget_action_create":"Nový",
 	"form_widget_action_none":"Žádný",
 	"form_widget_action_edit":"Upravit",
-	"form_input_image_file":"Soubor s obrázkem",
 
 	"form_input_datetime_date":"Datum",
 	"form_input_datetime_time":"Čas",

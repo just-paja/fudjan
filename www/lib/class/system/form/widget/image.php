@@ -20,6 +20,12 @@ namespace System\Form\Widget
 				"type"     => 'action',
 				"label"    => 'form_input_image_action',
 				"required" => true,
+				"options"  => array(
+					\System\Form\Widget\Action::NONE   => 'form_image_input_none',
+					\System\Form\Widget\Action::KEEP   => 'form_image_input_keep',
+					\System\Form\Widget\Action::UPLOAD => 'form_image_input_upload',
+					\System\Form\Widget\Action::URL    => 'form_image_input_url',
+				),
 			),
 			array(
 				"ident"    => 'file',
@@ -28,15 +34,19 @@ namespace System\Form\Widget
 				"label"    => 'form_input_image_file',
 				"required" => true,
 			),
-			//~ array(
-				//~ "ident"    => 'url',
-				//~ "name"     => '%s_url',
-				//~ "type"     => 'url',
-				//~ "label"    => 'form_input_image_url',
-			//~ ),
+			array(
+				"ident"    => 'url',
+				"name"     => '%s_url',
+				"type"     => 'url',
+				"label"    => 'form_input_image_url',
+			),
 		);
 
-		protected static $resources = array();
+		protected static $resources = array(
+			"scripts" => array('pwf/form/picker_image'),
+			"styles"  => array('pwf/form/picker_image'),
+		);
+
 
 
 		public function render(\System\Template\Renderer $ren)
@@ -46,8 +56,12 @@ namespace System\Form\Widget
 			$tools    = $this->get_tools();
 			$inputs   = array();
 			$value    = $this->form()->get_input_value_by_name($this->name);
-			$label    = \System\Form\Renderer::label($this->form(), $this->label);
+			$label    = \System\Form\Renderer::label($this->form(), $this->label, 'label-widget');
 			$content  = array();
+
+			$actionkit = array_shift($tools);
+
+			$content[] = div('actionkit', \System\Form\Renderer::render_element($ren, $actionkit));
 
 			if ($value) {
 				$content[] = div('image', $ren->link($value->get_path(), $value->to_html($ren), array("class" => 'lightbox')));
@@ -64,7 +78,13 @@ namespace System\Form\Widget
 			$tools_html = ul('widget-tools', $inputs);
 			$errors = \System\Form\Renderer::render_error_list($ren, $this);
 			$content[] = $tools_html;
-			return div('input-container input-'.$this::IDENT, array($label, div('input-content', $content), $errors, span('cleaner', '')));
+
+			return implode('', array(
+				$label,
+				div('input-content', $content),
+				$errors,
+				span('cleaner', '')
+			));
 		}
 	}
 }
