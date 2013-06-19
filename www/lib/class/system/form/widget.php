@@ -182,7 +182,7 @@ namespace System\Form
 
 						$value[$tool->ident] = $v;
 
-						if (empty($v)) {
+						if ($tool->required && empty($v)) {
 							break;
 						} else {
 							$empty = false;

@@ -32,7 +32,6 @@ namespace System\Form\Widget
 				"name"     => '%s_file',
 				"type"     => 'file',
 				"label"    => 'form_input_image_file',
-				"required" => true,
 			),
 			array(
 				"ident"    => 'url',

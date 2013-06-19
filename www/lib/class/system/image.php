@@ -231,6 +231,28 @@ namespace System
 		}
 
 
+		/** Create image instance from URL.
+		 * @param string $url
+		 * $return self|null Null on failure
+		 */
+		public static function from_url($url)
+		{
+			return self::from_file(\System\File::fetch($url));
+		}
+
+
+		public static function from_file(\System\File $file)
+		{
+			return new self(array(
+				"tmp_name"  => $file->get_tmp_url(),
+				"file_path" => $file->get_tmp_url(),
+				"file_name" => $file->filename,
+				"src" => 'copy',
+				"tmp" => true,
+			));
+		}
+
+
 		/** Create new empty image
 		 * @return self
 		 */
@@ -552,6 +574,8 @@ namespace System
 				));
 
 				return $img->cache();
+			} else if (any($value['url'])) {
+				return self::from_url($value['url'])->cache();
 			} else {
 				return null;
 			}
