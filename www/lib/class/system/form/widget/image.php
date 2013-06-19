@@ -55,7 +55,7 @@ namespace System\Form\Widget
 			$tools    = $this->get_tools();
 			$inputs   = array();
 			$value    = $this->form()->get_input_value_by_name($this->name);
-			$label    = \System\Form\Renderer::label($this->form(), $this->label, 'label-widget');
+			$label    = \System\Form\Renderer::label($this->form(), $this->label.':', 'label-widget');
 			$content  = array();
 
 			$actionkit = array_shift($tools);
