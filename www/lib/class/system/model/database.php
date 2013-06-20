@@ -505,8 +505,12 @@ namespace System\Model
 				$helper->join($table_name, "USING(".self::get_id_col($rel_attrs['model']).")", $join_alias);
 				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:self::get_id_col($model);
 			} else {
-				$foreign = self::get_rel_bound_to($model, $rel);
-				$idc = self::get_belongs_to_id($rel_attrs['model'], $foreign);
+				if ($foreign = self::get_rel_bound_to($model, $rel)) {
+					$idc = self::get_belongs_to_id($rel_attrs['model'], $foreign);
+				} else throw new \System\Error\Model(
+					"Could not find model relation.",
+					sprintf("There is no relation between '%s::%s' (has_many) and model %s (belongs_to)", $model, $rel, $rel_attrs['model'])
+				);
 			}
 
 			self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
