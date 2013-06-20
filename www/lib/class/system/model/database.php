@@ -350,6 +350,10 @@ namespace System\Model
 		{
 			$invalid = false;
 
+			if (empty($value)) {
+				$value = array();
+			}
+
 			if (is_array($value)) {
 				$corrected = array();
 				$model = get_model($this);
