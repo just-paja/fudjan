@@ -275,11 +275,17 @@ namespace System\Form
 					$label = $opt;
 				}
 
+				if (is_object($el->value)) {
+					$selected = $el->value->id == $id;
+				} else {
+					$selected = $el->value == $id;
+				}
+
 				$opts[] = \Stag::option(array(
 					"content"  => $ren->trans($label),
 					"value"    => $id,
 					"close"    => true,
-					"selected" => $el->value == $id,
+					"selected" => $selected,
 				));
 			}
 
