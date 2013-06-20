@@ -160,7 +160,9 @@ namespace System\Model
 		 */
 		public static function attr_exists($model, $attr)
 		{
-			return array_key_exists($attr, $model::$attrs);
+			if ($model && $attr) {
+				return array_key_exists($attr, $model::$attrs);
+			} else return false;
 		}
 
 
