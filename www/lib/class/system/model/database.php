@@ -403,6 +403,7 @@ namespace System\Model
 			$model = get_model($this);
 			$type = self::get_attr_type($model, $name);
 			$def = self::get_attr($model, $name);
+			$value = empty($value) ? null:$value;
 			$is_null = !empty($def['is_null']) && is_null($value);
 
 			if (is_numeric($value)) {
