@@ -1,7 +1,6 @@
 pwf.register('locales', function()
 {
-	var messages = null;
-
+	var messages = {};
 
 	this.init = function init()
 	{
@@ -15,16 +14,13 @@ pwf.register('locales', function()
 
 	this.is_ready = function()
 	{
-		return pwf_trans;
+		return typeof pwf_trans != 'undefined' && pwf_trans['messages'] != 'undefined';
 	};
 
 
 	var init_trans = function()
 	{
-		if (typeof pwf_trans === 'undefined') {
-			messages = {};
-			v("Failed to load pwf translations");
-		} else messages = pwf_trans['messages'];
+		pwf_trans['messages'];
 	};
 
 
