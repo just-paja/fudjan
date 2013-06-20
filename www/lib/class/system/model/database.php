@@ -405,6 +405,17 @@ namespace System\Model
 			$def = self::get_attr($model, $name);
 			$is_null = !empty($def['is_null']) && is_null($value);
 
+			if (is_numeric($value)) {
+				$val = find($def['model'], $value);
+
+				if ($val) {
+					$value = $val;
+				} else throw new \System\Error\Model(
+						"Object not found.",
+						sprintf("Integer value '%s' was given to attribute '%s' of model '%s' but related object of model '%s' was not found.", $value, $name, $model, $def['model'])
+					);
+			}
+
 			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
 				if (is_object($value) || $is_null) {
 					if (($value instanceof $def['model']) || $is_null) {
