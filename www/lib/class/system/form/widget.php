@@ -261,7 +261,7 @@ namespace System\Form
 
 			if ($this->form()->submited()) {
 				if ($this->required && is_null($this->form()->input_value($this->name))) {
-					$this->form()->report_error($this->name, 'form_input_empty');
+					$this->form()->report_error($this->name, 'form_error_input_empty');
 					$valid = false;
 				}
 			}
