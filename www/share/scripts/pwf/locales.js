@@ -20,7 +20,7 @@ pwf.register('locales', function()
 
 	var init_trans = function()
 	{
-		pwf_trans['messages'];
+		messages = pwf_trans['messages'];
 	};
 
 
