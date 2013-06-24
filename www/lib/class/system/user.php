@@ -64,7 +64,7 @@ namespace System
 		 * @param \System\Http\Request $request Request to write session inside
 		 * @return bool
 		 */
-		private function create_session(\System\Http\Request $request)
+		public function create_session(\System\Http\Request $request)
 		{
 			$request->user = $this;
 			$this->last_login = new \DateTime();
