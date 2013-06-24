@@ -11,7 +11,8 @@ pwf.register('storage', function()
 	/* Init is autorun on any of get(), store() or drop()
 	 * @return void
 	 */
-	this. init = function() {
+	this. init = function()
+	{
 		this.p3p_available = is_browser_p3p_compatible();
 		this.p3p_needed    = typeof iframe_external != 'undefined' && iframe_external;
 		this.utime = Math.round(new Date().getTime() / 1000);
@@ -22,6 +23,12 @@ pwf.register('storage', function()
 
 		// prefer localStorage
 		this.driver = drivers.locStorage.available ? 'locStorage':(drivers.locCookie.available ? 'locCookie':'remoteCookie');
+		return true;
+	};
+
+
+	this.is_ready = function()
+	{
 		return true;
 	};
 
