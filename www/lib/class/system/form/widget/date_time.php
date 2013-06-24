@@ -55,12 +55,17 @@ namespace System\Form\Widget
 			if (is_array($value)) {
 				$val = array();
 
-				if (isset($value['date'])) $val[] = $this->form()->response->locales()->format_date($value['date'], 'sql-date', \System\Locales::TRANS_NONE);
-				if (isset($value['time'])) $val[] = $this->form()->response->locales()->format_date($value['time'], 'sql-time', \System\Locales::TRANS_NONE);
+				if (any($value['date'])) {
+					$val[] = $this->form()->response->locales()->format_date($value['date'], 'sql-date', \System\Locales::TRANS_NONE);
+				} else unset($value['date']);
+
+				if (any($value['time'])) {
+					$val[] = $this->form()->response->locales()->format_date($value['time'], 'sql-time', \System\Locales::TRANS_NONE);
+				} else unset($value['time']);
 
 				if (any($value)) {
 					$value = new \DateTime(implode(' ', $val));
-				}
+				} else $value = null;
 			}
 
 			return $value;
