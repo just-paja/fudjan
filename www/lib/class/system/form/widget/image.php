@@ -85,5 +85,31 @@ namespace System\Form\Widget
 				span('cleaner', '')
 			));
 		}
+
+
+
+		public function is_valid()
+		{
+			$valid = true;
+			$value = parent::assemble_value();
+
+			if ($this->form()->submited()) {
+				$action  = $this->tools['action']->assemble_value();
+				$val_up  = $this->form()->input_value($this->tools['file']->name);
+				$val_url = $this->form()->input_value($this->tools['url']->name);
+
+				if ($action == \System\Form\Widget\Action::UPLOAD && !$val_up) {
+					$this->form()->report_error($this->name, 'form_error_no_upload');
+					$valid = false;
+				}
+
+				if ($action == \System\Form\Widget\Action::URL && !$val_url) {
+					$this->form()->report_error($this->name, 'form_error_no_url');
+					$valid = false;
+				}
+			}
+
+			return $valid;
+		}
 	}
 }

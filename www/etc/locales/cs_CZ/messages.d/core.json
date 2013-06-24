@@ -32,6 +32,9 @@
 	"form_gps_input_lng":"Zeměpisná délka",
 	"form_location_input_gps":"Poloha",
 
+	"form_error_no_upload":"Chybí přiložený soubor.",
+	"form_error_no_url":"Chybí URL.",
+
 	"core_page_not_found":"Stránka nenalezena",
 	"core_page_not_found_text":"Omlouváme se, ale požadovaná stránka na tomto serveru nebyla nalezena. Pravděpodobně byla zrušena nebo jste špatně zadali její adresu.",
 	"core_access_denied":"Přístup zamítnut",
