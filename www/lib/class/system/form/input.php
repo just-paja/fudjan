@@ -119,10 +119,18 @@ namespace System\Form
 		public function is_valid()
 		{
 			$valid = true;
+			$value = $this->form()->input_value($this->name);
 
-			if ($this->required && !$this->form()->input_value($this->name)) {
-				$this->form()->report_error($this->name, 'form_input_empty');
+			if ($this->required && !$value) {
+				$this->form()->report_error($this->name, 'form_error_input_empty');
 				$valid = false;
+			}
+
+			if ($value) {
+				if ($this->options && !isset($this->options[$value])) {
+					$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+					$valid = false;
+				}
 			}
 
 			return $valid;
