@@ -318,7 +318,11 @@ namespace System\Form
 			}
 
 			$class[] = 'form-'.$base_class;
-			$class[] = $el->is_valid() ? 'valid':'invalid';
+
+			if ($el->form()->submited()) {
+				$class[] = $el->is_valid() ? 'valid':'invalid';
+			}
+
 			return $class;
 		}
 
