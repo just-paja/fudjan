@@ -176,7 +176,7 @@ namespace System\Form
 				"for"     => $el->id,
 			)):'';
 
-			if ($el->multiple && $el->type == 'checkbox' || $el->type == 'radio') {
+			if (($el->multiple && $el->type == 'checkbox') || $el->type == 'radio') {
 
 				$input = self::render_multi_input_html($ren, $el);
 
@@ -295,7 +295,7 @@ namespace System\Form
 
 		private static function is_label_on_right($el)
 		{
-			return !$el->multiple && in_array($el->type, array('checkbox', 'radio'));
+			return !$el->multiple && $el->type == 'checkbox';
 		}
 
 
