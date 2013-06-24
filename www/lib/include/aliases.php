@@ -121,6 +121,40 @@ namespace
 	}
 
 
+	/** OL tag alias
+	 * @param string|array $class   Classname passed to the div
+	 * @param string|array $content Content rendered inside div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function ol($class, $content = null, $id = null)
+	{
+		return Tag::tag('ol', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
+	/** P tag alias
+	 * @param string|array $content Content rendered inside div
+	 * @param string|array $class   Classname passed to the div
+	 * @param string       $id      ID attribute of the div
+	 * @return string
+	 */
+	function p($content = null, $class = null, $id = null)
+	{
+		return Tag::tag('p', array(
+			"class"   => $class,
+			"content" => $content,
+			"id"      => $id,
+			"output"  => false,
+		));
+	}
+
+
 	/** Menu tag alias
 	 * @param string|array $class   Classname passed to the div
 	 * @param string|array $content Content rendered inside div
