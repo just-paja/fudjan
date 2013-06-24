@@ -243,7 +243,7 @@ namespace System\Form
 				$error_lis = array();
 
 				foreach ($error_list as $e) {
-					$error_lis[] = li($e);
+					$error_lis[] = li($ren->trans($e));
 				}
 
 				$errors = ul('errors', $error_lis);
@@ -318,6 +318,7 @@ namespace System\Form
 			}
 
 			$class[] = 'form-'.$base_class;
+			$class[] = $el->is_valid() ? 'valid':'invalid';
 			return $class;
 		}
 
