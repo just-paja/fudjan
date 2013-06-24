@@ -304,7 +304,7 @@ namespace System
 				$valid = $valid && $object->is_valid();
 			}
 
-			return $valid;
+			return $valid && empty($this->errors);
 		}
 
 
