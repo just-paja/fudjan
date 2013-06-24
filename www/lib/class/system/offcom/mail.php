@@ -102,12 +102,12 @@ namespace System\Offcom
 		private function validate()
 		{
 			foreach ($this->rcpt as $member) {
-				if (!self::isAddrValid($member)) {
+				if (!self::is_addr_valid($member)) {
 					throw new \System\Error\Format(sprintf('Recipient ".$member." is not formatted according to RFC 2822.', $member));
 				}
 			}
 
-			if (!self::isAddrValid($this->get_sender())) {
+			if (!self::is_addr_valid($this->get_sender())) {
 				throw new \System\Error\Format(sprintf('Sender "%s" is not formatted according to RFC 2822.', $this->get_sender()));
 			}
 
@@ -140,7 +140,7 @@ namespace System\Offcom
 			$headers['Subject'] = $this->get_encoded_subject();
 
 			if ($this->reply_to) {
-				if (self::isAddrValid($this->reply_to)) {
+				if (!self::is_addr_valid($this->reply_to)) {
 					$headers['Reply-To'] = $this->reply_to;
 				} else throw new \System\Error\Format(sprintf('Reply-To "%s" is not formatted according to RFC 2822.', $this->get_sender()));
 			}
@@ -169,7 +169,7 @@ namespace System\Offcom
 		 * @param bool   $strict
 		 * @return bool
 		 */
-		private static function isAddrValid($email, $strict = false)
+		private static function is_addr_valid($email, $strict = false)
 		{
 			$regex = $strict ? '/^([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i' : '/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i';
 			return preg_match($regex, trim($email), $matches);
