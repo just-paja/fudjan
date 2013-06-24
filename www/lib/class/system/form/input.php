@@ -126,10 +126,23 @@ namespace System\Form
 				$valid = false;
 			}
 
+			if ($this->multiple && !is_array($value)) {
+				$this->form()->report_error($this->name, 'form_error_input_not_multiple');
+				$valid = false;
+			}
+
 			if ($value) {
-				if ($this->options && !isset($this->options[$value])) {
-					$this->form()->report_error($this->name, 'form_error_input_out_of_options');
-					$valid = false;
+				if ($this->options) {
+					if (!$this->multiple) {
+						$value = (array) $value;
+					}
+
+					foreach ($value as $val) {
+						if ((is_object($val) && !isset($this->options[$val->id])) || !isset($this->options[$val])) {
+							$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+							$valid = false;
+						}
+					}
 				}
 			}
 
