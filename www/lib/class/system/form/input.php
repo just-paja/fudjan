@@ -133,14 +133,21 @@ namespace System\Form
 
 			if ($value) {
 				if ($this->options) {
-					if (!$this->multiple) {
-						$value = (array) $value;
-					}
+					$value = (array) $value;
 
-					foreach ($value as $val) {
-						if ((is_object($val) && !isset($this->options[$val->id])) || !isset($this->options[$val])) {
-							$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+					if (empty($value)) {
+						if (!$this->required) {
+							$valid = true;
+						} else {
+							$this->form()->report_error($this->name, 'form_error_input_multiple_empty');
 							$valid = false;
+						}
+					} else {
+						foreach ($value as $val) {
+							if ((is_object($val) && !isset($this->options[$val->id])) || !isset($this->options[$val])) {
+								$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+								$valid = false;
+							}
 						}
 					}
 				}
