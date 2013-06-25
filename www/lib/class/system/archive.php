@@ -112,8 +112,11 @@ namespace System
 
 				if ($d) {
 					$this->extract_path = clear_url($path_prefix);
-					if ($path_prefix && !is_dir($path_prefix)) mkdir($path_prefix, 0777, true);
-					foreach ($this->dirs as $dir) if(!is_dir($path_prefix.'/'.$dir)) mkdir($path_prefix.'/'.$dir);
+
+					foreach ($this->dirs as $dir) {
+						\System\Directory::check($path_prefix.'/'.$dir);
+					}
+
 					foreach ($this->files as $file) {
 						if (file_exists($path_prefix.'/'.$file['name'])) {
 							$a = unlink($path_prefix.'/'.$file['name']);

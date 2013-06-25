@@ -48,14 +48,16 @@ namespace System
 					foreach ($create as $dir) {
 						$current_dir .= '/'.$dir;
 
-						if (!($action = @mkdir($current_dir, $mode))) {
-							throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $current_dir, $mode));
+						if (!is_dir($current_dir)) {
+							if (!($action = @mkdir($current_dir, $mode))) {
+								throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $current_dir, base_convert($mode, 10, 8)));
+							}
 						}
 					}
 				}
 			} else {
 				if (!($action = @mkdir($pathname, $mode, true))) {
-					throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, $mode));
+					throw new \System\Error\Permissions(sprintf('Failed to create directory on path "%s" in mode "%s". Please check your permissions.', $pathname, base_convert($mode, 10, 8)));
 				}
 			}
 
