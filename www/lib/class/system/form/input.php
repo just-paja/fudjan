@@ -126,11 +126,6 @@ namespace System\Form
 				$valid = false;
 			}
 
-			if ($this->multiple && !is_array($value)) {
-				$this->form()->report_error($this->name, 'form_error_input_not_multiple');
-				$valid = false;
-			}
-
 			if ($value) {
 				if ($this->options) {
 					$value = (array) $value;

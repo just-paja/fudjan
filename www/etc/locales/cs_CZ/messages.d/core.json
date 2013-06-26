@@ -33,6 +33,8 @@
 	"form_location_input_gps":"Poloha",
 
 	"form_error_input_empty":"Pole musí být vyplněno.",
+	"form_error_input_not_multiple":"Vstupní přijímá pouze pole.",
+	"form_error_input_multiple_empty":"Musíte zvolit alespoň jednu možnost",
 	"form_error_no_upload":"Chybí přiložený soubor.",
 	"form_error_no_url":"Chybí URL.",
 	"form_error_input_out_of_options":"Poslaná hodnota není v nabídce.",
