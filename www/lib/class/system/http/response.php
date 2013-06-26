@@ -36,14 +36,16 @@ namespace System\Http
 			"groups"     => array('list'),
 			"locales"    => array('object', "model" => '\System\Locales'),
 			"modules"    => array('list'),
+			"init"       => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 			"start_time" => array('float'),
 		);
 
-		private $status  = self::OK;
-		private $headers = array();
-		private $content = null;
+		private $status    = self::OK;
+		private $headers   = array();
+		private $content   = null;
+		private $init_done = false;
 
 
 		/** Get response HTTP status
@@ -301,6 +303,23 @@ namespace System\Http
 			}
 
 			return true;
+		}
+
+
+		public function init()
+		{
+			if (!$this->is_initialized()) {
+				\System\Init::run($this->init, array(
+					"request"  => $this->request(),
+					"response" => $this,
+				));
+			}
+		}
+
+
+		public function is_initialized()
+		{
+			return $this->init_done;
 		}
 	}
 }

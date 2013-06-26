@@ -22,6 +22,8 @@ if (System\Settings::is_this_first_run()) {
 	$response = $request->create_response();
 
 	if ($response) {
+		$response->init();
+
 		if ($response->is_readable()) {
 
 			$response->exec()->render()->send_headers()->send_content();
