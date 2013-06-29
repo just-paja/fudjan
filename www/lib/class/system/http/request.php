@@ -4,6 +4,9 @@ namespace System\Http
 {
 	class Request extends \System\Model\Attr
 	{
+		const IDENT_XHR = 'xmlhttprequest';
+
+
 		protected static $attrs = array(
 			"host"     => array('varchar'),
 			"path"     => array('varchar'),
@@ -13,6 +16,7 @@ namespace System\Http
 			"referrer" => array('varchar'),
 			"time"     => array('float'),
 			"cli"      => array('bool'),
+			"ajax"     => array('bool'),
 			"args"     => array('list'),
 			"get"      => array('list'),
 			"post"     => array('list'),
@@ -35,6 +39,7 @@ namespace System\Http
 			} else {
 				$data = array(
 					"cli"      => false,
+					"ajax"     => strtolower(def($_SERVER['HTTP_X_REQUESTED_WITH'])) == self::IDENT_XHR,
 					"host"     => $_SERVER['HTTP_HOST'],
 					"path"     => $_SERVER['REQUEST_URI'],
 					"referrer" => def($_SERVER['HTTP_REFERER']),
