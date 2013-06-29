@@ -14,3 +14,15 @@ var is_attached = function(ref)
 {
 	return ref.parents(':last').is('html');
 };
+
+
+
+/** Stop jQuery event from propagation and doing anything else
+ * @returns jQuery event
+ */
+var stop_event = function(e)
+{
+	e.stopPropagation();
+	e.preventDefault();
+	return e;
+};
