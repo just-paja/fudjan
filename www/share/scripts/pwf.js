@@ -16,8 +16,21 @@ var pwf = function()
 				this[name] = new module();
 
 				if (typeof this[name].init == 'function') {
-					if (!(this.module_status[name] = this[name].init())) {
-						init_later.push(name);
+					if (!this.module_status[name]) {
+						if (typeof this[name].is_ready == 'function') {
+							if (this[name].is_ready()) {
+								if (!(this.module_status[name] = this[name].init())) {
+									init_later(name);
+								}
+							} else init_later.push(name);
+						} else {
+							if (this[name].init()) {
+								if (!(this.module_status[name] = this[name].init())) {
+									init_later.push(name);
+								}
+							} else init_later.push(name);
+						}
+
 					} else {
 						this.run_callbacks();
 					}
