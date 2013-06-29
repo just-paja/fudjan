@@ -62,7 +62,7 @@ namespace
 
 	function body($class = null, $content = null)
 	{
-		return Tag::tag('div', array(
+		return Tag::tag('body', array(
 			"class"   => $class,
 			"content" => $content,
 			"output"  => false,
@@ -88,9 +88,9 @@ namespace
 
 
 	/** Span tag alias
-	 * @param string|array $class   Classname passed to the div
-	 * @param string|array $content Content rendered inside div
-	 * @param string       $id      ID attribute of the div
+	 * @param string|array $class   Classname passed to the span
+	 * @param string|array $content Content rendered inside span
+	 * @param string       $id      ID attribute of the span
 	 * @return string
 	 */
 	function span($class, $content = null, $id = null)
@@ -105,9 +105,9 @@ namespace
 
 
 	/** UL tag alias
-	 * @param string|array $class   Classname passed to the div
-	 * @param string|array $content Content rendered inside div
-	 * @param string       $id      ID attribute of the div
+	 * @param string|array $class   Classname passed to the ul
+	 * @param string|array $content Content rendered inside ul
+	 * @param string       $id      ID attribute of the ul
 	 * @return string
 	 */
 	function ul($class, $content = null, $id = null)
@@ -122,9 +122,9 @@ namespace
 
 
 	/** OL tag alias
-	 * @param string|array $class   Classname passed to the div
-	 * @param string|array $content Content rendered inside div
-	 * @param string       $id      ID attribute of the div
+	 * @param string|array $class   Classname passed to the ul
+	 * @param string|array $content Content rendered inside ul
+	 * @param string       $id      ID attribute of the ul
 	 * @return string
 	 */
 	function ol($class, $content = null, $id = null)
@@ -139,9 +139,9 @@ namespace
 
 
 	/** P tag alias
-	 * @param string|array $content Content rendered inside div
-	 * @param string|array $class   Classname passed to the div
-	 * @param string       $id      ID attribute of the div
+	 * @param string|array $content Content rendered inside p
+	 * @param string|array $class   Classname passed to the p
+	 * @param string       $id      ID attribute of the p
 	 * @return string
 	 */
 	function p($content = null, $class = null, $id = null)
@@ -156,9 +156,9 @@ namespace
 
 
 	/** Menu tag alias
-	 * @param string|array $class   Classname passed to the div
-	 * @param string|array $content Content rendered inside div
-	 * @param string       $id      ID attribute of the div
+	 * @param string|array $class   Classname passed to the menu
+	 * @param string|array $content Content rendered inside menu
+	 * @param string       $id      ID attribute of the menu
 	 * @return string
 	 */
 	function menu($class, $content = null, $id = null)
