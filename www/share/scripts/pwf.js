@@ -70,9 +70,11 @@ var pwf = function()
 		{
 			for (var i = 0; i<init_later.length; i++) {
 				if (init_later[i] !== null) {
-					if (this.module_status[init_later[i]] = this[init_later[i]].init()) {
-						init_later[i] = null;
-						this.run_callbacks();
+					if (typeof this[init_later[i]].is_ready == 'undefined' || this[init_later[i]].is_ready()) {
+						if (this.module_status[init_later[i]] = this[init_later[i]].init()) {
+							init_later[i] = null;
+							this.run_callbacks();
+						}
 					}
 				}
 			}
