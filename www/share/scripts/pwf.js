@@ -142,10 +142,11 @@ var pwf = function()
 		 */
 		this.components_ready = function(components)
 		{
-			var ready = false;
+			var ready;
 
-			for (var comp_i = 0 in components) {
-				if (!(ready = this.component_ready(components[comp_i]))) break;
+			for (var comp_i = 0; comp_i < components.length; comp_i++) {
+				ready = this.component_ready(components[comp_i]);
+				if (!ready) break;
 			}
 
 			return ready;
@@ -158,7 +159,17 @@ var pwf = function()
 		 */
 		this.component_ready = function(component)
 		{
-			return typeof this[component] != 'undefined' && this[component].is_ready();
+			return this.component_exists(component) && this[component].is_ready();
+		};
+
+
+		/** Dear sir, does component carrying this noble name exist?
+		 * @param string component Component name
+		 * @return bool
+		 */
+		this.component_exists = function(component)
+		{
+			return typeof this[component] != 'undefined';
 		};
 	};
 }();
