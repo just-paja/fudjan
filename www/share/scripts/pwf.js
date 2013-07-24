@@ -28,32 +28,26 @@ var pwf = function()
 		 *
 		 * @param string   name
 		 * @param function module
+		 * @param bool     create_instance Create instance of the function
 		 * @return void
 		 */
-		this.register = function(name, module)
+		this.register = function(name, module, create_instance)
 		{
+			var create_instance = typeof create_instance === 'undefined' ? true:!!create_instance;
+
 			if (typeof module == 'function' && typeof this[name] == 'undefined') {
-				this[name] = new module();
+				if (create_instance) {
+					this[name] = new module();
+				} else {
+					this[name] = module;
+				}
 
-				if (typeof this[name].init == 'function') {
-					if (!this.module_status[name]) {
-						if (typeof this[name].is_ready == 'function') {
-							if (this[name].is_ready()) {
-								if (!(this.module_status[name] = this[name].init())) {
-									init_later(name);
-								}
-							} else init_later.push(name);
-						} else {
-							if (this[name].init()) {
-								if (!(this.module_status[name] = this[name].init())) {
-									init_later.push(name);
-								}
-							} else init_later.push(name);
-						}
+				this.module_status[name] = false;
 
-					} else {
-						this.run_callbacks();
-					}
+				if (this.component_ready(name)) {
+					this.init(name);
+				} else {
+					init_later.push(name);
 				}
 
 				if (typeof this[name].scan == 'function') {
@@ -63,21 +57,63 @@ var pwf = function()
 		};
 
 
+		this.init = function(component)
+		{
+			if (typeof this[component].init == 'function') {
+				if (!this.module_status[component]) {
+					this.module_status[component] = this[component].init();
+
+					if (!this.module_status[component]) {
+						throw 'Init of module ' + component + ' failed. It must return true!';
+					}
+				}
+			} else {
+				this.module_status[component] = true;
+			}
+
+			if (component == 'jquery') {
+				this[component](function(obj) { 
+					return function() {
+						obj.init_remaining(); 
+					};
+				}(this));
+			}
+
+			this.run_callbacks();
+			this.init_remaining();
+		};
+
+
 		/** Check if dependencies of all modules that were not initialized yet are met and if so, initialize them
 		 * @return void
 		 */
 		this.init_remaining = function()
 		{
-			for (var i = 0; i<init_later.length; i++) {
-				if (init_later[i] !== null) {
-					if (typeof this[init_later[i]].is_ready == 'undefined' || this[init_later[i]].is_ready()) {
-						if (this.module_status[init_later[i]] = this[init_later[i]].init()) {
-							init_later[i] = null;
-							this.run_callbacks();
-						}
-					}
+			for (var i = 0; i < init_later.length; i++) {
+				var component = init_later[i];
+				var ready = typeof this[component].is_ready != 'function' || this[component].is_ready();
+				var initialized = this.module_status[component];
+
+				if (ready && !initialized) {
+					this.remove_late_init(component);
+					this.init(component);
+					break;
 				}
 			}
+		};
+
+
+		this.remove_late_init = function(name)
+		{
+			var init_later_tmp = [];
+
+			for (var i = 0; i < init_later.length; i++) {
+				if (init_later[i] != name) {
+					init_later_tmp.push(init_later[i]);
+				}
+			}
+
+			init_later = init_later_tmp;
 		};
 
 
@@ -159,7 +195,7 @@ var pwf = function()
 		 */
 		this.component_ready = function(component)
 		{
-			return this.component_exists(component) && this[component].is_ready();
+			return this.component_exists(component) && (typeof this[component].is_ready !== 'function' || this[component].is_ready());
 		};
 
 
@@ -171,8 +207,24 @@ var pwf = function()
 		{
 			return typeof this[component] != 'undefined';
 		};
+
+
+		this.component_initialized = function(component)
+		{
+			return typeof this.module_status[component] != 'undefined' && this.module_status[component];
+		};
+
+
+		this.components_initialized = function(components)
+		{
+			var ready;
+
+			for (var comp_i = 0; comp_i < components.length; comp_i++) {
+				ready = this.component_initialized(components[comp_i]);
+				if (!ready) break;
+			}
+
+			return ready;
+		};
 	};
 }();
-
-
-$(function() { pwf.init_remaining(); });
