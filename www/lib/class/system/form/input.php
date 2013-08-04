@@ -126,7 +126,7 @@ namespace System\Form
 				$valid = false;
 			}
 
-			if ($value) {
+			if ($valid && $value) {
 				if ($this->options) {
 					$value = (array) $value;
 
@@ -140,8 +140,19 @@ namespace System\Form
 					} else {
 						foreach ($value as $val) {
 							if ((is_object($val) && !isset($this->options[$val->id])) || !isset($this->options[$val])) {
-								$this->form()->report_error($this->name, 'form_error_input_out_of_options');
-								$valid = false;
+								$found = false;
+								foreach ($this->options as $opt_id => $opt_val) {
+									if ($opt_val instanceof \System\Model\Database && $opt_val->id == $val) {
+										$found = true;
+									}
+								}
+
+								if ($found) {
+									$valid = true;
+								} else {
+									$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+									$valid = false;
+								}
 							}
 						}
 					}
