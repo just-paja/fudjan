@@ -128,7 +128,11 @@ namespace System\Form
 
 			if ($valid && $value) {
 				if ($this->options) {
-					$value = (array) $value;
+					if (!is_object($value)) {
+						$value = (array) $value;
+					} else {
+						$value = array($value);
+					}
 
 					if (empty($value)) {
 						if (!$this->required) {
@@ -139,20 +143,27 @@ namespace System\Form
 						}
 					} else {
 						foreach ($value as $val) {
-							if ((is_object($val) && !isset($this->options[$val->id])) || !isset($this->options[$val])) {
-								$found = false;
-								foreach ($this->options as $opt_id => $opt_val) {
-									if ($opt_val instanceof \System\Model\Database && $opt_val->id == $val) {
-										$found = true;
+							if (!is_array($val)) {
+								if ((is_object($val) && !isset($this->options[$val->id])) || !@isset($this->options[$val])) {
+									$found = false;
+									$val_id = is_object($val) ? $val->id:$val;
+
+									foreach ($this->options as $opt_id => $opt_val) {
+										if ($opt_val instanceof \System\Model\Database && $opt_val->id == $val_id) {
+											$found = true;
+										}
+									}
+
+									if ($found) {
+										$valid = true;
+									} else {
+										$this->form()->report_error($this->name, 'form_error_input_out_of_options');
+										$valid = false;
 									}
 								}
-
-								if ($found) {
-									$valid = true;
-								} else {
-									$this->form()->report_error($this->name, 'form_error_input_out_of_options');
-									$valid = false;
-								}
+							} else {
+								$valid = false;
+								throw new \System\Error\Form(sprintf('Value for %s must not be array!', $this->name), sprintf('"%s"" was given', var_export($value, true)));
 							}
 						}
 					}
