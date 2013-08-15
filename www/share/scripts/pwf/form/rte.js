@@ -1,20 +1,16 @@
-pwf.register('rte', function() {
-
-	var ready = false;
+pwf.register('rte', function()
+{
 	var selectors = ['textarea.rte'];
 	var editor = null;
 
 	this.init = function()
 	{
-		if (ready = this.is_ready()) {
-			if (editor === null) {
-				editor = new Proper();
-			}
-
-			this.scan();
+		if (editor === null) {
+			editor = new Proper();
 		}
 
-		return ready;
+		this.scan();
+		return true;
 	};
 
 

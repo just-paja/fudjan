@@ -188,6 +188,8 @@ pwf.register('search_tool', function()
 				this.create_instance(container, JSON.parse(data_container.html()));
 			}
 		}
+
+		return true;
 	};
 
 

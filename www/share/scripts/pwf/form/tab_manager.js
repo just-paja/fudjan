@@ -1,16 +1,12 @@
 pwf.register('tab_manager', function() {
 
 	var
-		ready = false,
 		selectors = ['.tab_group']
 
 	this.init = function()
 	{
-		if (ready = this.is_ready()) {
-			this.scan();
-		}
-
-		return ready;
+		this.scan();
+		return true;
 	};
 
 

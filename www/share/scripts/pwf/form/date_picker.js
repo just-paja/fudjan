@@ -9,13 +9,8 @@ pwf.register('date_picker', function()
 
 	this.init = function()
 	{
-		var ready = this.is_ready();
-
-		if (ready) {
-			this.scan();
-		}
-
-		return ready;
+		this.scan();
+		return true;
 	};
 
 

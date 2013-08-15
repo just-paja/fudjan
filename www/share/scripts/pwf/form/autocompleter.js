@@ -1,5 +1,5 @@
-pwf.register('autocompleter', function() {
-
+pwf.register('autocompleter', function()
+{
 	var
 		instances = {},
 		self = this,

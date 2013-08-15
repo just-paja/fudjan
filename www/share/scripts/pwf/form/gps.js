@@ -4,18 +4,14 @@ pwf.register('gps', function()
 		loaded = false,
 		bind_cache = [],
 		selectors = [".input-gps"],
-		ready = false,
 		self = this,
 		instances = {};
 
 
 	this.init = function()
 	{
-		if (this.is_ready()) {
-			this.scan();
-		}
-
-		return ready;
+		this.scan();
+		return true;
 	};
 
 
