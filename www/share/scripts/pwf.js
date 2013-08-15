@@ -72,9 +72,9 @@ var pwf = function()
 			}
 
 			if (component == 'jquery') {
-				this[component](function(obj) { 
+				this[component](function(obj) {
 					return function() {
-						obj.init_remaining(); 
+						obj.init_remaining();
 					};
 				}(this));
 			}
@@ -228,3 +228,10 @@ var pwf = function()
 		};
 	};
 }();
+
+
+if (typeof $ === 'function') {
+	$(function() {
+		pwf.init_remaining();
+	});
+}
