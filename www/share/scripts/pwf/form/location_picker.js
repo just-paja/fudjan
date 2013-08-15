@@ -84,6 +84,7 @@ pwf.register('location_picker', function()
 	this.init = function()
 	{
 		this.scan();
+		return true;
 	};
 
 

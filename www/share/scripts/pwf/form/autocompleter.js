@@ -162,12 +162,6 @@ pwf.register('autocompleter', function() {
 	};
 
 
-	this.init = function()
-	{
-
-	};
-
-
 	this.get_instance = function(id)
 	{
 		return instances[id];
