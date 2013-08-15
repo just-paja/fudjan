@@ -423,24 +423,20 @@ namespace System
 			$attrs['form'] = &$this;
 
 			if (isset($attrs['value'])) {
-				$this->use_value($attrs['name'], $attrs['value']);
+				$this->use_value($attrs['name'], $attrs['value'], true);
 			}
 
 			$attrs['value'] = $this->get_input_value_by_name($attrs['name']);
 
-			if ($attrs['type'] == 'checkbox' && empty($attrs['multiple'])) {
-				// Preset value to checkbox since checkboxes are not sending any value if not checked
-				if (!isset($this->data_commited[$attrs['name']])) {
-					$this->data_commited[$attrs['name']] = null;
-				}
-			}
-
 			if (in_array($attrs['type'], array('checkbox', 'radio')) && empty($attrs['multiple'])) {
 				if ($this->submited) {
-					$attrs['checked'] = !is_null($this->get_input_data_ref($this->data_commited, $attrs['name']));
+					$ref = $this->data_commited;
 				} else {
-					$attrs['checked'] = !is_null($this->get_input_data_ref($this->data_default, $attrs['name']));
+					$ref = $this->data_default;
 				}
+
+				$ref = $this->get_input_data_ref($ref, $attrs['name']);
+				$attrs['checked'] = !is_null($ref) && $ref;
 			}
 
 			if ($attrs['type'] === 'rte')      $el = new \System\Form\Widget\Rte($attrs);
@@ -696,12 +692,12 @@ namespace System
 		}
 
 
-		public function use_value($name, $val)
+		public function use_value($name, $val, $default=false)
 		{
-			if ($this->submited()) {
-				$ref = &$this->get_input_data_ref($this->data_commited, $name);
-			} else {
+			if (!$this->submited() || $default) {
 				$ref = &$this->get_input_data_ref($this->data_default, $name);
+			} else {
+				$ref = &$this->get_input_data_ref($this->data_commited, $name);
 			}
 
 			$ref = $val;
