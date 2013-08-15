@@ -182,15 +182,15 @@ namespace System
 		{
 			$value = null;
 
-			if (($default || !$this->submited) && isset($this->data_default[$name])) {
-				$value = $this->data_default[$name];
+			if (($default || !$this->submited)) {
+				$ref = &$this->data_default;
 			}
 
-			if (!$default && $this->submited && isset($this->data_commited[$name])) {
-				$value = $this->data_commited[$name];
+			if (!$default && $this->submited) {
+				$ref = &$this->data_commited;
 			}
 
-			return $value;
+			return $this->get_input_data_ref($ref, $name);
 		}
 
 
@@ -428,18 +428,18 @@ namespace System
 
 			$attrs['value'] = $this->get_input_value_by_name($attrs['name']);
 
-			if ($attrs['type'] == 'checkbox') {
+			if ($attrs['type'] == 'checkbox' && empty($attrs['multiple'])) {
 				// Preset value to checkbox since checkboxes are not sending any value if not checked
 				if (!isset($this->data_commited[$attrs['name']])) {
 					$this->data_commited[$attrs['name']] = null;
 				}
 			}
 
-			if (in_array($attrs['type'], array('checkbox', 'radio'))) {
+			if (in_array($attrs['type'], array('checkbox', 'radio')) && empty($attrs['multiple'])) {
 				if ($this->submited) {
-					$attrs['checked'] = !!$this->data_commited[$attrs['name']];
+					$attrs['checked'] = !is_null($this->get_input_data_ref($this->data_commited, $attrs['name']));
 				} else {
-					$attrs['checked'] = isset($this->data_default[$attrs['name']]) && $this->data_default[$attrs['name']];
+					$attrs['checked'] = !is_null($this->get_input_data_ref($this->data_default, $attrs['name']));
 				}
 			}
 
@@ -699,10 +699,37 @@ namespace System
 		public function use_value($name, $val)
 		{
 			if ($this->submited()) {
-				$this->data_commited[$name] = $val;
+				$ref = &$this->get_input_data_ref($this->data_commited, $name);
 			} else {
-				$this->data_default[$name] = $val;
+				$ref = &$this->get_input_data_ref($this->data_default, $name);
 			}
+
+			$ref = $val;
+		}
+
+
+		private function &get_input_data_ref(&$dataray, $name)
+		{
+			$name_d = $name;
+
+			do {
+				$name = explode('[', $name, 2);
+				$name_tmp = str_replace(']', '', array_shift($name));
+
+				if (!isset($dataray[$name_tmp])) {
+					if (count($name) > 0) {
+						$dataray[$name_tmp] = array();
+					} else {
+						$dataray[$name_tmp] = null;
+					}
+				}
+
+				$dataray = &$dataray[$name_tmp];
+				$name = implode('[', $name);
+
+			} while(strlen($name));
+
+			return $dataray;
 		}
 
 
