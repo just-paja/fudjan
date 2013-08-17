@@ -135,6 +135,16 @@ namespace System
 		}
 
 
+		public static function catch_fatal_error()
+		{
+			$err = error_get_last();
+
+			if (!is_null($err)) {
+				self::catch_error(def($err['number']), def($err['message']), def($err['file']), def($err['line']));
+			}
+		}
+
+
 		public static function on_cli()
 		{
 			return php_sapi_name() == 'cli';
