@@ -8,6 +8,7 @@ namespace Helper\Database\Mysqli
 
 		private static $complex_types = array(
 			"image"         => array("type" => 'text'),
+			"file"          => array("type" => 'text'),
 			"video_youtube" => array("type" => 'varchar'),
 			"json"          => array("type" => 'text'),
 			"int_set"       => array("type" => 'text'),

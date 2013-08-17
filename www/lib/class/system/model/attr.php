@@ -33,6 +33,7 @@ namespace System\Model
 			'datetime',
 			'password',
 			'json',
+			'file',
 			'image',
 			'gps',
 			'list',
@@ -40,7 +41,7 @@ namespace System\Model
 		);
 
 		/** Registered object handlers */
-		static protected $obj_attrs = array('object', 'image');
+		static protected $obj_attrs = array('object', 'image', 'file');
 
 		/** Swap for attributes merged from related models */
 		static protected $merged_attrs = array();
@@ -539,7 +540,11 @@ namespace System\Model
 		public static function check_properties($model)
 		{
 			if (!isset($model::$attrs)) {
-				throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
+				$parent = get_parent_class($model);
+
+				if ($parent) {
+					return self::check_properties($model);
+				} else throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
 			}
 		}
 
