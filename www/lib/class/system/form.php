@@ -712,17 +712,33 @@ namespace System
 				$name = explode('[', $name, 2);
 				$name_tmp = str_replace(']', '', array_shift($name));
 
-				if (!isset($dataray[$name_tmp])) {
-					if (count($name) > 0) {
-						$dataray[$name_tmp] = array();
-					} else {
-						$dataray[$name_tmp] = null;
+				if (is_object($dataray)) {
+					if ($dataray instanceof \System\Model\Attr) {
+						if ($dataray->has_attr($name_tmp)) {
+
+							$d = &$dataray->get_data_ref();
+							$dataray = &$d[$name_tmp];
+
+						} else {
+
+							$d = &$dataray->get_opts_ref();
+							$dataray = &$d[$name_tmp];
+
+						}
+					} else throw new \System\Error\Form(sprintf('Forms can operate only with \System\Model\Attr objects. "%s" was given', get_class($dataray)));
+				} else {
+					if (!isset($dataray[$name_tmp])) {
+						if (count($name) > 0) {
+							$dataray[$name_tmp] = array();
+						} else {
+							$dataray[$name_tmp] = null;
+						}
 					}
+
+					$dataray = &$dataray[$name_tmp];
 				}
 
-				$dataray = &$dataray[$name_tmp];
 				$name = implode('[', $name);
-
 			} while(strlen($name));
 
 			return $dataray;

@@ -130,10 +130,28 @@ namespace System\Model
 		}
 
 
+		/** Return reference to object data store
+		 * @return &array
+		 */
+		public function &get_data_ref()
+		{
+			return $this->data;
+		}
+
+
 		/** Get all public non-attribute data from object
 		 * @return array
 		 */
 		public function get_opts()
+		{
+			return $this->opts;
+		}
+
+
+		/** Get reference to non-attr data store
+		 * @return &array
+		 */
+		public function &get_opts_ref()
 		{
 			return $this->opts;
 		}
