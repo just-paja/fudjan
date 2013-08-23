@@ -10,7 +10,6 @@ namespace System
 	 * @package system
 	 * @subpackage files
 	 * @property $attrs
-	 * @property $require
 	 */
 	class File extends Model\Attr
 	{
@@ -19,18 +18,89 @@ namespace System
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
 
-		/** Limit operations to this directory base */
-		private static $operations = self::TMP_DIR;
+
+		protected $size;
+		protected $data;
+
 
 		/** File attrmodel attributes */
 		static protected $attrs = array(
-			"filename"  => array('varchar'),
-			"dirpath"   => array('varchar'),
-			"suffix"    => array('varchar'),
-			"mime_type" => array('varchar'),
-			"tmp_name"  => array('varchar'),
-			"size"      => array('int'),
+			"hash" => array('varchar'), // DB
+			"path" => array('varchar'),
+			"name" => array('varchar'),
+			"mime" => array('varchar'),
+			"suff" => array('varchar'), // DB
+			"size" => array('int'),
 		);
+
+
+		public function size()
+		{
+			if (!$this->size) {
+				$this->size = filesize($this->get_path());
+			}
+
+			return $this->size;
+		}
+
+
+		public function suffix()
+		{
+			if (!$this->suff) {
+				if (strpos($this->name(), '.') > 0) {
+					$this->suff = explode('.', $this->name());
+					$this->suff = $this->suff[count($this->suffix)-1];
+				} else {
+					$this->suff = null;
+				}
+			}
+
+			return $this->suffix;
+		}
+
+
+		public function get_path()
+		{
+			if ($this->path) {
+				return $this->path.'/'.$this->name;
+			} else {
+				if ($this->hash()) {
+					return ROOT.self::DIR.'/'.$this->hash().'.'.$this->suffix();
+				}
+			}
+
+			return null;
+		}
+
+
+		public function hash()
+		{
+			if (!$this->hash && $this->path) {
+				$this->hash = md5(fread($this->get_path(), round($this->size()*.25)));
+			}
+
+			return $this->hash;
+		}
+
+
+		public function name()
+		{
+			if ($this->name) {
+				return $this->name;
+			} else {
+				return $this->hash.'.'.$this->suff;
+			}
+		}
+
+
+		/** Remove file from filesystem
+		 * @return $this
+		 */
+		public function remove()
+		{
+			unlink($this->get_path());
+			return $this;
+		}
 
 
 		/** Clear tmp directory
@@ -40,29 +110,6 @@ namespace System
 		{
 			self::remove_directory(ROOT.self::TMP_DIR);
 			mkdir(ROOT.self::TMP_DIR, 0777, true);
-		}
-
-
-		/** Remove directory and files within
-		 * @param string $dir
-		 * @return void
-		 */
-		public static function remove_directory($dir)
-		{
-			if(strpos('..', $dir) === false){
-				if(strpos($dir, ROOT.self::$operations) !== 0) $dir = ROOT.self::$operations.$dir;
-				if(is_dir($dir)){
-					$dp = opendir($dir);
-					while($f = readdir($dp)){
-						if($f != '..' && $f != '.'){
-							!!(is_dir($dir.'/'.$f)) ?
-								self::remove_directory($dir.'/'.$f):
-								unlink($dir.'/'.$f);
-						}
-					}
-					rmdir($dir);
-				}
-			}
 		}
 
 
@@ -100,15 +147,6 @@ namespace System
 		}
 
 
-		/** Get temporary path of file
-		 * @return string
-		 */
-		public function get_tmp_url()
-		{
-			return $this->__get('tmp_name');
-		}
-
-
 		/** Move file to another location
 		 * @param string $where   Destination
 		 * @param bool   $use_tmp
@@ -116,37 +154,18 @@ namespace System
 		 */
 		public function move($where, $use_tmp = false)
 		{
-			$op = $use_tmp ? $this->__get('tmp_name'):$this->__get('dirpath').'/'.$this->__get('filename');
-			$np = (dirname($where) == $where) ? dirname($where).'/'.$this->filename:$where;
-			if (file_exists($np)) {
-				unlink($np);
-			}
+			if (!is_null($op = $this->get_path())) {
+				$np = (dirname($where) == $where) ? dirname($where).'/'.$this->filename:$where;
+				if (file_exists($np)) {
+					unlink($np);
+				}
 
-			if (!rename($op, $np)) {
-				$this->errors[] = 'move-failed';
-			}
+				if (!rename($op, $np)) {
+					$this->errors[] = 'move-failed';
+				}
 
-			return $this;
-		}
-
-
-		/** Remove file from filesystem
-		 * @return $this
-		 */
-		public function remove()
-		{
-			unlink($this->tmp_name);
-			return $this;
-		}
-
-
-		/** Save file into path
-		 * @param string $where Destination
-		 * @return $this
-		 */
-		public function save($where)
-		{
-			return $this->move($where, true);
+				return $this;
+			} else throw new \System\Error\File('Cannot move empty file object.');
 		}
 
 

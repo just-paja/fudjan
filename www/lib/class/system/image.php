@@ -10,7 +10,7 @@ namespace System
 	 * @package system
 	 * @subpackage media
 	 */
-	class Image extends Model\Attr
+	class Image extends \System\File
 	{
 		const DIR = '/var/images';
 		const DIR_TMP = '/var/tmp';
