@@ -514,8 +514,10 @@ namespace System\Template
 		 */
 		public function icon($icon, $size='32', array $object = array())
 		{
-			@list($w, $h) = explode('x', $size, 2);
-			!$h && $h = $w;
+			$size_e = explode('x', $size, 2);
+			isset($size_e[0]) && $w = $size_e[0];
+			isset($size_e[1]) && $h = $size_e[1];
+			!isset($h) && $h = $w;
 
 			$icon = $icon instanceof Image ?
 				$icon->thumb(intval($w), intval($h), def($object['crop'], false)):
