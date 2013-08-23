@@ -30,13 +30,31 @@ namespace System
 			"name" => array('varchar'),
 			"mime" => array('varchar'),
 			"suff" => array('varchar'), // DB
-			"size" => array('int'),
+			"size" => array('int', "is_null" => true),
 		);
+
+
+		/** Create instance from JSON
+		 * @param string $json
+		 */
+		public static function from_json($json)
+		{
+			return new self(\System\Json::decode($json));
+		}
+
+
+		/** Create instance from JSON
+		 * @param string $json
+		 */
+		public static function from_path($path)
+		{
+			return new self(array("path" => dirname($path), "name" => basename($path)));
+		}
 
 
 		public function size()
 		{
-			if (!$this->size) {
+			if (is_null($this->size)) {
 				$this->size = filesize($this->get_path());
 			}
 
@@ -48,14 +66,14 @@ namespace System
 		{
 			if (!$this->suff) {
 				if (strpos($this->name(), '.') > 0) {
-					$this->suff = explode('.', $this->name());
-					$this->suff = $this->suff[count($this->suffix)-1];
+					$suff = explode('.', $this->name());
+					$this->suff = $suff[count($suff)-1];
 				} else {
 					$this->suff = null;
 				}
 			}
 
-			return $this->suffix;
+			return $this->suff;
 		}
 
 
@@ -76,10 +94,19 @@ namespace System
 		public function hash()
 		{
 			if (!$this->hash && $this->path) {
-				$this->hash = md5(fread($this->get_path(), round($this->size()*.25)));
+				$fp = fopen($this->get_path(), 'r');
+				$data = fread($fp, $this->get_digest_chunk_size());
+				$this->hash = md5($data);
+				fclose($fp);
 			}
 
 			return $this->hash;
+		}
+
+
+		private function get_digest_chunk_size()
+		{
+			return round($this->size()*.25);
 		}
 
 
@@ -98,8 +125,10 @@ namespace System
 		 */
 		public function remove()
 		{
-			unlink($this->get_path());
-			return $this;
+			if ($this->exists()) {
+				unlink($this->get_path());
+				return $this;
+			} else throw new \System\Error\File('Cannot remove file. It does not exist on the filesystem.');
 		}
 
 
@@ -149,23 +178,40 @@ namespace System
 
 		/** Move file to another location
 		 * @param string $where   Destination
-		 * @param bool   $use_tmp
-		 * @return $this;
+		 * @return $this
 		 */
-		public function move($where, $use_tmp = false)
+		public function move($where)
 		{
-			if (!is_null($op = $this->get_path())) {
-				$np = (dirname($where) == $where) ? dirname($where).'/'.$this->filename:$where;
-				if (file_exists($np)) {
-					unlink($np);
-				}
+			return $this->copy($where)->remove();
+		}
 
-				if (!rename($op, $np)) {
-					$this->errors[] = 'move-failed';
+
+		/** Copy file to another location
+		 * @param string $where Location to move file to
+		 * @return $this
+		 */
+		public function copy($where)
+		{
+			if ($this->exists()) {
+				\System\Directory::check(dirname($where));
+
+				if (!copy($this->get_path(), $where)) {
+					throw new \System\Error\File('File copy from failed!',
+						sprintf("From: %s", $this->get_path()),
+						sprintf("To: %s", $where));
 				}
 
 				return $this;
-			} else throw new \System\Error\File('Cannot move empty file object.');
+			} else throw new \System\Error\File('Cannot copy file. It does not exist on the filesystem.');
+		}
+
+
+		/** Dear sir, does this file exists?
+		 * @return bool
+		 */
+		public function exists()
+		{
+			return !is_null($this->get_path()) && file_exists($this->get_path());
 		}
 
 
@@ -246,5 +292,21 @@ namespace System
 
 			return false;
 		}
+
+
+		/** Export image object to JSON
+		 * @param bool $encode Return encoded string
+		 * @return string
+		 */
+		public function to_json($encode = true)
+		{
+			$data = array(
+				"hash" => $this->hash(),
+				"suff" => $this->suff,
+			);
+
+			return $encode ? json_encode($data):$data;
+		}
+
 	}
 }
