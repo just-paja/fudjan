@@ -140,6 +140,12 @@ namespace System
 			$err = error_get_last();
 
 			if (!is_null($err)) {
+				if (any($err['message'])) {
+					if (strpos($err['message'], 'var_export does not handle circular') !== false) {
+						return;
+					}
+				}
+
 				self::catch_error(def($err['number']), def($err['message']), def($err['file']), def($err['line']));
 			}
 		}
