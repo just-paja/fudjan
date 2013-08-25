@@ -54,6 +54,9 @@ namespace System
 		}
 
 
+		/** Destruction callback
+		 * @return void
+		 */
 		public function __destruct()
 		{
 			if ($this->temp) {
@@ -503,6 +506,10 @@ namespace System
 		}
 
 
+		/** Remove file from filesystem
+		 * @param string $path
+		 * @return bool
+		 */
 		public static function remove($path)
 		{
 			if (is_writable($path)) {
@@ -511,6 +518,10 @@ namespace System
 		}
 
 
+		/** Check if file exists
+		 * @param string $path
+		 * @return bool
+		 */
 		public function check($path)
 		{
 			return file_exists($path);
