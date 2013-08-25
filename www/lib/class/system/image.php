@@ -253,15 +253,6 @@ namespace System
 		}
 
 
-		/** Create new empty image
-		 * @return self
-		 */
-		public static function from_scratch()
-		{
-			return new Image(array());
-		}
-
-
 		/** Export image object to JSON
 		 * @param bool $encode Return encoded string
 		 * @return string

@@ -20,18 +20,18 @@ namespace System
 		const MIN_HASH_CHUNK_SIZE = 4096;
 
 
-		protected $size;
-		protected $data;
+		protected $content;
 
 
 		/** File attrmodel attributes */
 		static protected $attrs = array(
 			"hash" => array('varchar'), // DB
-			"path" => array('varchar'),
-			"name" => array('varchar'),
+			"path" => array('varchar', 'is_null' => true),
+			"name" => array('varchar'), // DB
 			"mime" => array('varchar'),
 			"suff" => array('varchar'), // DB
 			"size" => array('int', "is_null" => true),
+			"cached" => array('bool'),
 		);
 
 
@@ -78,13 +78,16 @@ namespace System
 		}
 
 
+		/** Get path leading to file
+		 * @return null|string Returns null if file can't be reached on filesystem
+		 */
 		public function get_path()
 		{
 			if ($this->path) {
 				return $this->path.'/'.$this->name;
 			} else {
 				if ($this->hash()) {
-					return ROOT.self::DIR.'/'.$this->hash().'.'.$this->suffix();
+					return $this->get_path_hashed();
 				}
 			}
 
@@ -92,13 +95,23 @@ namespace System
 		}
 
 
+		public function get_path_hashed()
+		{
+			return ROOT.self::DIR.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
+		}
+
+
 		public function hash()
 		{
-			if (!$this->hash && $this->path) {
-				$fp = fopen($this->get_path(), 'r');
-				$data = fread($fp, $this->get_digest_chunk_size());
-				$this->hash = md5($data);
-				fclose($fp);
+			if (!$this->hash) {
+				if ($this->exists()) {
+					$fp = fopen($this->get_path(), 'r');
+					$data = fread($fp, $this->get_digest_chunk_size());
+					$this->hash = md5($data);
+					fclose($fp);
+				} else {
+
+				}
 			}
 
 			return $this->hash;
@@ -209,6 +222,26 @@ namespace System
 		}
 
 
+		/** Catalogize the file
+		 * @return $this
+		 */
+		public function save()
+		{
+			if ($this->is_cached()) {
+				self::put($this->get_path_hashed(), $this->get_content());
+			} else {
+				if ($this->exists()) {
+					if (!$this->is_saved()) {
+						$this->move($this->get_path_hashed());
+					}
+				} else throw new \System\Error\File('Cannot save file. It does not exist on the filesystem.');
+			}
+
+			$this->path = null;
+			return $this;
+		}
+
+
 		/** Dear sir, does this file exists?
 		 * @return bool
 		 */
@@ -218,31 +251,75 @@ namespace System
 		}
 
 
-		/** Remove postfix from file name
-		 * @param string $name Name of file
-		 * @param bool   $all  Return all postfixes
-		 * @return string New name
+		/** Dear sir, is this file cached in memory?
+		 * @return bool
 		 */
-		public static function remove_postfix($name, $all = false)
+		public function is_cached()
 		{
-			$temp = explode('.', $name);
-			if (count($temp) > 1) {
-				array_pop($temp);
-				return $all ? reset($temp):implode('.', $temp);
-			}
-			return $name;
+			return $this->cached;
 		}
 
 
-		/** Save file content
-		 * @param string $filepath
-		 * @param string $content
-		 * @param int    $mode
+		/** Dear sir, is this file catalogized?
 		 * @return bool
 		 */
-		public static function save_content($filepath, $content, $mode = self::MOD_DEFAULT)
+		public function is_saved()
 		{
-			return self::put($filepath, $content, $mode);
+			return file_exists($this->get_path_hashed());
+		}
+
+
+		/** Dear sir, is this file empty? If cached, return true if null content size. If not, reads the size on fs.
+		 * @return bool
+		 */
+		public function is_empty()
+		{
+			if ($this->is_cached()) {
+				return !is_null($this->content);
+			} else {
+				if ($this->exists()) {
+					return $this->size() <= 0;
+				}
+			}
+
+			return true;
+		}
+
+
+		/** Read file into memory
+		 * @return $this
+		 */
+		public function load()
+		{
+			if ($this->exists()) {
+				$this->content = self::read($this->get_path());
+				$this->is_cached = true;
+				return $this;
+			} else throw new \System\Error\File('Cannot read file. It does not exists on the filesystem.');
+		}
+
+
+		/** Unload the file from memory
+		 * @return $this
+		 */
+		public function unload()
+		{
+			$this->content = null;
+			$this->is_cached = false;
+			return $this;
+		}
+
+
+		/** Get file content, read if necessary
+		 * @return blob
+		 */
+		public function get_content()
+		{
+			if (!$this->is_cached()) {
+				$this->load();
+			}
+
+			return $this->content;
 		}
 
 
@@ -303,13 +380,17 @@ namespace System
 		 */
 		public function to_json($encode = true)
 		{
-			$data = array(
-				"hash" => $this->hash(),
-				"suff" => $this->suff,
-			);
+			if ($this->is_saved()) {
+				$data = array(
+					"hash" => $this->hash(),
+					"suff" => $this->suff,
+					"name" => $this->name,
+				);
+			} else {
+				$data = $this->data;
+			}
 
 			return $encode ? json_encode($data):$data;
 		}
-
 	}
 }
