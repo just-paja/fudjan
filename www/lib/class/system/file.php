@@ -17,6 +17,7 @@ namespace System
 		const TMP_DIR = '/var/tmp';
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
+		const MIN_HASH_CHUNK_SIZE = 4096;
 
 
 		protected $size;
@@ -106,7 +107,9 @@ namespace System
 
 		private function get_digest_chunk_size()
 		{
-			return round($this->size()*.25);
+			return $this->size() < self::MIN_HASH_CHUNK_SIZE ?
+				$this->size():
+				max(self::MIN_HASH_CHUNK_SIZE, round($this->size()*.25));
 		}
 
 
