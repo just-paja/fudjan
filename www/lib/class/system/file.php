@@ -14,10 +14,10 @@ namespace System
 	class File extends Model\Attr
 	{
 		const DIR = '/var/files';
-		const TMP_DIR = '/var/tmp';
+		const DIR_TMP = '/var/tmp';
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
-		const MIN_HASH_CHUNK_SIZE = 4096;
+		const MIN_HASH_CHUNK_SIZE = 65536;
 
 
 		protected $content;
@@ -32,6 +32,7 @@ namespace System
 			"suff" => array('varchar'), // DB
 			"size" => array('int', "is_null" => true),
 			"cached" => array('bool'),
+			"temp"   => array('bool'),
 		);
 
 
@@ -53,16 +54,61 @@ namespace System
 		}
 
 
+		public function __destruct()
+		{
+			if ($this->temp) {
+				if (self::check($this->get_path_temp())) {
+					self::remove($this->get_path_temp());
+				}
+			}
+		}
+
+
+		/** Attr setter overload
+		 * @param string $attr
+		 * @param mixed  $value
+		 */
+		public function __set($attr, $value)
+		{
+			parent::__set($attr, $value);
+
+			if ($attr == 'name') {
+				if (strpos($value, '.')) {
+					$split = explode('.', $value, 2);
+
+					parent::__set('name', $split[0]);
+					parent::__set('suff', $split[1]);
+				}
+			}
+		}
+
+
+		/** Get file size
+		 * @return int
+		 */
 		public function size()
 		{
 			if (is_null($this->size)) {
-				$this->size = filesize($this->get_path());
+				if ($this->is_cached()) {
+					$this->size = null;
+					return strlen($this->get_content());
+				} else {
+					if ($this->exists()) {
+						$this->size = filesize($this->get_path());
+					} else {
+						$this->size = null;
+						return 0;
+					}
+				}
 			}
 
 			return $this->size;
 		}
 
 
+		/** Return suffix, try to extract it
+		 * @return string
+		 */
 		public function suffix()
 		{
 			if (!$this->suff) {
@@ -84,7 +130,7 @@ namespace System
 		public function get_path()
 		{
 			if ($this->path) {
-				return $this->path.'/'.$this->name;
+				return $this->path.'/'.$this->get_full_name();
 			} else {
 				if ($this->hash()) {
 					return $this->get_path_hashed();
@@ -95,22 +141,40 @@ namespace System
 		}
 
 
+		/** Get path with hash
+		 * @return string
+		 */
 		public function get_path_hashed()
 		{
 			return ROOT.self::DIR.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
 		}
 
 
+		/** Get temp path
+		 * @return string
+		 */
+		public function get_path_temp()
+		{
+			return ROOT.self::DIR_TMP.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
+		}
+
+
+		/** Get hash describing the file
+		 * @return string
+		 */
 		public function hash()
 		{
 			if (!$this->hash) {
-				if ($this->exists()) {
-					$fp = fopen($this->get_path(), 'r');
-					$data = fread($fp, $this->get_digest_chunk_size());
-					$this->hash = md5($data);
-					fclose($fp);
+				if ($this->is_cached()) {
+					$chunks = chunk_split($this->get_content(), $this->get_digest_chunk_size(), '');
+					$this->hash = $this->hash_chunk($chunks[0]);
 				} else {
-
+					if ($this->exists()) {
+						$fp = fopen($this->get_path(), 'r');
+						$data = fread($fp, $this->get_digest_chunk_size());
+						$this->hash = $this->hash_chunk($data);
+						fclose($fp);
+					} else throw new \System\Error\File('Cannot create hash from file. It does not exist on filesystem and is not cached.');
 				}
 			}
 
@@ -118,6 +182,19 @@ namespace System
 		}
 
 
+		/** Hash chunk of file blob
+		 * @param string blob
+		 * @return string
+		 */
+		private function hash_chunk($blob)
+		{
+			return md5($blob).'-'.$this->size();
+		}
+
+
+		/** Get size of file chunk that will be hashed
+		 * @return int
+		 */
 		private function get_digest_chunk_size()
 		{
 			return $this->size() < self::MIN_HASH_CHUNK_SIZE ?
@@ -126,23 +203,35 @@ namespace System
 		}
 
 
+		/** Get file name
+		 * @return string
+		 */
 		public function name()
 		{
 			if ($this->name) {
 				return $this->name;
 			} else {
-				return $this->hash.'.'.$this->suff;
+				return $this->hash;
 			}
+		}
+
+
+		/** Get file name with suffix
+		 * @return string
+		 */
+		public function get_full_name()
+		{
+			return $this->name().($this->suffix() ? '.'.$this->suffix():'');
 		}
 
 
 		/** Remove file from filesystem
 		 * @return $this
 		 */
-		public function remove()
+		public function drop()
 		{
 			if ($this->exists()) {
-				unlink($this->get_path());
+				self::remove($this->get_path());
 				return $this;
 			} else throw new \System\Error\File('Cannot remove file. It does not exist on the filesystem.');
 		}
@@ -153,7 +242,7 @@ namespace System
 		 */
 		public static function clear_tmp()
 		{
-			self::remove_directory(ROOT.self::TMP_DIR);
+			\System\Directory::remove(ROOT.self::TMP_DIR);
 			mkdir(ROOT.self::TMP_DIR, 0777, true);
 		}
 
@@ -169,25 +258,12 @@ namespace System
 		{
 			$u = explode('/', $url);
 			$name = end($u);
-			$e = explode('.', $name);
-			unset($e[0]);
-			$suffix = implode('.', $e);
 			$data = \System\Offcom\Request::get($url);
 
 			if ($data->ok()) {
-				if (!$dir) {
-					$dir = ROOT.self::TMP_DIR;
-				}
-
-				\System\Directory::check($dir);
-				$magic = strtoupper(gen_random_string(10));
-				$tmp_name = $dir.'/'.$magic.self::FETCHED_SIGN.'.'.$suffix;
-
-				if (!file_put_contents($tmp_name, $data->content, LOCK_EX)) {
-					throw new \System\Error\File(sprintf('Could not temporarily save fetched file into "%s".', $tmp_name));
-				}
-
-				return new self(array("filename" => $name, "dirpath" => dirname($dir), "suffix" => $suffix, "tmp_name" => $tmp_name));
+				$f = new self(array("name" => $name));
+				$f->set_content($data->content);
+				return $f;
 			} else throw new \System\Error\Connection('Couldn\'t fetch file', sprintf('HTTP error %s ', $data->status));
 		}
 
@@ -238,6 +314,28 @@ namespace System
 			}
 
 			$this->path = null;
+			return $this;
+		}
+
+
+		/** Save file into temporary storage
+		 * return $this
+		 */
+		public function temp()
+		{
+			if ($this->is_cached()) {
+				self::put($this->get_path_temp(), $this->get_content());
+			} else {
+				if ($this->exists()) {
+					$this->copy($this->get_path_temp());
+				}
+			}
+
+			$this->update_attrs(array(
+				"path" => dirname($this->get_path_temp()),
+				"temp" => true,
+			));
+
 			return $this;
 		}
 
@@ -323,6 +421,17 @@ namespace System
 		}
 
 
+		/** Set file's content
+		 * @param string $data
+		 */
+		public function set_content($data)
+		{
+			$this->content = $data;
+			$this->cached = true;
+			return $this;
+		}
+
+
 		/** Put string data into file
 		 * @param string $path
 		 * @param string $content
@@ -391,6 +500,20 @@ namespace System
 			}
 
 			return $encode ? json_encode($data):$data;
+		}
+
+
+		public static function remove($path)
+		{
+			if (is_writable($path)) {
+				return unlink($path);
+			} else throw new \System\Error\Permissions(sprintf('Failed to remove file "%s". It is not accessible.', $path));
+		}
+
+
+		public function check($path)
+		{
+			return file_exists($path);
 		}
 	}
 }
