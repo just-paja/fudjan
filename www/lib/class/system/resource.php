@@ -6,6 +6,8 @@ namespace System
 	{
 		const TYPE_SCRIPTS = 'scripts';
 		const TYPE_STYLES  = 'styles';
+		const TYPE_THUMB   = 'thumb';
+
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
 
@@ -19,10 +21,11 @@ namespace System
 		const KEY_TYPE             = 'type';
 		const KEY_FOUND            = 'found';
 		const KEY_MISSING          = 'missing';
-		const KEY_DIR_FILES      = 'modules';
+		const KEY_DIR_FILES        = 'modules';
 		const KEY_DIR_CONTENT      = 'content';
 		const KEY_STRING_NOT_FOUND = 'not_found_string';
 		const KEY_POSTFIXES        = 'postfixes';
+		const KEY_CALLBACK_RESOLVE = 'resolve';
 
 		const MAX_AGE = 86400;
 
@@ -35,7 +38,6 @@ namespace System
 				self::KEY_STRING_NOT_FOUND => self::SCRIPTS_STRING_NOT_FOUND,
 				self::KEY_DIR_CONTENT      => 'text/javascript',
 				self::KEY_POSTFIXES        => array('js'),
-
 			),
 			self::TYPE_STYLES => array(
 				self::KEY_DIR_FILES        => self::STYLES_DIR,
@@ -43,6 +45,10 @@ namespace System
 				self::KEY_DIR_CONTENT      => 'text/css',
 				self::KEY_POSTFIXES        => array('css'),
 			),
+			self::TYPE_THUMB => array(
+				self::KEY_DIR_FILES        => \System\Cache\Thumb::DIR,
+				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_thumb'),
+			)
 		);
 
 
@@ -61,6 +67,8 @@ namespace System
 
 				self::send_header($info['type'], strlen($content));
 				echo $content;
+			} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
+				return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
 			} else throw new \System\Error\NotFound();
 		}
 
@@ -272,9 +280,9 @@ namespace System
 		}
 
 
-		public static function get_resource_list_wget_name($type, $name)
+		public static function get_resource_list_wget_name($type, $name, $postfix = null)
 		{
-			$postfix = self::get_type_postfix($type);
+			$postfix = is_null($postfix) ? self::get_type_postfix($type):$postfix;
 			return $name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
 		}
 
