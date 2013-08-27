@@ -33,6 +33,7 @@ namespace System
 			"size" => array('int', "is_null" => true),
 			"cached" => array('bool'),
 			"temp"   => array('bool'),
+			"keep"   => array('bool'),
 		);
 
 
@@ -60,7 +61,7 @@ namespace System
 		public function __destruct()
 		{
 			if ($this->temp) {
-				if (self::check($this->get_path_temp())) {
+				if (!$this->keep && self::check($this->get_path_temp())) {
 					self::remove($this->get_path_temp());
 				}
 			}
@@ -82,6 +83,8 @@ namespace System
 					parent::__set('name', $split[0]);
 					parent::__set('suff', $split[1]);
 				}
+			} else if ($attr == 'suff') {
+				return parent::__set('suff', strtolower($value));
 			}
 		}
 
@@ -149,7 +152,7 @@ namespace System
 		 */
 		public function get_path_hashed()
 		{
-			return ROOT.self::DIR.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
+			return ROOT.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 8).($this->suffix() ? '.'.$this->suffix():'');
 		}
 
 
@@ -257,7 +260,7 @@ namespace System
 		 * @throws System\Error\File
 		 * @throws System\Error\Connection
 		 */
-		static function fetch($url, $dir = null)
+		static function fetch($url)
 		{
 			$u = explode('/', $url);
 			$name = end($u);
@@ -313,7 +316,7 @@ namespace System
 					if (!$this->is_saved()) {
 						$this->move($this->get_path_hashed());
 					}
-				} else throw new \System\Error\File('Cannot save file. It does not exist on the filesystem.');
+				} else throw new \System\Error\File('Cannot save file. It does not exist on the filesystem and not in memory.');
 			}
 
 			$this->path = null;
@@ -522,7 +525,7 @@ namespace System
 		 * @param string $path
 		 * @return bool
 		 */
-		public function check($path)
+		public static function check($path)
 		{
 			return file_exists($path);
 		}
