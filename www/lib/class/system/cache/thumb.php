@@ -47,11 +47,9 @@ namespace System\Cache
 
 		private static function create_hash($data, $img_hash, $img_suffix)
 		{
-			$data['img-hash']   = explode('-', $img_hash);
+			$data['img-hash']   = $img_hash;
 			$data['img-suffix'] = $img_suffix;
 
-			array_pop($data['img-hash']);
-			$data['img-hash'] = implode('-', $data['img-hash']);
 
 			unset($data['image']);
 			unset($data['created_at']);
@@ -77,24 +75,44 @@ namespace System\Cache
 
 		public function check($gen = true)
 		{
-			if (($action = !\System\File::check($this->get_path())) && $gen) {
+			$status = \System\File::check(ROOT.$this->get_path());
+
+			if (!$status && $gen) {
 				$this->gen();
-				return $this->check(false);
+				$status = $this->check(false);
 			}
 
-			return $action;
+			return $status;
+		}
+
+
+		private function get_alternate_version()
+		{
+			$versions = $this->image->get_all_versions();
+
+			if (any($versions)) {
+				$this->image = array_pop($versions);
+			}
+
+			return $this;
 		}
 
 
 		public function gen()
 		{
-			if (extension_loaded('imagemagick')) {
-				$im = new ImageMagick($this->get_path(true));
-				$im->resampleImage($this->width, $this->height);
-				$im->writeImage(ROOT.$this->get_path($this->width, $this->height, $this->crop));
-			} else {
-				self::gen_gd($this);
+			if (!$this->image->exists()) {
+				$this->get_alternate_version();
 			}
+
+			if ($this->image->exists()) {
+				if (extension_loaded('imagemagick')) {
+					$im = new ImageMagick($this->get_path(true));
+					$im->resampleImage($this->width, $this->height);
+					$im->writeImage(ROOT.$this->get_path($this->width, $this->height, $this->crop));
+				} else {
+					self::gen_gd($this);
+				}
+			} else throw new \System\Error\File('Cannot generate image thumb. It is not located on filesystem.', $this->image->get_path(), $this->get_path());
 
 			return $this;
 		}
@@ -112,51 +130,49 @@ namespace System\Cache
 		 */
 		public static function gen_gd(self $obj)
 		{
-			if ($obj->image->exists()) {
-				$obj->image->refresh_info();
+			$obj->image->refresh_info();
 
-				$w_new = $obj->width;
-				$h_new = $obj->height;
-				$w_org = intval($obj->image->width());
-				$h_org = intval($obj->image->width());
+			$w_new = $obj->width;
+			$h_new = $obj->height;
+			$w_org = intval($obj->image->width());
+			$h_org = intval($obj->image->width());
 
-				$tpth = ROOT.$obj->get_path();
-				\System\Directory::check(dirname($tpth));
+			$tpth = ROOT.$obj->get_path();
+			\System\Directory::check(dirname($tpth));
 
-				if ($w_new < $w_org || $h_new < $h_org) {
-					list($w_new, $h_new, $xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $obj->crop);
+			if ($w_new < $w_org || $h_new < $h_org) {
+				list($w_new, $h_new, $xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $obj->crop);
 
-					$im = \System\Image::get_gd_resource($obj->image);
-					$th = imagecreatetruecolor($w_new, $h_new);
-					$trans = $obj->image->format() == 3;
+				$im = \System\Image::get_gd_resource($obj->image);
+				$th = imagecreatetruecolor($w_new, $h_new);
+				$trans = $obj->image->format() == 3;
 
-					if ($trans) {
-						$wh = imagecolorallocate($th, 255, 255, 255);
-						imagefill($th, 0, 0, $wh);
-					} else {
-						$transparent = imagecolorallocatealpha($th, 0, 0, 0, 127);
-						imagefill($th, 0, 0, $transparent);
-					}
-
-					imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
-
-					if (file_exists($tpth)) {
-						unlink($tpth);
-					}
-
-					if ($trans) {
-						imagealphablending($th, false);
-						imagesavealpha($th, true);
-						imagepng($th, $tpth);
-					} else {
-						imagejpeg($th, $tpth, 99);
-					}
-
-					imagedestroy($th);
+				if ($trans) {
+					$wh = imagecolorallocate($th, 255, 255, 255);
+					imagefill($th, 0, 0, $wh);
 				} else {
-					$obj->copy($tpth);
+					$transparent = imagecolorallocatealpha($th, 0, 0, 0, 127);
+					imagefill($th, 0, 0, $transparent);
 				}
-			} else throw new \System\Error\File('Cannot generate image thumb. It is not located on filesystem.', $obj->get_path());
+
+				imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
+
+				if (file_exists($tpth)) {
+					unlink($tpth);
+				}
+
+				if ($trans) {
+					imagealphablending($th, false);
+					imagesavealpha($th, true);
+					imagepng($th, $tpth);
+				} else {
+					imagejpeg($th, $tpth, 99);
+				}
+
+				imagedestroy($th);
+			} else {
+				$obj->copy($tpth);
+			}
 
 			return $obj;
 		}

@@ -672,7 +672,7 @@ namespace System\Model
 
 					if ($id) {
 						$this->id = $id;
-					} else throw new \System\Error\Database('Could not save model.');
+					} else throw new \System\Error\Database(sprintf('Could not save model "%s".', $model));
 				}
 			}
 
@@ -832,6 +832,18 @@ namespace System\Model
 
 				if ($attr_def[0] === 'int_set' && isset($data[$attr])) {
 					$data[$attr] = implode(',', $data[$attr]);
+				}
+
+				if (isset($data[$attr])) {
+					if (is_object($data[$attr])) {
+						if(method_exists(get_class($data[$attr]), 'save')) {
+							$data[$attr]->save();
+						}
+
+						if (method_exists(get_class($data[$attr]), 'to_json')) {
+							$data[$attr] = $data[$attr]->to_json();
+						}
+					}
 				}
 			}
 		}

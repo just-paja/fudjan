@@ -41,7 +41,11 @@ namespace System\Model
 		);
 
 		/** Registered object handlers */
-		static protected $obj_attrs = array('object', 'image', 'file');
+		static protected $attr_type_objects = array(
+			'object' => '\Object',
+			'image'  => '\System\Image',
+			'file'   => '\System\File',
+		);
 
 		/** Swap for attributes merged from related models */
 		static protected $merged_attrs = array();
@@ -295,7 +299,7 @@ namespace System\Model
 		 */
 		public static function convert_attr_val($model, $attr, $val = null)
 		{
-			$attr_data = self::get_attr($model, $attr);
+			$attr_data = $model::get_attr($model, $attr);
 
 			if (isset($attr_data['is_null']) && $attr_data['is_null'] && is_null($val)) {
 				return $val = null;
@@ -350,38 +354,30 @@ namespace System\Model
 
 
 				case 'image':
+				case 'file':
 				{
-					if (!($val instanceof \System\Image)) {
+					$cname = '\System\Image';
 
-						if (is_array($val) && isset($val['name']) && is_array($val['name'])) {
-							foreach ($val as &$d) {
-								if (is_array($d)) {
-									$d = reset($d);
-								}
+					if (any($val)) {
+						if (is_object($val)) {
+							if (!($val instanceof $cname)) {
+								throw new \System\Error\Model(sprintf('Value for attribute "%s" of model "%s" should be instance of "%s". Instance of "%s" was given.', $attr, $model, $cname, get_class($val)));
 							}
-						}
+						} elseif (is_array($val)) {
+							$val = new $cname($val);
+						} elseif (is_string($val)) {
+							$val_json = str_replace("\\", "", $val);
 
-						if (any($val) && !is_array($val) || is_array($val) && (empty($val['src']) || (any($val['src']) && $val['src'] != 'actual'))) {
-
-							$val = str_replace("\\", "", $val);
-							if (is_array($val)) {
-								$val = new \System\Image($val);
-
-								if (defined('DATA_SEED')) {
-									$val->allow_save = true;
-								}
-							} elseif ($j = \System\Json::decode($val, true)) {
-								$val = \System\Image::from_json($val);
-							} elseif($val) {
-								$val = \System\Image::from_path($val);
+							if ($j = \System\Json::decode($val_json, true)) {
+								$val = new $cname($j);
 							} else {
-								$val = \System\Image::from_scratch();
+								$val = \System\Image::from_path($val);
 							}
-
-						} else {
-							$val = \System\Image::from_scratch();
 						}
+					} else {
+						$val = null;
 					}
+
 					break;
 				}
 

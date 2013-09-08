@@ -124,7 +124,11 @@ namespace System
 				"crop"   => $crop,
 			));
 
-			return $thumb->save()->url();
+			if (!$thumb->id) {
+				$thumb->save();
+			}
+
+			return $thumb->url();
 		}
 
 

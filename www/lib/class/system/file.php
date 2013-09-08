@@ -29,6 +29,7 @@ namespace System
 			"mime" => array('varchar'),
 			"suff" => array('varchar'), // DB
 			"size" => array('int', "is_null" => true),
+			"time" => array('int', "is_null" => true),
 			"cached" => array('bool'),
 			"temp"   => array('bool'),
 			"keep"   => array('bool'),
@@ -150,7 +151,13 @@ namespace System
 		 */
 		public function get_path_hashed()
 		{
-			return ROOT.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 8).($this->suffix() ? '.'.$this->suffix():'');
+			return $this->get_path_hashed_dir().'/'.$this->get_time().($this->suffix() ? '.'.$this->suffix():'');
+		}
+
+
+		private function get_path_hashed_dir()
+		{
+			return ROOT.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
 		}
 
 
@@ -192,7 +199,17 @@ namespace System
 		 */
 		private function hash_chunk($blob)
 		{
-			return md5($blob).'-'.$this->size().'-'.time();
+			return md5($blob).'-'.$this->size();
+		}
+
+
+		public function get_time()
+		{
+			if (is_null($this->time)) {
+				$this->time = time();
+			}
+
+			return $this->time;
 		}
 
 
@@ -278,7 +295,7 @@ namespace System
 		 */
 		public function move($where)
 		{
-			return $this->copy($where)->remove();
+			return $this->copy($where)->drop();
 		}
 
 
@@ -314,7 +331,7 @@ namespace System
 					if (!$this->is_saved()) {
 						$this->move($this->get_path_hashed());
 					}
-				} else throw new \System\Error\File('Cannot save file. It does not exist on the filesystem and not in memory.');
+				} else throw new \System\Error\File(sprintf('Cannot save file "%s". It does not exist on the filesystem and not in memory.', $this->get_path()));
 			}
 
 			$this->path = null;
@@ -350,6 +367,29 @@ namespace System
 		public function exists()
 		{
 			return !is_null($this->get_path()) && file_exists($this->get_path());
+		}
+
+
+		/** Dear sir, does this file exists?
+		 * @return bool
+		 */
+		public function get_all_versions()
+		{
+			$versions = array();
+			$dir_path = $this->get_path_hashed_dir();
+
+			if (\System\Directory::check($dir_path, false)) {
+				$version_files = \System\Directory::find($dir_path);
+				$model = get_class($this);
+
+				foreach ($version_files as $fp) {
+					$file = $model::from_path($fp);
+					$file->time = $file->name;
+					$versions[] = $file;
+				}
+			}
+
+			return $versions;
 		}
 
 
@@ -498,6 +538,7 @@ namespace System
 					"hash" => $this->hash(),
 					"suff" => $this->suff,
 					"name" => $this->name,
+					"time" => $this->get_time(),
 				);
 			} else {
 				$data = $this->data;
