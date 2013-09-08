@@ -7,11 +7,12 @@ namespace System\Cache
 		const DIR = '/var/thumbs';
 
 		protected static $attrs = array(
-			"hash"   => array('varchar', 'is_unique' => true),
-			"width"  => array('int',     'is_unsigned' => true, "is_null" => true),
-			"height" => array('int',     'is_unsigned' => true, "is_null" => true),
-			"crop"   => array('bool'),
-			"image"  => array('image'),
+			"hash"       => array('varchar', 'is_unique' => true),
+			"hash_image" => array('varchar', 'is_index' => true),
+			"width"      => array('int',     'is_unsigned' => true, "is_null" => true),
+			"height"     => array('int',     'is_unsigned' => true, "is_null" => true),
+			"crop"       => array('bool'),
+			"image"      => array('image'),
 		);
 
 
@@ -22,6 +23,12 @@ namespace System\Cache
 			}
 
 			return parent::__get($attr);
+		}
+
+
+		public static function find_all_by_hash($hash)
+		{
+			return get_all('\System\Cache\Thumb')->where(array("hash_image" => $hash))->fetch();
 		}
 
 
@@ -37,8 +44,9 @@ namespace System\Cache
 
 			if (is_null($thumb = self::from_hash($hash))) {
 				$thumb = new self($attrs);
-				$thumb->image = $image;
-				$thumb->hash = $thumb->hash();
+				$thumb->image      = $image;
+				$thumb->hash       = $thumb->hash();
+				$thumb->hash_image = $image->hash();
 			}
 
 			return $thumb;
@@ -56,6 +64,7 @@ namespace System\Cache
 			unset($data['updated_at']);
 			unset($data['id_system_cache_thumb']);
 			unset($data['hash']);
+			unset($data['hash_image']);
 
 			return md5(implode(':', $data));
 		}
@@ -64,6 +73,16 @@ namespace System\Cache
 		public function hash()
 		{
 			return self::create_hash($this->get_data(), $this->image->hash(), $this->image->suffix());
+		}
+
+
+		public function drop()
+		{
+			if (\System\File::check($p = ROOT.$this->get_path())) {
+				unlink($p);
+			}
+
+			return parent::drop();
 		}
 
 

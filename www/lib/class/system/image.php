@@ -282,5 +282,30 @@ namespace System
 
 			return null;
 		}
+
+
+		public function drop()
+		{
+			$this->clear_thumbs();
+			return parent::drop();
+		}
+
+
+		public function clear_thumbs()
+		{
+			$thumbs = $this->find_all_thumbs();
+
+			foreach ($thumbs as $thumb) {
+				$thumb->drop();
+			}
+
+			return $this;
+		}
+
+
+		public function find_all_thumbs()
+		{
+			return \System\Cache\Thumb::find_all_by_hash($this->hash());
+		}
 	}
 }
