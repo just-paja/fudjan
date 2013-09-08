@@ -192,7 +192,7 @@ namespace System
 		 */
 		private function hash_chunk($blob)
 		{
-			return md5($blob).'-'.time().'-'.$this->size();
+			return md5($blob).'-'.$this->size().'-'.time();
 		}
 
 

@@ -47,8 +47,11 @@ namespace System\Cache
 
 		private static function create_hash($data, $img_hash, $img_suffix)
 		{
-			$data['img-hash']   = $img_hash;
+			$data['img-hash']   = explode('-', $img_hash);
 			$data['img-suffix'] = $img_suffix;
+
+			array_pop($data['img-hash']);
+			$data['img-hash'] = implode('-', $data['img-hash']);
 
 			unset($data['image']);
 			unset($data['created_at']);
