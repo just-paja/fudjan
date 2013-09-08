@@ -656,24 +656,6 @@ namespace System\Model
 				}
 
 				$nochange = array();
-
-				foreach (self::$obj_attrs as $attr) {
-					if (isset($model::$attrs[$attr])) {
-
-						// Store or delete the image when making changes
-						foreach ($model::$attrs['image'] as $name) {
-							if (is_object($this->$name)) {
-								if ($this->$name->allow_save()) {
-									$this->$name->save();
-								} elseif ($this->$name->is_to_be_deleted()) {
-									$this->data[$name] = null;
-								} else $nochange[] = $name;
-							} else $nochange[] = $name;
-						}
-
-					}
-				}
-
 				$data = $this->get_data();
 
 				// Unset attrs that did not change to spare DB
