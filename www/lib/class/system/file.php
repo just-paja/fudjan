@@ -19,9 +19,7 @@ namespace System
 		const MOD_DEFAULT = 0664;
 		const MIN_HASH_CHUNK_SIZE = 65536;
 
-
 		protected $content;
-
 
 		/** File attrmodel attributes */
 		static protected $attrs = array(
@@ -194,7 +192,7 @@ namespace System
 		 */
 		private function hash_chunk($blob)
 		{
-			return md5($blob).'-'.$this->size();
+			return md5($blob).'-'.time().'-'.$this->size();
 		}
 
 
