@@ -54,6 +54,35 @@ namespace System
 		}
 
 
+		/** Create instance from JSON
+		 * @param string $json
+		 */
+		public static function from_form($value)
+		{
+			$file = null;
+
+			if (any($value['file'])) {
+				$file = self::from_tmp($value['file']['tmp_name'], $value['file']['name']);
+			} else if (any($value['url'])) {
+				$file = self::fetch($value['url'])->temp();
+			}
+
+			return $file;
+		}
+
+
+		public static function from_tmp($path, $real_name)
+		{
+			$suff = self::get_suffix_from_name($real_name);
+
+			if ($suff) {
+				$real_name = substr($real_name, 0, mb_strlen($real_name) - mb_strlen($suff));
+			}
+
+			return self::from_path($path)->rename(\System\Url::gen_seoname($real_name).($suff ? '.'.$suff:''));
+		}
+
+
 		/** Destruction callback
 		 * @return void
 		 */
@@ -117,15 +146,23 @@ namespace System
 		public function suffix()
 		{
 			if (!$this->suff) {
-				if (strpos($this->name(), '.') > 0) {
-					$suff = explode('.', $this->name());
-					$this->suff = $suff[count($suff)-1];
-				} else {
-					$this->suff = null;
-				}
+				$this->suff = self::get_suffix_from_name($this->name());
 			}
 
 			return $this->suff;
+		}
+
+
+		public static function get_suffix_from_name($name)
+		{
+			$suff = null;
+
+			if (strpos($name, '.') > 0) {
+				$suff = explode('.', $name);
+				$suff = $suff[count($suff)-1];
+			}
+
+			return $suff;
 		}
 
 
@@ -295,7 +332,17 @@ namespace System
 		 */
 		public function move($where)
 		{
-			return $this->copy($where)->drop();
+			$this->copy($where)->drop();
+			$this->name = basename($where);
+			$this->path = dirname($where);
+
+			return $this;
+		}
+
+
+		public function rename($name)
+		{
+			return $this->move(dirname($this->get_path()).'/'.$name);
 		}
 
 

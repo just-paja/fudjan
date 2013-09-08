@@ -206,13 +206,17 @@ namespace System
 		}
 
 
-		public static function from_file(\System\File $file)
+		public static function from_file(\System\File $file = null)
 		{
-			$img = new self($file->get_data());
-			$file->keep = true;
+			$img = null;
 
-			if ($file->is_cached()) {
-				$img->set_content($file->get_content());
+			if (!is_null($file)) {
+				$img = new self($file->get_data());
+				$file->keep = true;
+
+				if ($file->is_cached()) {
+					$img->set_content($file->get_content());
+				}
 			}
 
 			return $img;
@@ -267,20 +271,7 @@ namespace System
 
 		public static function from_form($value)
 		{
-			if (any($value['file'])) {
-				$img = new self(array(
-					"file_path" => $value['file']['tmp_name'],
-					"file_name" => $value['file']['name'],
-					"tmp"       => true,
-					"src"       => 'upload',
-				));
-
-				return $img->cache();
-			} else if (any($value['url'])) {
-				return self::fetch($value['url'])->temp();
-			}
-
-			return null;
+			return self::from_file(parent::from_form($value));
 		}
 
 
