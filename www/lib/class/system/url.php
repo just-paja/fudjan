@@ -12,7 +12,8 @@ namespace System
 		{
 			$str = strtolower(strip_tags(iconv('UTF-8', 'US-ASCII//TRANSLIT', $str)));
 			$str = preg_replace('/\s/', '-', $str);
-			$str = preg_replace('/[^a-zA-Z_-]/', '', $str);
+			$str = preg_replace('/[^a-zA-Z0-9_-]/', '', $str);
+			$str = preg_replace('/\-+/', '-', $str);
 			return $str;
 		}
 
