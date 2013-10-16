@@ -217,7 +217,7 @@ namespace System
 					$chunks = chunk_split($this->get_content(), $this->get_digest_chunk_size(), '');
 					$this->hash = $this->hash_chunk($chunks[0]);
 				} else {
-					if ($this->exists()) {
+					if ($this->path && $this->exists()) {
 						$fp = fopen($this->get_path(), 'r');
 						$data = fread($fp, $this->get_digest_chunk_size());
 						$this->hash = $this->hash_chunk($data);
