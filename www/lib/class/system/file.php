@@ -50,6 +50,10 @@ namespace System
 		 */
 		public static function from_path($path)
 		{
+			if (!file_exists($path)) {
+				$path = ROOT.$path;
+			}
+
 			return new self(array("path" => dirname($path), "name" => basename($path)));
 		}
 
