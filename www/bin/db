@@ -138,9 +138,9 @@
 				$mcount = 0;
 
 				try {
-					$mig = System\Migration::get_new();
+					$mig = System\Database\Migration::get_new();
 					$mcount = count($mig);
-					$mlast = get_first("\System\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
+					$mlast = get_first("\System\Database\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
 					$stat = "Ok";
 
 					if ($mlast) {
@@ -244,7 +244,7 @@
 			$params = CLIOptions::get('params');
 
 			if (empty($params)) {
-				$mig = System\Migration::get_new();
+				$mig = System\Database\Migration::get_new();
 				array_reverse($mig);
 				self::print_migrations($mig);
 			} else {
@@ -269,7 +269,7 @@
 
 			if (empty($params)) {
 
-				$mig = System\Migration::get_new();
+				$mig = System\Database\Migration::get_new();
 				array_reverse($mig);
 
 				if (any($mig)) {
@@ -618,7 +618,7 @@
 		private static function find_migrations($like)
 		{
 			vout("Looking for migration described as ".$like." ..");
-			return get_all("System\Migration")->where(array(
+			return get_all("System\Database\Migration")->where(array(
 					"`id_database_migration` LIKE '%".$like."%'",
 					"`name` LIKE '%".$like."%'",
 					"`seoname` LIKE '%".$like."%'",

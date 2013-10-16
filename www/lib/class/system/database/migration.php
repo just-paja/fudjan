@@ -1,8 +1,8 @@
 <?
 
-namespace System
+namespace System\Database
 {
-	class Migration extends Model\Database
+	class Migration extends \System\Model\Database
 	{
 
 		const BASEDIR = '/etc/database/migrations.d';
@@ -67,7 +67,10 @@ namespace System
 				if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\-[a-zA-Z\_\-]*\.php$/", $file)) {
 					$fname = explode('-', $file);
 					$date = new \Datetime(intval($fname[0]).'-'.intval($fname[1]).'-'.intval($fname[2]));
-					$name = \System\File::remove_postfix($fname[3]);
+
+					$name = explode('.', $fname[3]);
+					array_pop($name);
+					$name = implode('.', $name);
 
 					if (!in_array($date->format("Y-m-d").'-'.$name, $old)) {
 						$temp = &$items[];
@@ -131,7 +134,7 @@ namespace System
 		private function sql($query)
 		{
 			try {
-				return Database::query($query);
+				return \System\Database::query($query);
 			} catch (\System\Error $e) {
 				$this->status = 'failed';
 				$this->errors[] = $e->getMessage();
