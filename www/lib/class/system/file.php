@@ -458,7 +458,7 @@ namespace System
 		 */
 		public function is_saved()
 		{
-			return file_exists($this->get_path_hashed());
+			return $this->hash && file_exists($this->get_path_hashed());
 		}
 
 
