@@ -50,6 +50,10 @@ namespace System
 		 */
 		public static function from_path($path)
 		{
+			if (!file_exists($path)) {
+				$path = ROOT.$path;
+			}
+
 			return new self(array("path" => dirname($path), "name" => basename($path)));
 		}
 
@@ -217,7 +221,7 @@ namespace System
 					$chunks = chunk_split($this->get_content(), $this->get_digest_chunk_size(), '');
 					$this->hash = $this->hash_chunk($chunks[0]);
 				} else {
-					if ($this->exists()) {
+					if ($this->path && $this->exists()) {
 						$fp = fopen($this->get_path(), 'r');
 						$data = fread($fp, $this->get_digest_chunk_size());
 						$this->hash = $this->hash_chunk($data);
@@ -454,7 +458,7 @@ namespace System
 		 */
 		public function is_saved()
 		{
-			return file_exists($this->get_path_hashed());
+			return $this->hash && file_exists($this->get_path_hashed());
 		}
 
 
