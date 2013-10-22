@@ -7,14 +7,30 @@ foreach ($users as $user) {
 		$opts = $user->avatar->get_opts();
 
 		if (empty($opts)) {
+			$avatar = $user->avatar;
+
 			if (strpos($user->avatar->path, '/') === 0) {
 				$user->avatar->path = ROOT.$user->avatar->path;
-				$user->save();
 			}
 		} else {
-			$avatar = \System\Image::from_path(ROOT.$opts['file_path']);
-			$user->avatar = $avatar;
-			$user->save();
+			if ($opts['file_path']) {
+				$avatar = \System\Image::from_path($opts['file_path']);
+				$avatar->keep = true;
+			} else {
+				$avatar = null;
+			}
 		}
+
+		if (!is_null($avatar)) {
+			try {
+				$avatar->save();
+			} catch (Exception $e) {
+				$avatar = null;
+			}
+		}
+
+		$user->avatar = $avatar;
+		$user->save();
+
 	}
 }
