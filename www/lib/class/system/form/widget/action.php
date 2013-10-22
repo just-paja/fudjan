@@ -89,7 +89,8 @@ namespace System\Form\Widget
 					}
 				} else {
 					if (is_null($par_value)) {
-						$value = isset($opts[self::NONE]) ? self::NONE:self::CREATE;
+						$keys = array_keys($opts);
+						$value = isset($opts[self::NONE]) ? self::NONE:$keys[0];
 					} else {
 						$value = self::KEEP;
 					}
