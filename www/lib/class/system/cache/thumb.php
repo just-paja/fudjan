@@ -167,11 +167,11 @@ namespace System\Cache
 				$trans = $obj->image->format() == 3;
 
 				if ($trans) {
-					$wh = imagecolorallocate($th, 255, 255, 255);
-					imagefill($th, 0, 0, $wh);
-				} else {
 					$transparent = imagecolorallocatealpha($th, 0, 0, 0, 127);
 					imagefill($th, 0, 0, $transparent);
+				} else {
+					$wh = imagecolorallocate($th, 255, 255, 255);
+					imagefill($th, 0, 0, $wh);
 				}
 
 				imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
