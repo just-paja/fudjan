@@ -54,7 +54,7 @@ namespace System
 				$path = ROOT.$path;
 			}
 
-			return new self(array("path" => dirname($path), "name" => basename($path)));
+			return new self(array("path" => dirname($path), "name" => basename($path), "keep" => true));
 		}
 
 
@@ -83,7 +83,9 @@ namespace System
 				$real_name = substr($real_name, 0, mb_strlen($real_name) - mb_strlen($suff));
 			}
 
-			return self::from_path($path)->rename(\System\Url::gen_seoname($real_name).($suff ? '.'.$suff:''));
+			$file = self::from_path($path)->rename(\System\Url::gen_seoname($real_name).($suff ? '.'.$suff:''));
+			$file->keep = false;
+			return $file;
 		}
 
 
@@ -380,7 +382,9 @@ namespace System
 			} else {
 				if ($this->exists()) {
 					if (!$this->is_saved()) {
-						$this->move($this->get_path_hashed());
+						$this->keep ?
+							$this->copy($this->get_path_hashed()):
+							$this->move($this->get_path_hashed());
 					}
 				} else throw new \System\Error\File(sprintf('Cannot save file "%s". It does not exist on the filesystem and not in memory.', $this->get_path()));
 			}

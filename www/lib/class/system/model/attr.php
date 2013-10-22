@@ -356,7 +356,11 @@ namespace System\Model
 				case 'image':
 				case 'file':
 				{
-					$cname = '\System\Image';
+					if ($attr_data[0] == 'image') {
+						$cname = '\System\Image';
+					} else {
+						$cname = '\System\File';
+					}
 
 					if (any($val)) {
 						if (is_object($val)) {
@@ -371,7 +375,7 @@ namespace System\Model
 							if ($j = \System\Json::decode($val_json, true)) {
 								$val = new $cname($j);
 							} else {
-								$val = \System\Image::from_path($val);
+								$val = $cname::from_path($val);
 							}
 						}
 					} else {

@@ -202,7 +202,9 @@ namespace System
 		 */
 		public static function from_path($path)
 		{
-			return self::from_file(parent::from_path($path));
+			$image = self::from_file(parent::from_path($path));
+			$image->keep = true;
+			return $image;
 		}
 
 
