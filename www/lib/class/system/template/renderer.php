@@ -191,6 +191,12 @@ namespace System\Template
 		 */
 		public function render_partial($name, array $locals = array())
 		{
+			echo $this->render_partial_clean($name, $locals);
+		}
+
+
+		public function render_partial_clean($name, array $locals = array())
+		{
 			$this->heading_level = $this->heading_layout_level;
 			$temp = \System\Template::find($name, \System\Template::TYPE_PARTIAL, $this->format);
 
@@ -208,7 +214,11 @@ namespace System\Template
 				$locales  = $this->response()->locales();
 				$ren      = &$renderer;
 
+				ob_start();
 				include($temp);
+				$cont = ob_get_contents();
+				ob_end_clean();
+				return $cont;
 			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
 		}
 
