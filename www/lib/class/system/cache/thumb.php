@@ -4,7 +4,7 @@ namespace System\Cache
 {
 	class Thumb extends \System\Model\Database
 	{
-		const DIR = '/var/thumbs';
+		const DIR = '/var/cache/thumbs';
 
 		protected static $attrs = array(
 			"hash"       => array('varchar', 'is_unique' => true),
