@@ -150,20 +150,21 @@ namespace System\Cache
 		public static function gen_gd(self $obj)
 		{
 			$obj->image->refresh_info();
-
-			$w_new = $obj->width;
-			$h_new = $obj->height;
-			$w_org = intval($obj->image->width());
-			$h_org = intval($obj->image->width());
+			$coords = array(
+				'w_new' => $obj->width,
+				'h_new' => $obj->height,
+				'w_org' => intval($obj->image->width()),
+				'h_org' => intval($obj->image->height()),
+			);
 
 			$tpth = ROOT.$obj->get_path();
 			\System\Directory::check(dirname($tpth));
 
-			if ($w_new < $w_org || $h_new < $h_org) {
-				list($w_new, $h_new, $xw, $xh, $dst_x, $dst_y) = self::calc_thumb_coords($w_org, $h_org, $w_new, $h_new, $obj->crop);
+			if ($coords['w_new'] < $coords['w_org'] || $coords['h_new'] < $coords['h_org']) {
+				$coords = self::calc_thumb_coords($coords, $obj->crop);
 
 				$im = \System\Image::get_gd_resource($obj->image);
-				$th = imagecreatetruecolor($w_new, $h_new);
+				$th = imagecreatetruecolor($coords['w_new'], $coords['h_new']);
 				$trans = $obj->image->format() == 3;
 
 				if ($trans) {
@@ -174,7 +175,7 @@ namespace System\Cache
 					imagefill($th, 0, 0, $wh);
 				}
 
-				imagecopyresampled($th, $im, intval($dst_x), intval($dst_y), 0, 0, intval($xw), intval($xh), $w_org, $h_org);
+				imagecopyresampled($th, $im, intval($coords['dst_x']), intval($coords['dst_y']), 0, 0, intval($coords['xw']), intval($coords['xh']), $coords['w_org'], $coords['h_org']);
 
 				if (file_exists($tpth)) {
 					unlink($tpth);
@@ -209,48 +210,46 @@ namespace System\Cache
 
 
 		/** Calculate target thumb size and coordinates
-		 * @param int  $w_org Original width
-		 * @param int  $h_org Original height
-		 * @param int  $w_new Desired width
-		 * @param int  $h_new Desired height
+		 * @param int  $coords['w_org'] Original width
+		 * @param int  $coords['h_org'] Original height
+		 * @param int  $coords['w_new'] Desired width
+		 * @param int  $coords['h_new'] Desired height
 		 * @param bool $crop  Crop image or change proportion
 		 * @return array
 		 */
-		public static function calc_thumb_coords($w_org, $h_org, $w_new=null, $h_new=null, $crop=false)
+		public static function calc_thumb_coords($coords, $crop=false)
 		{
 			$refit = false;
 
-			if ($w_new <= 0 && $h_new) {
-				$w_new = round(($w_org * $h_new) / $h_org);
+			if ($coords['w_new'] <= 0 && $coords['h_new']) {
+				$coords['w_new'] = round(($coords['w_org'] * $coords['h_new']) / $coords['h_org']);
 				$refit = true;
 			}
 
-			if ($h_new <= 0 && $w_new) {
-				$h_new = round(($h_org * $w_new) / $w_org);
+			if ($coords['h_new'] <= 0 && $coords['w_new']) {
+				$coords['h_new'] = round(($coords['h_org'] * $coords['w_new']) / $coords['w_org']);
 				$refit = true;
 			}
 
 			if ($crop && !$refit) {
-				if ($w_org / $h_org < $w_new / $h_new) {
-					$xw = $w_new;
-					$xh = round($h_org / $w_org * $w_new);
-					$dst_x = 0;
-					$dst_y = round(($xh > $h_new) ? (-1 * abs($h_new - $xh) / 2):(abs($h_new - $xh) / 2));
+				if ($coords['w_org'] / $coords['h_org'] < $coords['w_new'] / $coords['h_new']) {
+					$coords['xw'] = $coords['w_new'];
+					$coords['xh'] = round($coords['h_org'] / $coords['w_org'] * $coords['w_new']);
+					$coords['dst_x'] = 0;
+					$coords['dst_y'] = round(($coords['xh'] > $coords['h_new']) ? (-1 * abs($coords['h_new'] - $coords['xh']) / 2):(abs($coords['h_new'] - $coords['xh']) / 2));
 				} else {
-					$xh = $h_new;
-					$xw = round($w_org / $h_org * $h_new);
-					$dst_x = round(($xw > $w_new) ? (-1 * abs($w_new - $xw) / 2):(abs($w_new - $xw) / 2));
-					$dst_y = 0;
+					$coords['xh'] = $coords['h_new'];
+					$coords['xw'] = round($coords['w_org'] / $coords['h_org'] * $coords['h_new']);
+					$coords['dst_x'] = round(($coords['xw'] > $coords['w_new']) ? (-1 * abs($coords['w_new'] - $coords['xw']) / 2):(abs($coords['w_new'] - $coords['xw']) / 2));
+					$coords['dst_y'] = 0;
 				}
 			} else {
-				$xw = $w_new;
-				$xh = $h_new;
-				$dst_x = $dst_y = 0;
+				$coords['xw'] = $coords['w_new'];
+				$coords['xh'] = $coords['h_new'];
+				$coords['dst_x'] = $coords['dst_y'] = 0;
 			}
 
-			return array($w_new, $h_new, $xw, $xh, $dst_x, $dst_y);
+			return $coords;
 		}
-
-
 	}
 }
