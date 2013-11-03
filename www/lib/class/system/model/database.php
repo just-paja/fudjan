@@ -608,7 +608,7 @@ namespace System\Model
 		public function get_seoname()
 		{
 			if ($this->has_attr('name')) {
-				return $this->id ? \System\Url::gen_seoname($this->name).'-'.$this->id:null;
+				return $this->id ? ($this->name ? \System\Url::gen_seoname($this->name).'-'.$this->id:$this->id):null;
 			} else {
 				return $this->id;
 			}
