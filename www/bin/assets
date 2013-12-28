@@ -1,0 +1,111 @@
+#!/usr/bin/php
+<?
+
+// -- BASICS
+
+	define("ROOT", realpath(__DIR__.'/..'));
+	define("NAME", basename($_SERVER['SCRIPT_NAME']));
+
+	require_once ROOT."/etc/init.d/core.php";
+	require_once ROOT."/lib/include/core.cli.php";
+
+// -- CLASSES
+
+	// Options container
+	abstract class CLIOptions extends YacmsCLIOptions
+	{
+		/* Override for console options parent
+		 * @return void
+		 */
+		public static function init()
+		{
+			self::$opts = array(
+				"env"   => array(
+					"value" => false,
+					"short" => 'e',
+					"desc"  => 'Use this environment',
+				),
+				"force"   => array(
+					"value" => false,
+					"short" => 'f',
+					"desc"  => 'Force action',
+				),
+				"help"   => array(
+					"value" => false,
+					"short" => 'h',
+					"desc"  => 'Show this help',
+				),
+				"verbose" => array(
+					"value" => false,
+					"short" => 'v',
+					"desc"  => 'Talkative mode',
+				),
+				"command" => array(
+					"value" => null
+				),
+				"params"  => array(
+					"value" => array()
+				),
+			);
+
+			self::$commands = array(
+				"update"   => 'Update all bower assets'
+			);
+
+			self::$info = array(
+				"name" => NAME,
+				"head" => 'PWF assets manager'.NL,
+				"foot" => '',
+			);
+		}
+	}
+
+
+	abstract class CLICommands extends YacmsCLICommands
+	{
+		/** Print basic system info to STDOUT
+		 * @return void
+		 */
+		public static function update()
+		{
+			\System\Init::full();
+			$deps = cfg('assets');
+			$list = array();
+
+			foreach ($deps as $dep_list) {
+				$list = array_merge($list, $dep_list);
+			}
+
+			\System\Json::put(\ROOT.'/bower.json', array(
+				"name" => "pwf-generic",
+				"dependencies" => $list
+			));
+
+			$found = exec('which bower');
+
+			if ($found) {
+				exec('bower update');
+			} else {
+				out('Please install node.js#bower first');
+			}
+
+			unlink(\ROOT.'/bower.json');
+		}
+
+
+		/** Compile htaccess
+		 */
+		public static function htaccess()
+		{
+			\System\Init::basic();
+			vout('Updating .htaccess rules');
+			System\Router::update_rewrite();
+		}
+	}
+
+
+
+
+// -- RUNTIME
+
+	System\Init::cli();
