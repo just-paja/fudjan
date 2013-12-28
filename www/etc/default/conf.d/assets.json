@@ -1,5 +1,7 @@
 {
 	"dependencies":{
-		"pwf.js":"*"
+		"pwf.js":"*",
+		"pwf-jquery-compat":"*",
+		"pwf-storage":"*"
 	}
 }

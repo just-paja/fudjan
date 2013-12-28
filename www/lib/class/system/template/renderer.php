@@ -55,12 +55,12 @@ namespace System\Template
 			$this->content = array(
 				"title"   => '',
 				"meta"    => array(),
-				"styles"  => array('pwf/elementary'),
+				"styles"  => array('styles/pwf/elementary'),
 				"scripts" => array(
-					'lib/jquery',
-					'lib/functions',
-					'pwf',
-					'pwf/storage',
+					'bower/jquery/jquery.min',
+					'bower/pwf.js/lib/pwf',
+					'bower/pwf-jquery-compat/lib/jquery-compat',
+					'bower/pwf-storage/lib/storage',
 				),
 				"output"  => array(),
 			);
@@ -91,8 +91,8 @@ namespace System\Template
 
 			if ($debug && !$this->response->no_debug) {
 				$this->partial('system/status');
-				$this->content_for('styles', 'pwf/devbar');
-				$this->content_for('scripts', 'pwf/devbar');
+				$this->content_for('styles', 'styles/pwf/devbar');
+				$this->content_for('scripts', 'scripts/pwf/devbar');
 			}
 
 			ob_start();

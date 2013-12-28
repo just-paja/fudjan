@@ -11,10 +11,10 @@ namespace System
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
 
-		const SCRIPTS_DIR = '/share/scripts';
-		const SCRIPTS_STRING_NOT_FOUND = 'v("Jaffascript module not found: %s");';
+		const SCRIPTS_DIR = '/share';
+		const SCRIPTS_STRING_NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
 
-		const STYLES_DIR = '/share/styles';
+		const STYLES_DIR = '/share';
 		const STYLES_STRING_NOT_FOUND = '/* Style module not found: %s */';
 
 		const KEY_SUM              = 'sum';

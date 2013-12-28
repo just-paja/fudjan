@@ -1,44 +1,39 @@
 pwf.register('devbar', function()
 {
-	var ready = false;
-
 	this.init = function()
 	{
-		if (ready = this.is_ready()) {
-			this.find_and_bind();
-		}
-
-		return ready;
+		this.find_and_bind();
+		return true;
 	};
 
 
 	this.is_ready = function()
 	{
-		return $('.devbar').length >= 1;
+		return pwf.mi(['jquery']);
 	};
 
 
 	this.find_and_bind = function()
 	{
-		var cont = $('.devbar');
+		var cont = pwf.jquery('.devbar');
 
 		for (var i = 0; i < cont.length; i++) {
-			$('body').append($('.devbar').remove());
-			this.bind($(cont[i]));
+			pwf.jquery('body').append(pwf.jquery('.devbar').remove());
+			this.bind(pwf.jquery(cont[i]));
 		}
 	};
 
 
 	this.bind = function(cont)
 	{
-		var open = $('<span class="open"></span>');
+		var open = pwf.jquery('<span class="open"></span>');
 		var panels = cont.find('.info .panel');
 		var context = {"cont":cont};
 
 		cont.find('.status-dump .close').bind('click', context, callback_hide_bar);
 
 		for (var i = 0; i < panels.length; i++) {
-			var panel = $(panels[i]);
+			var panel = pwf.jquery(panels[i]);
 			var id = panel.attr('id');
 			var menu = cont.find('.status-dump .bar-menu a.panel-'+id);
 			var context_panel = {"cont":cont, "panel":panel, "menu":menu};
