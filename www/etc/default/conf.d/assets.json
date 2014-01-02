@@ -1,7 +1,11 @@
 {
 	"dependencies":{
+		"reset-css":"*",
 		"pwf.js":"*",
 		"pwf-jquery-compat":"*",
-		"pwf-storage":"*"
+		"pwf-config":"*",
+		"pwf-storage":"*",
+		"pwf-form":"*",
+		"pwf-html":"*"
 	}
 }
