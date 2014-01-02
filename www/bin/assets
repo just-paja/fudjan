@@ -84,7 +84,7 @@
 			$found = exec('which bower');
 
 			if ($found) {
-				exec('bower update');
+				passthru('bower update');
 			} else {
 				out('Please install node.js#bower first');
 			}
