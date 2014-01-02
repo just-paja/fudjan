@@ -26,8 +26,8 @@ namespace System\Form\Widget
 		);
 
 		protected static $resources = array(
-			"scripts" => array('pwf/form/search_tool'),
-			"styles"  => array('pwf/form/search_tool'),
+			"scripts" => array('scripts/pwf/form/search_tool'),
+			"styles"  => array('scripts/pwf/form/search_tool'),
 		);
 	}
 }

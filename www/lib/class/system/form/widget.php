@@ -19,7 +19,7 @@ namespace System\Form
 			"type"     => array("varchar"),
 			"label"    => array("varchar"),
 			"kind"     => array("varchar"),
-			"info"     => array("varchar"),
+			"desc"     => array("varchar"),
 			"required" => array('bool'),
 			"parent"   => array('object', "model" => '\System\Form\Widget'),
 			"class"    => array('array'),
@@ -267,6 +267,12 @@ namespace System\Form
 			}
 
 			return $valid;
+		}
+
+
+		public function get_element_name()
+		{
+			return 'input';
 		}
 	}
 }

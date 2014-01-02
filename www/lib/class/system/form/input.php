@@ -11,7 +11,7 @@ namespace System\Form
 			"label"        => array("varchar"),
 			"kind"         => array("varchar"),
 			"content"      => array("text"),
-			"info"         => array("varchar"),
+			"desc"         => array("varchar"),
 			"placeholder"  => array('varchar'),
 			"maxlen"       => array('int'),
 			"step"         => array('float'),
@@ -171,6 +171,23 @@ namespace System\Form
 			}
 
 			return $valid;
+		}
+
+
+		public function get_element_name()
+		{
+			return in_array($this->type, array('submit', 'button', 'reset')) ? 'button':'input';
+		}
+
+
+		public function to_object()
+		{
+			$data = parent::to_object();
+			unset($data['id']);
+			unset($data['kind']);
+			unset($data['options']);
+
+			return $data;
 		}
 	}
 }

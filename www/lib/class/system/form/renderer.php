@@ -6,6 +6,28 @@ namespace System\Form
 	{
 		public static function render(\System\Template\Renderer $ren, \System\Form $form)
 		{
+			$data = json_encode($form->to_object());
+			$ren->content_for('styles', 'bower/pwf-form/styles/form');
+			$ren->content_for('styles', 'bower/pwf-form/styles/date');
+
+			$ren->content_for('scripts', 'bower/moment/moment');
+			$ren->content_for('scripts', 'bower/pwf-moment-compat/lib/moment-compat');
+			$ren->content_for('scripts', 'bower/pwf-queue/lib/queue');
+			$ren->content_for('scripts', 'bower/pwf-comm/lib/comm');
+			$ren->content_for('scripts', 'bower/pwf-comm-form/lib/comm-form');
+			$ren->content_for('scripts', 'bower/pwf-locales/lib/locales');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/form');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/default');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/textarea');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/checkbox');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/select');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/date');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/time');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/datetime');
+
+			return div(array('pwform'), '<span class="def" style="display:none">' . $data . '</span>');
+
 			$output = array();
 			$output[] = \Stag::fieldset(array(
 				"class" => 'hidden',

@@ -42,8 +42,8 @@ namespace System\Form\Widget
 		);
 
 		protected static $resources = array(
-			"scripts" => array('pwf/form/picker_image'),
-			"styles"  => array('pwf/form/picker_image'),
+			"scripts" => array('scripts/pwf/form/picker_image'),
+			"styles"  => array('scripts/pwf/form/picker_image'),
 		);
 
 

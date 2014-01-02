@@ -21,8 +21,8 @@ namespace System\Form\Widget
 		);
 
 		protected static $resources = array(
-			"scripts" => array('pwf/lib/rte'),
-			"styles"  => array('pwf/form/rte'),
+			"scripts" => array('scripts/pwf/lib/rte'),
+			"styles"  => array('scripts/pwf/form/rte'),
 		);
 	}
 }

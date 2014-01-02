@@ -44,8 +44,8 @@ namespace System\Form\Widget
 
 
 		protected static $resources = array(
-			'scripts' => array('pwf/form/autocompleter', 'pwf/form/location_picker'),
-			'styles'  => array('pwf/form/autocompleter'),
+			'scripts' => array('scripts/pwf/form/autocompleter', 'scripts/pwf/form/location_picker'),
+			'styles'  => array('scripts/pwf/form/autocompleter'),
 		);
 
 

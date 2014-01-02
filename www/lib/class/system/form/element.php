@@ -32,5 +32,34 @@ namespace System\Form
 		{
 			return true;
 		}
+
+
+		public function get_element_name()
+		{
+			$name = explode('\\', strrev(strtolower(get_class($this))));
+			return strrev($name[0]);
+		}
+
+
+		public function to_object()
+		{
+			$containers = null;
+			$data = $this->get_data();
+			$data['element'] = $this->get_element_name();
+
+			if (isset($this->elements)) {
+				$containers = array();
+
+				foreach ($this->elements as $obj) {
+					$containers[] = $obj->to_object();
+				}
+			}
+
+			if (any($containers)) {
+				$data['elements'] = $containers;
+			}
+
+			return $data;
+		}
 	}
 }

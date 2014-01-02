@@ -16,10 +16,10 @@ namespace System
 			"enctype"  => array('varchar'),
 			"heading"  => array('varchar'),
 			"desc"     => array('varchar'),
-			"anchor"   => array('varchar'),
 			"bool"     => array('no_prefix'),
 			"class"    => array('array'),
 			"prefix"   => array('varchar'),
+			"use_comm" => array('bool'),
 			"renderer" => array('object', "model" => '\System\Template\Renderer'),
 			"response" => array('object', "model" => '\System\Http\Response'),
 			"request"  => array('object', "model" => '\System\Http\Request'),
@@ -90,7 +90,6 @@ namespace System
 		{
 			!$this->method  && $this->method = 'post';
 			!$this->id      && $this->id = self::get_generic_id();
-			!$this->anchor  && $this->anchor = \System\Url::gen_seoname($this->id, true);
 			!$this->enctype && $this->enctype = 'multipart/form-data';
 
 			if (is_array($this->default)) {
@@ -445,13 +444,6 @@ namespace System
 			if ($attrs['type'] === 'image')    $el = new \System\Form\Widget\Image($attrs);
 			if ($attrs['type'] === 'search')   $el = new \System\Form\Widget\Search($attrs);
 			if ($attrs['type'] === 'location') $el = new \System\Form\Widget\Location($attrs);
-			if ($attrs['type'] === 'datetime') $el = new \System\Form\Widget\DateTime($attrs);
-
-			// Recursion prevention
-			if (!isset($attrs['parent']) || !($attrs['parent'] instanceof \System\Form\Widget\Date || $attrs['parent'] instanceof \System\Form\Widget\Time)) {
-				if ($attrs['type'] === 'date') $el = new \System\Form\Widget\Date($attrs);
-				if ($attrs['type'] === 'time') $el = new \System\Form\Widget\Time($attrs);
-			}
 
 			if (is_null($el)) {
 				$el = new \System\Form\Input($attrs);
@@ -750,6 +742,36 @@ namespace System
 			if (isset($this->inputs[$name])) {
 				return $this->inputs[$name];
 			} else throw new \System\Error\Argument(sprintf("Input '%s' was not registered inside this form.", $name));
+		}
+
+
+		public function to_object()
+		{
+			$containers = array();
+			$attrs = parent::get_data();
+			$attrs['use_comm'] = $this->use_comm;
+			$attrs['prefix'] = $this->get_prefix();
+
+			unset($attrs['response']);
+			unset($attrs['request']);
+			unset($attrs['renderer']);
+
+			foreach ($this->objects as $obj) {
+				$containers[] = $obj->to_object();
+			}
+
+			$containers[] = array(
+				"element" => "input",
+				"type"    => 'hidden',
+				"name"    => $this->get_prefix() . 'data_hidden',
+				"value"   => json_encode($this->data_hidden),
+			);
+
+			$attrs['elements'] = $containers;
+			$attrs['data'] = $this->get_data();
+			$attrs['initial_check'] = $this->submited;
+
+			return $attrs;
 		}
 	}
 }

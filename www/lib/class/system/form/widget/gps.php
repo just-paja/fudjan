@@ -38,7 +38,7 @@ namespace System\Form\Widget
 
 
 		protected static $resources = array(
-			'scripts' => array('pwf/form/jquery.gmap', 'pwf/form/gps'),
+			'scripts' => array('scripts/pwf/form/jquery.gmap', 'scripts/pwf/form/gps'),
 		);
 	}
 }

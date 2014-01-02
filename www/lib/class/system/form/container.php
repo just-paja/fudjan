@@ -32,7 +32,7 @@ namespace System\Form
 			self::TYPE_TAB       => array('System\\Form\\Container'),
 		);
 
-		private $elements = array();
+		protected $elements = array();
 
 
 		/** Public constructor
