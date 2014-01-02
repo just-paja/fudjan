@@ -8,6 +8,7 @@ namespace System\Http
 
 
 		protected static $attrs = array(
+			"method"   => array('varchar'),
 			"host"     => array('varchar'),
 			"path"     => array('varchar'),
 			"agent"    => array('varchar'),
@@ -47,6 +48,7 @@ namespace System\Http
 					"query"    => $_SERVER['QUERY_STRING'],
 					"time"     => def($_SERVER['REQUEST_TIME_FLOAT'], microtime(true)),
 					"secure"   => any($_SERVER['HTTPS']),
+					"method"   => strtolower(def($_SERVER['REQUEST_METHOD'])),
 				);
 
 				if ($data['query']) {
