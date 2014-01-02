@@ -55,12 +55,17 @@ namespace System\Template
 			$this->content = array(
 				"title"   => '',
 				"meta"    => array(),
-				"styles"  => array('styles/pwf/elementary'),
+				"styles"  => array(
+					'bower/reset-css/reset',
+					'styles/pwf/elementary'
+				),
 				"scripts" => array(
 					'bower/jquery/jquery.min',
 					'bower/pwf.js/lib/pwf',
 					'bower/pwf-jquery-compat/lib/jquery-compat',
 					'bower/pwf-storage/lib/storage',
+					'bower/pwf-config/lib/config',
+					'bower/pwf-html/lib/html',
 				),
 				"output"  => array(),
 			);
