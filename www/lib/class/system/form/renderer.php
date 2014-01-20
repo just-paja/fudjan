@@ -9,6 +9,7 @@ namespace System\Form
 			$data = json_encode($form->to_object());
 			$ren->content_for('styles', 'bower/pwf-form/styles/form');
 			$ren->content_for('styles', 'bower/pwf-form/styles/date');
+			$ren->content_for('styles', 'bower/pwf-form/styles/file');
 
 			$ren->content_for('scripts', 'bower/moment/moment');
 			$ren->content_for('scripts', 'bower/pwf-moment-compat/lib/moment-compat');
@@ -25,6 +26,9 @@ namespace System\Form
 			$ren->content_for('scripts', 'bower/pwf-form/lib/input/date');
 			$ren->content_for('scripts', 'bower/pwf-form/lib/input/time');
 			$ren->content_for('scripts', 'bower/pwf-form/lib/input/datetime');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input/file');
+			$ren->content_for('scripts', 'bower/pwf-input-gps/lib/gps');
+			$ren->content_for('scripts', 'bower/pwf-input-location/lib/location');
 
 			return div(array('pwform'), '<span class="def" style="display:none">' . $data . '</span>');
 
