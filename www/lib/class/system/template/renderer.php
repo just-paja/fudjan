@@ -62,7 +62,6 @@ namespace System\Template
 				"scripts" => array(
 					'bower/jquery/jquery.min',
 					'bower/pwf.js/lib/pwf',
-					'bower/pwf-jquery-compat/lib/jquery-compat',
 					'bower/pwf-storage/lib/storage',
 					'bower/pwf-config/lib/config',
 					'bower/pwf-html/lib/html',
@@ -266,7 +265,7 @@ namespace System\Template
 		 */
 		public function render_head()
 		{
-			return $this->render_meta()->render_title()->render_scripts()->render_styles();
+			return $this->render_meta()->render_title()->render_scripts()->render_styles()->render_frontend_config();
 		}
 
 
@@ -306,6 +305,7 @@ namespace System\Template
 		 */
 		public function render_scripts()
 		{
+			$this->content_for('scripts', 'bower/pwf-jquery-compat/lib/jquery-compat');
 			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
@@ -327,6 +327,20 @@ namespace System\Template
 				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
 			}
 
+			return $this;
+		}
+
+
+		public function render_frontend_config()
+		{
+			$cont = json_encode(array(
+				"locales" => array(
+					"url" => $this->url("locale_list"),
+					"lang" => cfg('locales', 'default_lang'),
+				),
+				"debug" => cfg('dev', 'debug')
+			));
+			$this->content_for('head', '<script type="text/javascript">var sys = '.$cont.'</script>');
 			return $this;
 		}
 

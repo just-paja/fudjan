@@ -1,5 +1,8 @@
 {
-	"debug":false,
+	"debug":{
+		"backend":false,
+		"frontend":false
+	},
 	"disable":{
 		"offcom":false,
 		"serial":false
