@@ -10,12 +10,12 @@ namespace System\Form\Widget
 			"type"         => array("varchar"),
 			"label"        => array("varchar"),
 			"kind"         => array("varchar"),
-			"info"         => array("varchar"),
+			"desc"         => array("varchar"),
 			"required"     => array('bool'),
 		);
 
 		const KIND  = 'input';
-		const TYPE  = 'location';
+		const TYPE  = 'gps';
 		const MODEL = '\System\Gps';
 		const IDENT = 'gps';
 
@@ -34,11 +34,6 @@ namespace System\Form\Widget
 				"label"    => 'form_gps_input_lng',
 				"required" => true,
 			),
-		);
-
-
-		protected static $resources = array(
-			'scripts' => array('scripts/pwf/form/jquery.gmap', 'scripts/pwf/form/gps'),
 		);
 	}
 }
