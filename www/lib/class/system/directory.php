@@ -105,6 +105,28 @@ namespace System
 		}
 
 
+		/** Find all children
+		 * @param string  $path   Path where the search will occur
+		 * @return list
+		 */
+		public static function ls($path)
+		{
+			$files = array();
+
+			if (is_dir($path)) {
+				$dir = opendir($path);
+
+				while ($file = readdir($dir)) {
+					if (strpos($file, '.') !== 0) {
+						$files[] = $file;
+					}
+				}
+			}
+
+			return $files;
+		}
+
+
 		/** Simplified find function that just returns list of files
 		 * @param string  $path   Path where the search will occur
 		 * @param array  &$files  File list will be put there
