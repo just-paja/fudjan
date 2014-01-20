@@ -16,8 +16,8 @@ pwf.register('search_tool', function()
 			{
 				if (typeof els.input === 'undefined') {
 					container.find('span.data').remove();
-					this.el('input',  $('<input type="text" name="search_tool_input" autocomplete="off">'));
-					this.el('result', $('<ul class="search_tool_result"></ul>'));
+					this.el('input',  pwf.jquery('<input type="text" name="search_tool_input" autocomplete="off">'));
+					this.el('result', pwf.jquery('<ul class="search_tool_result"></ul>'));
 					this.bind();
 
 					if (this.attr('placeholder') !== null) {
@@ -88,7 +88,7 @@ pwf.register('search_tool', function()
 					data.value = val;
 					results[val] = [];
 
-					$.ajax({
+					pwf.jquery.ajax({
 						"url":'/api/form_search_query/',
 						"data":data,
 						"dataType":'json',
@@ -119,7 +119,7 @@ pwf.register('search_tool', function()
 				for (var i = 0; i<data.length; i++) {
 					var
 						label_id = this.attr('name')+'_' + data[i].id,
-						elli = $(
+						elli = pwf.jquery(
 							'<li>'
 								+ '<div class="input-container"><input type="checkbox" name="'+this.attr('name')+'[]" id="' + label_id + '" value="' + data[i].id + '"></div>'
 								+ '<label for="' + label_id + '" class="label-right">'+this.get_data_label(data[i])+'</label>' +
@@ -178,10 +178,10 @@ pwf.register('search_tool', function()
 
 	this.init = function(container)
 	{
-		var tools = typeof container === 'undefined' ? $('form .search_tool'):container.find('.search_tool');
+		var tools = typeof container === 'undefined' ? pwf.jquery('form .search_tool'):container.find('.search_tool');
 
 		for (var i = 0; i<tools.length; i++) {
-			var container = $(tools[i]);
+			var container = pwf.jquery(tools[i]);
 			var data_container;
 
 			if ((data_container = container.find('span.data')).length === 1) {

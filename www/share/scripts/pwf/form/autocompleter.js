@@ -25,7 +25,7 @@ pwf.register('autocompleter', function()
 			els.container = param_el.parents('div').first();
 			els.container.addClass('input-pwf-autocompleter');
 
-			attrs = $.extend(attrs, param_attrs);
+			attrs = pwf.jquery.extend(attrs, param_attrs);
 			attrs['val'] = els.input.val();
 
 			els.input.attr('autocomplete', 'off');
@@ -73,7 +73,7 @@ pwf.register('autocompleter', function()
 						"value":val
 					};
 
-					$.ajax({
+					pwf.jquery.ajax({
 						"type":"POST",
 						"url":'/api/form_search_query/',
 						"data":data_send,
@@ -106,14 +106,14 @@ pwf.register('autocompleter', function()
 
 				if (data.length > 0) {
 					if (this.el('list') === null) {
-						this.el('list', $('<ul class="pwf_autocompleter"></ul>'));
+						this.el('list', pwf.jquery('<ul class="pwf_autocompleter"></ul>'));
 					}
 
 					this.el('list').html('');
 					var display = this.attr('display');
 
 					for (var i = 0; i < data.length; i++) {
-						var li = $('<li></li>');
+						var li = pwf.jquery('<li></li>');
 						var text = [];
 
 						for (var j = 0; j < display.length; j ++) {

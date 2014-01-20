@@ -12,20 +12,20 @@ pwf.register('tab_manager', function() {
 
 	this.is_ready = function()
 	{
-		return $.isReady;
+		return pwf.mi(['jquery']);
 	};
 
 
 	this.scan = function(container)
 	{
 		if (typeof container === 'undefined') {
-			els = $(selectors.join(', '));
+			els = pwf.jquery(selectors.join(', '));
 		} else {
 			els = container.find(selectors.join(', '));
 		}
 
 		for (var i = 0; i < els.length; i++) {
-			this.bind_to($(els[i]));
+			this.bind_to(pwf.jquery(els[i]));
 		}
 
 		return this;
@@ -35,7 +35,7 @@ pwf.register('tab_manager', function() {
 	this.bind_to = function(el)
 	{
 		var binder = {
-			"label_container":$('<div class="tab_labels"></div>'),
+			"label_container":pwf.jquery('<div class="tab_labels"></div>'),
 			"tabs":{
 
 			}
@@ -45,7 +45,7 @@ pwf.register('tab_manager', function() {
 		var tabs = el.find('.tab');
 
 		for (var i = 0; i < tabs.length; i++) {
-			var tab = $(tabs[i]);
+			var tab = pwf.jquery(tabs[i]);
 			var label = tab.find('.tab_label');
 
 			label.html('<div class="inner">' + label.html() + '</div>');
@@ -72,7 +72,7 @@ pwf.register('tab_manager', function() {
 		var labels = group.find('.tab_label');
 
 		for (var i = 0; i < labels.length; i++) {
-			var label = $(labels[i]);
+			var label = pwf.jquery(labels[i]);
 			if (i == tab_number) {
 				label.addClass('active');
 			} else {
@@ -81,7 +81,7 @@ pwf.register('tab_manager', function() {
 		}
 
 		for (var i = 0; i < tabs.length; i++) {
-			var tab = $(tabs[i]);
+			var tab = pwf.jquery(tabs[i]);
 			i == tab_number ? this.show_tab(tab):this.hide_tab(tab);
 		}
 

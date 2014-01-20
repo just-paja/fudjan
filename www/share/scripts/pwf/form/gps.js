@@ -26,7 +26,7 @@ pwf.register('gps', function()
 		var els;
 
 		if (typeof container === 'undefined') {
-			els = $(selectors.join(', '));
+			els = pwf.jquery(selectors.join(', '));
 		} else {
 			els = container.find(selectors.join(', '));
 		}
@@ -36,7 +36,7 @@ pwf.register('gps', function()
 		}
 
 		for (var i = 0; i < els.length; i++) {
-			el = $(els[i]);
+			el = pwf.jquery(els[i]);
 
 			if (!loaded) {
 				bind_cache.push(el);
@@ -55,13 +55,13 @@ pwf.register('gps', function()
 		};
 
 		for (var i = 0; i < inputs.length; i++) {
-			var input = $(inputs[i]);
+			var input = pwf.jquery(inputs[i]);
 
-			if (input.attr('name').match(/_lat$/)) {
+			if (input.attr('name').match(/_latpwf.jquery/)) {
 				binder['lat'] = input;
 			}
 
-			if (input.attr('name').match(/_lng$/)) {
+			if (input.attr('name').match(/_lngpwf.jquery/)) {
 				binder['lng'] = input;
 			}
 		}
@@ -76,9 +76,9 @@ pwf.register('gps', function()
 			var loc_inputs = el.parents('.input-location, .model_edit_system_location').find('input');
 
 			for (var i = 0; i < loc_inputs.length; i++) {
-				var input = $(loc_inputs[i]);
+				var input = pwf.jquery(loc_inputs[i]);
 
-				if (input.attr('name').match(/_addr$/)) {
+				if (input.attr('name').match(/_addrpwf.jquery/)) {
 					binder['addr'] = input;
 					binder['addr'].bind('keyup.gps', {"obj":this, "input":binder}, callback_addr_input);
 				}
@@ -104,7 +104,7 @@ pwf.register('gps', function()
 		var m = e.data.input.map.gMap('getMarker', 'pointer');
 		var pos = self.get_pos(e.data.input);
 
-		e.data.input.map.data('$gmap').setCenter(pos);
+		e.data.input.map.data('pwf.jquerygmap').setCenter(pos);
 		m.setPosition(pos);
 
 		if (typeof e.data.skip_addr === 'undefined') {
@@ -157,7 +157,7 @@ pwf.register('gps', function()
 							var m = input.map.gMap('getMarker', 'pointer');
 
 							m.setPosition(pos);
-							input.map.data('$gmap').setCenter(pos);
+							input.map.data('pwf.jquerygmap').setCenter(pos);
 							input.lat.val(pos.lat());
 							input.lng.val(pos.lng());
 
@@ -173,7 +173,7 @@ pwf.register('gps', function()
 
 	this.create_map = function(input)
 	{
-		input['map'] = $('<div class="map"></div>');
+		input['map'] = pwf.jquery('<div class="map"></div>');
 		input['map'].css({"min-height":200});
 		input.container.append(input['map']);
 
@@ -206,13 +206,13 @@ pwf.register('gps', function()
 	this.load_gm = function()
 	{
 		var url_maps = 'https://www.google.com/jsapi';
-		$.getScript(url_maps, function(obj) {
+		pwf.jquery.getScript(url_maps, function(obj) {
 			return function() {
 				google.load("maps", "3", {
 					"other_params":'sensor=true',
 					"callback" : function(obj) {
 						return function() {
-							$.getScript('/share/scripts/:lib/jquery/gmap', function(obj) {
+							pwf.jquery.getScript('/share/scripts/:lib/jquery/gmap', function(obj) {
 								return function() {
 									obj.proceed();
 								}

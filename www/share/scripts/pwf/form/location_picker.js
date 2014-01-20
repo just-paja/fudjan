@@ -13,9 +13,9 @@ pwf.register('location_picker', function()
 				var inputs = el.find('input');
 
 				for (var i = 0; i < inputs.length; i++) {
-					var input = $(inputs[i]);
+					var input = pwf.jquery(inputs[i]);
 
-					if (input.attr('name').match(/name$/)) {
+					if (input.attr('name').match(/namepwf.jquery/)) {
 
 						pwf.autocompleter.bind(input, {
 							"model":"System::Location",
@@ -49,21 +49,21 @@ pwf.register('location_picker', function()
 
 
 		for (var i = 0; i<inputs.length; i++) {
-			var input = $(inputs[i]);
+			var input = pwf.jquery(inputs[i]);
 
-			if (input.attr('name').match(/addr$/)) {
+			if (input.attr('name').match(/addrpwf.jquery/)) {
 				input.val(e.data.data.addr);
 			}
 
-			if (input.attr('name').match(/site$/)) {
+			if (input.attr('name').match(/sitepwf.jquery/)) {
 				input.val(e.data.data.site);
 			}
 
-			if (input.attr('name').match(/lat$/)) {
+			if (input.attr('name').match(/latpwf.jquery/)) {
 				input.val(gps.lat);
 			}
 
-			if (input.attr('name').match(/lng$/)) {
+			if (input.attr('name').match(/lngpwf.jquery/)) {
 				lng = input;
 				input.val(gps.lng);
 			}
@@ -93,13 +93,13 @@ pwf.register('location_picker', function()
 		var els;
 
 		if (typeof container === 'undefined') {
-			els = $(selectors.join(', '));
+			els = pwf.jquery(selectors.join(', '));
 		} else {
 			els = container.find(selectors.join(', '));
 		}
 
 		for (var i = 0; i < els.length; i++) {
-			this.bind($(els[i]));
+			this.bind(pwf.jquery(els[i]));
 		}
 	};
 

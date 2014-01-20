@@ -21,16 +21,16 @@ pwf.register('picker_image', function()
 
 	this.is_ready = function()
 	{
-		return $.isReady;
+		return pwf.mi(['jquery']);
 	};
 
 
 	this.scan = function(container)
 	{
-		var els = typeof container === 'undefined' ? $(selectors.join(', ')):container.find(selectors.join(', '))
+		var els = typeof container === 'undefined' ? pwf.jquery(selectors.join(', ')):container.find(selectors.join(', '))
 
 		for (var i = 0; i < els.length; i++) {
-			var el = $(els[i]);
+			var el = pwf.jquery(els[i]);
 
 			if (!el.hasClass(marker)) {
 				this.bind(el);
@@ -52,7 +52,7 @@ pwf.register('picker_image', function()
 		}
 
 		for (var i = 0 ; i <buttons.length; i++) {
-			var button = $(buttons[i]);
+			var button = pwf.jquery(buttons[i]);
 			button.bind('change', els, callback_button_change);
 
 			if (button.prop('checked')) {
@@ -66,7 +66,7 @@ pwf.register('picker_image', function()
 
 	var callback_button_change = function(e)
 	{
-		var button = $(this);
+		var button = pwf.jquery(this);
 
 		e.preventDefault();
 		e.stopPropagation();
