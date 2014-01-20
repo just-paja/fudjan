@@ -335,8 +335,9 @@ namespace System\Template
 		{
 			$cont = json_encode(array(
 				"locales" => array(
-					"url" => $this->url("locale_list"),
-					"lang" => cfg('locales', 'default_lang'),
+					"url"      => $this->url("locale_list"),
+					"lang"     => cfg('locales', 'default_lang'),
+					"autoload" => cfg('locales', 'autoload')
 				),
 				"debug" => cfg('dev', 'debug')
 			));

@@ -1,4 +1,5 @@
 {
 	"timezone":"Europe/Prague",
-	"default_lang":"en"
+	"default_lang":"cs",
+	"autoload":true
 }

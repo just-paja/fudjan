@@ -11,12 +11,9 @@ namespace System
 	class Locales
 	{
 		const DIR = '/etc/locales';
-		const DIR_MESSAGES = '/messages.d';
-		const DIR_MODULES = '/modules.d';
 		const ENCODING = 'UTF-8';
-		const LANG_DEFAULT = 'en_US';
+		const LANG_DEFAULT = 'en';
 		const TZ_DEFAULT = 'Europe/Prague';
-		const KEY_MESSAGES = 'messages';
 
 		const TRANS_NONE = 0;
 		const TRANS_STD  = 1;
@@ -66,9 +63,7 @@ namespace System
 		 */
 		public static function is_locale_available($locale)
 		{
-			if (strpos($locale, '_')) {
-				return is_dir(ROOT.self::DIR.'/'.$locale);
-			} else throw new \System\Error\Format(sprintf("Locale format must respect RFC 5646 and RFC 4647 (eg. en_US). Accepting underscore or dash. '%s' was given.", $locale));
+			return is_dir(ROOT.self::DIR.'/'.$locale);
 		}
 
 
@@ -113,15 +108,8 @@ namespace System
 		 */
 		public function set_locale($locale = null)
 		{
-			if (!is_null($locale)) {
-				$locale = str_replace('-', '_', $locale);
-			}
-
 			$this->locale = (is_null($locale) || !self::is_locale_available($locale)) ? self::get_default_lang():$locale;
-			$parts = explode('_', $this->locale);
-			$this->lang = $parts[0];
-			$this->load_messages();
-			return $this;
+			return $this->load_messages();
 		}
 
 
@@ -190,9 +178,9 @@ namespace System
 		 * @param string $lang
 		 * @return array
 		 */
-		public function get_messages()
+		public function get_messages($locale = null)
 		{
-			return $this->messages;
+			return is_null($locale) ? $this->messages:$this->messages[$locale];
 		}
 
 
@@ -203,7 +191,7 @@ namespace System
 		 */
 		public function trans($str, $args = null)
 		{
-			$msg = isset($this->messages[self::KEY_MESSAGES][$str]) ? $this->messages[self::KEY_MESSAGES][$str]:$str;
+			$msg = isset($this->messages[$str]) ? $this->messages[$str]:$str;
 
 			if (is_array($args) || (!is_null($args) && func_num_args() > 1)) {
 				if (!is_array($args)) {
@@ -213,32 +201,6 @@ namespace System
 
 				return vsprintf($msg, $args);
 			} else return $msg;
-		}
-
-
-		/** Load module
-		 * @param string $module
-		 * @param null|string $force_lang
-		 * @return void
-		 */
-		public function load_module($module)
-		{
-			if ($module === self::KEY_MESSAGES) {
-				throw new \System\Error\Argument(sprintf('Locales module must not be named %s', $module));
-			}
-
-			if (!isset($this->messages[$module])) {
-				if (!file_exists($f = ($p = ROOT.self::DIR.'/'.$this->locale.self::DIR_MODULES.'/'.$module).'.json')) {
-					$f = $p.'.core.json';
-				}
-
-				$this->messages[$module] = \System\Json::read($f);
-				$this->files[] = str_replace(ROOT, '', $f);
-
-				if (empty($this->messages[$module])) {
-					Status::report('error', sprintf('Locales module %s/%s is empty or broken', $this->locale, $module));
-				}
-			}
 		}
 
 
@@ -298,16 +260,22 @@ namespace System
 		 * @param string $lang
 		 * @return void
 		 */
-		private function load_messages()
+		private function load_messages($locale = null)
 		{
-			if (!isset($this->messages[self::KEY_MESSAGES])) {
+			if (is_null($locale)) {
+				$locale = $this->locale;
+			}
+
+			if (!isset($this->messages[$locale])) {
 				\System\Json::read_dist(
-					ROOT.self::DIR.'/'.$this->locale.self::DIR_MESSAGES,
-					$this->messages[self::KEY_MESSAGES],
+					ROOT.self::DIR.'/'.$locale,
+					$this->messages[$locale],
 					false,
 					$this->files
 				);
 			}
+
+			return $this;
 		}
 
 
