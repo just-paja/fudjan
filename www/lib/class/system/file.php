@@ -58,23 +58,6 @@ namespace System
 		}
 
 
-		/** Create instance from JSON
-		 * @param string $json
-		 */
-		public static function from_form($value)
-		{
-			$file = null;
-
-			if (any($value['file'])) {
-				$file = self::from_tmp($value['file']['tmp_name'], $value['file']['name']);
-			} else if (any($value['url'])) {
-				$file = self::fetch($value['url'])->temp();
-			}
-
-			return $file;
-		}
-
-
 		public static function from_tmp($path, $real_name)
 		{
 			$suff = self::get_suffix_from_name($real_name);
@@ -169,6 +152,12 @@ namespace System
 			}
 
 			return $suff;
+		}
+
+
+		public function get_url()
+		{
+			return str_replace(ROOT, '', $this->get_path());
 		}
 
 
@@ -611,6 +600,7 @@ namespace System
 		public function to_object()
 		{
 			return array(
+				"url"    => $this->get_url(),
 				"path"   => $this->get_path_temp(),
 				"name"   => $this->name,
 				"mime"   => $this->mime,
