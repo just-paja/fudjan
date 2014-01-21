@@ -53,7 +53,13 @@ namespace System\Form
 		public function val($value=null)
 		{
 			if (is_null($value)) {
-				return method_exists($this, 'val_get') ? $this->val_get():$this->form()->input_value($this->name);
+				$val = method_exists($this, 'val_get') ? $this->val_get():$this->form()->input_value($this->name);
+
+				if (!$val) {
+					$val = null;
+				}
+
+				return $val;
 			} else {
 				if (method_exists($this, 'val_set')) {
 					$this->val_set($value);
