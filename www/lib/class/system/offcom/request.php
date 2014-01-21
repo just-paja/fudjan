@@ -30,8 +30,6 @@ namespace System\Offcom
 				}
 
 				$content = curl_exec($ch);
-				$content = explode("\r\n\r\n", $content, 2);
-
 				$dataray = array("status"  => curl_getinfo($ch, CURLINFO_HTTP_CODE));
 				curl_close($ch);
 
@@ -39,8 +37,7 @@ namespace System\Offcom
 				if ($dataray['status'] === \System\Http\Response::FORBIDDEN) throw new \System\Error\Offcom(sprintf('Access to URL "%s" was denied', $url));
 				if ($dataray['status'] === \System\Http\Response::PAGE_NOT_FOUND) throw new \System\Error\Offcom(sprintf('Requested URL "%s" was not found', $url));
 
-				isset($content[0]) && $dataray['headers'] = $content[0];
-				isset($content[1]) && $dataray['content'] = $content[1];
+				isset($content[1]) && $dataray['content'] = $content;
 
 				return new Response($dataray);
 
