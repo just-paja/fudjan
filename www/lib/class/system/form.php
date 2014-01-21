@@ -764,6 +764,12 @@ namespace System
 			$attrs['data'] = $this->get_data(true);
 			$attrs['initial_check'] = $this->submited;
 
+			foreach ($attrs['data'] as $key=>$value) {
+				if ($value instanceof \DateTime) {
+					$attrs['data'][$key] = $value->format('c');
+				}
+			}
+
 			return $attrs;
 		}
 	}
