@@ -339,7 +339,10 @@ namespace System\Template
 					"lang"     => cfg('locales', 'default_lang'),
 					"autoload" => cfg('locales', 'autoload')
 				),
-				"debug" => cfg('dev', 'debug')
+				"debug" => cfg('dev', 'debug'),
+				"proxy" => array(
+					'url' => '/proxy/head/?url={url}'
+				),
 			));
 			$this->content_for('head', '<script type="text/javascript">var sys = '.$cont.'</script>');
 			return $this;
