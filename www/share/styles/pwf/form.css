@@ -16,13 +16,6 @@
 	vertical-align:top;
 }
 
-.pwform label,
-.pwform .input-container,
-.pwform .errors
-{
-	line-height:23px;
-}
-
 .pwform .input {
 	padding:0 5px;
 }
@@ -40,7 +33,6 @@
 .pwform ul li ul{padding:5px 0 0}
 .pwform ul li{margin:5px 0}
 .pwform ul li ul li{margin-left:15px}
-.pwform ul li ul li label{width:300px;}
 .pwform ul li label.label-left{ margin-right:7px; }
 .pwform .input-checkbox, .pwform .input-radio{margin-right:7px}
 .pwform .input-text, .pwform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
@@ -57,7 +49,7 @@
 	vertical-align:bottom;
 	margin-left:0px;
 }
-.pwform label{cursor:pointer; width:125px; display:inline-block; vertical-align:top; }
+.pwform label{cursor:pointer; display:inline-block; vertical-align:top; }
 .pwform input.input-checkbox{ margin-left:135px; }
 .pwform ul li ul.choice-group li{display:inline-block;width:200px}
 .pwform ul li ul.choice-group li label{width:auto;}
@@ -210,3 +202,6 @@
 	display:block;
 }
 
+
+.fp-upload .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-upload.png); }
+.fp-url-label .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-url.png); }
