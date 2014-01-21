@@ -30,14 +30,4 @@ function __autoload($class_name)
 	}
 
 	$cname = ucfirsts(members_to_path(explode('\\', $class_name)), '::', '::');
-
-	if ($found) {
-		method_exists($class_name, 'autoinit') && $class_name::autoinit();
-	} else {
-		throw new System\Error\File(sprintf('Class or interface "%s" was not found. Expected on path "%s"', $cname, $f));
-	}
-
-	if (!class_exists($class_name) && !interface_exists($class_name)) {
-		throw new System\Error(sprintf('Class or interface "%s" was expected in "%s" but not found.', $cname, $file));
-	}
 }
