@@ -2,9 +2,14 @@
 	"form-date":"Datum",
 	"form-time":"Čas",
 
+	"form-file-upload-replace":"Nahrát soubor",
 	"form-file-upload-new":"Nahrát soubor",
 	"form-file-use-url":"Použít URL",
 	"form-file-specify-url":"Vložte URL",
+	"form-file-edit":"Upravit",
+	"form-file-preview":"Náhled",
+	"form-file-delete":"Smazat",
+	"form-file-cancel":"Zrušit",
 
 	"form-file-url":"URL",
 	"form-file-name":"Název souboru",
@@ -13,8 +18,8 @@
 
 	"form-file-will-be-uploaded":"Soubor bude uložen.",
 	"form-file-will-be-downloaded":"Soubor bude stažen na server.",
+	"form-file-will-be-dropped":"Soubor bude smazán.",
 	"form-file-is-saved":"Soubor je uložen na serveru.",
-	"form-cancel":"Zrušit",
 
 	"--":""
 }
