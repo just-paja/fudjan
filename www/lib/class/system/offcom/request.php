@@ -16,7 +16,7 @@ namespace System\Offcom
 		 * @param string $url Requested URL
 		 * @return array
 		 */
-		public static function get($url)
+		public static function get($url, $head = false)
 		{
 			if (function_exists('curl_init')) {
 				$ch = curl_init();
@@ -24,6 +24,11 @@ namespace System\Offcom
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($ch, CURLOPT_USERAGENT, introduce());
 				curl_setopt($ch, CURLOPT_HEADER, 1);
+
+				if ($head) {
+					curl_setopt($ch, CURLOPT_NOBODY, true);
+				}
+
 				$content = curl_exec($ch);
 				$content = explode("\r\n\r\n", $content, 2);
 
