@@ -327,6 +327,10 @@ namespace System
 			if ($data->ok()) {
 				$f = new self(array("name" => $name));
 				$f->set_content($data->content);
+
+				$f->size = $data->size;
+				$f->mime = $data->mime;
+
 				return $f;
 			} else throw new \System\Error\Connection('Couldn\'t fetch file', sprintf('HTTP error %s ', $data->status));
 		}
@@ -408,6 +412,7 @@ namespace System
 			}
 
 			$this->update_attrs(array(
+				"name" => basename($this->get_path_temp()),
 				"path" => dirname($this->get_path_temp()),
 				"temp" => true,
 			));
@@ -600,6 +605,18 @@ namespace System
 			}
 
 			return $encode ? json_encode($data):$data;
+		}
+
+
+		public function to_object()
+		{
+			return array(
+				"path"   => $this->get_path_temp(),
+				"name"   => $this->name,
+				"mime"   => $this->mime,
+				"size"   => $this->size,
+				"method" => $this->method,
+			);
 		}
 
 
