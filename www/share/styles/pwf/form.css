@@ -205,3 +205,5 @@
 
 .fp-upload .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-upload.png); }
 .fp-url-label .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-url.png); }
+.fp-cancel-label .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-back.png); }
+.fp-del-label .icon { background-image:url(/share/bower/pwf-input-file/pixmaps/file-delete.png); }
