@@ -83,6 +83,7 @@ namespace System
 			return new self($attrs);
 		}
 
+
 		/** Constructor addon
 		 * @return void
 		 */
@@ -418,11 +419,14 @@ namespace System
 				$this->check_rendering_group('inputs');
 			}
 
-			$el = null;
 			$attrs['form'] = &$this;
 
 			if (isset($attrs['value'])) {
 				$this->use_value($attrs['name'], $attrs['value'], true);
+			}
+
+			if (!isset($attrs['type'])) {
+				$attrs['type'] = 'text';
 			}
 
 			$attrs['value'] = $this->get_input_value_by_name($attrs['name']);
@@ -438,14 +442,11 @@ namespace System
 				$attrs['checked'] = !is_null($ref) && $ref;
 			}
 
-			if ($attrs['type'] === 'rte')      $el = new \System\Form\Widget\Rte($attrs);
-			if ($attrs['type'] === 'action')   $el = new \System\Form\Widget\Action($attrs);
-			if ($attrs['type'] === 'gps')      $el = new \System\Form\Widget\Gps($attrs);
-			if ($attrs['type'] === 'image')    $el = new \System\Form\Widget\Image($attrs);
-			if ($attrs['type'] === 'search')   $el = new \System\Form\Widget\Search($attrs);
-			if ($attrs['type'] === 'location') $el = new \System\Form\Widget\Location($attrs);
+			$cname = '\\System\\Form\\Input\\'.ucfirst($attrs['type']);
 
-			if (is_null($el)) {
+			if (class_exists($cname)) {
+				$el = new $cname($attrs);
+			} else {
 				$el = new \System\Form\Input($attrs);
 			}
 
@@ -578,20 +579,12 @@ namespace System
 		}
 
 
-		public function get_data()
+		public function get_data($with_prefix=false)
 		{
-			if ($this->submited) {
-				$data = $this->data_commited;
-			} else {
-				$data = $this->data_default;
-			}
-
 			$out = array();
 
-			foreach ($data as $key=>$value) {
-				if (!in_array($key, $this->ignored)) {
-					$out[$key] = $value;
-				}
+			foreach ($this->inputs as $input) {
+				$out[($with_prefix ? $this->get_prefix():'').$input->name] = $input->val();
 			}
 
 			return $out;
@@ -768,7 +761,7 @@ namespace System
 			);
 
 			$attrs['elements'] = $containers;
-			$attrs['data'] = $this->get_data();
+			$attrs['data'] = $this->get_data(true);
 			$attrs['initial_check'] = $this->submited;
 
 			return $attrs;
