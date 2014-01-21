@@ -11,7 +11,7 @@ namespace System\Form\Input
 
 			if ($value) {
 				if ($this->multiple) {
-					if (is_array($this->options)) {
+					if (is_array($this->options) && is_array($value)) {
 						foreach ($value as $item) {
 							$valid = array_key_exists($item, $this->options);
 
@@ -28,6 +28,22 @@ namespace System\Form\Input
 			}
 
 			return $valid;
+		}
+
+
+		public function val_get()
+		{
+			$value = $this->form()->input_value($this->name);
+
+			if ($this->multiple && $value) {
+				if (is_array($value)) {
+					if (isset($value[0]) && !$value[0]) {
+						$value = null;
+					}
+				}
+			}
+
+			return $value;
 		}
 	}
 }
