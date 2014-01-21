@@ -765,8 +765,12 @@ namespace System
 			$attrs['initial_check'] = $this->submited;
 
 			foreach ($attrs['data'] as $key=>$value) {
-				if ($value instanceof \DateTime) {
+				if (is_null($value)) {
+					unset($attrs['data'][$key]);
+				} else if ($value instanceof \DateTime) {
 					$attrs['data'][$key] = $value->format('c');
+				} else if (method_exists($value, 'to_object')) {
+					$attrs['data'][$key] = $value->to_object();
 				}
 			}
 
