@@ -33,8 +33,7 @@ Compiler::process('compile', 'Preparing files', array(), function($make, $data) 
 	$info = Compiler::get('meta');
 
 	$make->progress(0, 100);
-	$head = $pkg['branch'] | 'HEAD';
-	exec('cd "'.$pkg['dir-src'].'"; git archive --format tar '.$head.' > '.$path['file-tar']);
+	exec('cd "'.$pkg['dir-src'].'"; git archive --format tar HEAD > '.$path['file-tar']);
 
 	$make->progress(50, 100);
 
