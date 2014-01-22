@@ -66,7 +66,6 @@ namespace System
 		public static function read_dist($dir_dist, &$temp = array(), $assoc_keys = false, &$files = array())
 		{
 			if (\System\Directory::check($dir_dist, false)) {
-				!$assoc_keys && ($temp = array());
 				$dir = opendir($dir_dist);
 				while ($f = readdir($dir)) {
 					if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
@@ -75,10 +74,17 @@ namespace System
 						$files[] = str_replace(ROOT, '', $dir_dist.'/'.$f);
 
 						if ($assoc_keys) {
-							$temp[$mod] = $json;
-						} else $temp = array_merge_recursive($temp, $json);
+							if (isset($temp[$mod])) {
+								$temp[$mod] = array_merge_recursive($temp[$mod], $json);
+							} else {
+								$temp[$mod] = $json;
+							}
+						} else {
+							$temp = array_merge_recursive($temp, $json);
+						}
 					}
 				}
+
 				closedir($dir);
 				return $temp;
 			} else throw new \System\Error\File(sprintf('Directory "%s" either does not exist or is not accessible.', $dir_dist));
@@ -89,7 +95,7 @@ namespace System
 			$temp = array();
 
 			foreach ($dirs as $dir) {
-				self::read_dist($dir, $temp, $assoc_keys, $files);
+				$temp = self::read_dist($dir, $temp, $assoc_keys, $files);
 			}
 
 			return $temp;

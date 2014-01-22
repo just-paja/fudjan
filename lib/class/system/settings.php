@@ -106,10 +106,10 @@ namespace System
 		}
 
 
-		public static function read($dir, $assoc_keys = false)
+		public static function read($dir, $assoc_keys = false, &$files=array())
 		{
 			$dirs = \System\Composer::list_dirs($dir);
-			return \System\Json::read_dist_all($dirs, $assoc_keys);
+			return \System\Json::read_dist_all($dirs, $assoc_keys, $files);
 		}
 
 

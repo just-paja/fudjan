@@ -267,12 +267,7 @@ namespace System
 			}
 
 			if (!isset($this->messages[$locale])) {
-				\System\Json::read_dist(
-					ROOT.self::DIR.'/'.$locale,
-					$this->messages[$locale],
-					false,
-					$this->files
-				);
+				$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
 			}
 
 			return $this;
