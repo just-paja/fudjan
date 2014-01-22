@@ -1,6 +1,7 @@
 {
 	"name":"just-paja/pwf",
 	"description":"Purple web framework; framework with modules and layouts",
+	"license":"GPL-3.0+",
 	"config":{
 		"vendor-dir":"lib/vendor"
 	}
