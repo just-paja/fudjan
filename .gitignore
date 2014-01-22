@@ -4,6 +4,7 @@ etc/routes.d/*
 etc/santa/*
 var/*
 .htaccess
+composer.lock
 etc/install.lock
 lib/include/devel.php
 lib/vendor
