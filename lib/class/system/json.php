@@ -84,6 +84,17 @@ namespace System
 			} else throw new \System\Error\File(sprintf('Directory "%s" either does not exist or is not accessible.', $dir_dist));
 		}
 
+		public static function read_dist_all(array $dirs, $assoc_keys = false, &$files = array())
+		{
+			$temp = array();
+
+			foreach ($dirs as $dir) {
+				self::read_dist($dir, $temp, $assoc_keys, $files);
+			}
+
+			return $temp;
+		}
+
 
 		/** Get JSON error description
 		 * @param int $id
