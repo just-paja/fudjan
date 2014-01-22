@@ -14,15 +14,15 @@ namespace System
 	 */
 	class Settings
 	{
-		const CACHE_FILE        = '/var/cache/settings';
-		const DIR_CONF_ALL      = '/etc';
-		const DIR_CONF_DIST     = '/etc/conf.d';
-		const DIR_CONF_GLOBAL   = '/etc/conf.d/global';
-		const DIR_CONF_ROUTES   = '/etc/routes.d';
-		const DIR_CONF_STATIC   = '/etc/default/conf.d';
-		const DIR_ROUTES_STATIC = '/etc/default/routes.d';
-		const FILE_VERSION      = '/etc/santa/core/pwf/version';
-		const CONF_FILE_REGEXP  = '/^[a-z].*\.json$/i';
+		const CACHE_FILE             = '/var/cache/settings';
+		const DIR_CONF_ALL           = '/etc';
+		const DIR_CONF_DIST          = '/etc/conf.d';
+		const DIR_CONF_GLOBAL        = '/etc/conf.d/global';
+		const DIR_CONF_ROUTES        = '/etc/routes.d';
+		const DIR_CONF_STATIC        = '/etc/default/conf.d';
+		const DIR_CONF_ROUTES_STATIC = '/etc/default/routes.d';
+		const FILE_VERSION           = '/etc/santa/core/pwf/version';
+		const CONF_FILE_REGEXP       = '/^[a-z].*\.json$/i';
 
 		/** Is the module initialized and ready */
 		private static $ready = false;
@@ -80,25 +80,21 @@ namespace System
 			self::set_env();
 			self::check_env();
 
-			$default = array();
+			$default = self::read(self::DIR_CONF_STATIC, true);
 			$global  = array();
 			$conf    = array();
 
-			\System\Json::read_dist(ROOT.self::DIR_CONF_STATIC, $default, true);
-			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
-
 			\System\Directory::check(ROOT.self::DIR_CONF_GLOBAL);
+			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
 			\System\Json::read_dist(ROOT.self::DIR_CONF_GLOBAL, $global, true);
 
-			$global = array_replace_recursive($default, $global);
-			self::$conf = array_replace_recursive($global, $conf);
+			self::$conf = array_replace_recursive($default, $global, $conf);
 			$pages_user = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
 			$pages_api  = array();
 
-			self::$conf['routes'] = array();
-			\System\Json::read_dist(ROOT.self::DIR_CONF_ROUTES, self::$conf['routes'], true);
+			self::$conf['routes'] = self::read(self::DIR_CONF_ROUTES, true);
 
-			$api = \System\Json::read_dist(ROOT.self::DIR_ROUTES_STATIC);
+			$api = self::read(self::DIR_CONF_ROUTES_STATIC);
 
 			foreach (self::$conf['routes'] as &$list) {
 				foreach ($api as $url) {
@@ -106,15 +102,14 @@ namespace System
 				}
 			}
 
-			if (file_exists($version_path = ROOT.self::FILE_VERSION)) {
-				$cfg = \System\Json::read($version_path);
-			} else {
-				\System\Json::put($version_path, $cfg = self::$version_default);
-			}
-
-			self::$conf['own'] = $cfg;
-			ksort(self::$conf);
 			Status::report('info', "Settings reloaded");
+		}
+
+
+		public static function read($dir, $assoc_keys = false)
+		{
+			$dirs = \System\Composer::list_dirs($dir);
+			return \System\Json::read_dist_all($dirs, $assoc_keys);
 		}
 
 

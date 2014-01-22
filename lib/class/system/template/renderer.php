@@ -93,7 +93,7 @@ namespace System\Template
 
 			$this->response->flush();
 
-			if ($debug && !$this->response->no_debug) {
+			if (false && $debug && !$this->response->no_debug) {
 				$this->partial('system/status');
 				$this->content_for('styles', 'styles/pwf/devbar');
 				$this->content_for('scripts', 'scripts/pwf/devbar');
