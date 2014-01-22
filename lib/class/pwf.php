@@ -18,12 +18,7 @@ abstract class Pwf
 
 	public static function get_version($directory)
 	{
-		$ver = exec("cd ".$directory."; git log --pretty=\'%b\' ".self::get_branch($directory)." | sort | uniq | wc -l");
-		$subver = floor($ver/100);
-		$microver = floor($ver - $subver * 100);
-		$mver = 0;
-
-		return $mver.".".$subver.".".$microver;
+		return exec("git describe --tags");
 	}
 
 
