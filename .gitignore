@@ -6,4 +6,5 @@ var/*
 .htaccess
 etc/install.lock
 lib/include/devel.php
+lib/vendor
 share/bower
