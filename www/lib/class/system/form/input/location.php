@@ -4,6 +4,14 @@ namespace System\Form\Input
 {
 	class Location extends \System\Form\Input
 	{
+		protected static $resources = array(
+			"scripts" => array(
+				'bower/pwf-input-gps/lib/gps',
+				'bower/pwf-input-location/lib/location'
+			),
+		);
+
+
 		public function val_get()
 		{
 			$val = $this->form()->input_value($this->name);

@@ -4,6 +4,18 @@ namespace System\Form\Input
 {
 	class Datetime extends \System\Form\Input
 	{
+		protected static $resources = array(
+			"styles" => array('bower/pwf-form/styles/date'),
+			"scripts" => array(
+				'bower/moment/moment',
+				'bower/pwf-moment-compat/lib/moment-compat',
+				'bower/pwf-form/lib/input/date',
+				'bower/pwf-form/lib/input/time',
+				'bower/pwf-form/lib/input/datetime'
+			),
+		);
+
+
 		public function is_valid()
 		{
 			$valid = parent::is_valid();

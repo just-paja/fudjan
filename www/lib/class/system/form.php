@@ -776,5 +776,35 @@ namespace System
 
 			return $attrs;
 		}
+
+
+		public function collect_resources(\System\Template\Renderer $ren)
+		{
+			$ren->content_for('styles', 'bower/pwf-form/styles/form');
+			$ren->content_for('styles', 'styles/pwf/form');
+
+			$ren->content_for('scripts', 'bower/pwf-queue/lib/queue');
+			$ren->content_for('scripts', 'bower/pwf-comm/lib/comm');
+			$ren->content_for('scripts', 'bower/pwf-comm/lib/mods/http');
+			$ren->content_for('scripts', 'bower/pwf-comm-form/lib/comm-form');
+			$ren->content_for('scripts', 'bower/pwf-locales/lib/locales');
+
+			$ren->content_for('scripts', 'bower/pwf-form/lib/form');
+			$ren->content_for('scripts', 'bower/pwf-form/lib/input');
+
+			foreach ($this->inputs as $input) {
+				$input->collect_resources($ren);
+			}
+
+			return $this;
+		}
+
+
+		public function render(\System\Template\Renderer $ren)
+		{
+			$this->collect_resources($ren);
+			return div(array('pwform'), '<span class="def" style="display:none">'.json_encode($this->to_object()).'</span>');
+		}
+
 	}
 }

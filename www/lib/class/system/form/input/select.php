@@ -4,6 +4,11 @@ namespace System\Form\Input
 {
 	class Select extends \System\Form\Input
 	{
+		protected static $resources = array(
+			"scripts" => array('bower/pwf-form/lib/input/select'),
+		);
+
+
 		public function is_valid()
 		{
 			$valid = parent::is_valid();

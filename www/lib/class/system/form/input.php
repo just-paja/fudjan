@@ -22,6 +22,12 @@ namespace System\Form
 			'ident' => array("varchar"),
 		);
 
+		protected static $resources = array(
+			"scripts" => array(
+				'bower/pwf-form/lib/input/default',
+				'bower/pwf-form/lib/input/textarea'
+			)
+		);
 
 		private static $buttons = array('submit', 'button', 'reset');
 
@@ -83,6 +89,18 @@ namespace System\Form
 			}
 
 			return $data;
+		}
+
+
+		public function collect_resources(\System\Template\Renderer $ren)
+		{
+			foreach ($this::$resources as $type=>$list) {
+				foreach ($list as $url) {
+					$ren->content_for($type, $url);
+				}
+			}
+
+			return $this;
 		}
 	}
 }
