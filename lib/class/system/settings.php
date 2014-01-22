@@ -26,6 +26,7 @@ namespace System
 
 		/** Is the module initialized and ready */
 		private static $ready = false;
+		private static $loaded = array();
 
 		const CACHE_TTL = 3600;
 
@@ -80,18 +81,12 @@ namespace System
 			self::set_env();
 			self::check_env();
 
-			$default = self::read(self::DIR_CONF_STATIC, true);
-			$global  = array();
-			$conf    = array();
-
 			\System\Directory::check(ROOT.self::DIR_CONF_GLOBAL);
-			\System\Json::read_dist(ROOT.self::DIR_CONF_DIST.'/'.self::$env, $conf, true);
-			\System\Json::read_dist(ROOT.self::DIR_CONF_GLOBAL, $global, true);
+			$default = self::read(self::DIR_CONF_STATIC, true, self::$loaded);
+			$global  = self::read(self::DIR_CONF_GLOBAL, true, self::$loaded);
+			$conf    = self::read(self::DIR_CONF_DIST.'/'.self::get_env(), true, self::$loaded);
 
 			self::$conf = array_replace_recursive($default, $global, $conf);
-			$pages_user = \System\Json::read($p = ROOT.self::DIR_CONF_DIST.'/pages.json', true);
-			$pages_api  = array();
-
 			self::$conf['routes'] = self::read(self::DIR_CONF_ROUTES, true);
 
 			$api = self::read(self::DIR_CONF_ROUTES_STATIC);
