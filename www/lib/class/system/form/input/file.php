@@ -45,6 +45,10 @@ namespace System\Form\Input
 					$file->method = 'keep';
 					$file->mime = $val['mime'];
 					$val = $file;
+				} else if ($val['method'] == 'save') {
+					$file = \System\File::from_path($val['path']);
+					$file->read_meta();
+					$val = $file;
 				} else if ($val['method'] == 'drop') {
 					$val = null;
 				}
