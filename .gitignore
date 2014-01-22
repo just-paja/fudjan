@@ -1,9 +1,9 @@
 packages/*
-www/etc/conf.d/*
-www/etc/routes.d/*
-www/etc/santa/*
-www/var/*
-www/.htaccess
-www/etc/install.lock
-www/lib/include/devel.php
-www/share/bower
+etc/conf.d/*
+etc/routes.d/*
+etc/santa/*
+var/*
+.htaccess
+etc/install.lock
+lib/include/devel.php
+share/bower
