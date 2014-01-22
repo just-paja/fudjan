@@ -43,6 +43,10 @@ namespace System
 				}
 			}
 
+			if (is_dir(BASE_DIR.$relative_path)) {
+				$list[] = BASE_DIR.$relative_path;
+			}
+
 			return $list;
 		}
 	}
