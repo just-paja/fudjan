@@ -31,7 +31,7 @@ namespace System\Form
 			$ren->content_for('scripts', 'bower/pwf-form/lib/input/datetime');
 			$ren->content_for('scripts', 'bower/pwf-input-file/lib/file');
 			$ren->content_for('scripts', 'bower/pwf-input-gps/lib/gps');
-			$ren->content_for('scripts', 'bower/pwf-input-gps/lib/location');
+			$ren->content_for('scripts', 'bower/pwf-input-location/lib/location');
 
 			return div(array('pwform'), '<span class="def" style="display:none">' . $data . '</span>');
 		}

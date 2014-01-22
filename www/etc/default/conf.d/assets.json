@@ -7,6 +7,7 @@
 		"pwf-storage":"*",
 		"pwf-form":"*",
 		"pwf-input-gps":"*",
+		"pwf-input-location":"*",
 		"pwf-input-file":"*"
 	}
 }

@@ -97,6 +97,12 @@ namespace System
 		}
 
 
+		public function to_object()
+		{
+			return $this->get_data();
+		}
+
+
 		/* Get object data
 		 * @return array
 		 */

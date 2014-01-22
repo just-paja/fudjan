@@ -566,5 +566,27 @@ namespace System\Model
 		{
 			return sprintf('[%s]', \System\Loader::get_model_from_class(get_class($this)));
 		}
+
+
+		public function to_object()
+		{
+			return self::to_object_batch($this->get_data());
+		}
+
+
+		public static function to_object_batch($data)
+		{
+			if (is_array($data)) {
+				foreach ($data as $key=>$value) {
+					$data[$key] = self::to_object_batch($value);
+				}
+			} else if (is_object($data)) {
+				if (method_exists($data, 'to_object')) {
+					$data = $data->to_object();
+				}
+			}
+
+			return $data;
+		}
 	}
 }

@@ -21,5 +21,9 @@
 	"form-file-will-be-dropped":"Soubor bude smazán.",
 	"form-file-is-saved":"Soubor je uložen na serveru.",
 
+	"form-location-name":"Název umístění",
+	"form-location-site":"Web",
+	"form-location-addr":"Adresa",
+
 	"--":""
 }
