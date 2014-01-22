@@ -91,6 +91,7 @@ namespace System
 		public static function find_all_files($path, &$files = array(), $regexp = null)
 		{
 			$dir = opendir($path);
+
 			while ($file = readdir($dir)) {
 				if (strpos($file, '.') !== 0) {
 					if (is_dir($p = $path.'/'.$file)) {
@@ -109,7 +110,7 @@ namespace System
 		 * @param string  $path   Path where the search will occur
 		 * @return list
 		 */
-		public static function ls($path)
+		public static function ls($path, $mod='')
 		{
 			$files = array();
 
@@ -118,9 +119,17 @@ namespace System
 
 				while ($file = readdir($dir)) {
 					if (strpos($file, '.') !== 0) {
-						$files[] = $file;
+						if ($mod) {
+							if (strpos($mod, 'd') !== false && is_dir($path.'/'.$file)) {
+								$files[] = $file;
+							}
+						} else {
+							$files[] = $file;
+						}
 					}
 				}
+
+				closedir($dir);
 			}
 
 			return $files;
