@@ -1,4 +1,6 @@
 {
+	"name":"pwf",
+	"description":"Purple web framework; framework with modules and layouts",
 	"config":{
 		"vendor-dir":"lib/vendor"
 	}
