@@ -43,7 +43,7 @@ namespace System
 				}
 			}
 
-			if (is_dir(BASE_DIR.$relative_path)) {
+			if (BASE_DIR != ROOT && is_dir(BASE_DIR.$relative_path)) {
 				$list[] = BASE_DIR.$relative_path;
 			}
 
