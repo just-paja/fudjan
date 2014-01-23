@@ -24,21 +24,25 @@ namespace System
 				$list[] = ROOT.$relative_path;
 			}
 
-			$vendors = \System\Directory::ls(ROOT.self::DIR_VENDOR, 'd');
+			foreach (array(ROOT.self::DIR_VENDOR, BASE_DIR.self::DIR_VENDOR) as $base) {
+				if (is_dir($base)) {
+					$vendors = \System\Directory::ls($base, 'd');
 
-			foreach ($vendors as $vendor) {
-				if ($vendor == 'composer') {
-					continue;
-				}
+					foreach ($vendors as $vendor) {
+						if ($vendor == 'composer') {
+							continue;
+						}
 
-				$vendor_path = ROOT.self::DIR_VENDOR.'/'.$vendor;
-				$libs = \System\Directory::ls($vendor_path, 'd');
+						$vendor_path = $base.'/'.$vendor;
+						$libs = \System\Directory::ls($vendor_path, 'd');
 
-				foreach ($libs as $lib) {
-					$dir = $vendor_path.'/'.$lib.$relative_path;
+						foreach ($libs as $lib) {
+							$dir = $vendor_path.'/'.$lib.$relative_path;
 
-					if (\System\Directory::check($dir, false)) {
-						$list[] = $dir;
+							if (\System\Directory::check($dir, false)) {
+								$list[] = realpath($dir);
+							}
+						}
 					}
 				}
 			}
@@ -47,7 +51,7 @@ namespace System
 				$list[] = BASE_DIR.$relative_path;
 			}
 
-			return $list;
+			return array_unique($list);
 		}
 	}
 }
