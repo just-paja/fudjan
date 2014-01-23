@@ -71,7 +71,7 @@ namespace System
 					if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 						list($mod) = explode(".", $f);
 						$json = (array) self::decode(\System\File::read($dir_dist.'/'.$f));
-						$files[] = str_replace(ROOT, '', $dir_dist.'/'.$f);
+						$files[] = $dir_dist.'/'.$f;
 
 						if ($assoc_keys) {
 							if (isset($temp[$mod])) {
