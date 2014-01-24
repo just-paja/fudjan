@@ -1,21 +1,21 @@
 <?
 
-Tag::doctype();
-Tag::html();
+echo doctype();
+echo html($locales->get_lang());
 
-	Tag::head();
-		$renderer->content_for('styles', 'pwf/base');
-		$renderer->content_for('styles', 'pwf/errors');
-		$renderer->content_from('head');
-	Tag::close('head');
+	echo head();
+		$ren->content_for('styles', 'styles/pwf/fonts');
+		$ren->content_for('styles', 'styles/pwf/errors');
+		$ren->content_from('head');
+	close('head');
 
-	Tag::body(array("class" => 'error'));
+	echo body(array("class" => 'error'));
 		Tag::section(array("id" => 'container'));
 
 			$this->yield();
 			$this->slot();
 
-		Tag::close('section');
-		Tag::footer(array("content" => introduce()));
-	Tag::close('body');
-Tag::close('html');
+		close('section');
+		Tag::footer(array("content" => \System\Status::introduce()));
+	close('body');
+close('html');

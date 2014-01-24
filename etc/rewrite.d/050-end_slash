@@ -1,5 +1,0 @@
-# Add trailing slash to the end
-RewriteCond %{REQUEST_URI} ^.+$
-RewriteCond %{REQUEST_URI} [^/]$
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule (.*) /$1\/ [R=301,L]

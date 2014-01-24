@@ -5,4 +5,4 @@
  */
 
 echo $renderer->heading($ren->trans('core_access_denied'));
-Tag::p(array("class" => 'desc', "content" => $ren->trans('core_access_denied_text')));
+Tag::p(array("class" => 'advice desc', "content" => $ren->trans('core_access_denied_text')));

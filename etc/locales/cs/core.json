@@ -2,6 +2,12 @@
 	"yes":"ano",
 	"no":"ne",
 
+	"core_page_not_found":"Stránka nenalezena",
+	"core_page_not_found_text":"Stránka, kterou hledáte neexistuje.",
+
+	"core_page_access_denied":"Přístup zamítnut",
+	"core_page_access_denied_text":"Na tuto stránku nemáte přístup. Pokud si myslíte, že je to chyba, kontaktujte administrátora.",
+
 	"form_image_input_action":"Operace s obrázkem",
 	"form_image_input_none":"Žádný obrázek",
 	"form_image_input_keep":"Ponechat stávající",

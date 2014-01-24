@@ -32,6 +32,7 @@ namespace System
 			self::bind_error_handlers();
 			Settings::init();
 			Locales::init();
+			Router::update_rewrite();
 		}
 
 

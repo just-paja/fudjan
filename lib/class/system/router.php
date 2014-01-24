@@ -83,7 +83,11 @@ namespace System
 		public static function get_url($host, $name, array $args = array(), $variation = 0)
 		{
 			if ($domain = self::get_domain($host)) {
-				$routes = cfg('routes', $domain);
+				try {
+					$routes = cfg('routes', $domain);
+				} catch (\System\Error\Config $e) {
+					$routes = array();
+				}
 
 				foreach ($routes as $route) {
 					if (isset($route[0]) && isset($route[2]) && $name == $route[2]) {
@@ -236,7 +240,13 @@ namespace System
 		 */
 		public static function update_rewrite()
 		{
-			return \System\File::put(ROOT.self::REWRITE_TARGET, self::generate_rewrite_rules());
+			if (!\System\File::check($p = BASE_DIR.self::REWRITE_TARGET)) {
+				$val = \System\File::put($p, self::generate_rewrite_rules());
+				Status::report('info', "Rewrite rules refreshed");
+				return $val;
+			}
+
+			return true;
 		}
 
 

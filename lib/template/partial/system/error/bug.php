@@ -6,7 +6,7 @@
  */
 
 try {
-	$generator = introduce();
+	$generator = \System\Status::introduce();
 } catch(Exception $e) { $generator = 'pwf-unknown'; }
 
 $heading = 'core_bug_report_heading';

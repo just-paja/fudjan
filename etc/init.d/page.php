@@ -19,15 +19,20 @@ if (System\Settings::is_this_first_run()) {
 
 	$request = System\Http\Request::from_hit();
 	$request->init();
-	$response = $request->create_response();
 
-	if ($response) {
-		$response->init();
+	if (\System\Resource::is_resource_url($request->path)) {
+		\System\Resource::request($request);
+	} else {
+		$response = $request->create_response();
 
-		if ($response->is_readable()) {
+		if ($response) {
+			$response->init();
 
-			$response->exec()->render()->send_headers()->send_content();
+			if ($response->is_readable()) {
 
-		} else throw new \System\Error\AccessDenied();
-	} else throw new \System\Error\NotFound();
+				$response->exec()->render()->send_headers()->send_content();
+
+			} else throw new \System\Error\AccessDenied();
+		} else throw new \System\Error\NotFound();
+	}
 }

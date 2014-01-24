@@ -28,12 +28,6 @@ namespace
 	}
 
 
-	function introduce()
-	{
-		return \System\Status::introduce();
-	}
-
-
 	function doctype()
 	{
 		return Tag::doctype();

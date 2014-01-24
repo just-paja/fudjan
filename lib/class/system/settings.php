@@ -21,6 +21,7 @@ namespace System
 		const DIR_CONF_ROUTES        = '/etc/routes.d';
 		const DIR_CONF_STATIC        = '/etc/default/conf.d';
 		const DIR_CONF_ROUTES_STATIC = '/etc/default/routes.d';
+		const DIR_CONF_ERRORS        = '/etc/errors.d';
 		const FILE_VERSION           = '/etc/santa/core/pwf/version';
 		const CONF_FILE_REGEXP       = '/^[a-z].*\.json$/i';
 
@@ -90,6 +91,10 @@ namespace System
 			self::$conf['routes'] = self::read(self::DIR_CONF_ROUTES, true);
 
 			$api = self::read(self::DIR_CONF_ROUTES_STATIC);
+
+			if (empty(self::$conf['routes'])) {
+				self::$conf['routes']['global'] = \System\Json::read(ROOT.self::DIR_CONF_ERRORS.'/no-routes.json');
+			}
 
 			foreach (self::$conf['routes'] as &$list) {
 				foreach ($api as $url) {

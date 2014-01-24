@@ -10,6 +10,8 @@ namespace System
 
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
+		const URL_BASE     = '/^\/share\/resource\//';
+		const URL_MATCH    = '/([a-zA-Z]+)\/([0-9a-zA-Z\.\-;_=:]*)$/';
 
 		const SCRIPTS_DIR = '/share';
 		const SCRIPTS_STRING_NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
@@ -55,20 +57,24 @@ namespace System
 		/** Serve request
 		 * @return void
 		 */
-		public static function request()
+		public static function request(\System\Http\Request $request)
 		{
-			$request = \System\Http\Request::from_hit();
-			$info = self::get_type_info($request->get('type'));
-			$modules = self::get_module_list($info['type'], $request->get('modules'));
+			preg_match(self::URL_MATCH, $request->path, $matches);
 
-			if (any($modules)) {
-				$files   = self::file_list($info[self::KEY_TYPE], $modules);
-				$content = self::get_content($info, $files);
+			if (any($matches) && isset($matches[1]) && isset($matches[2])) {
+				$type = $matches[1];
+				$info = self::get_type_info($type);
+				$modules = self::get_module_list($info['type'], $matches[2]);
 
-				self::send_header($info['type'], strlen($content));
-				echo $content;
-			} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
-				return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
+				if (any($modules)) {
+					$files   = self::file_list($info[self::KEY_TYPE], $modules);
+					$content = self::get_content($info, $files);
+
+					self::send_header($info['type'], strlen($content));
+					echo $content;
+				} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
+					return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
+				} else throw new \System\Error\NotFound();
 			} else throw new \System\Error\NotFound();
 		}
 
@@ -214,7 +220,7 @@ namespace System
 				self::resource_list_save($type, $content);
 				$name = self::get_resource_list_name($content);
 
-				redirect_now('/share/'.$type.'/'.self::get_resource_list_wget_name($type, $name), \System\Http\Response::MOVED_PERMANENTLY);
+				redirect_now('/share/resource/'.$type.'/'.self::get_resource_list_wget_name($type, $name), \System\Http\Response::MOVED_PERMANENTLY);
 			} else {
 				if ($list = \System\File::read($p = self::get_resource_list_path($type, self::strip_serial($name)), true)) {
 					return explode("\n", $list);
@@ -330,6 +336,12 @@ namespace System
 		public static function strip_serial($name)
 		{
 			return first(explode('.', $name));
+		}
+
+
+		public static function is_resource_url($url)
+		{
+			return !!preg_match(self::URL_BASE, $url);
 		}
 	}
 }

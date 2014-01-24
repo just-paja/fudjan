@@ -162,11 +162,7 @@ namespace System
 		 */
 		public static function introduce()
 		{
-			try {
-				return cfg('own', 'name')."-".cfg('own', 'version');
-			} catch(\System\Error $e) {
-				return 'pwf unknown version';
-			}
+			return 'pwf';
 		}
 	}
 }

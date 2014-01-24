@@ -134,7 +134,7 @@ namespace System
 		 */
 		public function get_lang()
 		{
-			return $this->lang;
+			return $this->locale;
 		}
 
 
@@ -191,7 +191,7 @@ namespace System
 		 */
 		public function trans($str, $args = null)
 		{
-			$msg = isset($this->messages[$str]) ? $this->messages[$str]:$str;
+			$msg = isset($this->messages[$this->get_lang()][$str]) ? $this->messages[$this->get_lang()][$str]:$str;
 
 			if (is_array($args) || (!is_null($args) && func_num_args() > 1)) {
 				if (!is_array($args)) {

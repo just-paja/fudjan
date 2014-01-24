@@ -274,7 +274,7 @@ namespace System\Template
 		 */
 		public function render_meta()
 		{
-			$this->content_for("meta", array("name" => 'generator', "content" => introduce()));
+			$this->content_for("meta", array("name" => 'generator', "content" => \System\Status::introduce()));
 			$this->content_for("meta", array("http-equiv" => 'content-type', "content" => \System\Output::get_mime($this->format).'; charset=utf-8'));
 			$this->content_for("meta", array("charset" => 'utf-8'));
 
@@ -309,7 +309,7 @@ namespace System\Template
 			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<script type="text/javascript" src="/share/scripts/'.$cont.'"></script>');
+				$this->content_for("head", '<script type="text/javascript" src="/share/resource/scripts/'.$cont.'"></script>');
 			}
 
 			return $this;
@@ -324,7 +324,7 @@ namespace System\Template
 			$cont = $this->get_content_from("styles");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/styles/'.$cont.'" />');
+				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/resource/styles/'.$cont.'" />');
 			}
 
 			return $this;
