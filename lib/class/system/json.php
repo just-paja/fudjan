@@ -75,7 +75,7 @@ namespace System
 
 						if ($assoc_keys) {
 							if (isset($temp[$mod])) {
-								$temp[$mod] = array_merge_recursive($temp[$mod], $json);
+								$temp[$mod] = array_replace_recursive($temp[$mod], $json);
 							} else {
 								$temp[$mod] = $json;
 							}

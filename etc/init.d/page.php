@@ -14,15 +14,15 @@ if (System\Settings::is_this_first_run()) {
 
 } else {
 
-	System\Cache::init();
-	System\Database::init();
-
 	$request = System\Http\Request::from_hit();
 	$request->init();
 
 	if (\System\Resource::is_resource_url($request->path)) {
 		\System\Resource::request($request);
 	} else {
+		System\Cache::init();
+		System\Database::init();
+
 		$response = $request->create_response();
 
 		if ($response) {

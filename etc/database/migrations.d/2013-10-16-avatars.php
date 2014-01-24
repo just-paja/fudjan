@@ -1,4 +1,6 @@
 <?
+#[Avatars]
+#[Migrate avatar db structure to use new file API]
 
 $users = get_all('\System\User')->fetch();
 
@@ -13,7 +15,7 @@ foreach ($users as $user) {
 				$user->avatar->path = ROOT.$user->avatar->path;
 			}
 		} else {
-			if ($opts['file_path']) {
+			if (any($opts['file_path'])) {
 				$avatar = \System\Image::from_path($opts['file_path']);
 				$avatar->keep = true;
 			} else {

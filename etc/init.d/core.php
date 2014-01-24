@@ -6,6 +6,10 @@
 
 ob_implicit_flush(false);
 
+if (!defined('BASE_DIR')) {
+	define('BASE_DIR', ROOT);
+}
+
 /** Find system class package and include it or lookup develop files. You can
  * unpack it to be accessible by autoloader.
  */

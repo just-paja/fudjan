@@ -21,6 +21,9 @@ namespace System\Model
 		protected $opts = array();
 
 
+		protected static $attrs = array();
+
+
 		/** List of allowed attribute types */
 		protected static $attr_types = array(
 			'bool',

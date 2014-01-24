@@ -23,10 +23,17 @@ namespace System
 		public static function load_all()
 		{
 			if (!self::$loaded) {
-				$files = \System\Directory::find_all_files(ROOT.self::DIR_CLASS);
+				$dirs = \System\Composer::list_dirs(self::DIR_CLASS);
+				$files = array();
+
+				foreach ($dirs as $dir) {
+					\System\Directory::find_all_files($dir, $files);
+				}
+
 				foreach ($files as $file) {
 					require_once $file;
 				}
+
 				$loaded = true;
 			}
 		}

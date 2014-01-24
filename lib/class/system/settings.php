@@ -259,6 +259,12 @@ namespace System
 		}
 
 
+		public static function get_loaded_files()
+		{
+			return self::$loaded;
+		}
+
+
 		/** Force env or read it
 		 * @param string $env Environment name
 		 * @return void
@@ -268,7 +274,7 @@ namespace System
 			if (is_null($env)) {
 				if (defined("YACMS_ENV")) {
 					self::$env = YACMS_ENV;
-				} elseif (file_exists($ef = ROOT.self::DIR_CONF_DIST.'/env')) {
+				} elseif (file_exists($ef = BASE_DIR.self::DIR_CONF_DIST.'/env')) {
 						self::$env = trim(\System\File::read($ef));
 				}
 			} else {
@@ -287,7 +293,17 @@ namespace System
 		 */
 		public static function env_exists($env)
 		{
-			return is_dir(ROOT.self::DIR_CONF_DIST.'/'.$env);
+			return is_dir(BASE_DIR.self::DIR_CONF_DIST.'/'.$env);
+		}
+
+
+		/** Does config environment exist
+		 * @param string $env Environment name
+		 * @return bool
+		 */
+		public static function env_create($env)
+		{
+			return \System\Directory::check(BASE_DIR.self::DIR_CONF_DIST.'/'.$env);
 		}
 
 
@@ -296,7 +312,7 @@ namespace System
 		 */
 		public static function is_this_first_run()
 		{
-			return !file_exists($p = ROOT.self::DIR_CONF_ALL.'/install.lock');
+			return !file_exists($p = BASE_DIR.self::DIR_CONF_ALL.'/install.lock');
 		}
 	}
 }

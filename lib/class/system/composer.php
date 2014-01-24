@@ -21,7 +21,7 @@ namespace System
 			$list = array();
 
 			if (is_dir(ROOT.$relative_path)) {
-				$list[] = ROOT.$relative_path;
+				$list[] = realpath(ROOT.$relative_path);
 			}
 
 			foreach (array(ROOT.self::DIR_VENDOR, BASE_DIR.self::DIR_VENDOR) as $base) {
@@ -48,10 +48,23 @@ namespace System
 			}
 
 			if (BASE_DIR != ROOT && is_dir(BASE_DIR.$relative_path)) {
-				$list[] = BASE_DIR.$relative_path;
+				$list[] = realpath(BASE_DIR.$relative_path);
 			}
 
 			return array_unique($list);
+		}
+
+
+		public static function list_files($relative_path)
+		{
+			$dirs = self::list_dirs($relative_path);
+			$files = array();
+
+			foreach ($dirs as $dir) {
+				\System\Directory::find_all_files($dir, $files);
+			}
+
+			return $files;
 		}
 	}
 }
