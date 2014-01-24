@@ -11,7 +11,7 @@ echo html($ren->lang());
 			$this->slot();
 		close('div');
 
-		echo footer('std', introduce());
+		echo footer('std', \System\Status::introduce());
 
 	close('body');
 close('html');
