@@ -132,19 +132,20 @@ namespace System
 			$info  = self::get_type_info($type);
 			$found = array();
 			$missing = array();
+			$dirs = \System\Composer::list_dirs($info[self::KEY_DIR_FILES]);
 
-			if (is_dir(ROOT.$info[self::KEY_DIR_FILES])) {
+			foreach ($dirs as $dir) {
 				foreach ($modules as $module) {
 					if ($module !== self::SYMBOL_NOESS) {
 						$mod_found = false;
 
 						foreach ($info[self::KEY_POSTFIXES] as $postfix) {
-							if (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.list')) {
+							if (file_exists($p = $dir."/".$module.'.list')) {
 								$list = self::file_list($type, array_map('trim', array_filter(explode("\n", \System\File::read($p)))));
 								$found = array_merge($found, $list[self::KEY_FOUND]);
 								$missing = array_merge($missing, $list[self::KEY_MISSING]);
 								$mod_found = true;
-							} elseif (file_exists($p = ROOT.$info[self::KEY_DIR_FILES]."/".$module.'.'.$postfix)) {
+							} elseif (file_exists($p = $dir."/".$module.'.'.$postfix)) {
 								$found[] = $p;
 								$mod_found = true;
 								break;
@@ -184,7 +185,7 @@ namespace System
 		 */
 		private static function get_cache_path(array $info, $sum)
 		{
-			return ROOT.self::DIR_TMP.'/'.self::get_cache_name($info, $sum);
+			return BASE_DIR.self::DIR_TMP.'/'.self::get_cache_name($info, $sum);
 		}
 
 
@@ -309,7 +310,7 @@ namespace System
 
 		public static function get_resource_list_path($type, $name)
 		{
-			return ROOT.self::DIR_TMP.'/'.$type.'/'.$name.'.list';
+			return BASE_DIR.self::DIR_TMP.'/'.$type.'/'.$name.'.list';
 		}
 
 
