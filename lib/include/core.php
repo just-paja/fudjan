@@ -15,19 +15,25 @@ function __autoload($class_name)
 	$helper_pos = strpos(\System\Loader::get_link_from_class($class_name), 'helper');
 	$is_helper = $helper_pos !== false && $helper_pos <= 1;
 
-	if (!$is_helper && file_exists($f = ROOT."/lib/class/".$file)) {
-		$found = include_once($f);
-	}
+	$classes = \System\Composer::list_dirs('/lib/class');
 
-	if (!$found && $is_helper) {
-		$file = explode('/', $file);
-		unset($file[0]);
-		$file = implode('/', $file);
-
-		if (file_exists($f = ROOT."/lib/helper/".$file)) {
+	foreach ($classes as $dir) {
+		if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
 			$found = include_once($f);
 		}
 	}
 
-	$cname = ucfirsts(members_to_path(explode('\\', $class_name)), '::', '::');
+	if (!$found && $is_helper) {
+		$helpers = \System\Composer::list_dirs('/lib/helpers');
+
+		$file = explode('/', $file);
+		unset($file[0]);
+		$file = implode('/', $file);
+
+		foreach ($helpers as $dir) {
+			if (file_exists($f = $dir.'/'.$file)) {
+				$found = include_once($f);
+			}
+		}
+	}
 }
