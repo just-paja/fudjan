@@ -50,8 +50,6 @@ namespace System
 			!class_exists("CLIOptions")  && give_up("Missing class 'CLIOptions' !!");
 			!class_exists("CLICommands") && give_up("Missing class 'CLICommands'!!");
 
-			require_once ROOT."/lib/include/functions.cli.php";
-
 			\CLIOptions::init();
 			\CLIOptions::parse_options();
 
