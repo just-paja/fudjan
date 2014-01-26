@@ -150,11 +150,11 @@ namespace System
 		}
 
 
-		public static function request_thumb($request)
+		public static function request_thumb(\System\Http\Request $request, $info)
 		{
 			\System\Init::full();
 
-			$hash = \System\Resource::strip_serial($request->get('modules'));
+			$hash = \System\Resource::strip_serial($info['matches'][2]);
 
 			if (!is_null($thumb = \System\Cache\Thumb::from_hash($hash))) {
 

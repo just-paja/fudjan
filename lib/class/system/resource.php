@@ -73,6 +73,7 @@ namespace System
 					self::send_header($info['type'], strlen($content));
 					echo $content;
 				} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
+					$info['matches'] = $matches;
 					return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
 				} else throw new \System\Error\NotFound();
 			} else throw new \System\Error\NotFound();
