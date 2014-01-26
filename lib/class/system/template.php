@@ -16,6 +16,8 @@ namespace System
 		const CASE_UPPER = MB_CASE_UPPER;
 		const CASE_LOWER = MB_CASE_LOWER;
 
+		private static $lookup_time = 0;
+
 		private static $default_time_format = 'D, d M Y G:i:s e';
 		private static $heading_level = 1;
 		private static $heading_section_level = 1;
@@ -180,6 +182,7 @@ namespace System
 		 */
 		public static function find($name, $type = self::TYPE_LAYOUT, $format = null, $locale = null)
 		{
+			$time = microtime(true);
 			$base = self::DIR_TEMPLATE;
 			$temp = null;
 
@@ -205,7 +208,14 @@ namespace System
 				}
 			}
 
+			self::$lookup_time += (microtime(true) - $time);
 			return $temp;
+		}
+
+
+		public static function get_lookup_time()
+		{
+			return self::$lookup_time;
 		}
 
 	}
