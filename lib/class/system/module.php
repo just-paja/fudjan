@@ -80,12 +80,30 @@ namespace System
 		}
 
 
+		public function get_file()
+		{
+			$path = explode('/', $this->path);
+			$name = array_pop($path).'.php';
+			$path = implode('/', $path);
+
+			$dirs = \System\Composer::list_dirs(self::BASE_DIR.($path ? '/'.$path:''));
+
+			foreach ($dirs as $dir) {
+				if (file_exists($f = $dir.'/'.$name)) {
+					return $f;
+				}
+			}
+
+			return null;
+		}
+
+
 		/** Run module
 		 * @return void
 		 */
 		public function exec()
 		{
-			$path = ROOT.self::BASE_DIR.$this->path.'.php';
+			$path = $this->get_file();
 
 			if (file_exists($path)) {
 				if (is_readable($path)) {
