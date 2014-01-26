@@ -32,6 +32,19 @@ namespace System\Cache
 		}
 
 
+		public static function create_blank(array $attrs)
+		{
+			try {
+				$path = cfg('thumbs', 'bad');
+			} catch(\System\Error\Config $e) {
+				$path = ROOT.'/share/pixmaps/pwf/bad_thumb.jpg';
+			}
+
+			$img = \System\Image::from_path($path);
+			return self::from_image($img, $attrs);
+		}
+
+
 		public static function from_hash($hash)
 		{
 			return get_first('\System\Cache\Thumb')->where(array("hash" => $hash))->fetch();

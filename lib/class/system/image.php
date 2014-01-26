@@ -118,11 +118,17 @@ namespace System
 				throw new \System\Error\Argument('You must pass width or height to \System\Image::thumb.');
 			}
 
-			$thumb = \System\Cache\Thumb::from_image($this, array(
+			$opts = array(
 				"width"  => $width,
 				"height" => $height,
 				"crop"   => $crop,
-			));
+			);
+
+			try {
+				$thumb = \System\Cache\Thumb::from_image($this, $opts);
+			} catch(\System\Error\File $e) {
+				$thumb = \System\Cache\Thumb::create_blank($opts);
+			}
 
 			if (!$thumb->id) {
 				$thumb->save();
