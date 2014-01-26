@@ -40,16 +40,20 @@ namespace System\Cache
 
 		public static function from_image(\System\Image $image, array $attrs)
 		{
-			$hash = self::create_hash($attrs, $image->hash(), $image->suffix());
+			if ($image->exists()) {
+				$hash = self::create_hash($attrs, $image->hash(), $image->suffix());
 
-			if (is_null($thumb = self::from_hash($hash))) {
-				$thumb = new self($attrs);
-				$thumb->image      = $image;
-				$thumb->hash       = $thumb->hash();
-				$thumb->hash_image = $image->hash();
+				if (is_null($thumb = self::from_hash($hash))) {
+					$thumb = new self($attrs);
+					$thumb->image      = $image;
+					$thumb->hash       = $thumb->hash();
+					$thumb->hash_image = $image->hash();
+				}
+
+				return $thumb;
 			}
 
-			return $thumb;
+			throw new \System\Error\File('Cannot create image thumb. Image does not exist.');
 		}
 
 
