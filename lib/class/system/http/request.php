@@ -90,7 +90,12 @@ namespace System\Http
 		private function get_init()
 		{
 			$domain = \System\Router::get_domain($this->host);
-			return cfg('domains', $domain, 'init');
+
+			try {
+				$init = cfg('domains', $domain, 'init');
+			} catch (\System\Error\Config $e) { $init = array(); }
+
+			return $init;
 		}
 
 
