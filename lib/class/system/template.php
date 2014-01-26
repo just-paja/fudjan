@@ -36,20 +36,6 @@ namespace System
 		}
 
 
-		public static function get_name($name)
-		{
-			$base = ROOT.self::PARTIALS_DIR.'/';
-			$f = '';
-
-			file_exists($f = $base.self::get_filename($name, Output::get_format(), \System\Locales::get_lang())) ||
-			file_exists($f = $base.self::get_filename($name, Output::get_format())) ||
-			file_exists($f = $base.self::get_filename($name)) ||
-			$f = '';
-
-			return $f;
-		}
-
-
 		public static function is_date($arg)
 		{
 			return
@@ -194,19 +180,30 @@ namespace System
 		 */
 		public static function find($name, $type = self::TYPE_LAYOUT, $format = null, $locale = null)
 		{
-			$base = ROOT;
+			$base = self::DIR_TEMPLATE;
 			$temp = null;
 
-			switch ($type)
-			{
-				case 'layout': $base .= self::DIR_TEMPLATE.'/'; break;
-				case 'partial': $base .= self::DIR_PARTIAL.'/'; break;
+			if ($type == 'partial') {
+				$base = self::DIR_PARTIAL;
 			}
 
-			file_exists($temp = $base.self::get_filename($name, $format, $locale)) ||
-			file_exists($temp = $base.self::get_filename($name, $format)) ||
-			file_exists($temp = $base.self::get_filename($name)) ||
-			$temp = false;
+			$dirs = \System\Composer::list_dirs($base);
+			$path = explode('/', $name);
+			$name = array_pop($path);
+			$path = implode('/', $path);
+
+			$dirs = \System\Composer::list_dirs($base.($path ? '/'.$path:''));
+
+			foreach ($dirs as $dir) {
+				file_exists($temp = $dir.'/'.self::get_filename($name, $format, $locale)) ||
+				file_exists($temp = $dir.'/'.self::get_filename($name, $format)) ||
+				file_exists($temp = $dir.'/'.self::get_filename($name)) ||
+				$temp = null;
+
+				if ($temp) {
+					break;
+				}
+			}
 
 			return $temp;
 		}
