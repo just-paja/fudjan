@@ -36,81 +36,85 @@ if (count($exp) > 1) {
 
 }
 
-Tag::h2(array("content" => $trace));
-$back = $desc->get_backtrace();
-$num = 0;
-Tag::ul();
+echo div('advice');
 
-	foreach ($back as $b) {
+	Tag::h2(array("content" => $trace));
+	$back = $desc->get_backtrace();
+	$num = 0;
 
-		$skip = isset($b['object']) && $b['object'] === $desc;
-		$num++;
+	Tag::ul(array('class' => 'trace'));
 
-		Tag::li(array("class" => 'err err_'.$num));
-			$str = array();
-			$str_desc = array();
-			$str_args = array();
-			$str_obj  = array();
+		foreach ($back as $b) {
 
-			if (isset($b['file'])) {
-				$str_desc[] = substr($b['file'], strlen(ROOT));
+			$skip = isset($b['object']) && $b['object'] === $desc;
+			$num++;
 
-				if (isset($b['line'])) {
-					$str_desc[] = ':'.$b['line'];
-				}
+			Tag::li(array("class" => 'err err_'.$num));
+				$str = array();
+				$str_desc = array();
+				$str_args = array();
+				$str_obj  = array();
 
-				$str_desc[] = ' ';
-			}
+				if (isset($b['file'])) {
+					$str_desc[] = $b['file'];
 
-			if (!$skip && isset($b['function'])) {
-
-				$str_desc[] = 'in function ';
-
-				if (isset($b['class'])) {
-					$str_desc[] = $b['class'].'::';
-				}
-
-				$str_desc[] = $b['function'].'()';
-
-
-				if (false && isset($b['args']) && any($b['args'])) {
-					$args = array();
-
-					foreach ($b['args'] as $arg) {
-						$arg_content = is_object($arg) ? 'Instance of '.get_class($arg):var_export($arg, true);
-						$arg_content = is_array($arg) ? 'Array':var_export($arg, true);
-
-						$args[] = Stag::li(array("content" => $arg_content));
+					if (isset($b['line'])) {
+						$str_desc[] = ':'.$b['line'];
 					}
 
-					$str_args[] = STag::h3(array("content" => 'Arguments:'));
-					$str_args[] = Stag::ol(array("content" => $args));
+					$str_desc[] = ' ';
 				}
-			}
 
-			if (!$skip && isset($b['object'])) {
-				$str_obj[] = STag::heading(array("content" => 'Object:'));
-				$str_obj[] = Tag::div(array(
-					"content" => '<pre>'.@var_export($b['object'], true).'</pre>',
-					"output"  => false,
+				if (!$skip && isset($b['function'])) {
+
+					$str_desc[] = 'in function ';
+
+					if (isset($b['class'])) {
+						$str_desc[] = $b['class'].'::';
+					}
+
+					$str_desc[] = $b['function'].'()';
+
+
+					if (false && isset($b['args']) && any($b['args'])) {
+						$args = array();
+
+						foreach ($b['args'] as $arg) {
+							$arg_content = is_object($arg) ? 'Instance of '.get_class($arg):var_export($arg, true);
+							$arg_content = is_array($arg) ? 'Array':var_export($arg, true);
+
+							$args[] = Stag::li(array("content" => $arg_content));
+						}
+
+						$str_args[] = STag::h3(array("content" => 'Arguments:'));
+						$str_args[] = Stag::ol(array("content" => $args));
+					}
+				}
+
+				if (!$skip && isset($b['object'])) {
+					$str_obj[] = STag::heading(array("content" => 'Object:'));
+					$str_obj[] = Tag::div(array(
+						"content" => '<pre>'.@var_export($b['object'], true).'</pre>',
+						"output"  => false,
+					));
+				}
+
+				$str[] = Tag::div(array(
+					"class" => 'desc',
+					"content" => implode('', $str_desc),
+					"output"  => false
 				));
-			}
 
-			$str[] = Tag::div(array(
-				"class" => 'desc',
-				"content" => implode('', $str_desc),
-				"output"  => false
-			));
-
-			Tag::details(array(
-				"content" => array(
-					Stag::summary(array("content" => $str)),
-					Stag::div(array("class" => 'cont', "content" => array_merge($str_args, $str_obj))),
-				)
-			));
+				Tag::details(array(
+					"content" => array(
+						Stag::summary(array("content" => $str)),
+						Stag::div(array("class" => 'cont', "content" => array_merge($str_args, $str_obj))),
+					)
+				));
 
 
-		Tag::close('li');
-	}
+			Tag::close('li');
+		}
 
-Tag::close('ul');
+	close('ul');
+close('div');
