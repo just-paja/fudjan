@@ -175,7 +175,13 @@ namespace System
 			if ($this->path) {
 				return $this->path.'/'.$this->get_full_name();
 			} else {
-				if ($this->hash()) {
+				try {
+					$hash = $this->hash();
+				} catch(\System\Error\File $e) {
+					$hash = null;
+				}
+
+				if ($hash) {
 					return $this->get_path_hashed();
 				}
 			}
