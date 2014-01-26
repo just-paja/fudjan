@@ -51,7 +51,7 @@ namespace System
 		public static function from_path($path)
 		{
 			if (!file_exists($path)) {
-				$path = ROOT.$path;
+				$path = BASE_DIR.$path;
 			}
 
 			$file = new self(array(
@@ -163,7 +163,7 @@ namespace System
 
 		public function get_url()
 		{
-			return str_replace(ROOT, '', $this->get_path());
+			return str_replace(BASE_DIR, '', $this->get_path());
 		}
 
 
@@ -201,7 +201,7 @@ namespace System
 
 		private function get_path_hashed_dir()
 		{
-			return ROOT.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
+			return BASE_DIR.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
 		}
 
 
@@ -210,7 +210,7 @@ namespace System
 		 */
 		public function get_path_temp()
 		{
-			return ROOT.self::DIR_TMP.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
+			return BASE_DIR.self::DIR_TMP.'/'.$this->hash().($this->suffix() ? '.'.$this->suffix():'');
 		}
 
 
@@ -307,8 +307,8 @@ namespace System
 		 */
 		public static function clear_tmp()
 		{
-			\System\Directory::remove(ROOT.self::TMP_DIR);
-			mkdir(ROOT.self::TMP_DIR, 0777, true);
+			\System\Directory::remove(BASE_DIR.self::TMP_DIR);
+			mkdir(BASE_DIR.self::TMP_DIR, 0777, true);
 		}
 
 
