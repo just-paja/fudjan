@@ -33,14 +33,12 @@ namespace System
 
 		/** Static messages */
 		private static $messages_static = array(
-			"date" => array(
-				"std"        => 'D, d M Y G:i:s e',
-				"sql"        => 'Y-m-d H:i:s',
-				"sql-date"   => 'Y-m-d',
-				"sql-time"   => 'H:i:s',
-				"html5"      => 'Y-m-d\\TH:i:s',
-				"html5-full" => 'Y-m-d\\TH:i:sP',
-			)
+			"std"        => 'D, d M Y G:i:s e',
+			"sql"        => 'Y-m-d H:i:s',
+			"sql-date"   => 'Y-m-d',
+			"sql-time"   => 'H:i:s',
+			"html5"      => 'Y-m-d\\TH:i:s',
+			"html5-full" => 'Y-m-d\\TH:i:sP',
 		);
 
 		private static $attrs_common = array('author', 'created_at', 'updated_at');
@@ -154,20 +152,14 @@ namespace System
 		 */
 		public function get_path($str)
 		{
-			$src = &$this->messages;
-
-			if (strpos($str, ':')) {
-				list($module, $str) = explode(':', $str, 2);
-				$this->load_module($module);
-				$src = &$this->messages[$module];
-			}
+			$src = &$this->messages[$this->get_lang()];
 
 			if (isset($src[$str])) {
 				return $src[$str];
 			}
 
-			if (isset(self::$messages_static[$module][$str])) {
-				return self::$messages_static[$module][$str];
+			if (isset(self::$messages_static[$str])) {
+				return self::$messages_static[$str];
 			}
 
 			return null;
