@@ -332,11 +332,15 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			$db_ident = cfg('database', 'default');
-			$name     = cfg('database', 'list', $db_ident, 'database');
+			if (!self::database_exists()) {
+				$db_ident = cfg('database', 'default');
+				$name     = cfg('database', 'list', $db_ident, 'database');
+				$cmd = "echo \"CREATE DATABASE ".$name."\" | ".self::assemble_mysql_command("mysql", false);
 
-			\System\Cli::out("Creating database '".$name."'");
-			shell_exec("echo \"CREATE DATABASE ".$name."\" | ".self::assemble_mysql_command("mysql", false));
+				\System\Cli::out("Creating database '".$name."'");
+				shell_exec($cmd);
+			}
+
 			return $this;
 		}
 
