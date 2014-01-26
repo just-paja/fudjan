@@ -30,7 +30,7 @@ namespace System
 				}
 			} catch(\System\Error\Config $e) {
 				foreach ($domains as $domain => $config) {
-					if (isset($config['rules']) and isset($config['init'])) {
+					if (isset($config['rules'])) {
 						if (self::domain_match($host, $config)) {
 							return $domain;
 						}
@@ -168,7 +168,7 @@ namespace System
 
 				throw new \System\Error\Argument(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
 			} else {
-				throw cfg('dev', 'debug') ? new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $domain), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):new \System\Error\NotFound();
+				throw new \System\Error\NotFound();
 			}
 
 			return false;
