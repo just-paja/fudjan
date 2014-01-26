@@ -61,7 +61,7 @@ namespace System
 		 */
 		public static function is_locale_available($locale)
 		{
-			return is_dir(ROOT.self::DIR.'/'.$locale);
+			return is_dir(BASE_DIR.self::DIR.'/'.$locale);
 		}
 
 
@@ -115,15 +115,6 @@ namespace System
 		{
 			setlocale(LC_ALL, $this->locale.'.'.self::ENCODING);
 			return $this;
-		}
-
-
-		/** Get locale description
-		 * @return string
-		 */
-		public function get_locale()
-		{
-			return $this->locale;
 		}
 
 
@@ -205,24 +196,24 @@ namespace System
 				$def = self::create($this->response, self::LANG_DEFAULT);
 				$this->date_trans = array(
 					"find" => array_merge(
-						$def->get_path('date:days'),
-						$def->get_path('date:days-short'),
-						$def->get_path('date:months'),
-						$def->get_path('date:months-short')
+						(array) $def->trans('days'),
+						(array) $def->trans('days-short'),
+						(array) $def->trans('months'),
+						(array) $def->trans('months-short')
 					),
 
 					"replace" => array_merge(
-						$this->get_path('date:days'),
-						$this->get_path('date:days-short'),
-						$this->get_path('date:months'),
-						$this->get_path('date:months-short')
+						(array) $this->trans('days'),
+						(array) $this->trans('days-short'),
+						(array) $this->trans('months'),
+						(array) $this->trans('months-short')
 					),
 
 					"replace_hard" => array_merge(
-						$this->get_path('date:days'),
-						$this->get_path('date:days-short'),
-						$this->get_path('date:months-date'),
-						$this->get_path('date:months-short')
+						(array) $this->trans('days'),
+						(array) $this->trans('days-short'),
+						(array) $this->trans('months-date'),
+						(array) $this->trans('months-short')
 					),
 				);
 			}
