@@ -92,11 +92,17 @@ namespace System
 
 			$api = self::read(self::DIR_CONF_ROUTES_STATIC);
 
-			if (empty(self::$conf['routes'])) {
-				self::$conf['routes']['global'] = \System\Json::read(ROOT.self::DIR_CONF_ERRORS.'/no-routes.json');
+			foreach (self::$conf['domains'] as $domain=>$cfg) {
+				if (!isset(self::$conf['routes'][$domain])) {
+					self::$conf['routes'][$domain] = array();
+				}
 			}
 
 			foreach (self::$conf['routes'] as &$list) {
+				if (empty($list)) {
+					$list = \System\Json::read(ROOT.self::DIR_CONF_ERRORS.'/no-routes.json');
+				}
+
 				foreach ($api as $url) {
 					$list[] = $url;
 				}
@@ -108,6 +114,7 @@ namespace System
 
 		public static function read($dir, $assoc_keys = false, &$files=array())
 		{
+
 			$dirs = \System\Composer::list_dirs($dir);
 			return \System\Json::read_dist_all($dirs, $assoc_keys, $files);
 		}
@@ -118,7 +125,7 @@ namespace System
 		 */
 		public static function check_env()
 		{
-			if (!is_dir($p = ROOT.self::DIR_CONF_DIST.'/'.self::$env)) {
+			if (!is_dir($p = BASE_DIR.self::DIR_CONF_DIST.'/'.self::$env)) {
 				self::reset();
 			}
 		}
@@ -129,7 +136,7 @@ namespace System
 		 */
 		public static function reset()
 		{
-			\System\Directory::check(ROOT.self::DIR_CONF_DIST.'/'.self::$env);
+			\System\Directory::check(BASE_DIR.self::DIR_CONF_DIST.'/'.self::$env);
 		}
 
 
@@ -138,7 +145,7 @@ namespace System
 		 */
 		private static function get_cache_filename()
 		{
-			return ROOT.self::CACHE_FILE.'-'.self::$env.'.serial';
+			return BASE_DIR.self::CACHE_FILE.'-'.self::$env.'.serial';
 		}
 
 
@@ -237,7 +244,7 @@ namespace System
 		public static function save($module, $env = null)
 		{
 			is_null($env) && ($env = self::$env);
-			$path = ROOT.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json";
+			$path = BASE_DIR.self::DIR_CONF_DIST.'/'.$env.'/'.$module.".json";
 			$data = \System\Json::json_humanize(json_encode(self::get($module)));
 
 			if (!($action = \System\File::put($path, $data))) {
@@ -272,9 +279,7 @@ namespace System
 		public static function set_env($env = null)
 		{
 			if (is_null($env)) {
-				if (defined("YACMS_ENV")) {
-					self::$env = YACMS_ENV;
-				} elseif (file_exists($ef = BASE_DIR.self::DIR_CONF_DIST.'/env')) {
+				if (file_exists($ef = BASE_DIR.self::DIR_CONF_DIST.'/env')) {
 						self::$env = trim(\System\File::read($ef));
 				}
 			} else {
@@ -304,15 +309,6 @@ namespace System
 		public static function env_create($env)
 		{
 			return \System\Directory::check(BASE_DIR.self::DIR_CONF_DIST.'/'.$env);
-		}
-
-
-		/** Has site developer locked the installer?
-		 * @return bool
-		 */
-		public static function is_this_first_run()
-		{
-			return !file_exists($p = BASE_DIR.self::DIR_CONF_ALL.'/install.lock');
 		}
 	}
 }
