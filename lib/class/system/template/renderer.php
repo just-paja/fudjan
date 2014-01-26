@@ -309,7 +309,7 @@ namespace System\Template
 			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<script type="text/javascript" src="/share/resource/scripts/'.$cont.'"></script>');
+				$this->content_for("head", '<script type="text/javascript" src="'.$cont.'"></script>');
 			}
 
 			return $this;
@@ -324,7 +324,7 @@ namespace System\Template
 			$cont = $this->get_content_from("styles");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="/share/resource/styles/'.$cont.'" />');
+				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="'.$cont.'" />');
 			}
 
 			return $this;
@@ -333,9 +333,12 @@ namespace System\Template
 
 		public function render_frontend_config()
 		{
+			$static_domain = cfg('resources', 'domain');
+			$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
+
 			$cont = json_encode(array(
 				"locales" => array(
-					"url"      => $this->url("locale_list"),
+					"url"      => substr($locales_url, 0, strlen($locales_url)-1),
 					"lang"     => cfg('locales', 'default_lang'),
 					"autoload" => cfg('locales', 'autoload')
 				),
@@ -368,10 +371,10 @@ namespace System\Template
 		 * @param string $place
 		 * @return string
 		 */
-		public function &get_content_from($place)
+		public function get_content_from($place)
 		{
 			if (is_array($this->content[$place]) && in_array($place, self::$resource_filter)) {
-				\System\Resource::filter_output_content($place, $this->content[$place]);
+				$this->content[$place] = \System\Resource::filter_output_content($place, $this->content[$place]);
 			}
 
 			return $this->content[$place];

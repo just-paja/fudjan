@@ -273,8 +273,12 @@ namespace System
 					self::resource_list_save($type, $content);
 					$name = self::get_resource_list_name($content);
 					$content = self::get_resource_list_wget_name($type, $name);
-				} else $content = null;
+				} else {
+					$content = null;
+				}
 			}
+
+			return $content;
 		}
 
 
@@ -293,7 +297,14 @@ namespace System
 		public static function get_resource_list_wget_name($type, $name, $postfix = null)
 		{
 			$postfix = is_null($postfix) ? self::get_type_postfix($type):$postfix;
-			return $name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+
+			try {
+				$domain = cfg('resources', 'domain');
+			} catch (\System\Error\Config $e) {
+				$domain = null;
+			}
+
+			return ($domain ? '//'.$domain:'').'/share/resource/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
 		}
 
 
