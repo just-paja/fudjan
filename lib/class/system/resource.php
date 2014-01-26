@@ -134,10 +134,11 @@ namespace System
 			$missing = array();
 			$dirs = \System\Composer::list_dirs($info[self::KEY_DIR_FILES]);
 
-			foreach ($dirs as $dir) {
-				foreach ($modules as $module) {
+			foreach ($modules as $module) {
+				$mod_found = false;
+
+				foreach ($dirs as $dir) {
 					if ($module !== self::SYMBOL_NOESS) {
-						$mod_found = false;
 
 						foreach ($info[self::KEY_POSTFIXES] as $postfix) {
 							if (file_exists($p = $dir."/".$module.'.list')) {
@@ -145,6 +146,7 @@ namespace System
 								$found = array_merge($found, $list[self::KEY_FOUND]);
 								$missing = array_merge($missing, $list[self::KEY_MISSING]);
 								$mod_found = true;
+								break;
 							} elseif (file_exists($p = $dir."/".$module.'.'.$postfix)) {
 								$found[] = $p;
 								$mod_found = true;
@@ -152,10 +154,11 @@ namespace System
 							}
 						}
 
-						if (!$mod_found) {
-							$missing[] = $module;
-						}
 					}
+				}
+
+				if (!$mod_found) {
+					$missing[] = $module;
 				}
 			}
 
