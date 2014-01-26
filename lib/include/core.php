@@ -24,7 +24,7 @@ function __autoload($class_name)
 	}
 
 	if (!$found && $is_helper) {
-		$helpers = \System\Composer::list_dirs('/lib/helpers');
+		$helpers = \System\Composer::list_dirs('/lib/helper');
 
 		$file = explode('/', $file);
 		unset($file[0]);
