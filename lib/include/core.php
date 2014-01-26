@@ -20,6 +20,7 @@ function __autoload($class_name)
 	foreach ($classes as $dir) {
 		if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
 			$found = include_once($f);
+			break;
 		}
 	}
 
@@ -33,6 +34,7 @@ function __autoload($class_name)
 		foreach ($helpers as $dir) {
 			if (file_exists($f = $dir.'/'.$file)) {
 				$found = include_once($f);
+				break;
 			}
 		}
 	}
