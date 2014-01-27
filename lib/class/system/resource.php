@@ -154,7 +154,10 @@ namespace System
 								break;
 							}
 						}
+					}
 
+					if ($mod_found) {
+						break;
 					}
 				}
 
