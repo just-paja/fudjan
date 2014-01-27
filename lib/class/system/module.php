@@ -298,6 +298,12 @@ namespace System
 		}
 
 
+		public function renderer()
+		{
+			return $this->response()->renderer();
+		}
+
+
 		public function response()
 		{
 			return $this->response;
@@ -316,6 +322,21 @@ namespace System
 		public function dbus()
 		{
 			return $this->dbus;
+		}
+
+
+		private function json_response($status, $message=null, $data=null)
+		{
+			$response = array("status" => $status);
+
+			!is_null($message) && $response['message'] = $message;
+			!is_null($data) && $response['data'] = $data;
+
+			$this->renderer()->flush()->reset_layout();
+			$this->renderer()->format = 'json';
+
+			$this->partial('system/common', array('json_data' => $response));
+			return $this->stop();
 		}
 	}
 }
