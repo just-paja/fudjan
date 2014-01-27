@@ -347,6 +347,9 @@ namespace System\Template
 					"lang"     => cfg('locales', 'default_lang'),
 					"autoload" => cfg('locales', 'autoload')
 				),
+				"comm" => array(
+					"blank" => '/share/html/blank.html'
+				),
 				"debug" => cfg('dev', 'debug'),
 				"proxy" => array(
 					'url' => '/proxy/head/?url={url}'
