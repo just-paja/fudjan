@@ -772,6 +772,12 @@ namespace System
 				} else if (method_exists($value, 'to_object')) {
 					$attrs['data'][$key] = $value->to_object();
 				}
+
+				$input = $this->get_input(str_replace($this->get_prefix(), '', $key));
+
+				if ($input && $input->type == 'password') {
+					unset($attrs['data'][$key]);
+				}
 			}
 
 			return $attrs;
