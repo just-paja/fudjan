@@ -333,7 +333,12 @@ namespace System\Template
 
 		public function render_frontend_config()
 		{
-			$static_domain = cfg('resources', 'domain');
+			try {
+				$static_domain = cfg('resources', 'domain');
+			} catch (\System\Error\Config $e) {
+				$static_domain = null;
+			}
+
 			$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
 
 			$cont = json_encode(array(
