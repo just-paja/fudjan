@@ -66,5 +66,18 @@ namespace System
 
 			return $files;
 		}
+
+
+		public static function find($path, $regexp = null)
+		{
+			$dirs = self::list_dirs($path);
+			$files = array();
+
+			foreach ($dirs as $dir) {
+				\System\Directory::find_all_files($dir, $files, $regexp);
+			}
+
+			return $files;
+		}
 	}
 }
