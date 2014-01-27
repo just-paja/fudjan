@@ -172,9 +172,15 @@ namespace System
 		 * @param array|string $args Arguments to paste into the string. If not array, all arguments after str are written inside.
 		 * @return string
 		 */
-		public function trans($str, $args = null)
+		public function trans($str, $args = null, $lang = null)
 		{
-			$msg = isset($this->messages[$this->get_lang()][$str]) ? $this->messages[$this->get_lang()][$str]:$str;
+			$lang = is_null($lang) ? $this->get_lang():$lang;
+
+			if (empty($this->messages[$lang])) {
+				$this->load_messages($lang);
+			}
+
+			$msg = isset($this->messages[$lang][$str]) ? $this->messages[$lang][$str]:$str;
 
 			if (is_array($args) || (!is_null($args) && func_num_args() > 1)) {
 				if (!is_array($args)) {
@@ -196,10 +202,10 @@ namespace System
 				$def = self::create($this->response, self::LANG_DEFAULT);
 				$this->date_trans = array(
 					"find" => array_merge(
-						(array) $def->trans('days'),
-						(array) $def->trans('days-short'),
-						(array) $def->trans('months'),
-						(array) $def->trans('months-short')
+						(array) $def->trans('days', null, 'en'),
+						(array) $def->trans('days-short', null, 'en'),
+						(array) $def->trans('months', null, 'en'),
+						(array) $def->trans('months-short', null, 'en')
 					),
 
 					"replace" => array_merge(
@@ -230,7 +236,9 @@ namespace System
 		public function translate_date($date, $hard = false)
 		{
 			$this->load_date_translations();
+
 			$replace_key = 'replace';
+
 			if ($hard) {
 				$replace_key = 'replace_hard';
 			}
@@ -320,7 +328,7 @@ namespace System
 					$date = $helper;
 				}
 
-				$local_format = \System\Locales::get_path('date:'.$format);
+				$local_format = \System\Locales::trans('date-format-'.$format);
 				$d = $date->format(is_null($local_format) ? $format:$local_format);
 
 				if ($translate == self::TRANS_NONE) {

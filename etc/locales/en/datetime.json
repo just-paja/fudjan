@@ -1,10 +1,9 @@
 {
-
-	"human":"d.m.Y G:i",
-	"human-date":"d.m.",
-	"human-time":"G:i",
-	"human-full-date":"D j. F Y",
-	"human-full-datetime":"l j. F Y G:i",
+	"date-format-human":"Y-m-d G:i",
+	"date-format-human-date":"d/m",
+	"date-format-human-time":"G:i",
+	"date-format-human-full-date":"D j. F Y",
+	"date-format-human-full-datetime":"l j. F Y G:i",
 
 	"days":{
 		"1":"monday",
