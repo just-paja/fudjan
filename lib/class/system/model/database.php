@@ -836,12 +836,22 @@ namespace System\Model
 
 				if (isset($data[$attr])) {
 					if (is_object($data[$attr])) {
-						if(method_exists(get_class($data[$attr]), 'save')) {
-							$data[$attr]->save();
+						$empty = false;
+
+						if (method_exists(get_class($data[$attr]), 'is_empty')) {
+							$empty = $data[$attr]->is_empty();
 						}
 
-						if (method_exists(get_class($data[$attr]), 'to_json')) {
-							$data[$attr] = $data[$attr]->to_json();
+						if ($empty) {
+							$data[$attr] = null;
+						} else {
+							if (method_exists(get_class($data[$attr]), 'save')) {
+								$data[$attr]->save();
+							}
+
+							if (method_exists(get_class($data[$attr]), 'to_json')) {
+								$data[$attr] = $data[$attr]->to_json();
+							}
 						}
 					}
 				}
