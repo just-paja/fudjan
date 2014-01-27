@@ -366,6 +366,14 @@ namespace System\Template
 		}
 
 
+		public function reset_layout()
+		{
+			$this->layout = array();
+
+			return $this;
+		}
+
+
 		/** Get execution time of rendering. Not returning definite value, since the response will be sent after that.
 		 * @return float
 		 */

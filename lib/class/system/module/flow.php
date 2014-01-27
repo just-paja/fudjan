@@ -13,6 +13,7 @@ namespace System\Module
 		const REDIRECT_LATER         = 1;
 		const REDIRECT_IMMEDIATELY   = 2;
 		const REDIRECT_AFTER_MODULES = 3;
+		const STOP = 4;
 
 		/** Modules are enqueued here
 		 * @param array
@@ -43,10 +44,16 @@ namespace System\Module
 		private $response;
 
 
-		/** Response
+		/** DBus
 		 * @param \System\Module\DataBus
 		 */
 		private $dbus;
+
+
+		/** Stopped
+		 * @param bool
+		 */
+		private $stopped = false;
 
 
 		/** Class init
@@ -107,6 +114,12 @@ namespace System\Module
 		}
 
 
+		public function stop()
+		{
+			$this->stopped = true;
+		}
+
+
 		/** Run all modules in queue
 		 * @return void
 		 */
@@ -116,11 +129,14 @@ namespace System\Module
 
 			while (!empty($this->queue)) {
 				$mod = array_shift($this->queue);
-				$retval = $mod->exec();
 
-				if (any($this->redirect[self::REDIRECT_LATER])) {
-					$r = &$this->redirect[self::REDIRECT_LATER];
-					\System\Http\Response::redirect($r['url'], $r['code']);
+				if (!$this->stopped) {
+					$retval = $mod->exec();
+
+					if (any($this->redirect[self::REDIRECT_LATER])) {
+						$r = &$this->redirect[self::REDIRECT_LATER];
+						\System\Http\Response::redirect($r['url'], $r['code']);
+					}
 				}
 			}
 

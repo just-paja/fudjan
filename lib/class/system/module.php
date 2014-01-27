@@ -172,6 +172,13 @@ namespace System
 		}
 
 
+		public function stop()
+		{
+			$this->flow->stop();
+			return $this;
+		}
+
+
 		private function propagate($name, $data)
 		{
 			$this->dbus()->add_data($this, $name, $data);
