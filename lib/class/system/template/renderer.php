@@ -324,7 +324,7 @@ namespace System\Template
 			$cont = $this->get_content_from("styles");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<link type="text/css" rel="stylesheet" href="'.$cont.'" />');
+				$this->content_for("head", '<link type="text/css" crossorigin="anonymous" rel="stylesheet" href="'.$cont.'" />');
 			}
 
 			return $this;
