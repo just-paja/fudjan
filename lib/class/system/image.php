@@ -159,19 +159,7 @@ namespace System
 			if (!is_null($thumb = \System\Cache\Thumb::from_hash($hash))) {
 
 				if ($thumb->check()) {
-
-					if ($thumb->image->suffix() == 'png') {
-						$mime = 'image/png';
-					} else {
-						$mime = 'image/jpeg';
-					}
-
-					header('Content-Type: '.$mime);
-					header('Content-Length: '.strlen($thumb->get_content()));
-
-					echo $thumb->get_content();
-					exit;
-
+					self::send_image($thumb->image);
 				} else throw new \System\Error\File('Failed to generate image thumb.');
 			} else throw new \System\Error\NotFound();
 		}
@@ -184,17 +172,22 @@ namespace System
 			$files = \System\Composer::find($dir, $regex);
 
 			if (any($files)) {
-				$image = self::from_path($files[0]);
-				$image->read_meta()->load();
-
-				header('Content-Type: '.$image->mime);
-				header('Content-Length: '.$image->size);
-
-				echo $image->get_content();
-				exit;
+				self::send_image(self::from_path($files[0]));
 			}
 
 			throw new \System\Error\NotFound();
+		}
+
+
+		public static function send_image(self $image)
+		{
+			$image->read_meta();
+
+			header('Content-Type: '.$image->mime);
+			header('Content-Length: '.$image->size);
+
+			echo $image->get_content();
+			exit;
 		}
 
 
