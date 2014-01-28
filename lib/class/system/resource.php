@@ -6,18 +6,20 @@ namespace System
 	{
 		const TYPE_SCRIPTS = 'scripts';
 		const TYPE_STYLES  = 'styles';
+		const TYPE_PIXMAPS = 'pixmaps';
 		const TYPE_THUMB   = 'thumb';
 
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
-		const URL_BASE     = '/^\/share\/resource\//';
-		const URL_MATCH    = '/([a-zA-Z]+)\/([0-9a-zA-Z\.\-;_=:]*)$/';
+		const URL_MATCH    = '/\/share\/resource\/([a-zA-Z]+)\/([0-9a-zA-Z\.\-\/;_=:]*)$/';
 
 		const SCRIPTS_DIR = '/share';
 		const SCRIPTS_STRING_NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
 
 		const STYLES_DIR = '/share';
 		const STYLES_STRING_NOT_FOUND = '/* Style module not found: %s */';
+
+		const PIXMAPS_DIR = '/share/pixmaps';
 
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
@@ -47,6 +49,10 @@ namespace System
 				self::KEY_DIR_CONTENT      => 'text/css',
 				self::KEY_POSTFIXES        => array('css'),
 			),
+			self::TYPE_PIXMAPS => array(
+				self::KEY_DIR_FILES => self::PIXMAPS_DIR,
+				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_pixmap'),
+			),
 			self::TYPE_THUMB => array(
 				self::KEY_DIR_FILES        => \System\Cache\Thumb::DIR,
 				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_thumb'),
@@ -63,6 +69,7 @@ namespace System
 
 			if (any($matches) && isset($matches[1]) && isset($matches[2])) {
 				$type = $matches[1];
+
 				$info = self::get_type_info($type);
 				$modules = self::get_module_list($info['type'], $matches[2]);
 
@@ -243,7 +250,19 @@ namespace System
 				$info = self::$types[$type];
 				$info[self::KEY_TYPE] = $type;
 				return $info;
-			} else throw new \System\Error\Argument('Resource of type "'.$type.'" does not exist.');
+			} else {
+				try {
+					$debug = cfg('dev', 'debug');
+				} catch(\System\Error $e) {
+					$debug = true;
+				}
+
+				if ($debug) {
+					throw new \System\Error\Argument('Resource of type "'.$type.'" does not exist.');
+				} else {
+					throw new \System\Error\NotFound();
+				}
+			}
 		}
 
 
@@ -254,6 +273,7 @@ namespace System
 			header("HTTP/1.1 200 OK");
 			header('Content-Type: '.$info['content']);
 			header('Content-Length: '.$length);
+			header('Access-Control-Allow-Origin: *');
 
 			try {
 				$debug = cfg('dev', 'debug');
@@ -360,7 +380,7 @@ namespace System
 
 		public static function is_resource_url($url)
 		{
-			return !!preg_match(self::URL_BASE, $url);
+			return !!preg_match(self::URL_MATCH, $url);
 		}
 	}
 }

@@ -177,6 +177,27 @@ namespace System
 		}
 
 
+		public static function request_pixmap(\System\Http\Request $request, $info)
+		{
+			$dir = '/share/pixmaps/'.dirname($info['matches'][2]);
+			$regex = '/^'.basename($info['matches'][2]).'$/';
+			$files = \System\Composer::find($dir, $regex);
+
+			if (any($files)) {
+				$image = self::from_path($files[0]);
+				$image->read_meta()->load();
+
+				header('Content-Type: '.$image->mime);
+				header('Content-Length: '.$image->size);
+
+				echo $image->get_content();
+				exit;
+			}
+
+			throw new \System\Error\NotFound();
+		}
+
+
 		/** Check if thumb already exists
 		 * @param int  $width  Desired width
 		 * @param int  $height Desired height
