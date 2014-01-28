@@ -28,6 +28,5 @@ namespace System
 			$tool = self::get_class_name($type);
 			return $tool::minify($content, array());
 		}
-
 	}
 }

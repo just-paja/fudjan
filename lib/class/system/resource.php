@@ -7,6 +7,7 @@ namespace System
 		const TYPE_SCRIPTS = 'scripts';
 		const TYPE_STYLES  = 'styles';
 		const TYPE_PIXMAPS = 'pixmaps';
+		const TYPE_ICONS   = 'icons';
 		const TYPE_THUMB   = 'thumb';
 
 		const SYMBOL_NOESS = 'noess';
@@ -18,8 +19,6 @@ namespace System
 
 		const STYLES_DIR = '/share';
 		const STYLES_STRING_NOT_FOUND = '/* Style module not found: %s */';
-
-		const PIXMAPS_DIR = '/share/pixmaps';
 
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
@@ -50,8 +49,10 @@ namespace System
 				self::KEY_POSTFIXES        => array('css'),
 			),
 			self::TYPE_PIXMAPS => array(
-				self::KEY_DIR_FILES => self::PIXMAPS_DIR,
 				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_pixmap'),
+			),
+			self::TYPE_ICONS => array(
+				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_icon'),
 			),
 			self::TYPE_THUMB => array(
 				self::KEY_DIR_FILES        => \System\Cache\Thumb::DIR,
@@ -119,7 +120,9 @@ namespace System
 					echo sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
 				}
 
-				$content = \System\Minifier::process($info['type'], ob_get_clean());
+				$content = ob_get_clean();
+				$content = self::tags($content);
+				$content = \System\Minifier::process($info['type'], $content);
 
 				if ($cache) {
 					\System\File::put(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
@@ -127,6 +130,51 @@ namespace System
 			}
 
 			return $content;
+		}
+
+
+		public static function tags($content)
+		{
+			return preg_replace_callback('/<([A-Za-z_]+)\(([0-9A-Za-z\/\.\,\-]+)\)>/', array('\System\Resource', 'tag'), $content);
+		}
+
+
+		public static function tag($matches)
+		{
+			$tags = cfg('resources', 'tags');
+			$tag = $matches[1];
+			$args = explode(',', $matches[2]);
+
+			foreach ($tags as $cfg_tag) {
+				if ($cfg_tag['name'] == $tag) {
+					return call_user_func_array($cfg_tag['callback'], $args);
+				}
+			}
+
+			v('failed');
+			exit;
+		}
+
+
+		public static function tag_icon($name, $size)
+		{
+			$name = explode('/', $name);
+			$cat = array_shift($name);
+			array_unshift($name, $size);
+			array_unshift($name, $cat);
+
+			return 'url('.self::get_resource_list_wget_name(self::TYPE_ICONS, implode('/', $name)).'.png)';
+		}
+
+
+		public static function tag_pixmap($name)
+		{
+			$name = explode('.', $name);
+			$suffix = array_pop($name);
+			$name = implode('.', $name);
+			$name = self::get_resource_list_wget_name(self::TYPE_PIXMAPS, $name).'.'.$suffix;
+
+			return 'url('.$name.')';
 		}
 
 

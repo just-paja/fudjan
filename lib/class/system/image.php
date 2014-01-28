@@ -165,10 +165,30 @@ namespace System
 		}
 
 
+		public static function request_icon(\System\Http\Request $request, $info)
+		{
+			$dir = '/share/icons/'.dirname($info['matches'][2]);
+			$name = \System\Resource::strip_serial($info['matches'][2]);
+			$regex = '/^'.basename($name).'\.png$/';
+			$files = \System\Composer::find($dir, $regex);
+
+			if (any($files)) {
+				self::send_image(self::from_path($files[0]));
+			}
+
+			throw new \System\Error\NotFound();
+		}
+
+
 		public static function request_pixmap(\System\Http\Request $request, $info)
 		{
 			$dir = '/share/pixmaps/'.dirname($info['matches'][2]);
-			$regex = '/^'.basename($info['matches'][2]).'$/';
+			$name = explode('.', basename($info['matches'][2]));
+			$suffix = array_pop($name);
+			$serial = array_pop($name);
+			$name[] = $suffix;
+			$name = implode('.', $name);
+			$regex = '/^'.str_replace(array('.', '/'), array('\.', '\/'), $name).'$/';
 			$files = \System\Composer::find($dir, $regex);
 
 			if (any($files)) {

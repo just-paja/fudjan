@@ -1,3 +1,13 @@
 {
-	"domain":null
+	"domain":null,
+	"tags":[
+		{
+			"name":"pixmap",
+			"callback":["\\System\\Resource", "tag_pixmap"]
+		},
+		{
+			"name":"icon",
+			"callback":["\\System\\Resource", "tag_icon"]
+		}
+	]
 }
