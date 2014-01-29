@@ -17,7 +17,7 @@ namespace System\User
 		 * @param array
 		 */
 		static protected $attrs = array(
-			"group"     => array('belongs_to', "model" => '\System\User\Group'),
+			"group"     => array('belongs_to', "model" => 'System\User\Group'),
 			"type"      => array('varchar'),
 			"trigger"   => array('varchar'),
 			"public"    => array('bool'),

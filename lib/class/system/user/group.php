@@ -6,8 +6,8 @@ namespace System\User
 	{
 		static protected $attrs = array(
 			"name"   => array('varchar'),
-			"users"  => array('has_many', "model" => '\System\User', "is_bilinear" => true),
-			"rights" => array('has_many', "model" => '\System\User\Perm'),
+			"users"  => array('has_many', "model" => 'System\User', "is_bilinear" => true),
+			"rights" => array('has_many', "model" => 'System\User\Perm'),
 		);
 
 
