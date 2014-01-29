@@ -341,7 +341,7 @@ namespace System\Template
 
 			$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
 
-			$cont = json_encode(array(
+			$cont = array(
 				"locales" => array(
 					"url"      => substr($locales_url, 0, strlen($locales_url)-1),
 					"lang"     => cfg('locales', 'default_lang'),
@@ -354,8 +354,16 @@ namespace System\Template
 				"proxy" => array(
 					'url' => '/proxy/head/?url={url}'
 				),
-			));
-			$this->content_for('head', '<script type="text/javascript">var sys = '.$cont.'</script>');
+			);
+
+			try {
+				$frontend = cfg('frontend');
+			} catch(\System\Error $e) {
+				$frontend = array();
+			}
+
+			$cont = array_merge_recursive($cont, $frontend);
+			$this->content_for('head', '<script type="text/javascript">var sys = '.json_encode($cont).'</script>');
 			return $this;
 		}
 
