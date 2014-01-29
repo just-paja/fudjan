@@ -2,6 +2,10 @@
 	"domain":null,
 	"tags":[
 		{
+			"name":"cfg",
+			"callback":["\\System\\Resource", "tag_cfg"]
+		},
+		{
 			"name":"pixmap",
 			"callback":["\\System\\Resource", "tag_pixmap"]
 		},

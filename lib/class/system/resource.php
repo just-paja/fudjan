@@ -135,24 +135,57 @@ namespace System
 
 		public static function tags($content)
 		{
-			return preg_replace_callback('/<([A-Za-z_]+)\(([0-9A-Za-z\/\.\,\-]+)\)>/', array('\System\Resource', 'tag'), $content);
+			return preg_replace_callback('/<([A-Za-z_]+)\(([0-9A-Za-z\/\.\,\-]+)\)(\w\?|\w?([^>]+)+)?>/', array('\System\Resource', 'resolve_tag'), $content);
 		}
 
 
-		public static function tag($matches)
+		public static function resolve_tag($matches)
 		{
-			$tags = cfg('resources', 'tags');
 			$tag = $matches[1];
 			$args = explode(',', $matches[2]);
+			$result = self::tag($tag, $args);
 
-			foreach ($tags as $cfg_tag) {
-				if ($cfg_tag['name'] == $tag) {
-					return call_user_func_array($cfg_tag['callback'], $args);
+			if (any($matches[3])) {
+				$pipes = preg_replace('/^[^a-zA-Z]+/', '', trim($matches[3]));
+				$pipes = explode('|', $pipes);
+
+				foreach ($pipes as $pipe) {
+					if (!is_array($result)) {
+						$result = array($result);
+					}
+
+					$result = self::tag(trim($pipe), $result);
 				}
 			}
 
-			v('failed');
-			exit;
+			return $result;
+		}
+
+
+		public static function tag($name, array $args)
+		{
+			$tags = cfg('resources', 'tags');
+			$result = null;
+			$matched = false;
+
+			foreach ($tags as $cfg_tag) {
+				if ($cfg_tag['name'] == $name) {
+					$result = call_user_func_array($cfg_tag['callback'], $args);
+					$matched = true;
+				}
+			}
+
+			if ($matched) {
+				return $result;
+			}
+
+			throw new \System\Error\Config("Tag not found", $name);
+		}
+
+
+		public static function tag_cfg()
+		{
+			return \System\Settings::get(func_get_args());
 		}
 
 
