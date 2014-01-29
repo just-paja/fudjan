@@ -19,6 +19,7 @@ namespace System\Cli\Module
 		);
 
 		protected static $commands = array(
+			"list"   => array('List direct bower dependencies'),
 			"update" => array('Update all predefined assets'),
 		);
 
@@ -27,7 +28,7 @@ namespace System\Cli\Module
 		 */
 		public static function cmd_update()
 		{
-			\System\Init::full();
+			\System\Init::basic();
 
 			$deps = cfg('assets');
 			$list = array();
@@ -54,6 +55,20 @@ namespace System\Cli\Module
 
 			unlink(BASE_DIR.'/.bowerrc');
 			unlink(BASE_DIR.'/bower.json');
+		}
+
+
+		public static function cmd_list()
+		{
+			\System\Init::basic();
+
+			$list = cfg('assets', 'dependencies');
+
+			\System\Cli::out('Bower dependencies');
+			\System\Cli::out_flist(array(
+				"list" => $list,
+				"margin" => 2
+			));
 		}
 	}
 }
