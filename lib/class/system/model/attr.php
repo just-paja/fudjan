@@ -585,7 +585,15 @@ namespace System\Model
 				}
 			} else if (is_object($data)) {
 				if (method_exists($data, 'to_object')) {
-					$data = $data->to_object();
+					$empty = method_exists($data, 'is_empty') && $data->is_empty();
+
+					if (!$empty) {
+						$data = $data->to_object();
+					} else {
+						$data = null;
+					}
+				} else if ($data instanceof \DateTime) {
+					$data = $data->format('c');
 				}
 			}
 
