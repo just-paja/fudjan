@@ -1,0 +1,21 @@
+{
+	"model-System::Text":"Statický text",
+	"model-System::Text-accusative":"statický text",
+	"model-System::Text-dative-plural":"statických textů",
+
+	"model-System::User":"Uživatel",
+	"model-System::User-accusative":"uživatel",
+	"model-System::User-dative-plural":"uživatelů",
+
+	"model-System::User::Group":"Uživatelská skupina",
+	"model-System::User::Group-accusative":"uživatelskou skupinu",
+	"model-System::User::Group-dative-plural":"uživatelých skupin",
+
+	"model-System::User-attr-login":"Přihlašovací jméno",
+	"model-System::User-attr-last_login":"Poslední přihlášení",
+	"model-System::User-attr-first_name":"Křestní jméno",
+	"model-System::User-attr-last_name":"Příjmení jméno",
+	"model-System::User-attr-nick":"Přezdívka",
+	"model-System::User-attr-password":"Heslo",
+	"model-System::User-attr-avatar":"Avatar"
+}

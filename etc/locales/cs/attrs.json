@@ -1,0 +1,9 @@
+{
+	"attr-id":"ID",
+	"attr-name":"Název",
+	"attr-text":"Text",
+	"attr-author":"Author",
+	"attr-visible":"Viditelnost",
+	"attr-updated_at":"Poslední změna",
+	"attr-created_at":"Vytvořeno"
+}
