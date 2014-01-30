@@ -1127,5 +1127,20 @@ namespace System\Model
 		{
 			return sprintf('[%s#%s]', \System\Loader::get_model_from_class(get_class($this)), $this->is_new() ? 'new':$this->id);
 		}
+
+
+		public function to_object()
+		{
+			$data = parent::to_object();
+			$idc = self::get_id_col(get_class($this));
+
+			if (isset($data[$idc])) {
+				$data['id'] = $data[$idc];
+				unset($data[$idc]);
+			}
+
+			return $data;
+		}
+
 	}
 }
