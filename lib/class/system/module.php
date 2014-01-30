@@ -325,10 +325,11 @@ namespace System
 		}
 
 
-		private function json_response($status, $message=null, $data=null)
+		private function json_response($status, $message=null, $data=null, $meta=null)
 		{
 			$response = array("status" => $status);
 
+			!is_null($meta) && $response = array_merge($meta, $response);
 			!is_null($message) && $response['message'] = $message;
 			!is_null($data) && $response['data'] = $data;
 
