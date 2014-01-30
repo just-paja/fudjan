@@ -10,7 +10,7 @@ namespace System
 	 * @package system
 	 * @subpackage media
 	 */
-	class Location extends \System\Model\Database
+	class Location extends \System\Model\Attr
 	{
 		/** Model attributes */
 		protected static $attrs = array(
@@ -23,7 +23,6 @@ namespace System
 			"gps"           => array("point"),
 			"desc"          => array("text", "default" => ''),
 			"site"          => array("url", "default" => ''),
-			"author"        => array('belongs_to', "model" => '\System\User'),
 		);
 
 
