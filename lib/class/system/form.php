@@ -605,28 +605,6 @@ namespace System
 		}
 
 
-		/** Get field type from model attr type
-		 * @param string $attr_type
-		 * @return string
-		 */
-		public static function get_field_type($attr_type)
-		{
-			if (in_array($attr_type, array('date', 'datetime', 'time', 'image', 'location'))) {
-				$type = $attr_type;
-			} elseif ($attr_type === 'point') {
-				$type = 'gps';
-			} elseif ($attr_type === 'bool') {
-				$type = 'checkbox';
-			} elseif ($attr_type === 'text') {
-				$type = 'rte';
-			} else {
-				$type = 'text';
-			}
-
-			return $type;
-		}
-
-
 		public function renderer(\System\Template\Renderer $renderer = null)
 		{
 			if (!is_null($renderer)) {

@@ -1062,26 +1062,6 @@ namespace System\Model
 		}
 
 
-		/** Get all attribute names that point to system::location
-		 * @param string $model
-		 * @return array
-		 */
-		public static function get_location_attrs($model)
-		{
-			$attrs = array();
-
-			if (isset($model::$belongs_to)) {
-				foreach ($model::$belongs_to as $attr=>$def) {
-					if ($def['model'] === 'System\\Location' || $def['model'] === '\\System\\Location') {
-						$attrs[] = $attr;
-					}
-				}
-			}
-
-			return $attrs;
-		}
-
-
 		/** Get options for model if defined
 		 * @param string $model
 		 * @param string $attr
