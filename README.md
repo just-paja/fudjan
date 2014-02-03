@@ -7,10 +7,11 @@ Sadly, I didn't have time to create any usable docs, just some inlined javadoc s
 ## Installation
 
 1. Get [Composer](https://github.com/composer/composer) if you don't have it already
-2. Create project via composer
+2. Create project via composer.
+	Package [fudjan-project](https://github.com/just-paja/fudjan-project) is a very simple wrapper for downloading composer dependencies and keeping clean ```BASE_DIR```
 
 	```bash
-	$ composer create-project fudjan-project
+	$ composer create-project just-paja/fudjan-project
 	```
 
 ## Features
