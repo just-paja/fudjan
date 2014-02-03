@@ -30,9 +30,18 @@
 	padding:0;
 }
 
-.pwform ul li ul{padding:5px 0 0}
-.pwform ul li{margin:5px 0}
-.pwform ul li ul li{margin-left:15px}
+.pwform ul li {
+	margin:5px 0;
+}
+
+.pwform .input-label-left li ul {
+	padding:5px 0 0
+}
+
+.pwform .input-label-left ul li {
+	margin-left:15px;
+}
+
 .pwform ul li label.label-left{ margin-right:7px; }
 .pwform .input-checkbox, .pwform .input-radio{margin-right:7px}
 .pwform .input-text, .pwform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
