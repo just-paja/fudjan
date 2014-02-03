@@ -449,5 +449,31 @@ namespace System\Database
 				$this->where(\System\Model\Database::get_quick_conds($this->assoc_with_model)):
 				$this;
 		}
+
+
+		public function add_filter_batch($filters, $table_alias = null, $or = false)
+		{
+			$pass = array();
+
+			foreach ($filters as $row) {
+				if ($row['attr'] == 'id' && $this->assoc_with_model) {
+					$row['attr'] = \System\Model\Database::get_id_col($this->assoc_with_model);
+				}
+
+				if ($row['type'] == 'contains') {
+					$pass[] = "`" . $row['attr'] . "` LIKE '%".$row['contains']."%'";
+				}
+
+				if ($row['type'] == 'starts_with') {
+					$pass[] = "`" . $row['attr'] . "` LIKE '".$row['starts_with']."%'";
+				}
+
+				if ($row['type'] == 'ends_with') {
+					$pass[] = "`" . $row['attr'] . "` LIKE '%".$row['ends_with']."'";
+				}
+			}
+
+			return $this->where($pass, $table_alias, $or);
+		}
 	}
 }
