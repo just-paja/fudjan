@@ -528,6 +528,21 @@ namespace System\Model
 		}
 
 
+		protected function get_rel_has_many_ids($rel)
+		{
+			$def = self::get_attr(get_class($this), $rel);
+			$idc = self::get_id_col($def['model']);
+			$data = $this->$rel->reset_cols()->add_cols($idc, 't0')->assoc_with(null)->fetch();
+			$ids = array();
+
+			foreach ($data as $row) {
+				$ids[] = intval($row[$idc]);
+			}
+
+			return $ids;
+		}
+
+
 		/** Relation getter for has_one relations. Saves the value inside this object and returns the value.
 		 * @param string $rel Relation name
 		 * @return null|object
@@ -953,7 +968,7 @@ namespace System\Model
 		 * @param bool   $sql_format Format names to sql
 		 * @return array
 		 */
-		public static function get_model_attr_list($model, $sql_format = true)
+		public static function get_model_attr_list($model, $sql_format = true, $with_rels = false)
 		{
 			$attrs = array(self::get_id_col($model));
 
@@ -963,7 +978,7 @@ namespace System\Model
 						$attrs[$attr] = 'AsWKT('.$attr.')';
 					} else {
 						if ($attr != self::get_id_col($model)) {
-							if (self::is_rel($model, $attr)) {
+							if (self::is_rel($model, $attr) && !$with_rels) {
 								$type = self::get_attr_type($model, $attr);
 
 								if ($type === self::REL_BELONGS_TO) {
@@ -1131,12 +1146,31 @@ namespace System\Model
 
 		public function to_object()
 		{
+			$model = get_class($this);
 			$data = parent::to_object();
 			$idc = self::get_id_col(get_class($this));
 
 			if (isset($data[$idc])) {
 				$data['id'] = $data[$idc];
 				unset($data[$idc]);
+			}
+
+			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+
+			foreach ($attrs as $attr_name) {
+				if (self::is_rel($model, $attr_name)) {
+					$def = self::get_attr($model, $attr_name);
+
+					if ($def[0] == self::REL_HAS_MANY) {
+						$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
+					} else if ($def[0] == self::REL_BELONGS_TO) {
+						$bid = self::get_belongs_to_id($model, $attr_name);
+
+						if ($this->$bid) {
+							$data[$attr_name] = $this->$bid;
+						}
+					}
+				}
 			}
 
 			return $data;
