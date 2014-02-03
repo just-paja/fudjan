@@ -11,6 +11,9 @@
 	"model-System::User::Group-accusative":"uživatelskou skupinu",
 	"model-System::User::Group-dative-plural":"uživatelých skupin",
 
+	"model-System::User::Group-attr-users":"Uživatelé",
+	"model-System::User::Group-attr-rights":"Oprávnění",
+
 	"model-System::User-attr-login":"Přihlašovací jméno",
 	"model-System::User-attr-last_login":"Poslední přihlášení",
 	"model-System::User-attr-first_name":"Křestní jméno",
