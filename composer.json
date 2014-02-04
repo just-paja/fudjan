@@ -4,5 +4,8 @@
 	"license":"GPL-3.0+",
 	"config":{
 		"vendor-dir":"lib/vendor"
+	},
+	"require":{
+		"oyejorge/less.php":">1.6"
 	}
 }
