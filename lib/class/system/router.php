@@ -70,10 +70,10 @@ namespace System
 						}
 					}
 				} catch (\System\Error $e) {
-					throw cfg('dev', 'debug') ? new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):new \System\Error\NotFound();
+					throw \System\Settings::get('dev', 'debug', 'backend') ? new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):new \System\Error\NotFound();
 				}
 			} else {
-				throw cfg('dev', 'debug') ? new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $host), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):new \System\Error\NotFound();
+				throw \System\Settings::get('dev', 'debug', 'backend') ? new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $host), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):new \System\Error\NotFound();
 			}
 
 			return false;

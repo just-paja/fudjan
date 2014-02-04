@@ -82,7 +82,7 @@ namespace System
 				$res = $db->query($query);
 				self::$queries ++;
 
-				if (cfg('dev', 'debug')) {
+				if (\System\Settings::get('dev', 'debug', 'backend')) {
 					$trace = debug_backtrace();
 					$tres  = count($trace > 2) ? 2:1;
 

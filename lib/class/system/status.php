@@ -78,7 +78,7 @@ namespace System
 			}
 
 			try {
-				$errors = cfg('output', 'errors');
+				$errors = \System\Settings::get('output', 'errors');
 				$cfg_ok = true;
 			} catch(\System\Error $exc) {
 				$errors = array();
@@ -163,6 +163,18 @@ namespace System
 		public static function introduce()
 		{
 			return 'pwf';
+		}
+
+
+		public static function init()
+		{
+			set_exception_handler(array("System\Status", "catch_exception"));
+			set_error_handler(array("System\Status", "catch_error"));
+			register_shutdown_function(array("System\Status", "catch_fatal_error"));
+
+			ini_set('log_errors',     true);
+			ini_set('display_errors', true);
+			ini_set('html_errors',    false);
 		}
 	}
 }

@@ -71,7 +71,7 @@ namespace System
 		public static function get_default_lang()
 		{
 			try {
-				return cfg('locales', 'default_lang');
+				return \System\Settings::get('locales', 'default_lang');
 			} catch (\System\Error\Config $e) {
 				return self::LANG_DEFAULT;
 			}

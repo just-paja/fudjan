@@ -101,7 +101,7 @@ namespace System
 		 */
 		static function get_icon_theme()
 		{
-			$theme = cfg('icons', 'theme');
+			$theme = \System\Settings::get('icons', 'theme');
 			return $theme ? $theme:self::DEFAULT_ICON_THEME;
 		}
 

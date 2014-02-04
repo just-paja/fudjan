@@ -8,6 +8,5 @@
 	background-position:center center;
 }
 
-* { _noFocusLine: expression(this.hideFocus=true); }
 ::-moz-focus-inner { border:0; }
 :focus { outline:none; }

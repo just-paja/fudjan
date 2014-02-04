@@ -86,7 +86,7 @@ namespace System\Template
 			$this->start_time = microtime(true);
 
 			try {
-				$debug = cfg('dev', 'debug');
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch(\System\Error $e) {
 				$debug = true;
 			}
@@ -165,7 +165,7 @@ namespace System\Template
 		public function slot($name = \System\Template::DEFAULT_SLOT)
 		{
 			try {
-				$debug = cfg('dev', 'debug');
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch(\System\Error $e) {
 				$debug = true;
 			}
@@ -334,7 +334,7 @@ namespace System\Template
 		public function render_frontend_config()
 		{
 			try {
-				$static_domain = cfg('resources', 'domain');
+				$static_domain = \System\Settings::get('resources', 'domain');
 			} catch (\System\Error\Config $e) {
 				$static_domain = null;
 			}

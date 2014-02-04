@@ -70,8 +70,6 @@
 .pwform .inputs{margin:0 0 10px}
 .pwform .buttons{margin:15px 0 0}
 .pwform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
-.pwform ul li.required input[type!='datetime-local']{ background:#fff url(../icons/16/status/warning.png) 99.8% center no-repeat;}
-.pwform ul li.required-satisfied input[type!='datetime-local']{ background-image:url(../icons/16/status/good.png);}
 
 .pwform .input-list-container {
 	display:inline-block;

@@ -89,7 +89,7 @@ namespace System\Http
 
 			if (is_null($attrs['format'])) {
 				try {
-					$attrs['format'] = cfg("output", 'format_default');
+					$attrs['format'] = \System\Settings::get("output", 'format_default');
 				} catch (\System\Error $e) {
 					$attrs['format'] = 'html';
 				}
@@ -260,7 +260,7 @@ namespace System\Http
 		 */
 		public function low_level_debug()
 		{
-			if (!$this->no_debug && cfg('dev', 'debug')) {
+			if (!$this->no_debug && \System\Settings::get('dev', 'debug', 'backend')) {
 				if (file_exists(ROOT.'/lib/include/devel.php')) {
 					$response = $this;
 					$request  = $this->request();

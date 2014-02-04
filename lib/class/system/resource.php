@@ -18,7 +18,7 @@ namespace System
 		const SCRIPTS_STRING_NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
 
 		const STYLES_DIR = '/share';
-		const STYLES_STRING_NOT_FOUND = '/* Style module not found: %s */';
+		const STYLES_STRING_NOT_FOUND = '/* Style not found: %s */';
 
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
@@ -29,6 +29,7 @@ namespace System
 		const KEY_STRING_NOT_FOUND = 'not_found_string';
 		const KEY_POSTFIXES        = 'postfixes';
 		const KEY_CALLBACK_RESOLVE = 'resolve';
+		const KEY_CALLBACK_PARSE   = 'parse';
 
 		const MAX_AGE = 86400;
 
@@ -46,7 +47,8 @@ namespace System
 				self::KEY_DIR_FILES        => self::STYLES_DIR,
 				self::KEY_STRING_NOT_FOUND => self::STYLES_STRING_NOT_FOUND,
 				self::KEY_DIR_CONTENT      => 'text/css',
-				self::KEY_POSTFIXES        => array('css'),
+				self::KEY_POSTFIXES        => array('css', 'less'),
+				self::KEY_CALLBACK_PARSE   => array('\System\Resource', 'parse_less'),
 			),
 			self::TYPE_PIXMAPS => array(
 				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_pixmap'),
@@ -96,7 +98,7 @@ namespace System
 		private static function get_content(array $info, array $files)
 		{
 			try {
-				$debug = cfg('dev', 'debug');
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch(\System\Error $e) {
 				$debug = true;
 			}
@@ -104,29 +106,67 @@ namespace System
 			if (!$debug && file_exists($f = self::get_cache_path($info, $files[self::KEY_SUM]))) {
 				$content = \System\File::read($f);
 			} else {
-				ob_start();
+				$content = '';
 
 				try {
-					$cache = cfg('cache', 'resources');
+					$cache = \System\Settings::get('cache', 'resources');
 				} catch (\System\Error $e) {
 					$cache = false;
 				}
 
-				foreach ($files[self::KEY_FOUND] as $file) {
-					include $file;
+				if (any($info[self::KEY_CALLBACK_PARSE])) {
+					$content = call_user_func_array($info[self::KEY_CALLBACK_PARSE], array($info, $files));
+				} else {
+					$content = self::get_content_from_files($info, $files);
 				}
 
-				foreach ($files[self::KEY_MISSING] as $file) {
-					echo sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
+				if (!$debug) {
+					$content = \System\Minifier::process($info['type'], $content);
 				}
 
-				$content = ob_get_clean();
-				$content = self::tags($content);
-				$content = \System\Minifier::process($info['type'], $content);
-
-				if ($cache) {
+				if ($cache && !$debug) {
 					\System\File::put(self::get_cache_path($info, $files[self::KEY_SUM]), $content);
 				}
+			}
+
+			return $content;
+		}
+
+
+		public static function parse_less(array $info, array $files)
+		{
+			$content = '';
+			$parser = new \Less_Parser();
+
+			foreach ($files[self::KEY_MISSING] as $file) {
+				$content .= sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
+			}
+
+			foreach ($files[self::KEY_FOUND] as $file) {
+				$data = self::tags(file_get_contents($file));
+
+				try {
+					$parser->parse($data);
+				} catch(\Exception $e) {
+					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage(), $file);
+				}
+			}
+
+			$content .= $parser->getCss();
+			return $content;
+		}
+
+
+		public static function get_content_from_files(array $info, array $files)
+		{
+			$content = '';
+
+			foreach ($files[self::KEY_MISSING] as $file) {
+				$content .= sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
+			}
+
+			foreach ($files[self::KEY_FOUND] as $file) {
+				$content .= self::tags(file_get_contents($file));
 			}
 
 			return $content;
@@ -164,7 +204,7 @@ namespace System
 
 		public static function tag($name, array $args)
 		{
-			$tags = cfg('resources', 'tags');
+			$tags = \System\Settings::get('resources', 'tags');
 			$result = null;
 			$matched = false;
 
@@ -255,8 +295,8 @@ namespace System
 			}
 
 			return array(
-				self::KEY_FOUND   => $found,
-				self::KEY_MISSING => $missing,
+				self::KEY_FOUND   => array_filter($found),
+				self::KEY_MISSING => array_filter($missing),
 				self::KEY_SUM     => self::get_module_sum_from_list($modules),
 			);
 		}
@@ -333,7 +373,7 @@ namespace System
 				return $info;
 			} else {
 				try {
-					$debug = cfg('dev', 'debug');
+					$debug = \System\Settings::get('dev', 'debug', 'backend');
 				} catch(\System\Error $e) {
 					$debug = true;
 				}
@@ -357,7 +397,7 @@ namespace System
 			header('Access-Control-Allow-Origin: *');
 
 			try {
-				$debug = cfg('dev', 'debug');
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch(\System\Error $e) {
 				$debug = true;
 			}
@@ -404,7 +444,7 @@ namespace System
 			$postfix = is_null($postfix) ? self::get_type_postfix($type):$postfix;
 
 			try {
-				$domain = cfg('resources', 'domain');
+				$domain = \System\Settings::get('resources', 'domain');
 			} catch (\System\Error\Config $e) {
 				$domain = null;
 			}
@@ -437,7 +477,7 @@ namespace System
 		{
 			if (is_null(self::$serial)) {
 				try {
-					$debug = cfg('dev', 'debug') && cfg('dev', 'disable', 'serial');
+					$debug = \System\Settings::get('dev', 'debug', 'backend') || \System\Settings::get('dev', 'disable', 'serial');
 				} catch(\System\Error $e) {
 					$debug = true;
 				}
@@ -445,7 +485,7 @@ namespace System
 				if ($debug) {
 					self::$serial = rand(0, PHP_INT_MAX);
 				} else {
-					self::$serial = cfg('cache', 'resource', 'serial');
+					self::$serial = \System\Settings::get('cache', 'resource', 'serial');
 				}
 			}
 

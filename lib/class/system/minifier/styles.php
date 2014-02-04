@@ -56,6 +56,9 @@ namespace System\Minifier
 		 */
 		protected function _process($css)
 		{
+			$parser = new \Less_Parser();
+			$parser->parse($css);
+			return $parser->getCss();
 				$css = str_replace("\r\n", "\n", $css);
 
 				// preserve empty comment after '>'

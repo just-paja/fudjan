@@ -23,7 +23,7 @@ namespace System
 			$json = json_decode($str, true);
 
 			try {
-				$debug = cfg('dev', 'debug');
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch (\System\Error $e) { $debug = true; }
 
 			/// Skipping this error as if nothing happened on production. The application will not failexit, although there will be no data.

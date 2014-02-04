@@ -16,6 +16,22 @@ namespace System
 		/** Run load all classes only once */
 		private static $loaded = false;
 
+		private static $ready = false;
+
+
+		public static function init()
+		{
+			if (!self::$ready) {
+				if (file_exists($f = BASE_DIR.'/lib/vendor/autoload.php')) {
+					require_once $f;
+				}
+
+				spl_autoload_register(array('\System\Loader', 'autoload'), true, true);
+				self::$ready = true;
+			}
+		}
+
+
 
 		/** Load all available classes
 		 * @return void
@@ -88,6 +104,39 @@ namespace System
 		public static function get_model_from_class($class_name)
 		{
 			return ucfirsts($class_name, '\\', '::');
+		}
+
+
+		public static function autoload($class_name)
+		{
+			$found = false;
+			$file = \System\Loader::get_class_file_name($class_name, true);
+			$helper_pos = strpos(\System\Loader::get_link_from_class($class_name), 'helper');
+			$is_helper = $helper_pos !== false && $helper_pos <= 1;
+
+			$classes = \System\Composer::list_dirs('/lib/class');
+
+			foreach ($classes as $dir) {
+				if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
+					$found = include_once($f);
+					break;
+				}
+			}
+
+			if (!$found && $is_helper) {
+				$helpers = \System\Composer::list_dirs('/lib/helper');
+
+				$file = explode('/', $file);
+				unset($file[0]);
+				$file = implode('/', $file);
+
+				foreach ($helpers as $dir) {
+					if (file_exists($f = $dir.'/'.$file)) {
+						$found = include_once($f);
+						break;
+					}
+				}
+			}
 		}
 	}
 }
