@@ -248,6 +248,14 @@ namespace System
 		}
 
 
+		public static function from_tmp($path, $real_name)
+		{
+			$image = self::from_file(parent::from_tmp($path, $real_name));
+			$image->keep = true;
+			return $image;
+		}
+
+
 		public static function from_file(\System\File $file = null)
 		{
 			$img = null;
