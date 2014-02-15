@@ -229,6 +229,12 @@ namespace System
 		}
 
 
+		public static function tag_resource($type, $name, $suffix)
+		{
+			return self::get_resource_list_wget_name($type, $name).'.'.$suffix;
+		}
+
+
 		public static function tag_icon($name, $size)
 		{
 			$name = explode('/', $name);
@@ -236,7 +242,7 @@ namespace System
 			array_unshift($name, $size);
 			array_unshift($name, $cat);
 
-			return 'url('.self::get_resource_list_wget_name(self::TYPE_ICONS, implode('/', $name)).'.png)';
+			return self::tag_resource(self::TYPE_ICONS, implode('/', $name), '.png');
 		}
 
 
@@ -245,9 +251,8 @@ namespace System
 			$name = explode('.', $name);
 			$suffix = array_pop($name);
 			$name = implode('.', $name);
-			$name = self::get_resource_list_wget_name(self::TYPE_PIXMAPS, $name).'.'.$suffix;
 
-			return 'url('.$name.')';
+			return self::tag_resource(self::TYPE_PIXMAPS, $name, $suffix);
 		}
 
 
