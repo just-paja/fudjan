@@ -9,6 +9,7 @@ namespace System
 		const TYPE_PIXMAPS = 'pixmaps';
 		const TYPE_ICONS   = 'icons';
 		const TYPE_THUMB   = 'thumb';
+		const TYPE_FONT    = 'font';
 
 		const SYMBOL_NOESS = 'noess';
 		const DIR_TMP      = '/var/cache';
@@ -19,6 +20,8 @@ namespace System
 
 		const STYLES_DIR = '/share';
 		const STYLES_STRING_NOT_FOUND = '/* Style not found: %s */';
+
+		const FONTS_DIR = '/share/fonts';
 
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
@@ -59,7 +62,11 @@ namespace System
 			self::TYPE_THUMB => array(
 				self::KEY_DIR_FILES        => \System\Cache\Thumb::DIR,
 				self::KEY_CALLBACK_RESOLVE => array('\System\Image', 'request_thumb'),
-			)
+			),
+			self::TYPE_FONT => array(
+				self::KEY_DIR_FILES        => self::FONTS_DIR,
+				self::KEY_CALLBACK_RESOLVE => array('\System\Resource', 'request_font'),
+			),
 		);
 
 
@@ -130,6 +137,31 @@ namespace System
 			}
 
 			return $content;
+		}
+
+
+		public static function request_font(\System\Http\Request $rq, $info)
+		{
+			$dir = '/share/fonts/'.dirname($info['matches'][2]);
+			$name = explode('.', basename($info['matches'][2]));
+			$suffix = array_pop($name);
+			$serial = array_pop($name);
+			$name[] = $suffix;
+			$name = implode('.', $name);
+			$regex = '/^'.str_replace(array('.', '/'), array('\.', '\/'), $name).'$/';
+			$files = \System\Composer::find($dir, $regex);
+
+			if (any($files)) {
+				$file = \System\File::from_path($files[0]);
+				$file->read_meta()->load();
+
+				self::send_header(self::TYPE_FONT, $file->size());
+				header('Content-Type: '.$file->mime);
+				echo $file->get_content();
+				return;
+			}
+
+			throw new \System\Error\NotFound();
 		}
 
 
@@ -397,7 +429,11 @@ namespace System
 			$info = self::get_type_info($type);
 
 			header("HTTP/1.1 200 OK");
-			header('Content-Type: '.$info['content']);
+
+			if (any($info[self::KEY_DIR_CONTENT])) {
+				header('Content-Type: '.$info[self::KEY_DIR_CONTENT]);
+			}
+
 			header('Content-Length: '.$length);
 			header('Access-Control-Allow-Origin: *');
 

@@ -12,6 +12,10 @@
 		{
 			"name":"icon",
 			"callback":["\\System\\Resource", "tag_icon"]
+		},
+		{
+			"name":"resource",
+			"callback":["\\System\\Resource", "tag_resource"]
 		}
 	]
 }
