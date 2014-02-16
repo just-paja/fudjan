@@ -11,4 +11,10 @@ if ($id && $text = find('\System\Text', $id)) {
 		"show_heading" => $show_heading,
 	));
 
-} else throw new \System\Error\NotFound();
+} else {
+	if (cfg('dev', 'debug', 'backend')) {
+		throw new \System\Error\Config('Text was not found', $id);
+	} else {
+		throw new \System\Error\NotFound();
+	}
+}
