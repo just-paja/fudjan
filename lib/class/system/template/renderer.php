@@ -60,7 +60,7 @@ namespace System\Template
 					'styles/pwf/elementary'
 				),
 				"scripts" => array(
-					'bower/jquery/jquery.min',
+					'bower/jquery/dist/jquery',
 					'bower/pwf.js/lib/pwf',
 					'bower/pwf-storage/lib/storage',
 					'bower/pwf-config/lib/config',
