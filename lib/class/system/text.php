@@ -15,7 +15,7 @@ namespace System
 		/** Attributes */
 		static $attrs = array(
 			"name"    => array('varchar'),
-			"text"    => array('text'),
+			"text"    => array('html'),
 			"visible" => array('bool'),
 			"author"  => array('belongs_to', "model" => 'System\User'),
 		);
