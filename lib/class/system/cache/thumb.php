@@ -208,7 +208,7 @@ namespace System\Cache
 
 				imagedestroy($th);
 			} else {
-				$obj->copy($tpth);
+				$obj->image->copy($tpth);
 			}
 
 			return $obj;
