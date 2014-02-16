@@ -12,6 +12,7 @@ namespace Helper\Database\Mysqli
 			"video_youtube" => array("type" => 'varchar'),
 			"json"          => array("type" => 'text'),
 			"int_set"       => array("type" => 'text'),
+			"html"          => array("type" => 'text'),
 			"password"      => array("type" => 'varchar'),
 			"url"           => array("type" => 'varchar'),
 			"email"         => array("type" => 'varchar'),
