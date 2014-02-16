@@ -335,6 +335,7 @@ namespace System
 
 			$this->renderer()->flush()->reset_layout();
 			$this->renderer()->format = 'json';
+			$this->response()->status($status);
 
 			$this->partial('system/common', array('json_data' => $response));
 			return $this->stop();
