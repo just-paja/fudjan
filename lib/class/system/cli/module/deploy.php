@@ -297,17 +297,15 @@ namespace System\Cli\Module
 						$local = BASE_DIR.$file;
 						$remote = dirname($cfg['root'].substr($file, 1));
 						exec('ncftpput -bb -u "'.$cfg['user'].'" -p"'.$cfg['pass'].'" "'.$cfg['host'].'" "'.$remote.'" "'.$local.'" >& /dev/null');
-
-						show_progress_cli(++$x, $total, CLIOptions::get_con_width(), NULL, $msg);
 					}, "Adding files to FTP queue", $cfg);
 
 					$msg = "Uploading files";
-					show_progress_cli(0, $total, CLIOptions::get_con_width(), NULL, $msg);
+					\System\Cli::progress(0, $total, NULL, $msg);
 					$ph = popen("ncftpbatch -D", 'r');
 
 					while (!feof($ph) && $line = fgets($ph)) {
 						if (strpos($line, "Done") === 0) {
-							show_progress_cli(++$x, $total, CLIOptions::get_con_width(), "Uploaded in %d seconds", $msg);
+							\System\Cli::progress(++$x, $total, $msg);
 						}
 					}
 
