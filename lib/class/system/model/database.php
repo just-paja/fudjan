@@ -864,8 +864,10 @@ namespace System\Model
 								$data[$attr]->save();
 							}
 
-							if (method_exists(get_class($data[$attr]), 'to_json')) {
-								$data[$attr] = $data[$attr]->to_json();
+							if (!method_exists($data[$attr], 'to_sql')) {
+								if (method_exists(get_class($data[$attr]), 'to_json')) {
+									$data[$attr] = $data[$attr]->to_json();
+								}
 							}
 						}
 					}
