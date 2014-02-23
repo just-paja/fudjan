@@ -442,6 +442,10 @@ namespace System
 				$attrs['checked'] = !is_null($ref) && $ref;
 			}
 
+			if (in_array($attrs['type'], array('text', 'number')) && any($attrs['options'])) {
+				$attr['type'] = 'select';
+			}
+
 			$cname = '\\System\\Form\\Input\\'.ucfirst($attrs['type']);
 
 			if (class_exists($cname)) {
