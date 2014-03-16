@@ -79,5 +79,19 @@ namespace System
 
 			return $files;
 		}
+
+
+		public static function resolve($path)
+		{
+			$dir = dirname($path);
+			$file = basename($path);
+			$files = self::find($dir, '/^'.$file.'$/');
+
+			if (count($files) <= 1) {
+				return $files[0];
+			}
+
+			throw new \System\Error\File('Cannot resolve path. Found duplicate files.', $path);
+		}
 	}
 }
