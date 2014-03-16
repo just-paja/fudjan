@@ -35,7 +35,7 @@ namespace System
 							return $domain;
 						}
 					} else {
-						throw new \System\Error\Format(sprintf("Domain '%s' must have key 'rules' and 'init' defined!", $domain));
+						throw new \System\Error\Format(sprintf("Domain '%s' must have key 'rules' defined!", $domain));
 					}
 				}
 			}
