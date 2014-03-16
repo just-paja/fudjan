@@ -37,9 +37,12 @@ namespace System\Http
 			"locales"    => array('object', "model" => '\System\Locales'),
 			"modules"    => array('list'),
 			"init"       => array('list'),
+			"policies"   => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 			"start_time" => array('float'),
+			"sent"       => array('bool'),
+			"pass"       => array('bool', 'default' => true),
 		);
 
 		private $status    = self::OK;
@@ -108,8 +111,76 @@ namespace System\Http
 		 */
 		public function exec()
 		{
-			$this->low_level_debug();
-			$this->flow()->exec();
+			return $this
+				->exec_lld()
+				->exec_policies()
+				->exec_flow();
+		}
+
+
+		public function exec_policies()
+		{
+			$list = $this->get_policies();
+
+			foreach ($list as $policy) {
+				$this->use_policy_file($policy);
+
+				if (!$this->pass) {
+					break;
+				}
+			}
+
+			return $this;
+		}
+
+
+		private function use_policy_file($path)
+		{
+			require($path);
+
+			if (isset($policy) && get_class($policy) == 'Closure') {
+				$this->pass = $policy($this->request(), $this);
+			} else throw new \System\Error\Code('Failed to use policy. Maybe you forgot define variable policy as function.', $path);
+
+			return $this;
+		}
+
+
+		public function get_policies()
+		{
+			$list  = $this->request->policies;
+			$files = array();
+
+			if ($this->policies) {
+				$list = $this->policies;
+			}
+
+			foreach ($list as $set) {
+				try {
+					$names = cfg('policies', $set);
+				} catch(\System\Error\Config $e) {
+					throw new \System\Error\Config('Policy set does not exist', $set);
+				}
+
+				foreach ($names as $file) {
+					$file_path = \System\Composer::resolve('/lib/policy/'.$file.'.php');
+
+					if ($file_path) {
+						array_push($files, $file_path);
+					} else throw new \System\Error\Config('Failed to load policy file.', $file);
+				}
+			}
+
+			return $files;
+		}
+
+
+		public function exec_flow()
+		{
+			if ($this->pass) {
+				$this->flow()->exec();
+			}
+
 			return $this;
 		}
 
@@ -120,6 +191,14 @@ namespace System\Http
 		public function render()
 		{
 			$this->renderer = $this->renderer()->render();
+			return $this;
+		}
+
+
+		public function send()
+		{
+			$this->send_headers()->send_content();
+			$this->sent = true;
 			return $this;
 		}
 
@@ -258,7 +337,7 @@ namespace System\Http
 		/** Run low level debug - Include a PHP file just after init and before module flow
 		 * @return void
 		 */
-		public function low_level_debug()
+		public function exec_lld()
 		{
 			if (!$this->no_debug && \System\Settings::get('dev', 'debug', 'backend')) {
 				if (file_exists(ROOT.'/lib/include/devel.php')) {
@@ -272,6 +351,8 @@ namespace System\Http
 					include ROOT.'/lib/include/devel.php';
 				}
 			}
+
+			return $this;
 		}
 
 

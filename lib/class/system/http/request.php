@@ -23,6 +23,9 @@ namespace System\Http
 			"post"     => array('list'),
 			"secure"   => array('bool'),
 			"user"     => array('object', "model" => '\System\User'),
+			"policies" => array('list'),
+			"init"     => array('list'),
+			'rules'    => array('list'),
 		);
 
 
@@ -87,15 +90,14 @@ namespace System\Http
 		/** Get domain init data
 		 * @return mixed
 		 */
-		private function get_init()
+		private function load_config()
 		{
-			$domain = \System\Router::get_domain($this->host);
+			$cfg = cfg('domains', \System\Router::get_domain($this->host));
+			$this->rules    = def($cfg['rules'], null);
+			$this->policies = (array) def($cfg['policies'], array());
+			$this->init     = (array) def($cfg['init'], array());
 
-			try {
-				$init = cfg('domains', $domain, 'init');
-			} catch (\System\Error\Config $e) { $init = array(); }
-
-			return $init;
+			return $this;
 		}
 
 
@@ -104,11 +106,14 @@ namespace System\Http
 		 */
 		public function init()
 		{
+			$this->load_config();
+
 			if ($this->get('lang')) {
 				\System\Locales::set_lang($this->get('lang'));
 			}
 
-			\System\Init::run($this->get_init(), array("request" => $this));
+			\System\Init::run($this->init, array("request" => $this));
+			return $this;
 		}
 
 
