@@ -2,4 +2,4 @@
 	:php
 		echo $show_heading ? $ren->heading($text->name):'';
 
-	.content=$to_html($text->text)
+	.content!=$to_html($text->text)
