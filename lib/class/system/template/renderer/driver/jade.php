@@ -13,14 +13,14 @@ namespace System\Template\Renderer\Driver
 		{
 			\System\Directory::check(BASE_DIR.self::DIR_CACHE);
 
-			$this->jade = new \Jade\Jade(array(
-				'prettyprint' => true,
-				'cache'       => BASE_DIR.self::DIR_CACHE
-			));
-
-			$this->jade->filter('slot', function($node, $compiler) {
-
-			});
+			if (class_exists('Jade\Jade')) {
+				$this->jade = new \Jade\Jade(array(
+					'prettyprint' => true,
+					'cache'       => BASE_DIR.self::DIR_CACHE
+				));
+			} else {
+				throw new \System\Error\Wtf('Could not find jade template compiler.');
+			}
 		}
 
 
