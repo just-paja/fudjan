@@ -23,7 +23,11 @@ try {
 
 
 $exp = $desc->get_explanation();
-Tag::h1(array("content" => isset($exp[0]) ? $exp[0].Tag::span(array("class" => 'type', "content" => get_class($desc), "output" => false)):get_class($desc)));
+Tag::h1(array("content" => get_class($desc)));
+
+if (isset($exp[0])) {
+	Tag::h1(array("content" => $exp[0]));
+}
 
 if (count($exp) > 1) {
 
@@ -91,13 +95,13 @@ echo div('advice');
 					}
 				}
 
-				if (!$skip && isset($b['object'])) {
-					$str_obj[] = STag::heading(array("content" => 'Object:'));
-					$str_obj[] = Tag::div(array(
-						"content" => '<pre>'.@var_export($b['object'], true).'</pre>',
-						"output"  => false,
-					));
-				}
+				//~ if (!$skip && isset($b['object'])) {
+					//~ $str_obj[] = STag::heading(array("content" => 'Object:'));
+					//~ $str_obj[] = Tag::div(array(
+						//~ "content" => '<pre>'.@var_export($b['object'], true).'</pre>',
+						//~ "output"  => false,
+					//~ ));
+				//~ }
 
 				$str[] = Tag::div(array(
 					"class" => 'desc',

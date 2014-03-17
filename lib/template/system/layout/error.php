@@ -1,7 +1,7 @@
 <?
 
 echo doctype();
-echo html($locales->get_lang());
+echo html($loc->get_lang());
 
 	echo head();
 		$ren->content_for('styles', 'styles/pwf/fonts');
@@ -12,8 +12,8 @@ echo html($locales->get_lang());
 	echo body(array("class" => 'error'));
 		Tag::section(array("id" => 'container'));
 
-			$this->yield();
-			$this->slot();
+			$ren->yield();
+			$ren->slot();
 
 		close('section');
 		Tag::footer(array("content" => \System\Status::introduce()));

@@ -5,7 +5,6 @@ namespace System
 	class Template
 	{
 		const DIR_TEMPLATE = '/lib/template';
-		const DIR_PARTIAL  = '/lib/template/partial';
 		const DIR_ICONS = '/share/icons';
 		const DEFAULT_SLOT = 'zzTop';
 		const DEFAULT_ICON_THEME = 'default';
@@ -180,15 +179,11 @@ namespace System
 		 * @param string $name
 		 * @param bool $force
 		 */
-		public static function find($name, $type = self::TYPE_LAYOUT, $format = null, $locale = null)
+		public static function find($name, $format = null, $locale = null)
 		{
 			$time = microtime(true);
 			$base = self::DIR_TEMPLATE;
 			$temp = null;
-
-			if ($type == 'partial') {
-				$base = self::DIR_PARTIAL;
-			}
 
 			$dirs = \System\Composer::list_dirs($base);
 			$path = explode('/', $name);
@@ -200,7 +195,6 @@ namespace System
 			foreach ($dirs as $dir) {
 				file_exists($temp = $dir.'/'.self::get_filename($name, $format, $locale)) ||
 				file_exists($temp = $dir.'/'.self::get_filename($name, $format)) ||
-				file_exists($temp = $dir.'/'.self::get_filename($name)) ||
 				$temp = null;
 
 				if ($temp) {

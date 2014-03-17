@@ -17,6 +17,7 @@ namespace System\Template
 			"robots"               => array('varchar'),
 			"copyright"            => array('varchar'),
 			"author"               => array('varchar'),
+			"driver"               => array('varchar'),
 		);
 
 		private static $meta_tags = array("description", "keywords", "author", "copyright", "robots");
@@ -25,7 +26,6 @@ namespace System\Template
 		private $templates_used = array();
 		private $templates;
 		private $layout;
-		private $content;
 
 
 		/** Create renderer from response
@@ -47,34 +47,61 @@ namespace System\Template
 		}
 
 
+		public function construct()
+		{
+			$this->flush();
+		}
+
+
 		/** Flush output
 		 * @return $this
 		 */
 		public function flush()
 		{
-			$this->content = array(
-				"title"   => '',
-				"meta"    => array(),
-				"styles"  => array(
-					'bower/reset-css/reset',
-					'styles/pwf/elementary'
-				),
-				"scripts" => array(
-					'bower/jquery/dist/jquery',
-					'bower/pwf.js/lib/pwf',
-					'bower/pwf-storage/lib/storage',
-					'bower/pwf-config/lib/config',
-					'bower/pwf-html/lib/html',
-				),
-				"output"  => array(),
-			);
+			$this->driver = \System\Settings::get('template', 'renderer');
+			return $this;
+		}
 
-			if ($this->response()) {
-				$this->content_for('title', $this->response()->title);
-				$this->process_meta();
+
+		public function get_driver()
+		{
+			$driver = '\System\Template\Renderer\Driver\Basic';
+
+			if ($this->format == 'html') {
+				$driver = '\System\Template\Renderer\Driver\\'.ucfirst($this->driver);
 			}
 
-			return $this;
+			if (!class_exists($driver)) {
+				throw new \System\Error\Config('Could not find template renderer driver.', $driver);
+			}
+
+			return new $driver(array(
+				'renderer' => $this
+			));
+		}
+
+
+		public function get_layout()
+		{
+			return $this->layout;
+		}
+
+
+		public function get_slots()
+		{
+			return $this->templates;
+		}
+
+
+		public function get_context()
+		{
+			return array(
+				'flow' => $this->response()->flow(),
+				'loc'  => $this->response()->locales(),
+				'ren'  => $this,
+				'res'  => $this->response(),
+				'rq'   => $this->response()->request(),
+			);
 		}
 
 
@@ -83,29 +110,15 @@ namespace System\Template
 		 */
 		public function render()
 		{
+			$driver = $this->get_driver();
+
+			$this->flush();
+			$this->response->flush();
 			$this->start_time = microtime(true);
 
-			try {
-				$debug = \System\Settings::get('dev', 'debug', 'backend');
-			} catch(\System\Error $e) {
-				$debug = true;
-			}
+			$cont = $driver->render();
+			$this->response()->set_content($cont);
 
-			$this->response->flush();
-
-			if (false && $debug && !$this->response->no_debug) {
-				$this->partial('system/status');
-				$this->content_for('styles', 'styles/pwf/devbar');
-				$this->content_for('scripts', 'scripts/pwf/devbar');
-			}
-
-			ob_start();
-			empty($this->layout) ? $this->slot():$this->yield();
-			$this->content_for('output', ob_get_clean());
-			$this->render_head();
-
-			$this->response()->set_content(implode('', $this->content['output']));
-			$this->flush();
 			return $this;
 		}
 
@@ -116,7 +129,6 @@ namespace System\Template
 		 */
 		public function out()
 		{
-
 			return implode('', self::$content['output']);
 		}
 
@@ -133,58 +145,6 @@ namespace System\Template
 				"name"   => $name,
 				"locals" => $locals,
 			);
-		}
-
-
-		/** Include all remaining templates in queue
-		 * @return void
-		 */
-		public function yield()
-		{
-			while (any($this->layout)) {
-				$name = array_shift($this->layout);
-				$this->used(\System\Template::TYPE_LAYOUT, $name);
-
-				$renderer = $this;
-				$response = $this->response();
-				$request  = $this->response()->request();
-				$locales  = $this->response()->locales();
-				$ren      = &$renderer;
-
-				if (file_exists($f = \System\Template::find($name, \System\Template::TYPE_LAYOUT, $this->format))) {
-					include($f);
-				} else throw new \System\Error\File(sprintf('Template "%s" not found.', $name));
-			}
-		}
-
-
-		/** Output templates in a slot
-		 * @param string $name
-		 * @return void
-		 */
-		public function slot($name = \System\Template::DEFAULT_SLOT)
-		{
-			try {
-				$debug = \System\Settings::get('dev', 'debug', 'backend');
-			} catch(\System\Error $e) {
-				$debug = true;
-			}
-
-			if ($debug && strpos($this->format, 'html') !== false && !\System\Status::on_cli()) {
-				echo '<!--Slot: "'.$name.'"-->';
-			}
-
-			if (isset($this->templates[$name]) && is_array($this->templates[$name])) {
-				while ($template = array_shift($this->templates[$name])) {
-					if (!empty($template['locals']['heading-level'])) {
-						\System\Template::set_heading_level($template['locals']['heading-level']);
-						\System\Template::set_heading_section_level($template['locals']['heading-level']);
-					}
-
-					$this->used(\System\Template::TYPE_PARTIAL, $template['name'], $template['locals']);
-					$this->render_partial($template['name'], $template['locals']);
-				}
-			}
 		}
 
 
@@ -258,116 +218,6 @@ namespace System\Template
 				"locals" => $locals,
 			);
 		}
-
-
-		/** Render HTML head
-		 * @return $this
-		 */
-		public function render_head()
-		{
-			return $this->render_meta()->render_title()->render_scripts()->render_styles()->render_frontend_config();
-		}
-
-
-		/** Render HTML meta tag section
-		 * @return $this
-		 */
-		public function render_meta()
-		{
-			$this->content_for("meta", array("name" => 'generator', "content" => \System\Status::introduce()));
-			$this->content_for("meta", array("http-equiv" => 'content-type', "content" => \System\Output::get_mime($this->format).'; charset=utf-8'));
-			$this->content_for("meta", array("charset" => 'utf-8'));
-
-			$meta = $this->get_content_from("meta");
-
-			foreach ($meta as $name=>$value) {
-				if ($value) {
-					$this->content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
-				}
-			}
-
-			return $this;
-		}
-
-
-		/** Render HTML title section
-		 * @return $this
-		 */
-		public function render_title()
-		{
-			$this->content_for("head", \Stag::title(array("content" => $this->get_content_from('title'))));
-			return $this;
-		}
-
-
-		/** Render HTML javascript section
-		 * @return $this
-		 */
-		public function render_scripts()
-		{
-			$this->content_for('scripts', 'bower/pwf-jquery-compat/lib/jquery-compat');
-			$cont = $this->get_content_from("scripts");
-
-			if (!is_null($cont)) {
-				$this->content_for("head", '<script type="text/javascript" src="'.$cont.'"></script>');
-			}
-
-			return $this;
-		}
-
-
-		/** Render HTML css style section
-		 * @return $this
-		 */
-		public function render_styles()
-		{
-			$cont = $this->get_content_from("styles");
-
-			if (!is_null($cont)) {
-				$this->content_for("head", '<link type="text/css" crossorigin="anonymous" rel="stylesheet" href="'.$cont.'" />');
-			}
-
-			return $this;
-		}
-
-
-		public function render_frontend_config()
-		{
-			try {
-				$static_domain = \System\Settings::get('resources', 'domain');
-			} catch (\System\Error\Config $e) {
-				$static_domain = null;
-			}
-
-			$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
-
-			$cont = array(
-				"locales" => array(
-					"url"      => substr($locales_url, 0, strlen($locales_url)-1),
-					"lang"     => cfg('locales', 'default_lang'),
-					"autoload" => cfg('locales', 'autoload')
-				),
-				"comm" => array(
-					"blank" => '/share/html/blank.html'
-				),
-				"debug" => cfg('dev', 'debug'),
-				"proxy" => array(
-					'url' => '/proxy/head/?url={url}'
-				),
-			);
-
-			try {
-				$frontend = cfg('frontend');
-			} catch(\System\Error $e) {
-				$frontend = array();
-			}
-
-			$cont = array_merge_recursive($cont, $frontend);
-			$this->content_for('head', '<script type="text/javascript">var sys = '.json_encode($cont).'</script>');
-			return $this;
-		}
-
-
 		public function response()
 		{
 			return $this->response;
@@ -377,7 +227,6 @@ namespace System\Template
 		public function reset_layout()
 		{
 			$this->layout = array();
-
 			return $this;
 		}
 
@@ -390,47 +239,6 @@ namespace System\Template
 			return microtime(true) - $this->start_time;
 		}
 
-
-		/** Get content from location
-		 * @param string $place
-		 * @return string
-		 */
-		public function get_content_from($place)
-		{
-			if (is_array($this->content[$place]) && in_array($place, self::$resource_filter)) {
-				$this->content[$place] = \System\Resource::filter_output_content($place, $this->content[$place]);
-			}
-
-			return $this->content[$place];
-		}
-
-
-		/** Get content from a location and add it to general output
-		 * @param string $place
-		 */
-		public function content_from($place)
-		{
-			$this->content_for('output', ob_get_clean());
-			$this->content['output'][] = &$this->content[$place];
-			ob_start();
-		}
-
-
-		/** Add content into specific place
-		 * @param string $place
-		 * @param array|string $content
-		 * @param bool $overwrite
-		 */
-		public function content_for($place, $content, $overwrite = false)
-		{
-			if (!isset($this->content[$place]) || $overwrite) {
-				$this->content[$place] = $content;
-			} else {
-				is_array($this->content[$place]) && $this->content[$place][] = $content;
-				is_integer($this->content[$place]) && $this->content[$place] += $content;
-				is_string($this->content[$place]) && $this->content[$place] .= $content;
-			}
-		}
 
 
 		private function heading_render($label, $level = null)
@@ -724,26 +532,6 @@ namespace System\Template
 
 			$f->submit(isset($data['submit']) ? $data['submit']:$this->locales()->trans('delete'));
 			return $f;
-		}
-
-
-		/** Get page metadata from routes and add it into streamed output.
-		 * @return $this
-		 */
-		private function process_meta()
-		{
-			$dataray = array();
-
-			foreach ((array) self::$meta_tags as $name) {
-				if (any($this->data[$name])) {
-					$this->content_for('meta', array(
-						"name"    => $name,
-						"content" => $this->data[$name]
-					));
-				}
-			}
-
-			return $this;
 		}
 
 

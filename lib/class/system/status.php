@@ -15,6 +15,10 @@ namespace System
 		 */
 		public static function report($type, $msg)
 		{
+			while(ob_get_level() > 0) {
+				ob_end_clean();
+			}
+
 			if (!isset(self::$log_files[$type]) || !is_resource(self::$log_files[$type])) {
 				try {
 					\System\Directory::check(ROOT.self::DIR_LOGS);
@@ -94,7 +98,7 @@ namespace System
 			} else {
 				$error_page = array(
 					"title"    => 'Error occurred!',
-					"layout"   => array('pwf/errors/layout'),
+					"layout"   => array('system/layout/error'),
 					"partial"  => 'system/error/bug',
 				);
 			}
@@ -102,6 +106,7 @@ namespace System
 			try {
 				$request = \System\Http\Request::from_hit();
 				$response = $request->create_response($error_page);
+				$response->renderer()->format = 'basic';
 
 				if (self::on_cli()) {
 					$response->renderer()->format = 'txt';

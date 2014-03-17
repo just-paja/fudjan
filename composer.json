@@ -6,6 +6,7 @@
 		"vendor-dir":"lib/vendor"
 	},
 	"require":{
-		"oyejorge/less.php":">1.6"
+		"oyejorge/less.php":">1.6",
+		"ronan-gloo/jadephp":"dev-master@dev"
 	}
 }

@@ -210,7 +210,11 @@ namespace System\Http
 		{
 			if (!\System\Status::on_cli()) {
 				session_write_close();
-				$mime = \System\Output::get_mime($this->renderer()->format);
+				try {
+					$mime = \System\Output::get_mime($this->renderer()->format);
+				} catch(\System\Error\Argument $e) {
+					$mime = 'text/html; charset=utf-8';
+				}
 
 				if ($this->status == self::OK && empty($this->content)) {
 					$this->status(self::NO_CONTENT);
