@@ -59,6 +59,12 @@ namespace System\Form
 				$data['elements'] = $containers;
 			}
 
+			foreach ($data as $key=>$value) {
+				if (is_null($value)) {
+					unset($data[$key]);
+				}
+			}
+
 			return $data;
 		}
 	}
