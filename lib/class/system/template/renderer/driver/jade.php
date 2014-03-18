@@ -26,7 +26,9 @@ namespace System\Template\Renderer\Driver
 
 		public function render_template($path, array $locals = array())
 		{
+			$name = str_replace('/', '-', $path);
 			ob_start();
+
 			try {
 				$this->jade->render($path, $locals);
 			} catch (\Exception $e) {
@@ -38,7 +40,7 @@ namespace System\Template\Renderer\Driver
 			$out = ob_get_contents();
 			ob_end_clean();
 
-			return $out;
+			return '<div class="template '.$locals['template'].'">'.$out.'</div>';
 		}
 
 

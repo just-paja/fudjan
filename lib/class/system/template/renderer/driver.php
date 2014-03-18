@@ -91,6 +91,8 @@ namespace System\Template\Renderer
 						$ctx = array_merge($this->get_context(), def($partial['locals'], array()));
 
 						if (any($partial['name'])) {
+
+
 							try {
 								$this->content['slots'][$slot][] = $this->render_file($partial['name'], $ctx);
 							} catch(Exception $e) {
@@ -118,6 +120,7 @@ namespace System\Template\Renderer
 			$path = \System\Composer::resolve(\System\Template::DIR_TEMPLATE.'/'.$name.'.'.$this->get_suffix());
 
 			if ($path) {
+				$locals['template'] = str_replace('/', '-', $name);
 				return $this->render_template($path, $locals);
 			} else throw new \System\Error\File('Could not find template.', $name, $this->get_suffix(), get_class($this));
 
