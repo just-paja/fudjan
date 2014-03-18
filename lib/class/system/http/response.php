@@ -162,7 +162,7 @@ namespace System\Http
 				try {
 					$names = cfg('policies', $set);
 				} catch(\System\Error\Config $e) {
-					throw new \System\Error\Config('Policy set does not exist', $set);
+					$names = array($set);
 				}
 
 				foreach ($names as $file) {
