@@ -30,7 +30,9 @@ namespace System\Template\Renderer\Driver
 			try {
 				$this->jade->render($path, $locals);
 			} catch (\Exception $e) {
-				throw new \System\Error\Code($e->getMessage(), $path);
+				if (!($e instanceof \System\Error)) {
+					throw new \System\Error\Code('Failed to render jade template.', $e->getMessage(), $path);
+				} else throw $e;
 			}
 
 			$out = ob_get_contents();
