@@ -4,12 +4,12 @@
 	"errors":{
 		"not_found":{
 			"title":"core_page_not_found",
-			"layout":["pwf/errors/layout"],
+			"layout":["system/layout/error"],
 			"partial":"system/error/404"
 		},
 		"access_denied":{
 			"title":"core_access_denied",
-			"layout":["pwf/errors/layout"],
+			"layout":["system/layout/error"],
 			"partial":"system/error/403"
 		}
 	}
