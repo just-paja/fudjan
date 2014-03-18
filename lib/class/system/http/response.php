@@ -39,6 +39,7 @@ namespace System\Http
 			"init"       => array('list'),
 			"policies"   => array('list'),
 			"context"    => array('list'),
+			"layout"     => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 			"start_time" => array('float'),
@@ -98,6 +99,10 @@ namespace System\Http
 				} catch (\System\Error $e) {
 					$attrs['format'] = 'html';
 				}
+			}
+
+			if (!isset($attrs['layout'])) {
+				$attrs['layout'] = $request->layout;
 			}
 
 			$response = new self($attrs);
