@@ -95,13 +95,13 @@ namespace System\Template
 
 		public function get_context()
 		{
-			return array(
+			return array_merge(array(
 				'flow' => $this->response()->flow(),
 				'loc'  => $this->response()->locales(),
 				'ren'  => $this,
 				'res'  => $this->response(),
 				'rq'   => $this->response()->request(),
-			);
+			), $this->response()->get_template_context());
 		}
 
 
@@ -215,7 +215,7 @@ namespace System\Template
 
 			$this->templates[$slot][] = array(
 				"name"   => $template,
-				"locals" => array_merge($this->response()->get_template_context(), $locals),
+				"locals" => $locals,
 			);
 		}
 		public function response()
