@@ -24,6 +24,7 @@ namespace System\Http
 			"secure"   => array('bool'),
 			"user"     => array('object', "model" => '\System\User'),
 			"policies" => array('list'),
+			"context"  => array('list'),
 			"init"     => array('list'),
 			'rules'    => array('list'),
 		);
@@ -95,6 +96,7 @@ namespace System\Http
 			$cfg = cfg('domains', \System\Router::get_domain($this->host));
 			$this->rules    = def($cfg['rules'], null);
 			$this->policies = (array) def($cfg['policies'], array());
+			$this->context  = (array) def($cfg['context'], array());
 			$this->init     = (array) def($cfg['init'], array());
 
 			return $this;

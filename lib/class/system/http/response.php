@@ -38,6 +38,7 @@ namespace System\Http
 			"modules"    => array('list'),
 			"init"       => array('list'),
 			"policies"   => array('list'),
+			"context"    => array('list'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
 			"start_time" => array('float'),
@@ -49,6 +50,7 @@ namespace System\Http
 		private $headers   = array();
 		private $content   = null;
 		private $init_done = false;
+		private $ctx_data  = array();
 
 
 		/** Get response HTTP status
@@ -114,7 +116,8 @@ namespace System\Http
 			return $this
 				->exec_lld()
 				->exec_policies()
-				->exec_flow();
+				->exec_flow()
+				->exec_context_processors();
 		}
 
 
@@ -182,6 +185,59 @@ namespace System\Http
 			}
 
 			return $this;
+		}
+
+
+		public function exec_context_processors()
+		{
+			$list = $this->get_context_processors();
+
+			foreach ($list as $ctx) {
+				$this->use_context_file($ctx);
+			}
+
+			return $this;
+		}
+
+
+		private function use_context_file($path)
+		{
+			require($path);
+			$data = array();
+
+			if (isset($context)) {
+				if (get_class($context) == 'Closure') {
+					$data = $context($this->request(), $this);
+				} else {
+					$data = (array) $context;
+				}
+			} else throw new \System\Error\Code('Failed to use context processor. Maybe you forgot to define context variable.', $path);
+
+			$this->ctx_data = array_merge($this->ctx_data, (array) $data);
+			return $this;
+		}
+
+
+		public function get_context_processors()
+		{
+			$list  = !!$this->context ? $this->context:$this->request->context;
+			$files = array();
+
+			foreach ($list as $name) {
+				$file_path = \System\Composer::resolve('/lib/context/'.$name.'.php');
+
+				if ($file_path) {
+					array_push($files, $file_path);
+				} else throw new \System\Error\Config('Failed to find context processor.', $name);
+			}
+
+			return $files;
+		}
+
+
+		public function get_template_context()
+		{
+			return $this->ctx_data;
 		}
 
 

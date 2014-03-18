@@ -215,7 +215,7 @@ namespace System\Template
 
 			$this->templates[$slot][] = array(
 				"name"   => $template,
-				"locals" => $locals,
+				"locals" => array_merge($this->response()->get_template_context(), $locals),
 			);
 		}
 		public function response()
