@@ -331,6 +331,7 @@ namespace System\Template\Renderer
 					"autoload" => cfg('locales', 'autoload')
 				),
 				"comm" => array(
+					"def"   => 'http',
 					"blank" => '/share/html/blank.html'
 				),
 				"debug" => cfg('dev', 'debug'),
