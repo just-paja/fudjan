@@ -5,11 +5,12 @@ namespace System\Model
 {
 	abstract class Perm extends Database
 	{
-		const CREATE = 'create';
-		const BROWSE = 'browse';
-		const UPDATE = 'update';
-		const DROP   = 'drop';
-		const VIEW   = 'view';
+		const VIEW_SCHEMA = 'schema';
+		const CREATE      = 'create';
+		const BROWSE      = 'browse';
+		const UPDATE      = 'update';
+		const DROP        = 'drop';
+		const VIEW        = 'view';
 
 
 		/** Get default config for this action
@@ -39,15 +40,20 @@ namespace System\Model
 				return true;
 			}
 
-			$groups = $user->groups->fetch();
-			$conds = array('public' => true);
+			$conds = array();
 
-			if (any($groups)) {
-				$conds[] = 'group_id IN ('.collect_ids($groups).')';
-				$conds = array($conds);
+			if ($user->is_guest()) {
+				$conds['public'] = true;
+			} else {
+				$groups = $user->groups->fetch();
+
+				if (any($groups)) {
+					$conds[] = 'group_id IN ('.collect_ids($groups).')';
+				}
 			}
 
-			$conds['type']    = get_class($this).'::'.$method;
+			//~ TODO: Sort out static class getting later
+			//~ $conds['type']    = get_class($this).'::'.$method;
 			$conds['trigger'] = 'model';
 
 			$perm = get_first('System\User\Perm')->where($conds)->fetch();
