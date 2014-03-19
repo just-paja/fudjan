@@ -15,6 +15,12 @@ namespace System
 		 */
 		public static function report($type, $msg)
 		{
+			try {
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
+			} catch(\System\Error\Config $e) {
+				$debug = false;
+			}
+
 			while(ob_get_level() > 0) {
 				ob_end_clean();
 			}
@@ -43,7 +49,19 @@ namespace System
 				} else {
 					$report .= "> Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
 				}
+
 				$report .= NL;
+
+				if (!$debug && $type == 'error') {
+					try {
+						$rcpt = \System\Settings::get('dev', 'mailing', 'errors');
+					} catch(\System\Error\Config $e) {
+						$rcpt = array();
+					}
+
+					\System\Offcom\Mail::create('[Fudjan] Server error', $report, $rcpt)->send();
+				}
+
 				fwrite(self::$log_files[$type], $report);
 			}
 		}
@@ -84,13 +102,19 @@ namespace System
 			try {
 				$errors = \System\Settings::get('output', 'errors');
 				$cfg_ok = true;
-			} catch(\System\Error $exc) {
+			} catch(\System\Error\Config $exc) {
 				$errors = array();
 				$cfg_ok = false;
 			}
 
 			if (!($e instanceof \System\Error)) {
 				$e = \System\Error::from_exception($e);
+			}
+
+			try {
+				self::report('error', $e);
+			} catch (\Exception $err) {
+				$e = $err;
 			}
 
 			if (array_key_exists($e->get_name(), $errors)) {
@@ -120,7 +144,6 @@ namespace System
 
 				$response->renderer()->partial($error_page['partial'], array("desc" => $e));
 				$response->render()->send_headers()->send_content();
-				self::report('error', $e);
 
 			} catch (\Exception $exc) {
 				echo "Fatal error";
