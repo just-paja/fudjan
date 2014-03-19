@@ -18,9 +18,10 @@ namespace System\User
 		 */
 		static protected $attrs = array(
 			"group"     => array('belongs_to', "model" => 'System\User\Group'),
-			"type"      => array('varchar'),
+			"name"      => array('varchar'),
 			"trigger"   => array('varchar'),
 			"public"    => array('bool'),
+			"allow"     => array('bool')
 		);
 	}
 }
