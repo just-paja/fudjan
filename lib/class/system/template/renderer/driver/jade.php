@@ -15,8 +15,7 @@ namespace System\Template\Renderer\Driver
 
 			if (class_exists('Jade\Jade')) {
 				$this->jade = new \Jade\Jade(array(
-					'prettyprint' => true,
-					'cache'       => BASE_DIR.self::DIR_CACHE
+					'cache' => BASE_DIR.self::DIR_CACHE
 				));
 			} else {
 				throw new \System\Error\Wtf('Could not find jade template compiler.');
