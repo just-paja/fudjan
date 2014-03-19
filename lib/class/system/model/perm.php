@@ -33,9 +33,25 @@ namespace System\Model
 		 * @param System\User $user   User to get perms for
 		 * @return bool
 		 */
-		public static function can_be_created($method, \System\User $user)
+		public static function can_user($method, \System\User $user)
 		{
-			return self::get_default_for($method);
+			if ($user->is_root()) {
+				return true;
+			}
+
+			$groups = $user->groups->fetch();
+			$conds = array('public' => true);
+
+			if (any($groups)) {
+				$conds[] = 'group_id IN ('.collect_ids($groups).')';
+				$conds = array($conds);
+			}
+
+			$conds['type']    = get_class($this).'::'.$method;
+			$conds['trigger'] = 'model';
+
+			$perm = get_first('System\User\Perm')->where($conds)->fetch();
+			return $perm ? $perm->allow:self::get_default_for($method);
 		}
 
 
@@ -46,7 +62,7 @@ namespace System\Model
 		 */
 		public function can_be($method, \System\User $user)
 		{
-			return self::get_default_for($method);
+			return self::can_user($method, $user);
 		}
 	}
 }
