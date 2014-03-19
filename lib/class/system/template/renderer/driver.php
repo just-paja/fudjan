@@ -88,11 +88,11 @@ namespace System\Template\Renderer
 			foreach ($slots as $slot=>$partials) {
 				if (isset($this->content['slots'][$slot])) {
 					while ($partial = array_shift($partials)) {
-						$ctx = array_merge($this->get_context(), def($partial['locals'], array()));
+						$locals = def($partial['locals'], array());
+						$ctx = array_merge($this->get_context(), $locals);
+						$ctx['passed'] = &$locals;
 
 						if (any($partial['name'])) {
-
-
 							try {
 								$this->content['slots'][$slot][] = $this->render_file($partial['name'], $ctx);
 							} catch(Exception $e) {
@@ -115,7 +115,7 @@ namespace System\Template\Renderer
 		}
 
 
-		public function render_file($name, $locals)
+		public function render_file($name, array $locals = array())
 		{
 			$path = \System\Composer::resolve(\System\Template::DIR_TEMPLATE.'/'.$name.'.'.$this->get_suffix());
 
