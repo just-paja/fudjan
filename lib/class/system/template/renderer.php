@@ -65,17 +65,22 @@ namespace System\Template
 
 		public function get_driver()
 		{
-			$driver = '\System\Template\Renderer\Driver\Basic';
+			$namespace = '\System\Template\Renderer\Driver\\';
+			$driver = 'Basic';
 
 			if ($this->format == 'html') {
-				$driver = '\System\Template\Renderer\Driver\\'.ucfirst($this->driver);
+				$driver = ucfirst($this->driver);
+			} else {
+				$driver = ucfirst($this->format);
 			}
 
-			if (!class_exists($driver)) {
+			$name = $namespace.$driver;
+
+			if (!class_exists($name)) {
 				throw new \System\Error\Config('Could not find template renderer driver.', $driver);
 			}
 
-			return new $driver(array(
+			return new $name(array(
 				'renderer' => $this
 			));
 		}
