@@ -8,7 +8,7 @@ namespace System\User
 {
 	/** User contact model
 	 */
-	class Contact extends \System\Model\Database
+	class Contact extends \System\Model\Perm
 	{
 		const ALLOW_RELATION_DELETE = true;
 

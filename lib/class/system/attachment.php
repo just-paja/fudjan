@@ -2,7 +2,7 @@
 
 namespace System
 {
-	class Attachment extends \System\Model\Database
+	class Attachment extends \System\Model\Perm
 	{
 		const TYPE_FILE  = 1;
 		const TYPE_IMAGE = 2;

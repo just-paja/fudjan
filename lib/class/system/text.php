@@ -10,7 +10,7 @@ namespace System
 	 * @package system
 	 * @subpackage models
 	 */
-	class Text extends \System\Model\Database
+	class Text extends \System\Model\Perm
 	{
 		/** Attributes */
 		static $attrs = array(

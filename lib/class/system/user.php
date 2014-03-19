@@ -12,7 +12,7 @@ namespace System
 	 * @package system
 	 * @subpackage users
 	 */
-	class User extends Model\Database
+	class User extends Model\Perm
 	{
 		const COOKIE_USER = 'pwf_user';
 
@@ -147,6 +147,12 @@ namespace System
 		public function is_root()
 		{
 			return $this->login == 'root';
+		}
+
+
+		public function is_guest()
+		{
+			return $this->id <= 0;
 		}
 
 
