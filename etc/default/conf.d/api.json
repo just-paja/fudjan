@@ -1,9 +1,10 @@
 {
 	"allow":{
+		"schema":false,
 		"create":false,
 		"browse":false,
 		"update":false,
 		"drop":false,
-		"view":true
+		"view":false
 	}
 }
