@@ -40,7 +40,12 @@ namespace System\Model
 				return true;
 			}
 
+			$cname = get_called_class();
 			$conds = array();
+
+			if (isset($cname::$access) && isset($cname::$access[$method]) && !!$cname::$access[$method]) {
+				return true;
+			}
 
 			if ($user->is_guest()) {
 				$conds['public'] = true;
@@ -52,8 +57,7 @@ namespace System\Model
 				}
 			}
 
-			//~ TODO: Sort out static class getting later
-			//~ $conds['type']    = get_class($this).'::'.$method;
+			$conds['type']    = $cname;
 			$conds['trigger'] = 'model';
 
 			$perm = get_first('System\User\Perm')->where($conds)->fetch();
