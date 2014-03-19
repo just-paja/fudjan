@@ -80,7 +80,7 @@ namespace System\Offcom
 		public static function get_default_headers()
 		{
 			if (!isset(self::$default_headers['X-Mailer'])) {
-				self::$default_headers["X-Mailer"] = introduce();
+				self::$default_headers["X-Mailer"] = \System\Status::introduce();
 			}
 
 			return self::$default_headers;
@@ -92,7 +92,15 @@ namespace System\Offcom
 		 */
 		public function get_sender()
 		{
-			return is_null($this->from) ? cfg('offcom', 'default', 'sender'):$this->from;
+			if (is_null($this->from)) {
+				try {
+					return \System\Settings::get('offcom', 'default', 'sender');
+				} catch (\System\Error\Config $e) {
+					return null;
+				}
+			}
+
+			return $this->from;
 		}
 
 
@@ -107,8 +115,10 @@ namespace System\Offcom
 				}
 			}
 
-			if (!self::is_addr_valid($this->get_sender())) {
-				throw new \System\Error\Format(sprintf('Sender "%s" is not formatted according to RFC 2822.', $this->get_sender()));
+			if ($this->get_sender() !== null) {
+				if (!self::is_addr_valid($this->get_sender())) {
+					throw new \System\Error\Format(sprintf('Sender "%s" is not formatted according to RFC 2822.', $this->get_sender()));
+				}
 			}
 
 			return true;
@@ -129,6 +139,12 @@ namespace System\Offcom
 		 */
 		public function send()
 		{
+			try {
+				$disable = \System\Settings::get('dev', 'disable', 'offcom');
+			} catch (\System\Error\Config $e) {
+				$disable = false;
+			}
+
 			$this->validate();
 
 			$body = array();
@@ -154,7 +170,7 @@ namespace System\Offcom
 			$body = implode("\n", $body);
 			$this->status = self::STATUS_SENDING;
 
-			if (!cfg('dev', 'disable', 'offcom')) {
+			if (!$disable) {
 				if (mail($rcpt, $this->get_encoded_subject(), '', $body)) {
 					$this->status = self::STATUS_SENT;
 				} else $this->status = self::STATUS_FAILED;
