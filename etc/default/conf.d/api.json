@@ -1,9 +1,9 @@
 {
-	'allow':{
-		'create':false,
-		'browse':false,
-		'update':false,
-		'drop':false,
-		'view':true
+	"allow":{
+		"create":false,
+		"browse":false,
+		"update":false,
+		"drop":false,
+		"view":true
 	}
 }
