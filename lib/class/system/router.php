@@ -22,21 +22,19 @@ namespace System
 		 */
 		public static function get_domain($host)
 		{
-			$domains = cfg('domains');
-
 			try {
-				if (cfg('domains', $host)) {
-					return $host;
-				}
-			} catch(\System\Error\Config $e) {
-				foreach ($domains as $domain => $config) {
-					if (isset($config['rules'])) {
-						if (self::domain_match($host, $config)) {
-							return $domain;
-						}
-					} else {
-						throw new \System\Error\Format(sprintf("Domain '%s' must have key 'rules' defined!", $domain));
+				$domains = \System\Settings::get('domains');
+			} catch (\System\Error\Config $e) {
+				$domains = array();
+			}
+
+			foreach ($domains as $domain => $config) {
+				if (isset($config['rules'])) {
+					if (self::domain_match($host, $config)) {
+						return $domain;
 					}
+				} else {
+					throw new \System\Error\Format(sprintf("Domain '%s' must have key 'rules' defined!", $domain));
 				}
 			}
 
@@ -55,25 +53,30 @@ namespace System
 			if ($domain = self::get_domain($host)) {
 				try {
 					$routes = cfg('routes', $domain);
+				} catch (\System\Error\Config $e) {
+					$routes = array();
+					throw \System\Settings::get('dev', 'debug', 'backend') ?
+						new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):
+						new \System\Error\NotFound();
+				}
 
-					foreach ($routes as $route) {
-						if (isset($route[0])) {
-							$route_urls = is_array($route[0]) ? $route[0]:array($route[0]);
+				foreach ($routes as $route) {
+					if (isset($route[0])) {
+						$route_urls = is_array($route[0]) ? $route[0]:array($route[0]);
 
-							foreach ($route_urls as $route_url) {
-								$matches = array();
+						foreach ($route_urls as $route_url) {
+							$matches = array();
 
-								if (self::json_preg_match($route_url, $path, $args)) {
-									return $route;
-								}
+							if (self::json_preg_match($route_url, $path, $args)) {
+								return $route;
 							}
 						}
 					}
-				} catch (\System\Error $e) {
-					throw \System\Settings::get('dev', 'debug', 'backend') ? new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):new \System\Error\NotFound();
 				}
 			} else {
-				throw \System\Settings::get('dev', 'debug', 'backend') ? new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $host), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):new \System\Error\NotFound();
+				throw \System\Settings::get('dev', 'debug', 'backend') ?
+					new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $host), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):
+					new \System\Error\NotFound();
 			}
 
 			return false;

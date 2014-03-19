@@ -6,5 +6,8 @@
 	"disable":{
 		"offcom":false,
 		"serial":false
+	},
+	"mailing":{
+		"errors":[]
 	}
 }

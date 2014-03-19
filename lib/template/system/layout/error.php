@@ -6,6 +6,7 @@ echo html($loc->get_lang());
 	echo head();
 		$ren->content_for('styles', 'styles/pwf/fonts');
 		$ren->content_for('styles', 'styles/pwf/errors');
+		$ren->content_for('title', 'Fudjan error');
 		$ren->content_from('head');
 	close('head');
 

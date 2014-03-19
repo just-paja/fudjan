@@ -58,7 +58,12 @@ namespace System\Template
 		 */
 		public function flush()
 		{
-			$this->driver = \System\Settings::get('template', 'renderer');
+			try {
+				$this->driver = \System\Settings::get('template', 'renderer');
+			} catch (\System\Error\Config $e) {
+				$this->driver = 'basic';
+			}
+
 			return $this;
 		}
 

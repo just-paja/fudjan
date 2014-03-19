@@ -53,7 +53,7 @@
 	"core_bug_report_heading":"Vyskytla se chyba během zpracování vašeho požadavku",
 	"core_bug_report_sorry":"Děláme všechno pro její odstranění.",
 	"core_bug_report_trace":"Traceback",
-	"core_bug_report_reason":"Odůvodnění",
+	"core_bug_report_reason":"Dodatečné argumenty",
 
 	"created_at":"Vytvořeno",
 	"updated_at":"Poslední úprava",
