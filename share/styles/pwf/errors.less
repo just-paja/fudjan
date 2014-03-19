@@ -10,38 +10,39 @@ body {
 	color:#efefef;
 }
 
-form {
-	font-size:14px;
-}
-
 h1 {
-	margin:0 0 15px;
-	padding-top:20px;
-	padding-bottom:20px;
-	background:#630463;
+	margin:0 0 10px;
 	font-size:24px;
+	font-weight:bold;
 }
 
-h1 .type {
-	display:block;
-	font-size:18px;
-	padding-top:5px;
-}
-
-h1,
-.advice,
-footer {
-	padding-left:20px;
-	padding-right:20px;
-}
-
-.advice {
+h2 {
+	font-size:24px;
 	margin-bottom:15px;
 }
 
+.header,
+.params,
+.advice,
+footer
+{
+	padding-left:20px;
+	padding-right:20px;
+	margin-bottom:20px;
+}
 
-h2 {
-	font-weight:normal;
+.header {
+	background:#630463;
+	padding:20px;
+	margin-bottom:20px;
+
+	strong {
+		font-size:18px
+	}
+}
+
+.params {
+	font-size:18px;
 }
 
 footer {
@@ -52,11 +53,9 @@ p {
 	margin:0 0 10px;
 }
 
-ul.trace {
-	padding:15px 0 0;
-}
-
-li.err {
+li.err,
+li.point
+{
 	margin-bottom:5px;
 	list-style:square inside;
 	color:#999;

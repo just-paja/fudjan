@@ -23,20 +23,30 @@ try {
 
 
 $exp = $desc->get_explanation();
-Tag::h1(array("content" => get_class($desc)));
 
-if (isset($exp[0])) {
-	Tag::h1(array("content" => $exp[0]));
-}
+echo div('header');
+	if (isset($exp[0])) {
+		Tag::h1(array("content" => array_shift($exp)));
+		Tag::strong(array("content" => get_class($desc)));
+	} else {
+		Tag::h1(array("content" => get_class($desc)));
+	}
+
+
+close('div');
 
 if (count($exp) > 1) {
 
-	Tag::h2(array("content" => $reason));
-	Tag::ul();
-	foreach ($exp as $ex) {
-		Tag::li(array("content" => $ex));
-	}
-	Tag::close('ul');
+	echo div('params');
+		Tag::h2(array("content" => $reason));
+		Tag::ul();
+
+		foreach ($exp as $ex) {
+			Tag::li(array('class' => 'point', "content" => $ex));
+		}
+
+		Tag::close('ul');
+	close('div');
 
 }
 
