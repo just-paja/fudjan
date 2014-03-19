@@ -1,0 +1,8 @@
+each slot in $slots
+	:php
+		$name = 'layout-'.$slot;
+		$cname = 'layout-slot-'.$slot;
+
+	div(class=$cname)
+		:php
+			$ren->slot($name);
