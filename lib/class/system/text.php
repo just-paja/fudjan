@@ -14,6 +14,7 @@ namespace System
 	{
 		/** Attributes */
 		static $attrs = array(
+			"ident"   => array('varchar'),
 			"name"    => array('varchar'),
 			"text"    => array('html'),
 			"visible" => array('bool'),
