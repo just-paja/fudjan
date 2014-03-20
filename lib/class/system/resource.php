@@ -168,24 +168,27 @@ namespace System
 		public static function parse_less(array $info, array $files)
 		{
 			$content = '';
-			$parser = new \Less_Parser();
 
-			foreach ($files[self::KEY_MISSING] as $file) {
-				$content .= sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
-			}
+			if (class_exists('\Less_Parser')) {
+				$parser = new \Less_Parser();
 
-			foreach ($files[self::KEY_FOUND] as $file) {
-				$data = self::tags(file_get_contents($file));
-
-				try {
-					$parser->parse($data);
-				} catch(\Exception $e) {
-					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage(), $file);
+				foreach ($files[self::KEY_MISSING] as $file) {
+					$content .= sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
 				}
-			}
 
-			$content .= $parser->getCss();
-			return $content;
+				foreach ($files[self::KEY_FOUND] as $file) {
+					$data = self::tags(file_get_contents($file));
+
+					try {
+						$parser->parse($data);
+					} catch(\Exception $e) {
+						throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage(), $file);
+					}
+				}
+
+				$content .= $parser->getCss();
+				return $content;
+			} else throw new \System\Error\MissingDependency('Missing less parser', 'install oyejorge/less.php');
 		}
 
 

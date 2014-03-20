@@ -18,7 +18,7 @@ namespace System\Template\Renderer\Driver
 					'cache' => BASE_DIR.self::DIR_CACHE
 				));
 			} else {
-				throw new \System\Error\Wtf('Could not find jade template compiler.', 'Please install ronan-gloo/jadephp');
+				throw new \System\Error\MissingDependency('Could not find jade template compiler.', 'Please install ronan-gloo/jadephp');
 			}
 		}
 
