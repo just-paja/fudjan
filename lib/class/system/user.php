@@ -30,6 +30,11 @@ namespace System
 			"contacts"    => array('has_many', "model" => 'System\User\Contact')
 		);
 
+		static protected $access = array(
+			'schema' => true,
+			'browse' => false,
+		);
+
 
 		/** Rights are cached here, within the object */
 		private $rights;

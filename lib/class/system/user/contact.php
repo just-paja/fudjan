@@ -57,6 +57,11 @@ namespace System\User
 		);
 
 
+		protected static $access = array(
+			'schema' => true,
+		);
+
+
 		public static function get_type_options()
 		{
 			return self::get_model_attr_options('\System\User\Contact', 'type');
