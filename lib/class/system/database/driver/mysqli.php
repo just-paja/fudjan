@@ -75,7 +75,7 @@ namespace System\Database\Driver
 				$ok = FALSE;
 				if (function_exists('mysql_set_charset')) {
 					// affects the character set used by mysql_real_escape_string() (was added in MySQL 5.0.7 and PHP 5.2.3)
-					$ok = @mysqli_set_charset($config['charset'], $this->connection); // intentionally @
+					$ok = @mysqli_set_charset($this->connection, $config['charset']); // intentionally @
 				}
 
 				!$ok && $this->query("SET NAMES '$config[charset]'");
