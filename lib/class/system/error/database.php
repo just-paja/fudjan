@@ -8,17 +8,20 @@ namespace System\Error
 		{
 			$d = func_get_args();
 			$msg = strtolower($d[0]);
+
 			if (strpos($msg, 'duplicate') !== false || (isset($d[1]) && strpos(strtolower($d[1]), 'duplicate') !== false)) {
-				$e = 'Cannot insert data because of duplicate unique key.';
+				array_unshift($d, 'Cannot insert data because of duplicate unique key.');
 			} elseif (strpos($msg, 'syntax') !== false) {
-				$e = 'Cannot run query because of syntax error.';
+				array_unshift($d, 'Cannot run query because of syntax error.');
 			} elseif (strpos($msg, 'table') !== false && strpos($msg, 'exist')) {
-				$e = 'Table does not exist.';
+				array_unshift($d, 'Table does not exist.');
+			} elseif (strpos($msg, 'unknown column') === 0) {
+				array_unshift($d, 'Missing column');
 			} else {
-				$e = 'Unhandled database error';
+				array_unshift('Unhandled database error');
 			}
 
-			parent::__construct($e, $d);
+			call_user_func_array(array('parent', '__construct'), $d);
 		}
 	}
 }
