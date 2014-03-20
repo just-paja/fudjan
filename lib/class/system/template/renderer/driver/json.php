@@ -23,7 +23,9 @@ namespace System\Template\Renderer\Driver
 
 		public function render_template($path, array $locals = array())
 		{
-			return json_encode($locals);
+			return $this->renderer->response()->request()->get('callback') ?
+				$this->renderer->response()->request()->get('callback').'('.json_encode($locals).');':
+				json_encode($locals);
 		}
 
 
