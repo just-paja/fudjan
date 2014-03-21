@@ -115,9 +115,15 @@ namespace System\Template\Renderer
 		}
 
 
+		public function get_template_path($name)
+		{
+			return \System\Composer::resolve(\System\Template::DIR_TEMPLATE.'/'.$name.'.'.$this->get_suffix());
+		}
+
+
 		public function render_file($name, array $locals = array())
 		{
-			$path = \System\Composer::resolve(\System\Template::DIR_TEMPLATE.'/'.$name.'.'.$this->get_suffix());
+			$path = $this->get_template_path($name);
 
 			if ($path) {
 				$locals['template'] = str_replace('/', '-', $name);
