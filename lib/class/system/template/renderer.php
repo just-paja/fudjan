@@ -158,45 +158,6 @@ namespace System\Template
 		}
 
 
-		/** Render single partial
-		 * @param string $name
-		 * @param array  $locals Local data for partial
-		 * @return void
-		 */
-		public function render_partial($name, array $locals = array())
-		{
-			echo $this->render_partial_clean($name, $locals);
-		}
-
-
-		public function render_partial_clean($name, array $locals = array())
-		{
-			$this->heading_level = $this->heading_layout_level;
-			$temp = \System\Template::find($name, \System\Template::TYPE_PARTIAL, $this->format);
-
-			// Convert locals into level on variables
-			foreach ((array) $locals as $k=>$v) {
-				$k = str_replace('-', '_', $k);
-				$$k=$v;
-			}
-
-			if (file_exists($temp)) {
-				$renderer = $this;
-				$response = $this->response();
-				$flow     = $this->response()->flow();
-				$request  = $this->response()->request();
-				$locales  = $this->response()->locales();
-				$ren      = &$renderer;
-
-				ob_start();
-				include($temp);
-				$cont = ob_get_contents();
-				ob_end_clean();
-				return $cont;
-			} else throw new \System\Error\File(sprintf('Partial "%s" not found.', $name));
-		}
-
-
 		/** Add default system resources
 		 * @return void
 		 */
@@ -209,7 +170,6 @@ namespace System\Template
 			$this->content_for('scripts', 'pwf/storage');
 			$this->content_for('styles', 'pwf/elementary');
 		}
-
 
 
 		/** Add template into queue

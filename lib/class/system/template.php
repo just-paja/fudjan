@@ -30,13 +30,6 @@ namespace System
 		);
 
 
-		public static function get_filename($name, $format = null, $lang = null)
-		{
-			$format == 'xhtml' && $format = 'html';
-			return $name.($lang ? '.'.$lang.'.':'').($format ? '.'.$format:'').'.php';
-		}
-
-
 		public static function is_date($arg)
 		{
 			return
@@ -76,7 +69,6 @@ namespace System
 		}
 
 
-
 		static function convert_value($type, $value)
 		{
 			switch($type){
@@ -92,16 +84,6 @@ namespace System
 				$value /= 1024;
 			}
 			return round($value, 2)." ".self::$units[$type][$i];
-		}
-
-
-		/** Get configured or default icon theme
-		 * @return string
-		 */
-		static function get_icon_theme()
-		{
-			$theme = \System\Settings::get('icons', 'theme');
-			return $theme ? $theme:self::DEFAULT_ICON_THEME;
 		}
 
 
@@ -172,45 +154,5 @@ namespace System
 				return $value;
 			}
 		}
-
-
-		/** Get template full path
-		 * @param string $type
-		 * @param string $name
-		 * @param bool $force
-		 */
-		public static function find($name, $format = null, $locale = null)
-		{
-			$time = microtime(true);
-			$base = self::DIR_TEMPLATE;
-			$temp = null;
-
-			$dirs = \System\Composer::list_dirs($base);
-			$path = explode('/', $name);
-			$name = array_pop($path);
-			$path = implode('/', $path);
-
-			$dirs = \System\Composer::list_dirs($base.($path ? '/'.$path:''));
-
-			foreach ($dirs as $dir) {
-				file_exists($temp = $dir.'/'.self::get_filename($name, $format, $locale)) ||
-				file_exists($temp = $dir.'/'.self::get_filename($name, $format)) ||
-				$temp = null;
-
-				if ($temp) {
-					break;
-				}
-			}
-
-			self::$lookup_time += (microtime(true) - $time);
-			return $temp;
-		}
-
-
-		public static function get_lookup_time()
-		{
-			return self::$lookup_time;
-		}
-
 	}
 }
