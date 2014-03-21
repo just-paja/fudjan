@@ -35,7 +35,7 @@ echo div('header');
 
 close('div');
 
-if (count($exp) > 1) {
+if (count($exp) >= 1) {
 
 	echo div('params');
 		Tag::h2(array("content" => $reason));
