@@ -24,7 +24,7 @@ namespace System\Template
 		private static $resource_filter = array('scripts', 'styles');
 
 		private $templates_used = array();
-		private $templates;
+		private $templates = array();
 		private $layout;
 
 
