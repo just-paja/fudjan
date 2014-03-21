@@ -316,21 +316,6 @@ namespace
 
 
 	// Template
-	/** @alias System\Template::get_css_color */
-	function get_css_color($color) {
-		return System\Template::get_css_color($color);
-	}
-
-	/** @alias System\Template::get_color_container */
-	function get_color_container($color) {
-		return System\Template::get_color_container($color);
-	}
-
-	/** @alias System\Locales::strlen_binary */
-	function strlen_binary($str) {
-		return System\Locales::strlen_binary($str);
-	}
-
 	/** @alias System\Settings::get */
 	function cfg() {
 		return System\Settings::get(func_get_args());
