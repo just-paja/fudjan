@@ -40,17 +40,26 @@ namespace System
 		{
 			if (!self::$loaded) {
 				$dirs = \System\Composer::list_dirs(self::DIR_CLASS);
-				$files = array();
 
 				foreach ($dirs as $dir) {
-					\System\Directory::find_all_files($dir, $files);
+					self::load_dir($dir);
 				}
 
-				foreach ($files as $file) {
-					require_once $file;
-				}
+				self::$loaded = true;
+			}
+		}
 
-				$loaded = true;
+
+		/** Load all classes inside directory
+		 * @param string $dir
+		 * @return void
+		 */
+		public static function load_dir($dir)
+		{
+			$files = \System\Directory::find_all_files($dir);
+
+			foreach ($files as $file) {
+				require_once $file;
 			}
 		}
 
