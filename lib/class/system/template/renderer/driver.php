@@ -298,7 +298,7 @@ namespace System\Template\Renderer
 			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
-				$this->content_for("head", '<script type="text/javascript" src="'.$cont.'"></script>');
+				$this->content_for("head", '<script type="text/javascript" src="'.$cont.'" async="true"></script>');
 			}
 
 			return $this;
