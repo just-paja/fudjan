@@ -2,7 +2,7 @@
 
 namespace System\User
 {
-	class Group extends \System\Model\Database
+	class Group extends \System\Model\Perm
 	{
 		static protected $attrs = array(
 			"name"   => array('varchar'),
