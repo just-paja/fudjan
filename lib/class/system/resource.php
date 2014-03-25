@@ -73,26 +73,21 @@ namespace System
 		/** Serve request
 		 * @return void
 		 */
-		public static function request(\System\Http\Request $request)
+		public static function request(\System\Http\Request $request, $type, $path)
 		{
-			preg_match(self::URL_MATCH, $request->path, $matches);
+			$info = self::get_type_info($type);
+			$modules = self::get_module_list($info['type'], $path);
+			$info['type'] = $type;
+			$info['path'] = $path;
 
-			if (any($matches) && isset($matches[1]) && isset($matches[2])) {
-				$type = $matches[1];
+			if (any($modules)) {
+				$files   = self::file_list($info[self::KEY_TYPE], $modules);
+				$content = self::get_content($info, $files);
 
-				$info = self::get_type_info($type);
-				$modules = self::get_module_list($info['type'], $matches[2]);
-
-				if (any($modules)) {
-					$files   = self::file_list($info[self::KEY_TYPE], $modules);
-					$content = self::get_content($info, $files);
-
-					self::send_header($info['type'], strlen($content));
-					echo $content;
-				} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
-					$info['matches'] = $matches;
-					return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
-				} else throw new \System\Error\NotFound();
+				self::send_header($info['type'], strlen($content));
+				echo $content;
+			} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
+				return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
 			} else throw new \System\Error\NotFound();
 		}
 
@@ -493,7 +488,7 @@ namespace System
 				$domain = null;
 			}
 
-			return ($domain ? '//'.$domain:'').'/share/resource/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+			return ($domain ? '//'.$domain:'').'/res/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
 		}
 
 

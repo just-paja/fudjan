@@ -154,7 +154,7 @@ namespace System
 		{
 			\System\Init::full();
 
-			$hash = \System\Resource::strip_serial($info['matches'][2]);
+			$hash = \System\Resource::strip_serial($info['path']);
 
 			if (!is_null($thumb = \System\Cache\Thumb::from_hash($hash))) {
 
@@ -167,8 +167,8 @@ namespace System
 
 		public static function request_icon(\System\Http\Request $request, $info)
 		{
-			$dir = '/share/icons/'.dirname($info['matches'][2]);
-			$name = \System\Resource::strip_serial($info['matches'][2]);
+			$dir = '/share/icons/'.dirname($info['path']);
+			$name = \System\Resource::strip_serial($info['path']);
 			$regex = '/^'.basename($name).'\.png$/';
 			$files = \System\Composer::find($dir, $regex);
 
@@ -182,8 +182,8 @@ namespace System
 
 		public static function request_pixmap(\System\Http\Request $request, $info)
 		{
-			$dir = '/share/pixmaps/'.dirname($info['matches'][2]);
-			$name = explode('.', basename($info['matches'][2]));
+			$dir = '/share/pixmaps/'.dirname($info['path']);
+			$name = explode('.', basename($info['path']));
 			$suffix = array_pop($name);
 			$serial = array_pop($name);
 			$name[] = $suffix;

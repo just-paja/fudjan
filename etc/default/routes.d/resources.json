@@ -1,0 +1,10 @@
+[
+	["^/res/([a-zA-Z]+)/(.+)$", {
+		"modules":[
+			["system/resource", {
+				"res_type":"#{0}",
+				"res_path":"#{1}"
+			}]
+		]
+	}]
+]
