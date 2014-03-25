@@ -199,7 +199,11 @@ namespace System
 
 					redirect_now($img->thumb($w, $h));
 				} else {
-					self::send_image($img);
+					if ($img->exists()) {
+						self::send_image($img);
+					} else {
+						throw new \System\Error\NotFound();
+					}
 				}
 			}
 
