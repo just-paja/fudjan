@@ -9,6 +9,6 @@ foreach ($load as $template) {
 }
 
 $this->partial(null, array(
-	'status'    => 200,
-	'templates' => $templates
+	'data'   => $templates,
+	'status' => 200
 ));
