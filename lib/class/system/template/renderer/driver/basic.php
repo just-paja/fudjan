@@ -10,10 +10,13 @@ namespace System\Template\Renderer\Driver
 			extract($locals);
 
 			ob_start();
+			echo '<div class="template '.$name.'">';
 			require $path;
+			echo '</div>';
 			$cont = ob_get_contents();
 			ob_end_clean();
-			return '<div class="template '.$name.'">'. $cont.'</div>';
+
+			return $cont;
 		}
 
 
