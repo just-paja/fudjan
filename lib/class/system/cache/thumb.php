@@ -95,7 +95,7 @@ namespace System\Cache
 
 		public function drop()
 		{
-			if (\System\File::check($p = ROOT.$this->get_path())) {
+			if (\System\File::check($p = BASE_DIR.$this->get_path())) {
 				unlink($p);
 			}
 
@@ -111,7 +111,7 @@ namespace System\Cache
 
 		public function check($gen = true)
 		{
-			$status = \System\File::check(ROOT.$this->get_path());
+			$status = \System\File::check(BASE_DIR.$this->get_path());
 
 			if (!$status && $gen) {
 				$this->gen();
@@ -144,7 +144,7 @@ namespace System\Cache
 				if (extension_loaded('imagemagick')) {
 					$im = new ImageMagick($this->get_path(true));
 					$im->resampleImage($this->width, $this->height);
-					$im->writeImage(ROOT.$this->get_path($this->width, $this->height, $this->crop));
+					$im->writeImage(BASE_DIR.$this->get_path($this->width, $this->height, $this->crop));
 				} else {
 					self::gen_gd($this);
 				}
@@ -156,7 +156,7 @@ namespace System\Cache
 
 		public function get_content()
 		{
-			return \System\File::read(ROOT.$this->get_path());
+			return \System\File::read(BASE_DIR.$this->get_path());
 		}
 
 
@@ -174,7 +174,7 @@ namespace System\Cache
 				'h_org' => intval($obj->image->height()),
 			);
 
-			$tpth = ROOT.$obj->get_path();
+			$tpth = BASE_DIR.$obj->get_path();
 			\System\Directory::check(dirname($tpth));
 
 			if ($coords['w_new'] < $coords['w_org'] || $coords['h_new'] < $coords['h_org']) {

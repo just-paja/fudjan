@@ -282,7 +282,7 @@ namespace System
 			$suffix = array_pop($name);
 			$name = implode('.', $name);
 
-			return self::tag_resource(self::TYPE_PIXMAPS, $name, $suffix);
+			return self::tag_resource(self::TYPE_PIXMAPS, 'share/pixmaps/' . $name, $suffix);
 		}
 
 
@@ -488,7 +488,10 @@ namespace System
 				$domain = null;
 			}
 
-			return ($domain ? '//'.$domain:'').'/res/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+			$name = '/res/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+			$path = ($domain ? '//'.$domain:'').$name;
+
+			return $path;
 		}
 
 

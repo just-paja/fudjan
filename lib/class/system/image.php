@@ -157,9 +157,8 @@ namespace System
 			$hash = \System\Resource::strip_serial($info['path']);
 
 			if (!is_null($thumb = \System\Cache\Thumb::from_hash($hash))) {
-
 				if ($thumb->check()) {
-					self::send_image($thumb->image);
+					self::send_image(\System\Image::from_path(BASE_DIR.$thumb->get_path()));
 				} else throw new \System\Error\File('Failed to generate image thumb.');
 			} else throw new \System\Error\NotFound();
 		}
@@ -182,7 +181,7 @@ namespace System
 
 		public static function request_pixmap(\System\Http\Request $request, $info)
 		{
-			$dir = '/share/pixmaps/'.dirname($info['path']);
+			$dir = '/'.dirname($info['path']);
 			$name = explode('.', basename($info['path']));
 			$suffix = array_pop($name);
 			$serial = array_pop($name);
@@ -192,7 +191,16 @@ namespace System
 			$files = \System\Composer::find($dir, $regex);
 
 			if (any($files)) {
-				self::send_image(self::from_path($files[0]));
+				$img = self::from_path($files[0]);
+
+				if ($request->get('w') || $request->get('h')) {
+					$w = $request->get('w') ? $request->get('w'):null;
+					$h = $request->get('h') ? $request->get('h'):null;
+
+					redirect_now($img->thumb($w, $h));
+				} else {
+					self::send_image($img);
+				}
 			}
 
 			throw new \System\Error\NotFound();
@@ -347,6 +355,19 @@ namespace System
 		public function find_all_thumbs()
 		{
 			return \System\Cache\Thumb::find_all_by_hash($this->hash());
+		}
+
+
+		public function to_object()
+		{
+			$path = explode('.', $this->get_path());
+			$suffix = array_pop($path);
+			$path = implode('.', $path);
+
+			$data = parent::to_object();
+			$data['url'] = \System\Resource::tag_resource(\System\Resource::TYPE_PIXMAPS, $path, $this->suffix());
+
+			return $data;
 		}
 	}
 }
