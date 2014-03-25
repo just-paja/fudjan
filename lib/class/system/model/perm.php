@@ -3,7 +3,7 @@
 /** Database data model handling */
 namespace System\Model
 {
-	abstract class Perm extends Database
+	abstract class Perm extends Filter
 	{
 		const VIEW_SCHEMA = 'schema';
 		const CREATE      = 'create';
