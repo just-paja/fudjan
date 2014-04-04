@@ -92,15 +92,9 @@ namespace System\Form
 		}
 
 
-		public function collect_resources(\System\Template\Renderer $ren)
+		public function get_resources($type)
 		{
-			foreach ($this::$resources as $type=>$list) {
-				foreach ($list as $url) {
-					$ren->content_for($type, $url);
-				}
-			}
-
-			return $this;
+			return isset($this::$resources[$type]) ? $this::$resources[$type]:array();
 		}
 	}
 }

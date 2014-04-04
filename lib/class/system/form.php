@@ -20,12 +20,28 @@ namespace System
 			"class"    => array('array'),
 			"prefix"   => array('varchar'),
 			"use_comm" => array('bool'),
-			"renderer" => array('object', "model" => '\System\Template\Renderer'),
+			"renderer" => array('object', "model" => '\System\Template\Renderer\Driver'),
 			"response" => array('object', "model" => '\System\Http\Response'),
 			"request"  => array('object', "model" => '\System\Http\Request'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
+
+		protected static $resources = array(
+			'styles' => array(
+				'bower/pwf-form/styles/form',
+				'styles/pwf/form'
+			),
+			'scripts' => array(
+				'bower/pwf-queue/lib/queue',
+				'bower/pwf-comm/lib/comm',
+				'bower/pwf-comm/lib/mods/http',
+				'bower/pwf-comm-form/lib/comm-form',
+				'bower/pwf-locales/lib/locales',
+				'bower/pwf-form/lib/form',
+				'bower/pwf-form/lib/input'
+			)
+		);
 
 		protected $data_default  = array();
 		protected $data_commited = array();
@@ -55,7 +71,6 @@ namespace System
 
 			$form = new self($attrs);
 			$form->response = $response;
-			$form->renderer = $response->renderer();
 			return $form;
 		}
 
@@ -66,7 +81,7 @@ namespace System
 		}
 
 
-		public static function from_renderer(\System\Template\Renderer $ren, array $attrs = array())
+		public static function from_renderer(\System\Template\Renderer\Driver $ren, array $attrs = array())
 		{
 			return self::from_response($ren->response(), $attrs);
 		}
@@ -609,7 +624,7 @@ namespace System
 		}
 
 
-		public function renderer(\System\Template\Renderer $renderer = null)
+		public function renderer(\System\Template\Renderer\Driver $renderer = null)
 		{
 			if (!is_null($renderer)) {
 				$this->renderer = $renderer;
@@ -766,31 +781,20 @@ namespace System
 		}
 
 
-		public function collect_resources(\System\Template\Renderer $ren)
+		public function get_resources($type)
 		{
-			$ren->content_for('styles', 'bower/pwf-form/styles/form');
-			$ren->content_for('styles', 'styles/pwf/form');
-
-			$ren->content_for('scripts', 'bower/pwf-queue/lib/queue');
-			$ren->content_for('scripts', 'bower/pwf-comm/lib/comm');
-			$ren->content_for('scripts', 'bower/pwf-comm/lib/mods/http');
-			$ren->content_for('scripts', 'bower/pwf-comm-form/lib/comm-form');
-			$ren->content_for('scripts', 'bower/pwf-locales/lib/locales');
-
-			$ren->content_for('scripts', 'bower/pwf-form/lib/form');
-			$ren->content_for('scripts', 'bower/pwf-form/lib/input');
+			$list = self::$resources[$type];
 
 			foreach ($this->inputs as $input) {
-				$input->collect_resources($ren);
+				$list = array_merge($list, $input->get_resources($type));
 			}
 
-			return $this;
+			return $list;
 		}
 
 
-		public function render(\System\Template\Renderer $ren)
+		public function render(\System\Template\Renderer\Driver $ren)
 		{
-			$this->collect_resources($ren);
 			return div(array('pwform'), '<span class="def" style="display:none">'.json_encode($this->to_object()).'</span>');
 		}
 

@@ -386,5 +386,15 @@ namespace System\Template\Renderer
 		}
 
 
+		public function collect_resources($types)
+		{
+			foreach ($types as $type=>$list) {
+				foreach($list as $str) {
+					$this->content_for($type, $str);
+				}
+			}
+
+			return $this;
+		}
 	}
 }
