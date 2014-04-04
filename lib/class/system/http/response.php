@@ -29,22 +29,24 @@ namespace System\Http
 		);
 
 		protected static $attrs = array(
-			"format"     => array('varchar'),
-			"no_debug"   => array('bool'),
-			"title"      => array('varchar'),
-			"flow"       => array('object', "model" => '\System\Module\Flow'),
-			"groups"     => array('list'),
-			"locales"    => array('object', "model" => '\System\Locales'),
-			"modules"    => array('list'),
-			"init"       => array('list'),
-			"policies"   => array('list'),
-			"context"    => array('list'),
-			"layout"     => array('list'),
-			"request"    => array('object', "model" => '\System\Http\Request'),
-			"renderer"   => array('object', "model" => '\System\Template\Renderer'),
-			"start_time" => array('float'),
-			"sent"       => array('bool'),
-			"pass"       => array('bool', 'default' => true),
+			"format"        => array('varchar'),
+			"no_debug"      => array('bool'),
+			"title"         => array('varchar'),
+			"flow"          => array('object', "model" => '\System\Module\Flow'),
+			"groups"        => array('list'),
+			"locales"       => array('object', "model" => '\System\Locales'),
+			"modules"       => array('list'),
+			"init"          => array('list'),
+			"policies"      => array('list'),
+			"context"       => array('list'),
+			"layout"        => array('list'),
+			"request"       => array('object', "model" => '\System\Http\Request'),
+			"renderer"      => array('object', "model" => '\System\Template\Renderer'),
+			"renderer_with" => array('varchar', "is_null" => true),
+			"skip_render"   => array('bool', 'default' => false),
+			"start_time"    => array('float'),
+			"sent"          => array('bool'),
+			"pass"          => array('bool', 'default' => true),
 		);
 
 		private $status    = self::OK;
@@ -251,7 +253,10 @@ namespace System\Http
 		 */
 		public function render()
 		{
-			$this->renderer = $this->renderer()->render();
+			if (!$this->skip_render) {
+				$this->renderer = $this->renderer()->render();
+			}
+
 			return $this;
 		}
 
@@ -271,10 +276,17 @@ namespace System\Http
 		{
 			if (!\System\Status::on_cli()) {
 				session_write_close();
-				try {
-					$mime = \System\Output::get_mime($this->renderer()->format);
-				} catch(\System\Error\Argument $e) {
-					$mime = 'text/html; charset=utf-8';
+
+				def($this->headers['Content-Encoding'], 'gz');
+
+				if (!isset($this->headers['Content-Type'])) {
+					try {
+						$mime = \System\Output::get_mime($this->renderer()->format);
+					} catch(\System\Error\Argument $e) {
+						$mime = 'text/html; charset=utf-8';
+					}
+
+					def($this->headers["Content-Type"], $mime.";charset=utf-8");
 				}
 
 				if ($this->status == self::OK && empty($this->content)) {
@@ -290,11 +302,15 @@ namespace System\Http
 						header(ucfirst($name).": ".$content);
 					}
 				}
-
-				header("Content-Type: ".$mime.";charset=utf-8");
-				header("Content-Encoding: gz");
 			}
 
+			return $this;
+		}
+
+
+		public function header($name, $value)
+		{
+			$this->headers[$name] = $value;
 			return $this;
 		}
 
@@ -333,7 +349,7 @@ namespace System\Http
 		 */
 		public function flush()
 		{
-			$this->content['output'] = array();
+			$this->content = array('output' => array());
 			return $this;
 		}
 
@@ -344,6 +360,16 @@ namespace System\Http
 		public function flow()
 		{
 			return $this->flow;
+		}
+
+
+		/** Create form object from this renderer
+		 * @param array $attrs
+		 * @return \System\Form
+		 */
+		public function form(array $attrs = array())
+		{
+			return \System\Form::from_response($this, $attrs);
 		}
 
 
@@ -467,5 +493,8 @@ namespace System\Http
 		{
 			return $this->init_done;
 		}
+
+
+
 	}
 }
