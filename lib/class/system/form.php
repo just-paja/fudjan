@@ -795,6 +795,11 @@ namespace System
 
 		public function render(\System\Template\Renderer\Driver $ren)
 		{
+			$ren->collect_resources(array(
+				'styles'  => $this->get_resources('styles'),
+				'scripts' => $this->get_resources('scripts')
+			));
+
 			return div(array('pwform'), '<span class="def" style="display:none">'.json_encode($this->to_object()).'</span>');
 		}
 
