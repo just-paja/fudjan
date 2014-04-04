@@ -39,32 +39,21 @@ namespace System\Template
 			$renderer->no_debug = $response->no_debug;
 			$renderer->response = $response;
 
+			if ($response->render_with) {
+				$renderer->driver = $response->render_with;
+			} else {
+				try {
+					$renderer->driver = \System\Settings::get('template', 'renderer');
+				} catch (\System\Error\Config $e) {
+					$renderer->driver = 'basic';
+				}
+			}
+
 			if ($response->layout) {
 				$renderer->layout = $response->layout;
 			}
 
-			return $renderer->flush();
-		}
-
-
-		public function construct()
-		{
-			$this->flush();
-		}
-
-
-		/** Flush output
-		 * @return $this
-		 */
-		public function flush()
-		{
-			try {
-				$this->driver = \System\Settings::get('template', 'renderer');
-			} catch (\System\Error\Config $e) {
-				$this->driver = 'basic';
-			}
-
-			return $this;
+			return $renderer;
 		}
 
 
@@ -122,7 +111,6 @@ namespace System\Template
 		{
 			$driver = $this->get_driver();
 
-			$this->flush();
 			$this->response->flush();
 			$this->start_time = microtime(true);
 
@@ -474,34 +462,6 @@ namespace System\Template
 		{
 			$object['label_left'] = true;
 			return $this->label_for($url, $label, $icon, $size, $object);
-		}
-
-
-
-		/** Create form object from this renderer
-		 * @param array $attrs
-		 * @return \System\Form
-		 */
-		public function form(array $attrs = array())
-		{
-			return \System\Form::from_renderer($this, $attrs);
-		}
-
-
-		/** Create form object including object info from this renderer
-		 * @param array $info
-		 * @return \System\Form
-		 */
-		public function form_checker(array $data)
-		{
-			$f = $this->form($data);
-
-			foreach ($data['info'] as $i=>$text) {
-				$f->text($i, $text);
-			}
-
-			$f->submit(isset($data['submit']) ? $data['submit']:$this->locales()->trans('delete'));
-			return $f;
 		}
 
 
