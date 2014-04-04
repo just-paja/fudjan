@@ -91,7 +91,6 @@ namespace System\Template\Renderer
 			$slots = $this->renderer->get_slots();
 
 			$this->render_layout();
-			$this->render_head();
 			$this->content['output'] = $this->content['yield'];
 
 			foreach ($slots as $slot=>$partials) {
@@ -119,6 +118,7 @@ namespace System\Template\Renderer
 				$this->content['slots'][$slot] = implode('', $data);
 			}
 
+			$this->render_head();
 			$out = implode('', $this->content['output']);
 			return $out;
 		}
