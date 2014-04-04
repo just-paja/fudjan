@@ -150,8 +150,9 @@ namespace System
 		}
 
 
-		public static function request_thumb(\System\Http\Request $request, $info)
+		public static function request_thumb(\System\Http\Response $response, $info)
 		{
+			$request = $response->request;
 			\System\Init::full();
 
 			$hash = \System\Resource::strip_serial($info['path']);
@@ -164,8 +165,9 @@ namespace System
 		}
 
 
-		public static function request_icon(\System\Http\Request $request, $info)
+		public static function request_icon(\System\Http\Response $response, $info)
 		{
+			$request = $response->request;
 			$dir = '/share/icons/'.dirname($info['path']);
 			$name = \System\Resource::strip_serial($info['path']);
 			$regex = '/^'.basename($name).'\.png$/';
@@ -179,8 +181,9 @@ namespace System
 		}
 
 
-		public static function request_pixmap(\System\Http\Request $request, $info)
+		public static function request_pixmap(\System\Http\Response $response, $info)
 		{
+			$request = $response->request;
 			$dir = '/'.dirname($info['path']);
 			$name = explode('.', basename($info['path']));
 			$suffix = array_pop($name);

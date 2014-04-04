@@ -73,21 +73,24 @@ namespace System
 		/** Serve request
 		 * @return void
 		 */
-		public static function request(\System\Http\Request $request, $type, $path)
+		public static function request(\System\Http\Response $response, $type, $path)
 		{
+			$request = $response->request;
 			$info = self::get_type_info($type);
 			$modules = self::get_module_list($info['type'], $path);
 			$info['type'] = $type;
 			$info['path'] = $path;
 
 			if (any($modules)) {
-				$files   = self::file_list($info[self::KEY_TYPE], $modules);
-				$content = self::get_content($info, $files);
+				$files    = self::file_list($info[self::KEY_TYPE], $modules);
+				$content  = self::get_content($info, $files);
 
-				self::send_header($info['type'], strlen($content));
-				echo $content;
+				self::set_headers($response, $info['type'], strlen($content));
+				$response->skip_render = true;
+				$response->set_content($content);
+
 			} else if (isset($info[self::KEY_CALLBACK_RESOLVE])) {
-				return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($request, $info));
+				return call_user_func_array($info[self::KEY_CALLBACK_RESOLVE], array($response, $info));
 			} else throw new \System\Error\NotFound();
 		}
 
@@ -422,18 +425,16 @@ namespace System
 		}
 
 
-		public static function send_header($type, $length)
+		public static function set_headers(\System\Http\Response $response, $type, $length)
 		{
 			$info = self::get_type_info($type);
-
-			header("HTTP/1.1 200 OK");
+			$headers = array();
 
 			if (any($info[self::KEY_DIR_CONTENT])) {
-				header('Content-Type: '.$info[self::KEY_DIR_CONTENT]);
+				$response->header('Content-Type', $info[self::KEY_DIR_CONTENT]);
 			}
 
-			header('Content-Length: '.$length);
-			header('Access-Control-Allow-Origin: *');
+			$response->header('Access-Control-Allow-Origin', '*');
 
 			try {
 				$debug = \System\Settings::get('dev', 'debug', 'backend');
@@ -442,10 +443,10 @@ namespace System
 			}
 
 			if (!$debug) {
-				header("Pragma: public,max-age=".self::MAX_AGE);
-				header('Cache-Control: public');
-				header('Expires: '.date(\DateTime::RFC1123, time() + self::MAX_AGE + rand(0,60)));
-				header('Age: 0');
+				$response->header("Pragma", 'public,max-age='.self::MAX_AGE);
+				$response->header('Cache-Control', 'public');
+				$response->header('Expires', date(\DateTime::RFC1123, time() + self::MAX_AGE + rand(0,60)));
+				$response->header('Age', '0');
 			}
 		}
 
