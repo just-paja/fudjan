@@ -333,7 +333,7 @@ namespace System
 			!is_null($message) && $response['message'] = $message;
 			!is_null($data) && $response['data'] = $data;
 
-			$this->renderer()->flush()->reset_layout();
+			$this->renderer()->reset_layout();
 			$this->renderer()->format = 'json';
 			$this->response()->status($status);
 
