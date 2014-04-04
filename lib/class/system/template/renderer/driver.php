@@ -9,6 +9,8 @@ namespace System\Template\Renderer
 		);
 
 		private static $resource_filter = array('scripts', 'styles');
+		private $first_layout = true;
+
 		protected $content = array();
 		protected $layout  = array();
 		protected $yield   = 0;
@@ -16,7 +18,7 @@ namespace System\Template\Renderer
 
 		public function get_context()
 		{
-			return array_merge($this->renderer->get_context(), array(
+			return array_merge(array('wrap' => true), $this->renderer->get_context(), array(
 				'ren'   => $this,
 				'trans' => function($str, $rewrite = null) {
 					return $this->renderer->trans($str, $rewrite);
@@ -68,7 +70,14 @@ namespace System\Template\Renderer
 		public function render_layout()
 		{
 			while ($name = array_shift($this->layout)) {
-				$this->content_for('yield', $this->render_file($name, $this->get_context()));
+				$ctx = $this->get_context();
+
+				if ($this->first_layout) {
+					$this->first_layout = false;
+					$ctx['wrap'] = false;
+				}
+
+				$this->content_for('yield', $this->render_file($name, $ctx));
 			}
 
 			return $this;
