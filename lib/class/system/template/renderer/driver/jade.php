@@ -27,27 +27,19 @@ namespace System\Template\Renderer\Driver
 		{
 			$name = str_replace('/', '-', $path);
 			$wrap = $locals['wrap'];
-
-			ob_start();
+			$out = '';
 
 			if ($wrap) {
 				echo '<div class="template '.$locals['template'].'">';
 			}
 
 			try {
-				$this->jade->render($path, $locals);
+				$out = $this->jade->render($path, $locals);
 			} catch (\Exception $e) {
 				if (!($e instanceof \System\Error)) {
 					throw new \System\Error\Code('Failed to render jade template.', $e->getMessage(), $path);
 				} else throw $e;
 			}
-
-			if ($wrap) {
-				echo '</div>';
-			}
-
-			$out = ob_get_contents();
-			ob_end_clean();
 
 			return $out;
 		}

@@ -60,10 +60,9 @@ namespace System\Template\Renderer
 		 */
 		public function yield()
 		{
-			$this->content_for('yield', ob_get_clean());
+			$this->content_for('yield', ob_get_contents());
+			ob_clean();
 			$this->render_layout();
-			ob_start();
-
 		}
 
 
@@ -134,12 +133,12 @@ namespace System\Template\Renderer
 		{
 			$path = $this->get_template_path($name);
 
-			if ($path) {
-				$locals['template'] = str_replace('/', '-', $name);
-				return $this->render_template($path, $locals);
-			} else throw new \System\Error\File('Could not find template.', $name, $this->get_suffix(), get_class($this));
+			if (!$path) {
+				throw new \System\Error\File('Could not find template.', $name, $this->get_suffix(), get_class($this));
+			}
 
-			return $this;
+			$locals['template'] = str_replace('/', '-', $name);
+			return $this->render_template($path, $locals);
 		}
 
 
@@ -148,9 +147,10 @@ namespace System\Template\Renderer
 		 */
 		public function content_from($place)
 		{
-			$this->content_for('yield', ob_get_level() > 0 ? ob_get_clean():'');
+			$this->content_for('yield', ob_get_level() > 0 ? ob_get_contents():'');
 			$this->content['yield'][] = &$this->content[$place];
-			ob_start();
+
+			ob_clean();
 		}
 
 
@@ -237,9 +237,9 @@ namespace System\Template\Renderer
 				}
 			}
 
-			$this->content_for('yield', ob_get_level() > 0 ? ob_get_clean():'');
+			$this->content_for('yield', ob_get_level() > 0 ? ob_get_contents():'');
 			$this->content['yield'][] = &$this->content['slots'][$name];
-			ob_start();
+			//~ ob_clean();
 		}
 
 
