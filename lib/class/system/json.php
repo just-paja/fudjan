@@ -75,12 +75,23 @@ namespace System
 
 						if ($assoc_keys) {
 							if (isset($temp[$mod])) {
-								$temp[$mod] = array_replace_recursive($temp[$mod], $json);
+								if (isset($json['overwrite']) && $json['overwrite']) {
+									unset($json['overwrite']);
+									$temp[$mod] = $json;
+								} else {
+									$temp[$mod] = array_replace_recursive($temp[$mod], $json);
+								}
 							} else {
+								unset($json['overwrite']);
 								$temp[$mod] = $json;
 							}
 						} else {
-							$temp = array_merge_recursive($temp, $json);
+							if (isset($json['overwrite']) && $json['overwrite']) {
+								unset($json['overwrite']);
+								$temp = $json;
+							} else {
+								$temp = array_merge_recursive($temp, $json);
+							}
 						}
 					}
 				}
@@ -90,10 +101,8 @@ namespace System
 			} else throw new \System\Error\File(sprintf('Directory "%s" either does not exist or is not accessible.', $dir_dist));
 		}
 
-		public static function read_dist_all(array $dirs, $assoc_keys = false, &$files = array())
+		public static function read_dist_all(array $dirs, $assoc_keys = false, &$files = array(), &$temp = array())
 		{
-			$temp = array();
-
 			foreach ($dirs as $dir) {
 				$temp = self::read_dist($dir, $temp, $assoc_keys, $files);
 			}
