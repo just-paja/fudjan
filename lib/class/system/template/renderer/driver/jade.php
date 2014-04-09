@@ -30,15 +30,19 @@ namespace System\Template\Renderer\Driver
 			$out = '';
 
 			if ($wrap) {
-				echo '<div class="template '.$locals['template'].'">';
+				$out = '<div class="template '.$locals['template'].'">';
 			}
 
 			try {
-				$out = $this->jade->render($path, $locals);
+				$out .= $this->jade->render($path, $locals);
 			} catch (\Exception $e) {
 				if (!($e instanceof \System\Error)) {
 					throw new \System\Error\Code('Failed to render jade template.', $e->getMessage(), $path);
 				} else throw $e;
+			}
+
+			if ($wrap) {
+				$out .= '</div>';
 			}
 
 			return $out;
