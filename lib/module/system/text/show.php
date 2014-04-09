@@ -14,7 +14,7 @@ $conds = array();
 if (isset($ident)) {
 	$conds['ident'] = $ident;
 } else {
-	$conds['id'] = $id;
+	$conds['id_system_text'] = $id;
 }
 
 if ($text = get_first('\System\Text', $conds)->fetch()) {
