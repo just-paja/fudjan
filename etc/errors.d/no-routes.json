@@ -1,6 +1,6 @@
 [
 	["^/$", {
-		"layout":["pwf/errors/layout", "pwf/errors/no_routes"],
+		"layout":["system/layout/error", "system/error/no_routes"],
 		"format":"html"
 	}]
 ]
