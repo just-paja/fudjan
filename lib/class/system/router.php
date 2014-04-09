@@ -83,9 +83,27 @@ namespace System
 		}
 
 
+		public static function is_domain($host)
+		{
+			try {
+				cfg('domains', $host);
+			} catch(\System\Error\Config $e) {
+				return false;
+			}
+
+			return true;
+		}
+
+
 		public static function get_url($host, $name, array $args = array(), $variation = 0)
 		{
-			if ($domain = self::get_domain($host)) {
+			if (self::is_domain($host)) {
+				$domain = $host;
+			} else {
+				$domain = self::get_domain($host);
+			}
+
+			if ($domain) {
 				try {
 					$routes = cfg('routes', $domain);
 				} catch (\System\Error\Config $e) {
