@@ -83,11 +83,10 @@ namespace System
 			self::check_env();
 
 			\System\Directory::check(ROOT.self::DIR_CONF_GLOBAL);
-			$default = self::read(self::DIR_CONF_STATIC, true, self::$loaded);
-			$global  = self::read(self::DIR_CONF_GLOBAL, true, self::$loaded);
-			$conf    = self::read(self::DIR_CONF_DIST.'/'.self::get_env(), true, self::$loaded);
+			self::read(self::DIR_CONF_STATIC, true, self::$loaded, self::$conf);
+			self::read(self::DIR_CONF_GLOBAL, true, self::$loaded, self::$conf);
+			self::read(self::DIR_CONF_DIST.'/'.self::get_env(), true, self::$loaded, self::$conf);
 
-			self::$conf = array_replace_recursive($default, $global, $conf);
 			self::$conf['routes'] = self::read(self::DIR_CONF_ROUTES, true);
 
 			$api = self::read(self::DIR_CONF_ROUTES_STATIC);
@@ -112,11 +111,10 @@ namespace System
 		}
 
 
-		public static function read($dir, $assoc_keys = false, &$files=array())
+		public static function read($dir, $assoc_keys = false, &$files=array(), &$temp = array())
 		{
-
 			$dirs = \System\Composer::list_dirs($dir);
-			return \System\Json::read_dist_all($dirs, $assoc_keys, $files);
+			return \System\Json::read_dist_all($dirs, $assoc_keys, $files, $temp);
 		}
 
 
