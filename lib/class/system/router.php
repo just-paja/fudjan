@@ -95,8 +95,10 @@ namespace System
 		}
 
 
-		public static function get_url($host, $name, array $args = array(), $variation = 0)
+		public static function get_route($host, $name)
 		{
+			$route = null;
+
 			if (self::is_domain($host)) {
 				$domain = $host;
 			} else {
@@ -110,86 +112,96 @@ namespace System
 					$routes = array();
 				}
 
-				foreach ($routes as $route) {
-					if (isset($route[0]) && isset($route[2]) && $name == $route[2]) {
-						if ($variation > 0) {
-							if (is_array($route[0])) {
-								$route_url = $route[0][$variation];
-							} else throw new \System\Error\Argument(sprintf("Named route called '%s' does not have any variations.", $name));
-						} else {
-							$route_url = is_array($route[0]) ? $route[0][0]:$route[0];
+				foreach ($routes as $r) {
+					if (isset($r[0]) && isset($r[2]) && $name == $r[2]) {
+						$route = $r;
+					}
+				}
+			}
+
+			return $route;
+		}
+
+
+		/** Find named route and translate it with args
+		 * @param string $host
+		 * @param string $name
+		 * @param array  $args
+		 * @return string
+		 */
+		public static function get_url($host, $name, array $args = array())
+		{
+			$route = self::get_route($host, $name);
+
+			if ($route) {
+				$route_url = $route[0];
+				$search = 'open';
+				$route_args = array();
+				$path = str_split($route_url, 1);
+
+				for ($pos = 0; $pos < count($path); $pos++) {
+					if ($search == 'open') {
+						if ($path[$pos] == '(') {
+							$arg = array($pos);
+							$search = 'close';
 						}
+					}
 
-						$search = 'open';
-						$route_args = array();
-						$path = str_split($route_url, 1);
-
-						for ($pos = 0; $pos < count($path); $pos++) {
-							if ($search == 'open') {
-								if ($path[$pos] == '(') {
-									$arg = array($pos);
-									$search = 'close';
-								}
-							}
-
-							if ($search == 'close') {
-								if ($path[$pos] == ')') {
-									$arg[1] = $pos + 1;
-									$route_args[] = $arg;
-									$search = 'open';
-								}
-							}
+					if ($search == 'close') {
+						if ($path[$pos] == ')') {
+							$arg[1] = $pos + 1;
+							$route_args[] = $arg;
+							$search = 'open';
 						}
-
-						if (($c = count($route_args)) <= count($args)) {
-							$str = '';
-
-							if ($c > 0) {
-								$num = 0;
-
-								foreach ($args as $num=>$arg) {
-									$start = $num == 0 ? 0:$route_args[$num-1][1];
-
-									for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
-										$str .= $path[$letter];
-									}
-
-									if (is_object($arg)) {
-										if ($arg instanceof \System\Model\Database) {
-											$val = $arg->get_seoname();
-										} else throw new \System\Error\Argument(sprintf("Argument '%s' passed to reverse build route '%s' must be string or instance of System::Model::Database", $num, $name), sprintf("Instance of '%s' was given.", get_class($arg)));
-									} else $val = $arg;
-
-									$str .= $val;
-								}
-
-								$start = $route_args[$num][1];
-
-								for ($letter = $start; $letter < count($path); $letter ++) {
-									$str .= $path[$letter];
-								}
-							} else {
-								$str = implode('', $path);
-							}
-
-							$str = str_replace(array('^', '$'), '', $str);
-							return $str;
-						} else {
-							throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($route_args), count($args)));
-						}
-
-						$result = $route_url;
-						foreach ($args as $arg) {
-							$result = preg_replace($route_url, $arg, $result);
-						}
-
-						return $result;
 					}
 				}
 
-				throw new \System\Error\Argument(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
+				if (($c = count($route_args)) <= count($args)) {
+					$str = '';
+
+					if ($c > 0) {
+						$num = 0;
+
+						foreach ($args as $num=>$arg) {
+							$start = $num == 0 ? 0:$route_args[$num-1][1];
+
+							for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
+								$str .= $path[$letter];
+							}
+
+							if (is_object($arg)) {
+								if ($arg instanceof \System\Model\Database) {
+									$val = $arg->get_seoname();
+								} else throw new \System\Error\Argument(sprintf("Argument '%s' passed to reverse build route '%s' must be string or instance of System::Model::Database", $num, $name), sprintf("Instance of '%s' was given.", get_class($arg)));
+							} else $val = $arg;
+
+							$str .= $val;
+						}
+
+						$start = $route_args[$num][1];
+
+						for ($letter = $start; $letter < count($path); $letter ++) {
+							$str .= $path[$letter];
+						}
+					} else {
+						$str = implode('', $path);
+					}
+
+					$str = str_replace(array('^', '$'), '', $str);
+					return $str;
+				} else {
+					throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($route_args), count($args)));
+				}
+
+				$result = $route_url;
+				foreach ($args as $arg) {
+					$result = preg_replace($route_url, $arg, $result);
+				}
+
+				return $result;
+
 			} else {
-				throw new \System\Error\NotFound();
+				throw new \System\Error\Argument(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
 			}
 
 			return false;
