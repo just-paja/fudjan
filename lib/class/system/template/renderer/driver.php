@@ -263,7 +263,12 @@ namespace System\Template\Renderer
 		 */
 		public function render_head()
 		{
-			return $this->render_meta()->render_title()->render_scripts()->render_styles()->render_frontend_config();
+			return $this
+				->render_meta()
+				->render_title()
+				->render_scripts()
+				->render_styles()
+				->render_frontend_config();
 		}
 
 
@@ -331,57 +336,10 @@ namespace System\Template\Renderer
 
 		public function render_frontend_config()
 		{
-			try {
-				$static_domain = \System\Settings::get('resources', 'domain');
-			} catch (\System\Error\Config $e) {
-				$static_domain = null;
-			}
+			$conf = $this->renderer->response->request->fconfig;
+			$str = json_encode($conf);
 
-			try {
-				$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
-			} catch (\System\Error\NotFound $e) {
-				$locales_url = '';
-			}
-
-			try {
-				$autoload = \System\Settings::get('locales', 'autoload');
-			} catch (\System\Error\Config $e) {
-				$autoload = false;
-			}
-
-			try {
-				$debug = \System\Settings::get('dev', 'debug');
-			} catch (\System\Error\Config $e) {
-				$debug = array(
-					'frontend' => true,
-					'backend'  => true
-				);
-			}
-
-			$cont = array(
-				"locales" => array(
-					"url"      => substr($locales_url, 0, strlen($locales_url)-1),
-					"lang"     => $this->renderer->response()->locales()->get_lang(),
-					"autoload" => $autoload,
-				),
-				"comm" => array(
-					"def"   => 'http',
-					"blank" => '/share/html/blank.html'
-				),
-				"debug" => $debug,
-				"proxy" => array(
-					'url' => '/proxy/head/?url={url}'
-				),
-			);
-
-			try {
-				$frontend = \System\Settings::get('frontend');
-			} catch(\System\Error $e) {
-				$frontend = array();
-			}
-
-			$cont = array_merge_recursive($cont, $frontend);
-			$this->content_for('head', '<script type="text/javascript">var sys = '.json_encode($cont).'</script>');
+			$this->content_for('head', '<script type="text/javascript">var sys = '.$str.'</script>');
 			return $this;
 		}
 
