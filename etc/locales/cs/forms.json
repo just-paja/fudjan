@@ -24,6 +24,7 @@
 	"form-location-name":"Název umístění",
 	"form-location-site":"Web",
 	"form-location-addr":"Adresa",
+	"autocompleter-no-items":"Nenalezeno",
 
 	"--":""
 }

@@ -1,9 +1,11 @@
 {
 	"model-System::Text":"Statický text",
+	"model-System::Text-dative":"statického textu",
 	"model-System::Text-accusative":"statický text",
 	"model-System::Text-dative-plural":"statických textů",
 
 	"model-System::User":"Uživatel",
+	"model-System::User-plural":"Uživatelé",
 	"model-System::User-accusative":"uživatele",
 	"model-System::User-dative-plural":"uživatelů",
 

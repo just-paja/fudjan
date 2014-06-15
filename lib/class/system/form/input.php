@@ -24,7 +24,8 @@ namespace System\Form
 
 		protected static $resources = array(
 			"scripts" => array(
-				'bower/pwf-form/lib/input/default',
+				'bower/pwf-form/lib/input/hidden',
+				'bower/pwf-form/lib/input/password',
 				'bower/pwf-form/lib/input/textarea'
 			)
 		);

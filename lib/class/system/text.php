@@ -17,8 +17,8 @@ namespace System
 			"ident"   => array('varchar'),
 			"name"    => array('varchar'),
 			"text"    => array('html'),
-			"visible" => array('bool'),
 			"author"  => array('belongs_to', "model" => 'System\User'),
+			"visible" => array('bool'),
 		);
 	}
 }

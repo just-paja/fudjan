@@ -39,7 +39,10 @@ namespace System
 				'bower/pwf-comm-form/lib/comm-form',
 				'bower/pwf-locales/lib/locales',
 				'bower/pwf-form/lib/form',
-				'bower/pwf-form/lib/input'
+				'bower/pwf-form/lib/form/container',
+				'bower/pwf-form/lib/input',
+				'bower/pwf-form/lib/input/abstract/numbers',
+				'bower/pwf-form/lib/input/abstract/options',
 			)
 		);
 

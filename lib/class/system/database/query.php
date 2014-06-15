@@ -468,8 +468,16 @@ namespace System\Database
 					$pass[] = "`" . $row['attr'] . "` LIKE '".$row['starts_with']."%'";
 				}
 
+				if ($row['type'] == 'istarts_with') {
+					$pass[] = "LOWER(`" . $row['attr'] . "`) LIKE LOWER('".$row['istarts_with']."%')";
+				}
+
 				if ($row['type'] == 'ends_with') {
 					$pass[] = "`" . $row['attr'] . "` LIKE '%".$row['ends_with']."'";
+				}
+
+				if ($row['type'] == 'iends_with') {
+					$pass[] = "LOWER(`" . $row['attr'] . "`) LIKE LOWER('%".$row['iends_with']."')";
 				}
 			}
 

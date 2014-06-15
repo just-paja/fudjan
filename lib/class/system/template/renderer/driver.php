@@ -42,6 +42,10 @@ namespace System\Template\Renderer
 				"scripts" => array(
 					'bower/jquery/dist/jquery',
 					'bower/pwf.js/lib/pwf',
+					'bower/pwf.js/lib/models/container',
+					'bower/pwf.js/lib/models/domel',
+					'bower/pwf.js/lib/models/caller',
+					'bower/pwf-jquery-compat/lib/jquery-compat',
 					'bower/pwf-storage/lib/storage',
 					'bower/pwf-config/lib/config',
 					'bower/pwf-html/lib/html',
