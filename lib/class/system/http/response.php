@@ -42,7 +42,7 @@ namespace System\Http
 			"layout"        => array('list'),
 			"request"       => array('object', "model" => '\System\Http\Request'),
 			"renderer"      => array('object', "model" => '\System\Template\Renderer'),
-			"renderer_with" => array('varchar', "is_null" => true),
+			"render_with"   => array('varchar', "is_null" => true),
 			"skip_render"   => array('bool', 'default' => false),
 			"start_time"    => array('float'),
 			"sent"          => array('bool'),
