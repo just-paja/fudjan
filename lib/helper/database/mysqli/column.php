@@ -17,6 +17,7 @@ namespace Helper\Database\Mysqli
 			"url"           => array("type" => 'varchar'),
 			"email"         => array("type" => 'varchar'),
 			"bool"          => array("type" => 'tinyint', "length" => 1),
+			"date"          => array("type" => 'datetime'),
 		);
 
 		private $table;

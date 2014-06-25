@@ -33,7 +33,9 @@ namespace System\Model
 			'blob',
 			'text',
 			'float',
+			'date',
 			'datetime',
+			'time',
 			'password',
 			'json',
 			'file',
@@ -339,6 +341,8 @@ namespace System\Model
 				}
 
 
+				case 'date':
+				case 'time':
 				case 'datetime':
 				{
 					$is_null = !isset($attr_data['is_null']) || !$attr_data['is_null'];

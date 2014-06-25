@@ -319,7 +319,7 @@ namespace System
 							$found[] = $p;
 							$mod_found = true;
 							break;
-						} elseif (is_dir($path) && file_exists($p = $path.'/require.json')) {
+						} elseif (is_dir($path) && file_exists($p = $path.'/package.json')) {
 							$data = \System\Json::read($p);
 
 							if (isset($data['files']) && is_array($data['files'])) {
