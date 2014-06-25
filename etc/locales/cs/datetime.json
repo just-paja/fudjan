@@ -4,6 +4,9 @@
 	"date-format-human-time":"G:i",
 	"date-format-human-full-date":"D j. F Y",
 	"date-format-human-full-datetime":"l j. F Y G:i",
+	"today":"dnes",
+	"tomorrow":"zítra",
+	"end-of-week":"koncem týdne",
 
 	"days":{
 		"1":"pondělí",
