@@ -305,17 +305,28 @@ namespace System
 				$mod_found = false;
 
 				foreach ($dirs as $dir) {
-					if ($module !== self::SYMBOL_NOESS) {
 
-						foreach ($info[self::KEY_POSTFIXES] as $postfix) {
-							if (file_exists($p = $dir."/".$module.'.list')) {
-								$list = self::file_list($type, array_map('trim', array_filter(explode("\n", \System\File::read($p)))));
-								$found = array_merge($found, $list[self::KEY_FOUND]);
-								$missing = array_merge($missing, $list[self::KEY_MISSING]);
-								$mod_found = true;
-								break;
-							} elseif (file_exists($p = $dir."/".$module.'.'.$postfix)) {
-								$found[] = $p;
+					foreach ($info[self::KEY_POSTFIXES] as $postfix) {
+						$path = $dir.'/'.$module;
+
+						if (file_exists($p = $path.'.list')) {
+							$list = self::file_list($type, array_map('trim', array_filter(explode("\n", \System\File::read($p)))));
+							$found = array_merge($found, $list[self::KEY_FOUND]);
+							$missing = array_merge($missing, $list[self::KEY_MISSING]);
+							$mod_found = true;
+							break;
+						} elseif (file_exists($p = $path.'.'.$postfix)) {
+							$found[] = $p;
+							$mod_found = true;
+							break;
+						} elseif (is_dir($path) && file_exists($p = $path.'/require.json')) {
+							$data = \System\Json::read($p);
+
+							if (isset($data['files']) && is_array($data['files'])) {
+								foreach ($data['files'] as $file) {
+									$found[] = $path.'/'.$file.'.'.$postfix;
+								}
+
 								$mod_found = true;
 								break;
 							}
@@ -333,8 +344,8 @@ namespace System
 			}
 
 			return array(
-				self::KEY_FOUND   => array_filter($found),
-				self::KEY_MISSING => array_filter($missing),
+				self::KEY_FOUND   => array_unique(array_filter($found)),
+				self::KEY_MISSING => array_unique(array_filter($missing)),
 				self::KEY_SUM     => self::get_module_sum_from_list($modules),
 			);
 		}
