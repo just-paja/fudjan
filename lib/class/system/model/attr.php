@@ -334,15 +334,15 @@ namespace System\Model
 
 				case 'password':
 				case 'text':
+				case 'time':
 				case 'varchar':
 				{
-					$val = mb_substr(strval($val), 0, $attr_data['length']);
+					$val = mb_substr(strval($val), 0, isset($attr_data['length']) ? $attr_data['length']:255);
 					break;
 				}
 
 
 				case 'date':
-				case 'time':
 				case 'datetime':
 				{
 					$is_null = !isset($attr_data['is_null']) || !$attr_data['is_null'];
