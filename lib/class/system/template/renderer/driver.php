@@ -58,7 +58,11 @@ namespace System\Template\Renderer
 		public function yield()
 		{
 			$this->content_for('yield', ob_get_contents());
-			ob_clean();
+
+			if (ob_get_level()) {
+				ob_clean();
+			}
+
 			$this->render_layout();
 		}
 
@@ -147,7 +151,9 @@ namespace System\Template\Renderer
 			$this->content_for('yield', ob_get_level() > 0 ? ob_get_contents():'');
 			$this->content['yield'][] = &$this->content[$place];
 
-			ob_clean();
+			if (ob_get_level()) {
+				ob_clean();
+			}
 		}
 
 
