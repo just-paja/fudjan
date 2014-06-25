@@ -33,24 +33,17 @@ namespace System\Template\Renderer
 		public function flush()
 		{
 			$this->content = array(
-				"title"   => '',
-				"meta"    => array(),
-				"styles"  => array(
+				'title'   => '',
+				'meta'    => array(),
+				'styles'  => array(
 					'bower/reset-css/reset',
 					'styles/pwf/elementary'
 				),
-				"scripts" => array(
-					'bower/jquery/dist/jquery',
-					'bower/pwf.js/lib/pwf',
-					'bower/pwf.js/lib/models/container',
-					'bower/pwf.js/lib/models/domel',
-					'bower/pwf.js/lib/models/caller',
-					'bower/pwf-jquery-compat/lib/jquery-compat',
-					'bower/pwf-storage/lib/storage',
+				'scripts' => array(
+					'bower/pwf.js',
 					'bower/pwf-config/lib/config',
-					'bower/pwf-html/lib/html',
 				),
-				"output"  => array(),
+				'output'  => array(),
 				'slots'   => array(),
 				'yield'   => array(),
 			);
