@@ -500,6 +500,32 @@ namespace System\Database
 					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value."')";
 					break;
 
+				case 'gt':
+				case 'gte':
+				case 'lt':
+				case 'lte':
+					if (is_numeric($value)) {
+						$str = floatval($value);
+					} else {
+						$str = "'".$value."'";
+					}
+
+				case 'gt':
+					$pass = "`" . $filter['attr'] . "` > ".$str."";
+					break;
+
+				case 'gte':
+					$pass = "`" . $filter['attr'] . "` >= ".$str."";
+					break;
+
+				case 'lt':
+					$pass = "`" . $filter['attr'] . "` < ".$str."";
+					break;
+
+				case 'lte':
+					$pass = "`" . $filter['attr'] . "` <= ".$str."";
+					break;
+
 				default:
 					throw new \System\Error\Argument('Unknown filter', $type);
 
@@ -517,7 +543,7 @@ namespace System\Database
 				$filters = array($filters);
 			}
 
-			foreach ($filters as $row) {
+			foreach ($filters as $filter) {
 				$pass[] = $this->get_filter_cond($filter, $table_alias);
 			}
 
@@ -537,7 +563,7 @@ namespace System\Database
 
 				if ($type == 'or') {
 					$or = true;
-					$pass = $this->add_filter_batch($value, $table_alias, true);
+					$pass = $this->get_filter_batch_cond($value, $table_alias, true);
 				} else if (isset($filter['attr'])) {
 					$pass = array($this->get_filter_cond($filter, $table_alias));
 				} else {
@@ -548,7 +574,7 @@ namespace System\Database
 			}
 
 			if (!$valid) {
-				throw new \System\Error\Argument('Failed to parse filters', var_export($filter_val, true));
+				throw new \System\Error\Argument('Failed to parse filters', var_export($filter, true));
 			}
 
 			return $this->where($pass, $table_alias, $or);
