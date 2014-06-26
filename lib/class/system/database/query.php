@@ -451,34 +451,104 @@ namespace System\Database
 		}
 
 
-		public function add_filter_batch($filters, $table_alias = null, $or = false)
+		public function get_filter_cond($filter, $table_alias)
+		{
+			$pass  = null;
+			$type  = $filter['type'];
+			$value = $filter[$type];
+
+			if ($filter['attr'] == 'id' && $this->assoc_with_model) {
+				$filter['attr'] = \System\Model\Database::get_id_col($this->assoc_with_model);
+			}
+
+			switch ($type) {
+				case 'in':
+				case 'exact':
+					if (is_array($value)) {
+						$value = implode(',', array_map('intval', $value));
+						$pass = "`" . $filter['attr'] . "` IN (".$value.")";
+					} else {
+						$pass = "`" . $filter['attr'] . "` = '".$value."'";
+					}
+					break;
+
+				case 'iexact':
+					$pass = "LOWER(`" . $filter['attr'] . "`) = LOWER('".$value."')";
+					break;
+
+				case 'contains':
+					$pass = "`" . $filter['attr'] . "` LIKE '%".$value."%'";
+					break;
+
+				case 'icontains':
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value."%')";
+					break;
+
+				case 'starts_with':
+					$pass = "`" . $filter['attr'] . "` LIKE '".$value."%'";
+					break;
+
+				case 'istarts_with':
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('".$value."%')";
+					break;
+
+				case 'ends_with':
+					$pass = "`" . $filter['attr'] . "` LIKE '%".$value."'";
+					break;
+
+				case 'iends_with':
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value."')";
+					break;
+
+				default:
+					throw new \System\Error\Argument('Unknown filter', $type);
+
+			}
+
+			return $pass;
+		}
+
+
+		public function get_filter_batch_cond($filters, $table_alias = null, $or = false)
 		{
 			$pass = array();
 
+			if (!is_array($filters)) {
+				$filters = array($filters);
+			}
+
 			foreach ($filters as $row) {
-				if ($row['attr'] == 'id' && $this->assoc_with_model) {
-					$row['attr'] = \System\Model\Database::get_id_col($this->assoc_with_model);
-				}
+				$pass[] = $this->get_filter_cond($filter, $table_alias);
+			}
 
-				if ($row['type'] == 'contains') {
-					$pass[] = "`" . $row['attr'] . "` LIKE '%".$row['contains']."%'";
-				}
+			return $pass;
+		}
 
-				if ($row['type'] == 'starts_with') {
-					$pass[] = "`" . $row['attr'] . "` LIKE '".$row['starts_with']."%'";
-				}
 
-				if ($row['type'] == 'istarts_with') {
-					$pass[] = "LOWER(`" . $row['attr'] . "`) LIKE LOWER('".$row['istarts_with']."%')";
-				}
+		public function add_filter($filter, $table_alias = null, $or = false)
+		{
+			$pass  = array();
+			$valid = true;
+			$or = false;
 
-				if ($row['type'] == 'ends_with') {
-					$pass[] = "`" . $row['attr'] . "` LIKE '%".$row['ends_with']."'";
-				}
+			if (isset($filter['type']) && isset($filter[$filter['type']])) {
+				$type  = $filter['type'];
+				$value = $filter[$type];
 
-				if ($row['type'] == 'iends_with') {
-					$pass[] = "LOWER(`" . $row['attr'] . "`) LIKE LOWER('%".$row['iends_with']."')";
+				if ($type == 'or') {
+					$or = true;
+					$pass = $this->add_filter_batch($value, $table_alias, true);
+				} else if (isset($filter['attr'])) {
+					$pass = array($this->get_filter_cond($filter, $table_alias));
+				} else {
+					$valid = false;
 				}
+			} else {
+				$valid = false;
+			}
+
+			if (!$valid) {
+				throw new \System\Error\Argument('Failed to parse filters', var_export($filter_val, true));
 			}
 
 			return $this->where($pass, $table_alias, $or);
