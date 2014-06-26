@@ -81,17 +81,32 @@ namespace System
 		}
 
 
+		public static function ls($dir, $file)
+		{
+			$dirs  = self::list_dirs($dir);
+			$files = array();
+
+			foreach ($dirs as $dir) {
+				if (file_exists($p = $dir.'/'.$file)) {
+					$files[] = $p;
+				}
+			}
+
+			return $files;
+		}
+
+
 		public static function resolve($path)
 		{
 			$dir = dirname($path);
 			$file = basename($path);
-			$files = self::find($dir, '/^'.$file.'$/');
+			$files = self::ls($dir, $file);
 
 			if (count($files) <= 1) {
 				return any($files) ? $files[0]:null;
 			}
 
-			throw new \System\Error\File('Cannot resolve path. Found duplicate files.', $path);
+			throw new \System\Error\File('Cannot resolve path. Found duplicate files.', $path, var_export($files, true));
 		}
 	}
 }
