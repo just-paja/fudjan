@@ -114,6 +114,8 @@ namespace System
 						def($locals['per_page'], 20);
 						def($locals['page'], intval($this->request()->get('page')));
 
+						$locals['per_page'] = intval($locals['per_page']);
+
 						if (is_array($locals)) {
 							$propagated = array();
 
