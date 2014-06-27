@@ -11,9 +11,10 @@ namespace System\Template\Renderer
 		private static $resource_filter = array('scripts', 'styles');
 		private $first_layout = true;
 
-		protected $content = array();
-		protected $layout  = array();
-		protected $yield   = 0;
+		protected $rendered = array();
+		protected $content  = array();
+		protected $layout   = array();
+		protected $yield    = 0;
 
 
 		public function get_context()
@@ -240,9 +241,13 @@ namespace System\Template\Renderer
 				}
 			}
 
-			$this->content_for('yield', ob_get_level() > 0 ? ob_get_contents():'');
-			$this->content['yield'][] = &$this->content['slots'][$name];
-			//~ ob_clean();
+			if (!in_array($name, $this->rendered)) {
+				$this->rendered[] = $name;
+				$this->content['yield'][] = ob_get_level() > 0 ? ob_get_contents():'';
+				$this->content['yield'][] = &$this->content['slots'][$name];
+			}
+
+			ob_clean();
 		}
 
 
