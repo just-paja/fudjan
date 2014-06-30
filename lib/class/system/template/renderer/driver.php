@@ -44,7 +44,6 @@ namespace System\Template\Renderer
 					'bower/pwf.js',
 					'bower/pwf-config/lib/config',
 				),
-				'output'  => array(),
 				'slots'   => array(),
 				'yield'   => array(),
 			);
@@ -91,8 +90,11 @@ namespace System\Template\Renderer
 			$this->layout = $this->renderer->get_layout();
 			$slots = $this->renderer->get_slots();
 
-			$this->render_layout();
-			$this->content['output'] = $this->content['yield'];
+			if ($this->layout) {
+				$this->render_layout();
+			} else {
+				$this->slot();
+			}
 
 			foreach ($slots as $slot=>$partials) {
 				if (isset($this->content['slots'][$slot])) {
@@ -120,7 +122,7 @@ namespace System\Template\Renderer
 			}
 
 			$this->render_head();
-			$out = implode('', $this->content['output']);
+			$out = implode('', $this->content['yield']);
 			return $out;
 		}
 
@@ -247,7 +249,9 @@ namespace System\Template\Renderer
 				$this->content['yield'][] = &$this->content['slots'][$name];
 			}
 
-			ob_clean();
+			if (ob_get_level()) {
+				ob_clean();
+			}
 		}
 
 
