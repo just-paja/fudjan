@@ -195,13 +195,31 @@ namespace System
 		 */
 		public function get_path_hashed()
 		{
-			return $this->get_path_hashed_dir().'/'.$this->get_time().($this->suffix() ? '.'.$this->suffix():'');
+			return $this->get_path_hashed_dir().'/'.$this->get_path_hashed_name();
 		}
 
 
-		private function get_path_hashed_dir()
+		public function get_path_hashed_relative()
 		{
-			return BASE_DIR.self::DIR.'/'.substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
+			return $this->get_path_hashed_dir_relative().'/'.$this->get_path_hashed_name();
+		}
+
+
+		public function get_path_hashed_name()
+		{
+			return $this->get_time().($this->suffix() ? '.'.$this->suffix():'');
+		}
+
+
+		public function get_path_hashed_dir()
+		{
+			return BASE_DIR.self::DIR.'/'.$this->get_path_hashed_dir_relative();
+		}
+
+
+		public function get_path_hashed_dir_relative()
+		{
+			return substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
 		}
 
 
@@ -613,7 +631,7 @@ namespace System
 		{
 			return array(
 				"url"    => $this->get_url(),
-				"path"   => $this->get_path_temp(),
+				"path"   => $this->get_path_hashed_relative(),
 				"name"   => $this->name,
 				"mime"   => $this->mime,
 				"size"   => $this->size,
