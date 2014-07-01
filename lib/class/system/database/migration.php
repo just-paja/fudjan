@@ -5,7 +5,7 @@ namespace System\Database
 	class Migration extends \System\Model\Database
 	{
 
-		const BASEDIR = '/etc/database/migrations.d';
+		const DIR = '/etc/database/migrations.d';
 		static protected $attrs = array(
 			"seoname" => array('varchar'),
 			"name"    => array('varchar'),
@@ -61,9 +61,11 @@ namespace System\Database
 		 */
 		public static function checkout_folder(array $old = array())
 		{
-			$dir = opendir(ROOT.self::BASEDIR);
+			$dir = opendir(BASE_DIR.self::DIR);
 			$items = array();
+
 			while ($file = readdir($dir)) {
+
 				if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\-[a-zA-Z\_\-]*\.php$/", $file)) {
 					$fname = explode('-', $file);
 					$date = new \Datetime(intval($fname[0]).'-'.intval($fname[1]).'-'.intval($fname[2]));
@@ -73,15 +75,17 @@ namespace System\Database
 					$name = implode('.', $name);
 
 					if (!in_array($date->format("Y-m-d").'-'.$name, $old)) {
-						$temp = &$items[];
 						$temp = new self(array(
 							"file"    => $file,
 							"date"    => $date,
 							"seoname" => $name,
 							"status"  => 'new',
 						));
+
 						$temp->get_meta();
 						$temp->get_checksum();
+
+						$items[] = $temp;
 					}
 				}
 			}
@@ -111,7 +115,7 @@ namespace System\Database
 		public function &run()
 		{
 			$this->sql("START TRANSACTION");
-			include($p = ROOT.self::BASEDIR.'/'.$this->get_filename());
+			include($p = BASE_DIR.self::DIR.'/'.$this->get_filename());
 			$this->sql("COMMIT");
 
 			$this->get_checksum();
@@ -125,7 +129,7 @@ namespace System\Database
 		private function get_checksum()
 		{
 			if (!$this->md5_sum) {
-				$this->md5_sum = md5(\System\File::read($p = ROOT.self::BASEDIR.'/'.$this->get_filename()));
+				$this->md5_sum = md5(\System\File::read($p = BASE_DIR.self::DIR.'/'.$this->get_filename()));
 			}
 			return $this->md5_sum;
 		}
@@ -150,7 +154,7 @@ namespace System\Database
 
 		public function get_meta()
 		{
-			if (file_exists($p = ROOT.self::BASEDIR.'/'.$this->get_filename())) {
+			if (file_exists($p = BASE_DIR.self::DIR.'/'.$this->get_filename())) {
 				$c = file($p);
 				foreach($c as $line) {
 					if (strpos($line, '#[') === 0) {
