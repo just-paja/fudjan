@@ -32,20 +32,6 @@
 
 .pwform ul li label.label-left{ margin-right:7px; }
 .pwform .input-checkbox, .pwform .input-radio{margin-right:7px}
-.pwform .input-text, .pwform .input-password, .input-number, .input-email, .input-url, .input-datetime-local{
-	width:250px;
-}
-
-.pwform .textarea .form-input {
-	vertical-align:bottom;
-	margin-left:7px;
-	width:500px;
-	display:inline-block;
-}
-.pwform .select-input {
-	vertical-align:bottom;
-	margin-left:0px;
-}
 .pwform label{cursor:pointer; display:inline-block; vertical-align:top; }
 .pwform input.input-checkbox{ margin-left:135px; }
 .pwform ul li ul.choice-group li{display:inline-block;width:200px}
@@ -59,29 +45,11 @@
 .pwform .buttons{margin:15px 0 0}
 .pwform button{border:1px solid #ccc; padding:2px 20px; margin:0 10px 0 0;}
 
-.pwform .input-list-container {
-	display:inline-block;
-	vertical-align:top;
-	padding:5px 10px;
-	margin:0 0 2px 7px;
-}
-.pwform .input-list-container a.list-link-add { position:relative; left:-2px }
-.pwform li.input-list-editor {
-	width:0;
-	height:0;
-	overflow:visible;
-}
-.pwform .ilve { display:none; }
-.pwform .input-list-content { padding:0 }
-.pwform .input-list-content .key { font-weight:bold; }
-.pwform .hide-keys .input-list-content .key { display:none }
-.hide-keys .key { display:none }
-
-
 .pwform .form-tip{
 	display:inline-block;
 	margin:0 10px;
 }
+
 .pwform .form-subli label{ font-weight:normal }
 .pwform ul.form-group-switch>:first-child { display:none }
 .pwform .label-multi-checkbox{width:100%}
@@ -128,69 +96,6 @@
 .pwform .input-left .input-container {
 	width:auto;
 }
-
-
-
-.pwform .widget-image .widget-tools li {
-	margin-top:0;
-	margin-left:0;
-}
-
-.pwform .widget-image .input-action .label-widget { display:none;}
-.pwform .widget-image .widget-tools label { display:block; }
-
-
-.pwform .widget-image .input-content,
-.pwform .widget-image .input-content .image,
-.pwform .widget-image .widget-tools,
-.pwform .widget-image .actionkit
-{
-	display:inline-block;
-	vertical-align:top;
-}
-
-.pwform .widget-image .options,
-.pwform .widget-image .options li
-{
-	vertical-align:top;
-	margin:0;
-	padding:0;
-	display:block;
-}
-
-.pwform .widget-image .options {
-	display:inline-block;
-	vertical-align:top;
-	border:1px solid rgba(0,0,0,0.05);
-	background:rgba(0,0,0,0.025);
-	padding:5px 15px 5px 10px;
-	margin:0 10px 0 0;
-}
-
-.pwform .widget-action label { display:none; }
-.pwform .widget-action .options li {
-	padding:0;
-	margin:0 10px 0 0;
-}
-
-.pwform .widget-action .options li:last-child { margin:0; }
-
-.pwform .widget-action .options label {
-	display:inline-block;
-	width:auto;
-}
-
-
-.pwform .widget-image img {
-	margin:0 8px 0 0;
-	vertical-align:top;
-	display:block;
-	border:1px solid rgba(0,0,0,0.05);
-}
-
-.pwform .widget-image .input { margin:5px; }
-
-
 
 .pwform .cleaner {
 	clear:both;
