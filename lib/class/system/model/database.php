@@ -1128,6 +1128,12 @@ namespace System\Model
 
 		public function to_object()
 		{
+			return array_merge($this->to_object_with_id(), $this->get_rels_to_object());
+		}
+
+
+		public function to_object_with_id()
+		{
 			$model = get_class($this);
 			$data = parent::to_object();
 			$idc = self::get_id_col(get_class($this));
@@ -1137,6 +1143,14 @@ namespace System\Model
 				unset($data[$idc]);
 			}
 
+			return $data;
+		}
+
+
+		public function get_rels_to_object()
+		{
+			$model = get_class($this);
+			$data  = array();
 			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
 
 			foreach ($attrs as $attr_name) {
@@ -1157,6 +1171,5 @@ namespace System\Model
 
 			return $data;
 		}
-
 	}
 }

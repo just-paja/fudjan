@@ -74,5 +74,69 @@ namespace System\Model
 		{
 			return self::can_user($method, $user);
 		}
+
+
+		public function to_object_with_perms(\System\User $user)
+		{
+			return array_merge($this->to_object_with_id_and_perms($user), $this->get_rels_to_object_with_perms($user));
+		}
+
+
+		public function to_object_with_id_and_perms(\System\User $user)
+		{
+			$data  = parent::to_object_with_id();
+			$model = get_class($this);
+			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+
+			foreach ($attrs as $attr_name) {
+				if (self::is_rel($model, $attr_name)) {
+					$def = self::get_attr($model, $attr_name);
+					$rel_cname = $def['model'];
+					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
+					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
+
+					if (!$is_allowed) {
+						unset($data[$attr_name]);
+
+						if ($def[0] == self::REL_BELONGS_TO) {
+							unset($data[self::get_belongs_to_id($model, $attr_name)]);
+						}
+					}
+				}
+			}
+
+			return $data;
+		}
+
+
+		public function get_rels_to_object_with_perms(\System\User $user)
+		{
+			$data  = array();
+			$model = get_class($this);
+			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+
+			foreach ($attrs as $attr_name) {
+				if (self::is_rel($model, $attr_name)) {
+					$def = self::get_attr($model, $attr_name);
+					$rel_cname = $def['model'];
+					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
+					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
+
+					if ($is_allowed) {
+						if ($def[0] == self::REL_HAS_MANY) {
+							$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
+						} else if ($def[0] == self::REL_BELONGS_TO) {
+							$bid = self::get_belongs_to_id($model, $attr_name);
+
+							if ($this->$bid) {
+								$data[$attr_name] = $this->$bid;
+							}
+						}
+					}
+				}
+			}
+
+			return $data;
+		}
 	}
 }
