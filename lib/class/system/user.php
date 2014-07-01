@@ -31,7 +31,7 @@ namespace System
 		);
 
 		static protected $access = array(
-			'schema' => true,
+			'schema' => false,
 			'browse' => false,
 		);
 
