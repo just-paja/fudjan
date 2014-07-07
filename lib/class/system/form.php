@@ -21,6 +21,7 @@ namespace System
 			"prefix"     => array('varchar'),
 			"use_comm"   => array('bool'),
 			"use_errors" => array('bool', 'default' => true),
+			"use_queue"  => array('bool', 'default' => true),
 			"renderer"   => array('object', "model" => '\System\Template\Renderer\Driver'),
 			"response"   => array('object', "model" => '\System\Http\Response'),
 			"request"    => array('object', "model" => '\System\Http\Request'),
@@ -742,8 +743,9 @@ namespace System
 		{
 			$containers = array();
 			$attrs = parent::get_data();
-			$attrs['use_comm'] = $this->use_comm;
+			$attrs['use_comm']   = $this->use_comm;
 			$attrs['use_errors'] = $this->use_errors;
+			$attrs['use_queue']  = $this->use_queue;
 			$attrs['prefix'] = $this->get_prefix();
 
 			unset($attrs['response']);
