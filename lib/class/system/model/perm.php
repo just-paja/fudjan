@@ -53,7 +53,7 @@ namespace System\Model
 				$groups = $user->groups->fetch();
 
 				if (any($groups)) {
-					$conds[] = 'group_id IN ('.collect_ids($groups).')';
+					$conds[] = 'id_group IN ('.implode(',', collect_ids($groups)).')';
 				}
 			}
 
