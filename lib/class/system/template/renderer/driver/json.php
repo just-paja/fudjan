@@ -8,13 +8,21 @@ namespace System\Template\Renderer\Driver
 		{
 			$slots = $this->renderer->get_slots();
 			$json = array();
+			$data = array();
 
 			$this->flush();
 
 			foreach ($slots as $slot=>$partials) {
 				while ($partial = array_shift($partials)) {
-					$json[] = $this->render_file(null, def($partial['locals'], array()));
+					def($partial['locals'], array());
+
+					$json[] = $this->render_file(null, $partial['locals']);
+					$data[] = $partial['locals'];
 				}
+			}
+
+			if (count($data) == 1) {
+				$this->renderer->response()->status(intval(def($data[0]['status'], 200)));
 			}
 
 			return count($json) == 1 ? $json[0]:$json;
