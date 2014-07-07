@@ -10,27 +10,27 @@ namespace System
 		const LABEL_SUBMIT_DEFAULT = 'send';
 
 		protected static $attrs = array(
-			"id"       => array('varchar'),
-			"method"   => array('varchar'),
-			"action"   => array('varchar'),
-			"enctype"  => array('varchar'),
-			"heading"  => array('varchar'),
-			"desc"     => array('varchar'),
-			"bool"     => array('no_prefix'),
-			"class"    => array('array'),
-			"prefix"   => array('varchar'),
-			"use_comm" => array('bool'),
-			"renderer" => array('object', "model" => '\System\Template\Renderer\Driver'),
-			"response" => array('object', "model" => '\System\Http\Response'),
-			"request"  => array('object', "model" => '\System\Http\Request'),
+			"id"         => array('varchar'),
+			"method"     => array('varchar'),
+			"action"     => array('varchar'),
+			"enctype"    => array('varchar'),
+			"heading"    => array('varchar'),
+			"desc"       => array('varchar'),
+			"bool"       => array('no_prefix'),
+			"class"      => array('array'),
+			"prefix"     => array('varchar'),
+			"use_comm"   => array('bool'),
+			"use_errors" => array('bool', 'default' => true),
+			"renderer"   => array('object', "model" => '\System\Template\Renderer\Driver'),
+			"response"   => array('object', "model" => '\System\Http\Response'),
+			"request"    => array('object', "model" => '\System\Http\Request'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
 
 		protected static $resources = array(
 			'styles' => array(
-				'bower/pwf-form/styles/form',
-				'styles/pwf/form'
+				'bower/pwf-form/styles/form'
 			),
 			'scripts' => array(
 				'bower/pwf-queue/lib/queue',
@@ -743,6 +743,7 @@ namespace System
 			$containers = array();
 			$attrs = parent::get_data();
 			$attrs['use_comm'] = $this->use_comm;
+			$attrs['use_errors'] = $this->use_errors;
 			$attrs['prefix'] = $this->get_prefix();
 
 			unset($attrs['response']);
