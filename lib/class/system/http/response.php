@@ -11,6 +11,7 @@ namespace System\Http
 		const FOUND                 = 302;
 		const SEE_OTHER             = 303;
 		const TEMPORARY_REDIRECT    = 307;
+		const BAD_REQUEST           = 400;
 		const FORBIDDEN             = 403;
 		const PAGE_NOT_FOUND        = 404;
 		const INTERNAL_SERVER_ERROR = 500;
@@ -23,6 +24,7 @@ namespace System\Http
 			self::FOUND                 => "HTTP/1.1 302 Found",
 			self::SEE_OTHER             => "HTTP/1.1 303 See Other",
 			self::TEMPORARY_REDIRECT    => "HTTP/1.1 307 Temporary Redirect",
+			self::BAD_REQUEST           => "HTTP/1.1 400 Bad Request",
 			self::FORBIDDEN             => "HTTP/1.1 403 Forbidden",
 			self::PAGE_NOT_FOUND        => "HTTP/1.1 404 Page Not Found",
 			self::INTERNAL_SERVER_ERROR => "HTTP/1.1 500 Internal Server Error",
