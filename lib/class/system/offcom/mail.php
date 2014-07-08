@@ -44,7 +44,7 @@ namespace System\Offcom
 		 * @param string $from    E-mail address of sender in nice format
 		 * @return new self
 		 */
-		public static function create($subject, $message, array $rcpt, $from = null)
+		public static function create($subject, $message, array $rcpt = null, $from = null)
 		{
 			foreach ($rcpt as &$r) {
 				$r = trim($r);
