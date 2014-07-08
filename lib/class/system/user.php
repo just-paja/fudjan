@@ -219,5 +219,13 @@ namespace System
 		{
 			return implode('-', str_split(substr(md5(rand(1,4096*4096)), 0, $len), 4));
 		}
+
+
+		public function to_object()
+		{
+			$data = parent::to_object();
+			unset($data['password']);
+			return $data;
+		}
 	}
 }
