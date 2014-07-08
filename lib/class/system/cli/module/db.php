@@ -474,7 +474,7 @@ namespace System\Cli\Module
 			$data = \System\Settings::read(\System\Database::DIR_INITIAL_DATA, true);
 
 			if ($data) {
-				out("Injecting initial data ..");
+				\System\Cli::out("Injecting initial data ..");
 
 				foreach ($data as $data_set_name => $data_set_models) {
 					self::seed_data($data_set_name, $data_set_models);
@@ -495,7 +495,21 @@ namespace System\Cli\Module
 					$tdata['is_new_object'] = true;
 					$model = $extra['model'];
 
-					$obj = new $model($tdata);
+					$obj = null;
+					$idc = $model::get_id_col($model);
+
+					if (isset($tdata[$col = 'id']) || isset($tdata[$col = $idc])) {
+						$tdata[$idc] = $tdata[$col];
+						$obj = find($model, $tdata[$col]);
+					}
+
+					if ($obj) {
+						$tdata['is_new_object'] = false;
+						$obj->update_attrs($tdata);
+					} else {
+						$obj = new $model($tdata);
+					}
+
 					$obj->save();
 
 					foreach ($tdata as $attr=>$val) {
