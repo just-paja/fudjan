@@ -125,7 +125,10 @@ namespace System
 					$content = self::get_content_from_files($info, $files);
 				}
 
-				if (!$debug) {
+				if ($debug) {
+					$list = "/* Used files\n\t".implode("\n\t", $files[self::KEY_FOUND])."\n*/\n\n";
+					$content = $list.$content;
+				} else {
 					$content = \System\Minifier::process($info['type'], $content);
 				}
 
@@ -315,18 +318,32 @@ namespace System
 							$missing = array_merge($missing, $list[self::KEY_MISSING]);
 							$mod_found = true;
 							break;
-						} elseif (file_exists($p = $path.'.'.$postfix)) {
+						} else if ((file_exists($p = $path) || file_exists($p = $path.'.'.$postfix)) && is_file($p)) {
 							$found[] = $p;
 							$mod_found = true;
 							break;
-						} elseif (is_dir($path) && file_exists($p = $path.'/package.json')) {
-							$data = \System\Json::read($p);
+						} else if (is_dir($path)) {
+							if (file_exists($p = $path.'/package.json')) {
+								$data = \System\Json::read($p);
 
-							if (isset($data['files']) && is_array($data['files'])) {
-								foreach ($data['files'] as $file) {
-									$found[] = $path.'/'.$file.'.'.$postfix;
+								if (isset($data['files']) && is_array($data['files'])) {
+									foreach ($data['files'] as $file) {
+										$found[] = $path.'/'.$file.'.'.$postfix;
+									}
+
+									$mod_found = true;
+									break;
+								}
+							} else {
+								$files = \System\Directory::find_all_files($path);
+
+								foreach ($files as $key=>$tmp_file) {
+									$files[$key] = str_replace($dir.'/', '', $files[$key]);
 								}
 
+								$list = self::file_list($type, $files);
+								$found = array_merge($found, $list[self::KEY_FOUND]);
+								$missing = array_merge($missing, $list[self::KEY_MISSING]);
 								$mod_found = true;
 								break;
 							}
