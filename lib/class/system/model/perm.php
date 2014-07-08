@@ -43,8 +43,8 @@ namespace System\Model
 			$cname = get_called_class();
 			$conds = array();
 
-			if (isset($cname::$access) && isset($cname::$access[$method]) && !!$cname::$access[$method]) {
-				return true;
+			if (isset($cname::$access) && isset($cname::$access[$method]) && !is_null($cname::$access[$method])) {
+				return !!$cname::$access[$method];
 			}
 
 			if ($user->is_guest()) {
@@ -57,8 +57,8 @@ namespace System\Model
 				}
 			}
 
-			$conds['type']    = $cname;
-			$conds['trigger'] = 'model';
+			$conds['trigger'] = 'model-'.$method;
+			$conds['name']    = \System\Loader::get_model_from_class($cname).'::'.$method;
 
 			$perm = get_first('System\User\Perm')->where($conds)->fetch();
 			return $perm ? $perm->allow:self::get_default_for($method);
