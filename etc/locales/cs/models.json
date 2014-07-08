@@ -7,6 +7,7 @@
 	"model-System::User":"Uživatel",
 	"model-System::User-plural":"Uživatelé",
 	"model-System::User-accusative":"uživatele",
+	"model-System::User-dative":"uživatele",
 	"model-System::User-dative-plural":"uživatelů",
 
 	"model-System::User::Group":"Uživatelská skupina",
