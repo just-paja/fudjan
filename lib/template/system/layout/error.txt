@@ -1,0 +1,4 @@
+<?
+
+$ren->yield();
+$ren->slot();
