@@ -51,7 +51,7 @@ namespace System
 		public static function from_path($path)
 		{
 			if (!file_exists($path)) {
-				$path = BASE_DIR.$path;
+				$path = \System\Composer::resolve($path);
 			}
 
 			$file = new self(array(
@@ -247,7 +247,7 @@ namespace System
 						$data = fread($fp, $this->get_digest_chunk_size());
 						$this->hash = $this->hash_chunk($data);
 						fclose($fp);
-					} else throw new \System\Error\File('Cannot create hash from file. It does not exist on filesystem and is not cached.');
+					} else throw new \System\Error\File('Cannot create hash from file. It does not exist on filesystem and is not cached.', var_export($this->path, true));
 				}
 			}
 
