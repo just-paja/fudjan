@@ -372,6 +372,10 @@ namespace System
 			$path = implode('.', $path);
 
 			$data = parent::to_object();
+			$path = str_replace(ROOT, '', $path);
+			$path = str_replace(BASE_DIR, '', $path);
+			$path = preg_replace('/^\//', '', $path);
+
 			$data['url'] = \System\Resource::tag_resource(\System\Resource::TYPE_PIXMAPS, $path, $this->suffix());
 
 			return $data;
