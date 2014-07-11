@@ -61,6 +61,7 @@ namespace System\Cache
 					$thumb->image      = $image;
 					$thumb->hash       = $thumb->hash();
 					$thumb->hash_image = $image->hash();
+					$thumb->time       = 0;
 				}
 
 				return $thumb;
