@@ -35,7 +35,6 @@ $policy = function($rq, $res) {
 			"autoload" => $autoload,
 		),
 		"comm" => array(
-			"def"   => 'http',
 			"blank" => '/share/html/blank.html'
 		),
 		"debug" => $debug,
