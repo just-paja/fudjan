@@ -190,8 +190,7 @@ namespace System
 			$serial = array_pop($name);
 			$name[] = $suffix;
 			$name = implode('.', $name);
-			$regex = '/^'.str_replace(array('.', '/'), array('\.', '\/'), $name).'$/';
-			$files = \System\Composer::find($dir, $regex);
+			$files = \System\Composer::ls($dir, $name);
 
 			if (any($files)) {
 				$img = self::from_path($files[0]);
@@ -377,6 +376,9 @@ namespace System
 			$path = preg_replace('/^\//', '', $path);
 
 			$data['url'] = \System\Resource::tag_resource(\System\Resource::TYPE_PIXMAPS, $path, $this->suffix());
+			$data['path'] = $path.'.'.$suffix;
+
+			//~ v($data);
 
 			return $data;
 		}
