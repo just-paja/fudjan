@@ -34,16 +34,11 @@ namespace System
 				'bower/pwf-form/styles/form'
 			),
 			'scripts' => array(
-				'bower/pwf-queue/lib/queue',
-				'bower/pwf-comm/lib/comm',
-				'bower/pwf-comm/lib/mods/http',
-				'bower/pwf-comm-form/lib/comm-form',
-				'bower/pwf-locales/lib/locales',
-				'bower/pwf-form/lib/form',
-				'bower/pwf-form/lib/form/container',
-				'bower/pwf-form/lib/input',
-				'bower/pwf-form/lib/input/abstract/numbers',
-				'bower/pwf-form/lib/input/abstract/options',
+				'bower/pwf-queue',
+				'bower/pwf-comm',
+				'bower/pwf-comm-form',
+				'bower/pwf-locales',
+				'bower/pwf-form',
 			)
 		);
 
