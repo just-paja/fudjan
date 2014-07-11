@@ -577,19 +577,20 @@ namespace System\Model
 
 		public function to_object()
 		{
-			return self::to_object_batch($this->get_data());
+			return self::to_object_batch($this->get_data(), $this);
 		}
 
 
-		public static function to_object_batch($data)
+		public static function to_object_batch($data, $obj = null, $key = null)
 		{
 			if (is_array($data)) {
 				foreach ($data as $key=>$value) {
-					$data[$key] = self::to_object_batch($value);
+					$data[$key] = self::to_object_batch($value, $obj, $key);
 				}
 			} else if (is_object($data)) {
 				if (method_exists($data, 'to_object')) {
 					$empty = method_exists($data, 'is_empty') && $data->is_empty();
+
 					if (!$empty) {
 						$data = $data->to_object();
 					} else {
@@ -597,6 +598,15 @@ namespace System\Model
 					}
 				} else if ($data instanceof \DateTime) {
 					$data = $data->format('c');
+				}
+			}
+
+
+			if (is_null($data) && $obj && $key) {
+				$attr = self::get_attr($obj, $key);
+
+				if (isset($attr['default'])) {
+					$data = self::to_object_batch(self::convert_attr_val($obj, $key, $attr['default']), $obj);
 				}
 			}
 
