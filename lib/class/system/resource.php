@@ -326,8 +326,8 @@ namespace System
 							if (file_exists($p = $path.'/package.json')) {
 								$data = \System\Json::read($p);
 
-								if (isset($data['files']) && is_array($data['files'])) {
-									foreach ($data['files'] as $file) {
+								if (isset($data['include']) && is_array($data['include'])) {
+									foreach ($data['include'] as $file) {
 										$found[] = $path.'/'.$file.'.'.$postfix;
 									}
 
