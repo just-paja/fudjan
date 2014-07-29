@@ -510,20 +510,16 @@ namespace System\Database
 						$str = "'".$value."'";
 					}
 
-				case 'gt':
-					$pass = "`" . $filter['attr'] . "` > ".$str."";
-					break;
+					if ($type == 'gt') {
+						$pass = "`" . $filter['attr'] . "` > ".$str."";
+					} else if ($type == 'gte') {
+						$pass = "`" . $filter['attr'] . "` >= ".$str."";
+					} else if ($type == 'lt') {
+						$pass = "`" . $filter['attr'] . "` < ".$str."";
+					} else if ($type == 'lte') {
+						$pass = "`" . $filter['attr'] . "` <= ".$str."";
+					}
 
-				case 'gte':
-					$pass = "`" . $filter['attr'] . "` >= ".$str."";
-					break;
-
-				case 'lt':
-					$pass = "`" . $filter['attr'] . "` < ".$str."";
-					break;
-
-				case 'lte':
-					$pass = "`" . $filter['attr'] . "` <= ".$str."";
 					break;
 
 				default:
