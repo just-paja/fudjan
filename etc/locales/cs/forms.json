@@ -15,6 +15,7 @@
 	"form-file-name":"Název souboru",
 	"form-file-type":"Typ souboru",
 	"form-file-size":"Velikost",
+	"form-file-drop":"Smazat",
 
 	"form-file-will-be-uploaded":"Soubor bude uložen.",
 	"form-file-will-be-downloaded":"Soubor bude stažen na server.",
