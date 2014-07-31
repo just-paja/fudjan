@@ -629,6 +629,10 @@ namespace System
 
 		public function to_object()
 		{
+			if (!$this->mime) {
+				$this->read_meta();
+			}
+
 			return array(
 				"url"    => $this->get_url(),
 				"path"   => $this->get_path_hashed_relative(),
