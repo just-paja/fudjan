@@ -1064,21 +1064,6 @@ namespace System\Model
 		}
 
 
-		/** Get options for model if defined
-		 * @param string $model
-		 * @param string $attr
-		 * @return false|array
-		 */
-		public static function get_model_attr_options($model, $attr)
-		{
-			if (self::attr_exists($model, $attr)) {
-				if (isset($model::$attrs[$attr]['options'])) {
-					return $model::$attrs[$attr]['options'];
-				} else return false;
-			} else throw new \System\Error\Model(sprintf('Attr %s does not exist.', $attr));
-		}
-
-
 		/** Get belongs_to relation that is bound to has_many or has_one relation
 		 * @param string $model
 		 * @param string $rel

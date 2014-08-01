@@ -471,6 +471,21 @@ namespace System\Model
 		}
 
 
+		/** Get options for model if defined
+		 * @param string $model
+		 * @param string $attr
+		 * @return false|array
+		 */
+		public static function get_model_attr_options($model, $attr)
+		{
+			if (self::attr_exists($model, $attr)) {
+				if (isset($model::$attrs[$attr]['options'])) {
+					return $model::$attrs[$attr]['options'];
+				} else return false;
+			} else throw new \System\Error\Model(sprintf('Attr %s does not exist.', $attr));
+		}
+
+
 		/** Did object change since it's construction?
 		 * @param string $status Change status to this
 		 * @return bool
