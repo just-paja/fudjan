@@ -46,8 +46,10 @@ namespace System\Offcom
 		 */
 		public static function create($subject, $message, array $rcpt = null, $from = null)
 		{
-			foreach ($rcpt as &$r) {
-				$r = trim($r);
+			if ($rcpt) {
+				foreach ($rcpt as &$r) {
+					$r = trim($r);
+				}
 			}
 
 			return new self(array(
