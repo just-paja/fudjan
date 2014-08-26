@@ -50,7 +50,13 @@ namespace System
 		 */
 		public static function get_path($host, $path, array &$args = array())
 		{
-			if ($domain = self::get_domain($host)) {
+			if (self::is_domain($host)) {
+				$domain = $host;
+			} else {
+				$domain = self::get_domain($host);
+			}
+
+			if ($domain) {
 				try {
 					$routes = cfg('routes', $domain);
 				} catch (\System\Error\Config $e) {
@@ -80,6 +86,27 @@ namespace System
 			}
 
 			return false;
+		}
+
+
+		public static function get_first_url($path, array $args = array())
+		{
+			$domains = \System\Settings::get('domains');
+			$url = false;
+
+			foreach ($domains as $host => $cfg) {
+				try {
+					$url = self::get_url($host, $path, $args);
+				} catch (\System\Error\Config $e) {
+					continue;
+				}
+
+				if ($url) {
+					break;
+				}
+			}
+
+			return $url;
 		}
 
 
@@ -201,7 +228,7 @@ namespace System
 				return $result;
 
 			} else {
-				throw new \System\Error\Argument(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
+				throw new \System\Error\Config(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
 			}
 
 			return false;
