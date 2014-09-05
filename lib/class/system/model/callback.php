@@ -20,32 +20,12 @@ namespace System\Model
 		const AFTER_DELETE  = 'after_delete';
 
 		/** Callbacks container */
-		private static $callbacks = array(
+		protected static $callbacks = array(
 			self::BEFORE_SAVE   => array(),
 			self::BEFORE_DELETE => array(),
 			self::AFTER_SAVE    => array(),
 			self::AFTER_DELETE  => array(),
 		);
-
-
-		/** Add a callback function to some action
-		 * @param string  $trigger One of triggers
-		 * @param Closure $lambda  Instance of closure
-		 */
-		public function add_callback($trigger, Closure $lambda)
-		{
-			if (array_key_exists($trigger, self::$callbacks))
-			{
-				$model = get_class($this);
-
-				if (!isset(self::$callbacks[$trigger][$model])) {
-					self::$callbacks[$trigger][$model] = array();
-				}
-
-				self::$callbacks[$trigger][$model][] = $lambda;
-			}
-			return $this;
-		}
 
 
 		/** Run callbacks
@@ -57,9 +37,11 @@ namespace System\Model
 		{
 			$model = get_class($this);
 
-			if (any(self::$callbacks[$trigger][$model])) {
-				foreach (self::$callbacks[$trigger][$model] as $task) {
-					$task($this, $args);
+			if (any(self::$callbacks[$trigger])) {
+				foreach (self::$callbacks[$trigger] as $task) {
+					if (is_callable(array($this, $task))) {
+						$this->$task($args);
+					} else throw new \System\Error\Model(sprintf('Invalid callback "%s" for "%s"', $task, $trigger));
 				}
 			}
 		}
