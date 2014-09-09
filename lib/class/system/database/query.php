@@ -133,7 +133,7 @@ namespace System\Database
 							$this->where($condition, $table_alias, !$or);
 							continue;
 						} if (is_object($condition)) {
-							throw new \System\Error\Argument("Query condition cannot be an object!");
+							throw new \System\Error\Argument("Query condition cannot be an object!", $condition);
 						} elseif (is_numeric($col) && !is_array($condition)) {
 							if (strval($condition)) {
 								$temp[] = "$condition";
