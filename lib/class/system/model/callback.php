@@ -19,6 +19,7 @@ namespace System\Model
 		const AFTER_SAVE    = 'after_save';
 		const AFTER_DELETE  = 'after_delete';
 
+
 		/** Callbacks container */
 		protected static $callbacks = array(
 			self::BEFORE_SAVE   => array(),
@@ -35,10 +36,8 @@ namespace System\Model
 		 */
 		public function run_tasks($trigger, array $args = array())
 		{
-			$model = get_class($this);
-
-			if (any(self::$callbacks[$trigger])) {
-				foreach (self::$callbacks[$trigger] as $task) {
+			if (any($this::$callbacks[$trigger])) {
+				foreach ($this::$callbacks[$trigger] as $task) {
 					if (is_callable(array($this, $task))) {
 						$this->$task($args);
 					} else throw new \System\Error\Model(sprintf('Invalid callback "%s" for "%s"', $task, $trigger));
