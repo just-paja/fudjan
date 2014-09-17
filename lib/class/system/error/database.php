@@ -18,7 +18,7 @@ namespace System\Error
 			} elseif (strpos($msg, 'unknown column') === 0) {
 				array_unshift($d, 'Missing column');
 			} else {
-				array_unshift('Unhandled database error');
+				array_unshift($d, 'Unhandled database error');
 			}
 
 			call_user_func_array(array('parent', '__construct'), $d);
