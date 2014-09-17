@@ -13,7 +13,7 @@ echo html($loc->get_lang());
 	echo body(array("class" => 'error'));
 		Tag::section(array("id" => 'container'));
 
-			$ren->yield();
+			$ren->render_yield();
 			$ren->slot();
 
 		close('section');
