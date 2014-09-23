@@ -320,7 +320,6 @@ namespace System\Template\Renderer
 		 */
 		public function render_scripts()
 		{
-			$this->content_for('scripts', 'bower/pwf-jquery-compat/lib/jquery-compat');
 			$cont = $this->get_content_from("scripts");
 
 			if (!is_null($cont)) {
