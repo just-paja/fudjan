@@ -11,10 +11,10 @@ namespace System\Template\Renderer
 		private static $resource_filter = array('scripts', 'styles');
 		private $first_layout = true;
 
-		protected $rendered = array();
-		protected $content  = array();
-		protected $layout   = array();
-		protected $yield    = 0;
+		protected $rendered  = array();
+		protected $content   = array();
+		protected $layout    = array();
+		protected $yield_cnt = 0;
 
 
 		public function get_context()
@@ -55,7 +55,7 @@ namespace System\Template\Renderer
 		/** Include all remaining templates in queue
 		 * @return void
 		 */
-		public function yield()
+		public function render_yield()
 		{
 			$this->content_for('yield', ob_get_contents());
 
@@ -162,7 +162,7 @@ namespace System\Template\Renderer
 
 		public function get_yield_name()
 		{
-			$name = 'yield_'.$this->yield;
+			$name = 'yield_'.$this->yield_cnt;
 
 			if (!isset($this->content[$name])) {
 				$this->content[$name] = array();

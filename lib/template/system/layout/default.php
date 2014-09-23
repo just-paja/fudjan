@@ -7,7 +7,7 @@ echo html($ren->lang());
 	echo body();
 
 		echo div('container');
-			$this->yield();
+			$this->render_yield();
 			$this->slot();
 		close('div');
 
