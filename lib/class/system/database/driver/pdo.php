@@ -30,7 +30,7 @@ namespace System\Database\Driver
 		 * @return void
 		 * @throws DatabaseException
 		 */
-		public function connect(array &$config)
+		public function connect(array $config)
 		{
 			$this->config = $config;
 

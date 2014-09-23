@@ -32,7 +32,7 @@ namespace System\Database\Driver
 		 * @return void
 		 * @throws DatabaseException
 		 */
-		public function connect(array &$config)
+		public function connect(array $config)
 		{
 			$this->config = $config;
 
@@ -63,13 +63,13 @@ namespace System\Database\Driver
 				$this->connection = empty($config['persistent']) ?
 					@mysqli_connect($host, $config['username'], $config['password']):
 					@mysqli_pconnect($host, $config['username'], $config['password']);
-
-				$this->select_db($config['database']);
 			}
 
 			if (!$this->is_connected()) {
 				throw new \System\Error\Database('Could not connect to database "'.$config['database'].'" for following reasons.');
 			}
+
+			$this->select_db($config['database']);
 
 			if (isset($config['charset'])) {
 				$ok = FALSE;
