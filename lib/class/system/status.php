@@ -79,7 +79,13 @@ namespace System
 						if (isset($line[0])) {
 							self::append_msg_info($line, $report);
 						} else {
-							$report .= "> ".json_encode($line).NL;
+							$data = @json_encode($line);
+
+							if (json_last_error()) {
+								$data .= "Can't encode data!";
+							}
+
+							$report .= "> ".$data.NL;
 						}
 					} else {
 						$report .= "> ".$line.NL;
