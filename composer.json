@@ -7,6 +7,7 @@
 	},
 	"require":{
 		"oyejorge/less.php":">1.6",
-		"kylekatarnls/jade-php":"dev-master@dev"
+		"kylekatarnls/jade-php":"dev-master@dev",
+		"phpunit/phpunit":"4.2"
 	}
 }
