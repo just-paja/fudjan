@@ -618,10 +618,16 @@ namespace System\Model
 
 
 			if (is_null($data) && $obj && $key) {
-				$attr = self::get_attr($obj, $key);
+				try {
+					$attr = self::get_attr($obj, $key);
+				} catch (\System\Error\Model $e) {
+					$attr = null;
+				}
 
-				if (isset($attr['default'])) {
-					$data = self::to_object_batch(self::convert_attr_val($obj, $key, $attr['default']), $obj);
+				if ($attr) {
+					if (isset($attr['default'])) {
+						$data = self::to_object_batch(self::convert_attr_val($obj, $key, $attr['default']), $obj);
+					}
 				}
 			}
 
