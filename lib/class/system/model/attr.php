@@ -345,11 +345,15 @@ namespace System\Model
 				case 'date':
 				case 'datetime':
 				{
-					$is_null = !isset($attr_data['is_null']) || !$attr_data['is_null'];
+					$is_null = isset($attr_data['is_null']) && $attr_data['is_null'];
 
 					if (!($val instanceof \DateTime)) {
 						if (any($val)) {
-							$val = new \DateTime($val);
+							if ($val == '0000-00-00 00:00:00') {
+								$val = null;
+							} else {
+								$val = \DateTime::createFromFormat('Y-m-d H:i:s', $val, new \DateTimeZone(\System\Settings::get('locales', 'timezone')));
+							}
 						}
 
 						if (!$is_null && !$val) {
