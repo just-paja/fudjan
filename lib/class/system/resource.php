@@ -325,12 +325,15 @@ namespace System
 						} else if (is_dir($path)) {
 							if (file_exists($p = $path.'/package.json')) {
 								$data = \System\Json::read($p);
+								$files = array();
 
 								if (isset($data['include']) && is_array($data['include'])) {
 									foreach ($data['include'] as $file) {
-										$found[] = $path.'/'.$file.'.'.$postfix;
+										$files[] = str_replace($dir.'/', '', $path.'/'.$file);
 									}
 
+									$list = self::file_list($type, $files);
+									$found = array_merge($found, $list[self::KEY_FOUND]);
 									$mod_found = true;
 									break;
 								}
