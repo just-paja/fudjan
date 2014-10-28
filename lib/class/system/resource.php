@@ -318,25 +318,30 @@ namespace System
 							$missing = array_merge($missing, $list[self::KEY_MISSING]);
 							$mod_found = true;
 							break;
-						} else if ((file_exists($p = $path) || file_exists($p = $path.'.'.$postfix)) && is_file($p)) {
+						} else if (is_file($p = $path) || is_file($p = $path.'.'.$postfix)) {
 							$found[] = $p;
 							$mod_found = true;
-							break;
-						} else if (is_dir($path)) {
-							if (file_exists($p = $path.'/package.json')) {
-								$data = \System\Json::read($p);
+						}
+
+						if (is_dir($path)) {
+							$json = null;
+							$meta = self::get_meta($path, 'bower.json');
+
+							if (!$meta) {
+								$meta = self::get_meta($path, 'package.json');
+							}
+
+							if ($meta) {
 								$files = array();
 
-								if (isset($data['include']) && is_array($data['include'])) {
-									foreach ($data['include'] as $file) {
-										$files[] = str_replace($dir.'/', '', $path.'/'.$file);
-									}
-
-									$list = self::file_list($type, $files);
-									$found = array_merge($found, $list[self::KEY_FOUND]);
-									$mod_found = true;
-									break;
+								foreach ($meta as $file) {
+									$files[] = str_replace($dir.'/', '', $path.'/'.$file);
 								}
+
+								$list = self::file_list($type, $files);
+								$found = array_merge($found, $list[self::KEY_FOUND]);
+								$mod_found = true;
+								break;
 							} else {
 								$files = \System\Directory::find_all_files($path);
 
@@ -368,6 +373,31 @@ namespace System
 				self::KEY_MISSING => array_unique(array_filter($missing)),
 				self::KEY_SUM     => self::get_module_sum_from_list($modules),
 			);
+		}
+
+
+		public static function get_meta($path, $file)
+		{
+			$json = null;
+			$meta = null;
+
+			if (file_exists($p = $path.'/'.$file)) {
+				$json = \System\Json::read($p);
+			}
+
+			if ($json) {
+				if (isset($json['include'])) {
+					$meta = $json['include'];
+				} else if (isset($json['main'])) {
+					$meta = $json['main'];
+
+					if (!is_array($meta)) {
+						$meta = array($meta);
+					}
+				}
+			}
+
+			return $meta;
 		}
 
 
