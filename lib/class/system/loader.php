@@ -12,6 +12,10 @@ namespace System
 	class Loader
 	{
 		const DIR_CLASS = '/lib/class';
+		const SEP_CLASS = '\\';
+		const SEP_LINK  = '_';
+		const SEP_MODEL = '.';
+
 
 		/** Run load all classes only once */
 		private static $loaded = false;
@@ -82,7 +86,7 @@ namespace System
 		 */
 		public static function get_link_from_model($model)
 		{
-			return str_replace('::', '_', strtolower($model));
+			return str_replace(self::SEP_MODEL, self::SEP_LINK, strtolower($model));
 		}
 
 
@@ -92,7 +96,7 @@ namespace System
 		 */
 		public static function get_link_from_class($model)
 		{
-			return str_replace('\\', '_', strtolower(preg_replace('/^\\\\/', '', $model)));
+			return str_replace(self::SEP_CLASS, self::SEP_LINK, strtolower(preg_replace('/^\\\\/', '', $model)));
 		}
 
 
@@ -102,7 +106,7 @@ namespace System
 		 */
 		public static function get_class_from_model($model)
 		{
-			return ucfirsts($model, '::', '\\');
+			return ucfirsts($model, self::SEP_MODEL, self::SEP_CLASS);
 		}
 
 
@@ -112,7 +116,7 @@ namespace System
 		 */
 		public static function get_model_from_class($class_name)
 		{
-			return ucfirsts($class_name, '\\', '::');
+			return ucfirsts($class_name, self::SEP_CLASS, self::SEP_MODEL);
 		}
 
 
