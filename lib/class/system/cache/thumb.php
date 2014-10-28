@@ -239,6 +239,14 @@ namespace System\Cache
 		{
 			$refit = false;
 
+			if (!(isset($coords['w_new']) && isset($coords['h_new'])) || !($coords['w_new'] && $coords['h_new'])) {
+				$coords['w_new'] = $coords['w_org'];
+				$coords['h_new'] = $coords['w_org'];
+			} else {
+				def($coords['w_new'], 0);
+				def($coords['h_new'], 0);
+			}
+
 			if ($coords['w_new'] <= 0 && $coords['h_new']) {
 				$coords['w_new'] = round(($coords['w_org'] * $coords['h_new']) / $coords['h_org']);
 				$refit = true;
