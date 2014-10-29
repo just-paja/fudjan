@@ -560,6 +560,9 @@ namespace System\Database
 				if ($type == 'or') {
 					$or = true;
 					$pass = $this->get_filter_batch_cond($value, $table_alias, true);
+				} else if ($type == 'and') {
+					$or = false;
+					$pass = $this->get_filter_batch_cond($value, $table_alias, false);
 				} else if (isset($filter['attr'])) {
 					$pass = array($this->get_filter_cond($filter, $table_alias));
 				} else {
