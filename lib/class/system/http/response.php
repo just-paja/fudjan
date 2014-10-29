@@ -280,15 +280,24 @@ namespace System\Http
 				session_write_close();
 
 				def($this->headers['Content-Encoding'], 'gz');
+				def($this->headers['Generator'], 'pwf');
 
 				if (!isset($this->headers['Content-Type'])) {
-					try {
-						$mime = \System\Output::get_mime($this->renderer()->format);
-					} catch(\System\Error\Argument $e) {
-						$mime = 'text/html; charset=utf-8';
+					if ($this->mime) {
+						$mime = $this->mime;
+					} else {
+						try {
+							$mime = \System\Output::get_mime($this->renderer()->format);
+						} catch(\System\Error\Argument $e) {
+							$mime = 'text/html; charset=utf-8';
+						}
 					}
 
 					def($this->headers["Content-Type"], $mime.";charset=utf-8");
+				}
+
+				if (isset($this->size)) {
+					def($this->headers['Content-Length'], $this->size);
 				}
 
 				if ($this->status == self::OK && empty($this->content)) {
@@ -301,7 +310,8 @@ namespace System\Http
 					if (is_numeric($name)) {
 						header($content);
 					} else {
-						header(ucfirst($name).": ".$content);
+						$name = implode('-', array_map('ucfirst', explode('-', $name)));
+						header($name.": ".$content);
 					}
 				}
 			}
