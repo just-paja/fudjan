@@ -239,7 +239,7 @@ namespace System\Cache
 		{
 			$refit = false;
 
-			if (!(isset($coords['w_new']) && isset($coords['h_new'])) || !($coords['w_new'] && $coords['h_new'])) {
+			if (!(isset($coords['w_new']) && isset($coords['h_new']))) {
 				$coords['w_new'] = $coords['w_org'];
 				$coords['h_new'] = $coords['w_org'];
 			} else {
