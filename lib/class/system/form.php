@@ -738,6 +738,7 @@ namespace System
 		{
 			$containers = array();
 			$attrs = parent::get_data();
+			$attrs['name']       = $this->name;
 			$attrs['use_comm']   = $this->use_comm;
 			$attrs['use_errors'] = $this->use_errors;
 			$attrs['use_queue']  = $this->use_queue;
