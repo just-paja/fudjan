@@ -58,7 +58,7 @@ namespace System\Model
 			}
 
 			$conds['trigger'] = 'model-'.$method;
-			$conds['name']    = \System\Loader::get_model_from_class($cname).'::'.$method;
+			$conds['name']    = \System\Loader::get_model_from_class($cname).\System\Loader::SEP_MODEL.$method;
 
 			$perm = get_first('System\User\Perm')->where($conds)->fetch();
 			return $perm ? $perm->allow:self::get_default_for($method);
