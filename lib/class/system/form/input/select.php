@@ -18,7 +18,14 @@ namespace System\Form\Input
 				if ($this->multiple) {
 					if (is_array($this->options) && is_array($value)) {
 						foreach ($value as $item) {
-							$valid = array_key_exists($item, $this->options);
+							foreach ($this->options as $opt) {
+								if ($opt['value'] == $value) {
+									$valid = true;
+									break;
+								} else {
+									$valid = false;
+								}
+							}
 
 							if (!$valid) {
 								break;
@@ -28,7 +35,14 @@ namespace System\Form\Input
 						$valid = false;
 					}
 				} else {
-					$valid = array_key_exists($value, $this->options);
+					foreach ($this->options as $opt) {
+						if ($opt['value'] == $value) {
+							$valid = true;
+							break;
+						} else {
+							$valid = false;
+						}
+					}
 				}
 			}
 
