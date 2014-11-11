@@ -18,7 +18,7 @@ namespace System
 			"desc"       => array('varchar'),
 			"bool"       => array('no_prefix'),
 			"class"      => array('array'),
-			"prefix"     => array('varchar'),
+			"prefix"     => array('varchar', 'default' => ''),
 			"use_comm"   => array('bool'),
 			"use_errors" => array('bool', 'default' => true),
 			"use_queue"  => array('bool', 'default' => true),
@@ -149,7 +149,7 @@ namespace System
 		 */
 		protected function take_data_from_request()
 		{
-			$this->data_commited = $this->request()->input_by_prefix($this->get_prefix(), $this->method);
+			$this->data_commited = $this->request()->input_by_prefix($this->prefix, $this->method);
 
 			if (isset($this->data_commited['data_hidden'])) {
 				$this->data_hidden = \System\Json::decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
@@ -557,17 +557,7 @@ namespace System
 
 		public function get_prefix()
 		{
-			!$this->prefix && !$this->no_prefix && $this->setup_prefix();
 			return $this->prefix;
-		}
-
-
-		/** Set default form prefix
-		 * @return string
-		 */
-		protected function setup_prefix()
-		{
-			$this->prefix = $this->id.'_';
 		}
 
 
