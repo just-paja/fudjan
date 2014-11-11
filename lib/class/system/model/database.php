@@ -95,16 +95,25 @@ namespace System\Model
 				foreach ($model::$attrs as $attr_name=>$def) {
 					if ($def[0] === self::REL_BELONGS_TO) {
 						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
-						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name));
+						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name, $def));
 					}
 				}
 			}
 		}
 
 
-		public static function get_default_belongs_to_def($name)
+		public static function get_default_belongs_to_def($name, $def)
 		{
-			return array('int', "is_unsigned" => true, "is_index" => true, "is_fake" => true, "is_generated" => true, "rel" => $name);
+			$def = array_merge($def, array(
+				"is_unsigned" => true,
+				"is_index" => true,
+				"is_fake" => true,
+				"is_generated" => true,
+				"rel" => $name
+			));
+
+			$def[0] = 'int';
+			return $def;
 		}
 
 
@@ -838,7 +847,11 @@ namespace System\Model
 		{
 			foreach ($model::$attrs as $attr=>$attr_def) {
 				if (empty($data[$attr]) && empty($attr_def['is_null']) && any($attr_def['default'])) {
-					$data[$attr] = $attr_def['default'];
+					if ($attr_def['default'] == 'NOW()') {
+						$data[$attr] = new \DateTime();
+					} else {
+						$data[$attr] = $attr_def['default'];
+					}
 				}
 
 				if ($attr_def[0] === 'json' && isset($data[$attr])) {
