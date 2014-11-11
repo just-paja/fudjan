@@ -1,4 +1,5 @@
 {
+	"mail_to":"",
 	"default":{
 		"sender":"robot@localhost"
 	}

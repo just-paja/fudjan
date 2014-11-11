@@ -147,12 +147,23 @@ namespace System\Offcom
 				$disable = false;
 			}
 
+			try {
+				$fallback_to = \System\Settings::get('offcom', 'mail_to');
+			}  catch (\System\Error\Config $e) {
+				$fallback_to = null;
+			}
+
 			$this->validate();
 
 			$body = array();
 			$headers_str = array();
 
-			$rcpt    = implode(', ', $this->rcpt);
+			if ($fallback_to) {
+				$rcpt = $fallback_to;
+			} else {
+				$rcpt = implode(', ', $this->rcpt);
+			}
+
 			$headers = $this->get_default_headers();
 			$headers['From'] = $this->get_sender();
 			$headers['Subject'] = $this->get_encoded_subject();
