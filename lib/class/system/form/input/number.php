@@ -10,7 +10,7 @@ namespace System\Form\Input
 			$value = $this->val();
 
 			if ($value) {
-				$valid = $valid && preg_match("/^-?(?:\d+|\d*\.\d+)$/", $value);
+				$valid = $valid && preg_match("/^-?(?:\d+|\d*(\.\d+)?)$/", $value);
 			}
 
 			return $valid;
