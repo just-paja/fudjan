@@ -348,7 +348,7 @@ namespace System
 		 */
 		public function trans_class_name($class_name, $plural = false)
 		{
-			return $this->trans('model_'.\System\Loader::get_link_from_class($class_name).($plural ? '_plural':''));
+			return $this->trans('model-'.\System\Loader::get_link_from_class($class_name).($plural ? '-plural':''));
 		}
 
 
@@ -360,7 +360,7 @@ namespace System
 		 */
 		public function trans_model_attr_name($model, $attr)
 		{
-			return $this->trans(self::get_common_attr_trans_name($model, $attr));
+			return $this->trans($this->get_common_attr_trans_name($model, $attr));
 		}
 
 
@@ -371,7 +371,13 @@ namespace System
 		 */
 		public function trans_model_attr_desc($model, $attr)
 		{
-			return $this->trans('attr_'.\System\Loader::get_link_from_class($model).'_'.$attr.'_desc');
+			return $this->trans('attr-'.\System\Loader::get_link_from_class($model).'-'.$attr.'-desc');
+		}
+
+
+		public function has_msg($msg)
+		{
+			return isset($this->messages[$this->get_lang()][$msg]);
 		}
 
 
@@ -380,9 +386,13 @@ namespace System
 		 * @param string $attr
 		 * @return string
 		 */
-		public static function get_common_attr_trans_name($model, $attr)
+		public function get_common_attr_trans_name($model, $attr)
 		{
-			return 'attr_'.(in_array($attr, self::$attrs_common) ? $attr:(\System\Loader::get_link_from_class($model).'_'.$attr));
+			$key   = 'attr-'.$attr;
+			$model = \System\Loader::get_model_from_class($model);
+			$full  = 'model-'.$model.'-'.$key;
+
+			return $this->has_msg($full) ? $full:$key;
 		}
 	}
 }
