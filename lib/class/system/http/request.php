@@ -212,13 +212,17 @@ namespace System\Http
 		 */
 		public function input_by_prefix($prefix, $method = 'post')
 		{
-			$data = array();
+			if ($prefix) {
+				$data = array();
 
-			foreach ($this->data[$method] as $k=>&$v) {
-				if (strpos($k, $prefix) === 0) $data[substr($k, strlen($prefix))] = &$v;
+				foreach ($this->data[$method] as $k=>&$v) {
+					if (strpos($k, $prefix) === 0) $data[substr($k, strlen($prefix))] = &$v;
+				}
+
+				return $data;
 			}
 
-			return $data;
+			return $this->data[$method];
 		}
 
 
