@@ -14,6 +14,9 @@ namespace System\Model
 	 */
 	abstract class Attr
 	{
+		/** Initial attribute data */
+		protected $data_initial = array();
+
 		/** Real attribute data */
 		protected $data = array();
 
@@ -66,6 +69,10 @@ namespace System\Model
 			self::check_properties($model);
 
 			$this->update_attrs($dataray);
+
+			if (any($dataray)) {
+				$this->data_initial = $this->data;
+			}
 
 			if (isset($model::$attrs['pass'])) {
 				foreach ($model::$attrs['pass'] as $attr) {
@@ -173,6 +180,10 @@ namespace System\Model
 		 */
 		public function update_attrs(array $update)
 		{
+			if ($update && empty($this->data_initial)) {
+				$this->data_initial = $this->data;
+			}
+
 			foreach ($update as $attr=>$val) {
 				$this->__set($attr, $val);
 			}
