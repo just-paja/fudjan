@@ -113,7 +113,7 @@ namespace System\Offcom
 		{
 			foreach ($this->rcpt as $member) {
 				if (!self::is_addr_valid($member)) {
-					throw new \System\Error\Format(sprintf('Recipient ".$member." is not formatted according to RFC 2822.', $member));
+					throw new \System\Error\Format(sprintf('Recipient "%s" is not formatted according to RFC 2822.', $member));
 				}
 			}
 
@@ -171,7 +171,7 @@ namespace System\Offcom
 			if ($this->reply_to) {
 				if (!self::is_addr_valid($this->reply_to)) {
 					$headers['Reply-To'] = $this->reply_to;
-				} else throw new \System\Error\Format(sprintf('Reply-To "%s" is not formatted according to RFC 2822.', $this->get_sender()));
+				} else throw new \System\Error\Format(sprintf('Reply-To "%s" is not formatted according to RFC 2822.', $this->reply_to));
 			}
 
 			foreach ($headers as $header=>$value) {
