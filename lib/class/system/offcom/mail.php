@@ -200,8 +200,27 @@ namespace System\Offcom
 		 */
 		public static function is_addr_valid($email, $strict = false)
 		{
-			$regex = $strict ? '/^([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i' : '/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i';
-			return !!preg_match($regex, trim($email), $matches);
+			$ok = true;
+
+			if (strpos($email, ',') !== false) {
+				$email = explode(',', $email);
+			} else {
+				$email = array($email);
+			}
+
+			foreach ($email as $addr) {
+				$regex = $strict ?
+					'/^([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i':
+					'/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i';
+
+				$ok = $ok && !!preg_match($regex, trim($addr), $matches);
+
+				if (!$ok) {
+					break;
+				}
+			}
+
+			return $ok;
 		}
 
 	}
