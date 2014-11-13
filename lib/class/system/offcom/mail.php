@@ -169,7 +169,7 @@ namespace System\Offcom
 			$headers['Subject'] = $this->get_encoded_subject();
 
 			if ($this->reply_to) {
-				if (!self::is_addr_valid($this->reply_to)) {
+				if (self::is_addr_valid($this->reply_to)) {
 					$headers['Reply-To'] = $this->reply_to;
 				} else throw new \System\Error\Format(sprintf('Reply-To "%s" is not formatted according to RFC 2822.', $this->reply_to));
 			}
@@ -198,10 +198,10 @@ namespace System\Offcom
 		 * @param bool   $strict
 		 * @return bool
 		 */
-		private static function is_addr_valid($email, $strict = false)
+		public static function is_addr_valid($email, $strict = false)
 		{
 			$regex = $strict ? '/^([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i' : '/^([*+!.&#$|\'\\%\/0-9a-z^_`{}=?~:-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})$/i';
-			return preg_match($regex, trim($email), $matches);
+			return !!preg_match($regex, trim($email), $matches);
 		}
 
 	}
