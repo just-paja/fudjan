@@ -119,22 +119,24 @@ namespace System\Model
 
 				if (!isset($def['writeable']) || $def['writeable']) {
 					$null_error = false;
-					$value = self::convert_attr_val(get_model($this), $attr, $value);
-
-					if (is_null($value)) {
-						if (any($def['default'])) {
-							$value = $def['default'];
-						} else if (empty($def['is_null'])) {
-							$value = null;
-						}
-					}
-
-					$this->data[$attr] = $value;
+					$this->data[$attr] = self::convert_attr_val(get_model($this), $attr, $value);
 					$this->changed = true;
 				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_model($this)));
 			} else $this->opts[$attr] = $value;
 
 			return $this;
+		}
+
+
+		public function set_default_value($attr)
+		{
+			$def = self::get_attr(get_model($this), $attr);
+
+			if (isset($def['default'])) {
+				$this->$attr = $def['default'];
+			} else {
+				$this->$attr = null;
+			}
 		}
 
 
@@ -551,12 +553,11 @@ namespace System\Model
 		 */
 		public function get_attr_value($attr)
 		{
-			if (isset($this->data[$attr])) {
-				return $this->data[$attr];
-			} else {
-				$this->__set($attr, null);
-				return $this->data[$attr];
+			if (!isset($this->data[$attr])) {
+				$this->set_default_value($attr);
 			}
+
+			return $this->data[$attr];
 		}
 
 
