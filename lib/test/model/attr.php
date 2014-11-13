@@ -38,7 +38,7 @@ namespace
 			$obj = new \Test\Model\Attr();
 
 			$this->assertNull($obj->int_nil);
-			$this->assertTrue(0 === $obj->int_blank);
+			$this->assertNull($obj->int_blank);
 			$this->assertEquals(5, $obj->int_def);
 
 			$obj->int_blank = 'asdf';
