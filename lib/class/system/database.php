@@ -46,12 +46,6 @@ namespace System
 						$cfg = cfg('database', 'list', $db_ident);
 						self::connect($cfg, $db_ident);
 					}
-				} else {
-					if (php_sapi_name() == 'cli') {
-						exec(ROOT.'/bin/db --setup');
-					} else {
-						throw new \System\Error\Config('No database is set.');
-					}
 				}
 			}
 		}
