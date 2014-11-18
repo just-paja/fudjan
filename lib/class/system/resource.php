@@ -553,8 +553,12 @@ namespace System
 				$domain = null;
 			}
 
-			$name = '/res/'.$type.'/'.$name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
-			$path = ($domain ? '//'.$domain:'').$name;
+			$name = $name.'.'.self::get_serial().($postfix ? '.'.$postfix:'');
+			$path = \System\Router::get_first_url('system_resource', array($type, $name));
+
+			if ($domain) {
+				$path = '//'.$domain.$path;
+			}
 
 			return $path;
 		}
