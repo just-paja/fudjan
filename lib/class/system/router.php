@@ -142,6 +142,7 @@ namespace System
 				foreach ($routes as $r) {
 					if (isset($r[0]) && isset($r[2]) && $name == $r[2]) {
 						$route = $r;
+						break;
 					}
 				}
 			}
