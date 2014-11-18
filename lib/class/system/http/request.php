@@ -269,7 +269,15 @@ namespace System\Http
 			if ($this->user instanceof \System\User) {
 				return $this->user;
 			} elseif (any($_SESSION[\System\User::COOKIE_USER])) {
-				$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
+				try {
+					$login = \System\Settings::get('policies', 'auto_login');
+				} catch (\System\Error\Config $e) {
+					$login = true;
+				}
+
+				if ($login) {
+					$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
+				}
 			}
 
 			if (!($this->user instanceof \System\User)) {

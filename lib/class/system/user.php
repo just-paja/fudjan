@@ -101,20 +101,23 @@ namespace System
 		public function get_rights()
 		{
 			if (is_null($this->rights)) {
-				$conds = array("public" => true);
-				$ids = collect_ids($this->groups->fetch());
+				if ($this->id) {
+					$conds = array("public" => true);
+					$ids = collect_ids($this->groups->fetch());
 
-				if (any($ids)) {
-					$conds[] = "id_group IN (".implode(',', $ids).")";
+					if (any($ids)) {
+						$conds[] = "id_group IN (".implode(',', $ids).")";
+					}
+
+					$this->rights = get_all("\System\User\Perm")
+						->where($conds, "t0", true)
+						->reset_cols()
+						->add_cols(array("trigger", "id_system_user_perm"), "t0")
+						->assoc_with('')
+						->fetch('trigger', 'id_system_user_perm');
+				} else {
+					$this->rights = array();
 				}
-
-				$this->rights = get_all("\System\User\Perm")
-					->where($conds, "t0", true)
-					->reset_cols()
-					->add_cols(array("trigger", "id_system_user_perm"), "t0")
-					->assoc_with('')
-					->fetch('trigger', 'id_system_user_perm');
-
 			}
 
 			return $this->rights;
