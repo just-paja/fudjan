@@ -3,12 +3,6 @@
 		"jquery":">=2.0",
 		"reset-css":"*",
 		"pwf.js":"*",
-		"pwf-jquery-compat":"*",
-		"pwf-config":"*",
-		"pwf-storage":"*",
-		"pwf-form":"*",
-		"pwf-input-gps":"*",
-		"pwf-input-location":"*",
-		"pwf-input-file":"*"
+		"pwf-config":"*"
 	}
 }
