@@ -15,6 +15,7 @@ namespace System
 		const DIR_TMP      = '/var/cache';
 		const URL_MATCH    = '/\/share\/resource\/([a-zA-Z]+)\/([0-9a-zA-Z\.\-\/;_=:]*)$/';
 
+		const RESOURCE_DIR = '/share';
 		const SCRIPTS_DIR = '/share';
 		const SCRIPTS_STRING_NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
 
@@ -76,9 +77,9 @@ namespace System
 		public static function request(\System\Http\Response $response, $type, $path)
 		{
 			$request = $response->request;
-			$info = self::get_type_info($type);
+			$info = self::get_type_info($type, $path);
 			$modules = self::get_module_list($info['type'], $path);
-			$info['type'] = $type;
+
 			$info['path'] = $path;
 
 			if (any($modules)) {
@@ -145,6 +146,34 @@ namespace System
 		{
 			$request = $res->request;
 			$dir = self::FONTS_DIR.'/'.dirname($info['path']);
+			$name = explode('.', basename($info['path']));
+			$suffix = array_pop($name);
+			$serial = array_pop($name);
+
+			$name[] = $suffix;
+			$name = implode('.', $name);
+			$regex = '/^'.str_replace(array('.', '/'), array('\.', '\/'), $name).'$/';
+			$files = \System\Composer::find($dir, $regex);
+
+			if (any($files)) {
+				$file = \System\File::from_path($files[0]);
+				$file->read_meta()->load();
+				self::set_headers($res, self::TYPE_FONT, $file->size());
+
+				$res->mime = $file->mime;
+				$res->set_content($file->get_content());
+				$res->send();
+				exit;
+			}
+
+			throw new \System\Error\NotFound();
+		}
+
+
+		public static function request_shared(\System\Http\Response $res, $info)
+		{
+			$request = $res->request;
+			$dir = $info[self::KEY_DIR_FILES];
 			$name = explode('.', basename($info['path']));
 			$suffix = array_pop($name);
 			$serial = array_pop($name);
@@ -473,19 +502,13 @@ namespace System
 				$info = self::$types[$type];
 				$info[self::KEY_TYPE] = $type;
 				return $info;
-			} else {
-				try {
-					$debug = \System\Settings::get('dev', 'debug', 'backend');
-				} catch(\System\Error $e) {
-					$debug = true;
-				}
-
-				if ($debug) {
-					throw new \System\Error\Argument('Resource of type "'.$type.'" does not exist.');
-				} else {
-					throw new \System\Error\NotFound();
-				}
 			}
+
+			return array(
+				self::KEY_TYPE => $type,
+				self::KEY_DIR_FILES => self::RESOURCE_DIR . '/'.$type,
+				self::KEY_CALLBACK_RESOLVE => array('\System\Resource', 'request_shared'),
+			);
 		}
 
 
