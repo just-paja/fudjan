@@ -59,6 +59,10 @@ namespace System\Http
 					$path = explode('?', $data['path']);
 					$data['path'] = $path[0];
 				}
+
+				if (isset($_GET['path'])) {
+					$data['path'] = $_GET['path'];
+				}
 			}
 
 			$obj = new self($data);

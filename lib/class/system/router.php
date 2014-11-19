@@ -216,7 +216,14 @@ namespace System
 					}
 
 					$str = str_replace(array('^', '$'), '', $str);
-					return $str;
+					$domain = self::get_domain($host);
+					$dns = \System\Settings::get('domains', $domain);
+
+					if (!array_key_exists('htaccess', $dns) || $dns['htaccess']) {
+						return $str;
+					}
+
+					return '?path=' . urlencode($str);
 				} else {
 					throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($route_args), count($args)));
 				}
