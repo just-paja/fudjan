@@ -14,6 +14,7 @@ namespace System\Cli\Module
 
 
 		protected static $attrs = array(
+			"json"       => array('bool', "value" => false, "short" => 'j', "desc"  => 'Output assets list in json'),
 			"help"       => array('bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
 			"verbose"    => array('bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
 		);
@@ -58,17 +59,21 @@ namespace System\Cli\Module
 		}
 
 
-		public static function cmd_list()
+		public function cmd_list()
 		{
 			\System\Init::basic();
 
 			$list = cfg('assets', 'dependencies');
 
-			\System\Cli::out('Bower dependencies');
-			\System\Cli::out_flist(array(
-				"list" => $list,
-				"margin" => 2
-			));
+			if ($this->json) {
+				\System\Cli::out(json_encode(array("dependencies" => $list), JSON_PRETTY_PRINT));
+			} else {
+				\System\Cli::out('Bower dependencies');
+				\System\Cli::out_flist(array(
+					"list" => $list,
+					"margin" => 2
+				));
+			}
 		}
 	}
 }
