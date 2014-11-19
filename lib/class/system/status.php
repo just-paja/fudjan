@@ -27,8 +27,8 @@ namespace System
 
 			if (!isset(self::$log_files[$type]) || !is_resource(self::$log_files[$type])) {
 				try {
-					\System\Directory::check(ROOT.self::DIR_LOGS);
-					self::$log_files[$type] = @fopen(ROOT.self::DIR_LOGS.'/'.$type.'.log', 'a+');
+					\System\Directory::check(BASE_DIR.self::DIR_LOGS);
+					self::$log_files[$type] = @fopen(BASE_DIR.self::DIR_LOGS.'/'.$type.'.log', 'a+');
 				} catch(\System\Error $e) {
 					self::error($e, false);
 				}
