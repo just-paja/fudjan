@@ -440,7 +440,7 @@ namespace System
 		 */
 		private static function get_cache_name(array $info, $sum)
 		{
-			return $info['type'].'/'.$sum.(any($info[self::KEY_POSTFIXES]) ? '.'.($info[self::KEY_POSTFIXES][0]):'');
+			return $info['type'].'/'.$sum.'.'.self::get_serial().(any($info[self::KEY_POSTFIXES]) ? '.'.($info[self::KEY_POSTFIXES][0]):'');
 		}
 
 
