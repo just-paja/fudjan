@@ -216,7 +216,12 @@ namespace System
 					}
 
 					$str = str_replace(array('^', '$'), '', $str);
-					$domain = self::get_domain($host);
+					if (self::is_domain($host)) {
+						$domain = $host;
+					} else {
+						$domain = self::get_domain($host);
+					}
+
 					$dns = \System\Settings::get('domains', $domain);
 
 					if (!array_key_exists('htaccess', $dns) || $dns['htaccess']) {
