@@ -133,10 +133,13 @@ namespace System
 				);
 			}
 
+			$error_page['format'] = 'html';
+			$error_page['render_with'] = 'basic';
+
 			try {
 				$request = \System\Http\Request::from_hit();
 				$response = $request->create_response($error_page);
-				$response->renderer()->format = 'basic';
+				$response->renderer()->format = 'html';
 
 				if (self::on_cli()) {
 					$response->renderer()->format = 'txt';

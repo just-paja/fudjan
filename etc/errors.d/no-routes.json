@@ -1,6 +1,7 @@
 [
 	["^/$", {
 		"layout":["system/layout/error", "system/error/no_routes"],
-		"format":"html"
+		"format":"html",
+		"render_with":"basic"
 	}]
 ]

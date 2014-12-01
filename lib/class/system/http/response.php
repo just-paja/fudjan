@@ -97,7 +97,7 @@ namespace System\Http
 			def($attrs['format'], null);
 			def($attrs['start_time'], microtime(true));
 
-			if (is_null($attrs['format'])) {
+			if (empty($attrs['format'])) {
 				try {
 					$attrs['format'] = \System\Settings::get("output", 'format_default');
 				} catch (\System\Error $e) {
