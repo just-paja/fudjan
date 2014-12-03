@@ -208,11 +208,9 @@ namespace System\Cli\Module
 		private function get_file_list($dirpath = BASE_DIR)
 		{
 			$ommited_paths = array(
-				'/var/backups',
-				'/var/cache',
-				'/var/log',
-				'/var/thumbs',
-				'/var/tmp',
+				'/var',
+				'/lib/vendor',
+				'/share/bower',
 			);
 
 			$files = array();
@@ -319,7 +317,7 @@ namespace System\Cli\Module
 
 		private static function try_ftp_login($host, $user, $pass)
 		{
-			return !trim(shell_exec("ncftpls -u ${user} -p ${pass} ftp://${host} | grep ncftpls | wc -l"));
+			return trim(shell_exec("ncftpls -u ${user} -p ${pass} ftp://${host}; echo $?")) == 0;
 		}
 	}
 }
