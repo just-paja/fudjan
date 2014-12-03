@@ -8,7 +8,7 @@ $policy = function($rq, $res) {
 	}
 
 	try {
-		$locales_url = ($static_domain ? '//'.$static_domain:'').$this->url("locale_list");
+		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("locale_list");
 	} catch (\System\Error\NotFound $e) {
 		$locales_url = '';
 	}
