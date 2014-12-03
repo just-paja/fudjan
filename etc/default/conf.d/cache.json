@@ -3,8 +3,10 @@
 		"enabled":false,
 		"driver":"runtime"
 	},
+
 	"resource":{
-		"serial":1
+		"serial":1,
+		"max-age":86400
 	},
 
 	"resources":true,
