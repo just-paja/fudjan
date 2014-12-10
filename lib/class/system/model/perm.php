@@ -155,7 +155,7 @@ namespace System\Model
 					if (in_array($attr['type'], $rel_attrs)) {
 						$rel_cname = \System\Loader::get_class_from_model($attr['model']);
 
-						if (class_exists($rel_cname) && $rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
+						if (class_exists($rel_cname) && is_subclass_of($rel_cname, '\System\Model\Perm') && $rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
 							$res[] = $attr;
 						}
 					} else {
