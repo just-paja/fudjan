@@ -145,6 +145,7 @@ namespace System\Model
 			if (self::can_user(self::VIEW_SCHEMA, $user)) {
 				$cname  = get_called_class();
 				$schema = self::get_schema();
+				$res    = array();
 				$rel_attrs = array(
 					'collection',
 					'model'
@@ -154,13 +155,15 @@ namespace System\Model
 					if (in_array($attr['type'], $rel_attrs)) {
 						$rel_cname = \System\Loader::get_class_from_model($attr['model']);
 
-						if (!class_exists($rel_cname) || !$rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
-							unset($schema[$key]);
+						if (class_exists($rel_cname) && $rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
+							$res[] = $attr;
 						}
+					} else {
+						$res[] = $attr;
 					}
 				}
 
-				return $schema;
+				return $res;
 			} else throw new \System\Error\AccessDenied();
 		}
 	}
