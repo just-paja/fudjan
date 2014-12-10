@@ -626,6 +626,75 @@ namespace System\Model
 		}
 
 
+		public static function get_schema()
+		{
+			$attrs = array();
+			$cname = get_called_class();
+
+			new $cname();
+			$def = \System\Model\Database::get_model_attr_list($cname, false, true);
+
+			foreach ($def as $name) {
+				if ($name != \System\Model\Database::get_id_col($cname)) {
+					$attr = \System\Model\Database::get_attr($cname, $name);
+					$attr['name'] = $name;
+
+					switch ($attr[0])
+					{
+						case 'bool': $attr['type'] = 'boolean'; break;
+						case 'varchar': $attr['type'] = 'string'; break;
+						case 'json': $attr['type'] = 'object'; break;
+						case \System\Model\Database::REL_BELONGS_TO: $attr['type'] = 'model'; break;
+						case \System\Model\Database::REL_HAS_MANY: $attr['type'] = 'collection'; break;
+						default: $attr['type'] = $attr[0];
+					}
+
+					if (isset($attr['model'])) {
+						$attr['model'] = \System\Loader::get_model_from_class($attr['model']);
+					}
+
+					if (isset($attr['options'])) {
+						if (isset($attr['options'][0]) && $attr['options'][0] == 'callback') {
+							$opts = $attr['options'];
+							array_shift($opts);
+							$opts = call_user_func($opts);
+						} else {
+							$opts = $attr['options'];
+						}
+
+						$attr['options'] = array();
+
+						foreach ($opts as $opt_value=>$opt_name) {
+							$attr['options'][] = array(
+								'name'  => $opt_name,
+								'value' => $opt_value,
+							);
+						}
+					}
+
+					// Word 'default' is keyword in some browsers, so pwf-models use 'def' instead
+					if (isset($attr['default'])) {
+						$attr['def'] = $attr['default'];
+						unset($attr['default']);
+
+						if (in_array($attr[0], array('image'))) {
+							$attr['def'] = \System\Image::from_path($attr['def'])->to_object();
+						} else if (in_array($attr[0], array('file', 'sound'))) {
+							$attr['def'] = \System\File::from_path($attr['def'])->to_object();
+						}
+					}
+
+					if (is_array($attr)) {
+						unset($attr[0]);
+						$attrs[] = $attr;
+					}
+				}
+			}
+
+			return $attrs;
+		}
+
+
 		/** Get generic seoname of instance
 		 * @return string
 		 */

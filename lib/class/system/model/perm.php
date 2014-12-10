@@ -138,5 +138,30 @@ namespace System\Model
 
 			return $data;
 		}
+
+
+		public static function get_visible_schema(\System\User $user)
+		{
+			if (self::can_user(self::VIEW_SCHEMA, $user)) {
+				$cname  = get_called_class();
+				$schema = self::get_schema();
+				$rel_attrs = array(
+					'collection',
+					'model'
+				);
+
+				foreach ($schema as $key=>$attr) {
+					if (in_array($attr['type'], $rel_attrs)) {
+						$rel_cname = \System\Loader::get_class_from_model($attr['model']);
+
+						if (!class_exists($rel_cname) || !$rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
+							unset($schema[$key]);
+						}
+					}
+				}
+
+				return $schema;
+			} else throw new \System\Error\AccessDenied();
+		}
 	}
 }
