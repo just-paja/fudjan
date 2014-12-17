@@ -36,14 +36,8 @@ namespace System\Template\Renderer
 			$this->content = array(
 				'title'   => '',
 				'meta'    => array(),
-				'styles'  => array(
-					'bower/reset-css/reset',
-					'styles/pwf/elementary'
-				),
-				'scripts' => array(
-					'bower/pwf.js',
-					'bower/pwf-config/lib/config',
-				),
+				'styles'  => array(),
+				'scripts' => array('bower/pwf.js'),
 				'slots'   => array(),
 				'yield'   => array(),
 			);
