@@ -758,7 +758,7 @@ namespace System\Model
 
 				self::prepare_data($model, $data);
 
-				if ($this->id && !$this->is_new_object) {
+				if ($this->is_new() && !$this->is_new_object) {
 					\System\Database::simple_update(self::get_table($model), self::get_id_col($model), $this->id, $data);
 				} else {
 					$id = \System\Database::simple_insert(self::get_table($model), $data);
@@ -991,7 +991,7 @@ namespace System\Model
 		 */
 		public function is_new()
 		{
-			return !!$this->id;
+			return !$this->id;
 		}
 
 
