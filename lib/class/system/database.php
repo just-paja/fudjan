@@ -270,9 +270,19 @@ namespace System
 						$data_set['password'] = hash_passwd($data_set['password']);
 					}
 
-					$obj = new $model($data_set);
+					$obj = null;
+
+					if (isset($data_set['id'])) {
+						$obj = find($model, $data_set['id']);
+					}
+
+					if ($obj) {
+						$obj->update_attrs($data_set);
+					} else {
+						$obj = new $model($data_set);
+					}
+
 					try {
-						$obj->is_new_object = true;
 						$obj->save();
 					} catch(\System\Error\Database $e) {}
 

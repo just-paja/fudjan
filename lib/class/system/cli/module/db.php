@@ -492,7 +492,6 @@ namespace System\Cli\Module
 				$extra = array("model" => $model);
 
 				\System\Cli::do_over($data_set, function($key, $tdata, $extra) {
-					$tdata['is_new_object'] = true;
 					$model = $extra['model'];
 
 					$obj = null;
@@ -504,10 +503,10 @@ namespace System\Cli\Module
 					}
 
 					if ($obj) {
-						$tdata['is_new_object'] = false;
 						$obj->update_attrs($tdata);
 					} else {
 						$obj = new $model($tdata);
+						$obj->is_new_object = true;
 					}
 
 					$obj->save();
