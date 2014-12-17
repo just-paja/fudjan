@@ -188,7 +188,7 @@ namespace System
 					array_shift($args);
 				}
 
-				return vsprintf($msg, $args);
+				return stprintf($msg, $args);
 			} else return $msg;
 		}
 
