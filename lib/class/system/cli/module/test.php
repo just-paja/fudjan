@@ -28,9 +28,10 @@ namespace System\Cli\Module
 			\System\Init::basic();
 
 			$all = self::get_all();
+			$path = \System\Composer::resolve('/etc/init.d/test.php');
 			$cmd = implode(';', array(
 				"cd '".BASE_DIR."'",
-				"phpunit --bootstrap 'etc/init.d/test.php' --colors --test-suffix .php ".implode(" ", $all)
+				"phpunit --bootstrap '".$path."' --colors --test-suffix .php ".implode(" ", $all)
 			));
 
 			$out = passthru($cmd);
