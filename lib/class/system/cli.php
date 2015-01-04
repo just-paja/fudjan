@@ -219,7 +219,7 @@ namespace System
 
 		public static function show_usage($script)
 		{
-			self::out('System manager, pwf');
+			self::out('Fudjan system manager');
 			self::out();
 
 			self::out('Usage: '.$script.' module [command] [params]');
