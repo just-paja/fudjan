@@ -4,6 +4,4 @@
 define('ROOT', realpath(__DIR__.'/..'));
 define("BASE_DIR",  realpath(getcwd().'/..'));
 
-v(BASE_DIR);
-
 require_once ROOT."/etc/init.d/cli.php";
