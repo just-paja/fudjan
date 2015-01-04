@@ -96,7 +96,12 @@ namespace System
 			$files = \System\Directory::find_all_files($dir);
 
 			foreach ($files as $file) {
-				require_once $file;
+				$fname = str_replace($dir.'/', '', $file);
+				$cname = self::get_class_from_file($fname);
+
+				if (!class_exists($cname, false) && !interface_exists($cname, false)) {
+					require_once $file;
+				}
 			}
 		}
 
@@ -110,6 +115,14 @@ namespace System
 		public static function get_class_file_name($class_name, $with_suffix = false)
 		{
 			return str_replace("\_", '/', substr(strtolower(preg_replace("/([A-Z])/", "_$1", $class_name)), 1)).($with_suffix ? ".php":'');
+		}
+
+
+		public static function get_class_from_file($name)
+		{
+			$name = str_replace('.php', '', implode('\\', array_map('ucfirst', explode('/', $name))));
+			$name = implode('', array_map('ucfirst', explode('_', $name)));
+			return $name;
 		}
 
 
