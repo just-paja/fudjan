@@ -1,6 +1,6 @@
 {
 	"mail_to":"",
 	"default":{
-		"sender":"robot@localhost"
+		"sender":"robot@localhost.com"
 	}
 }
