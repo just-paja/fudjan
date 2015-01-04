@@ -53,6 +53,8 @@ namespace System
 		public static function init()
 		{
 			if (!self::$ready) {
+				self::set_env();
+
 				if (self::check_cache()) {
 					self::load_cache();
 				} else {
@@ -79,7 +81,6 @@ namespace System
 		 */
 		public static function reload()
 		{
-			self::set_env();
 			self::check_env();
 
 			\System\Directory::check(ROOT.self::DIR_CONF_GLOBAL);
