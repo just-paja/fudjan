@@ -15,6 +15,7 @@ namespace System
 		const SEP_CLASS = '\\';
 		const SEP_LINK  = '_';
 		const SEP_MODEL = '.';
+		const FILE_CORE = '/var/cache/core.php';
 
 
 		/** Run load all classes only once */
@@ -51,6 +52,38 @@ namespace System
 
 				self::$loaded = true;
 			}
+		}
+
+
+		public static function dump_core()
+		{
+			self::load_all();
+
+			$str   = '<? ';
+			$lists = array(
+				get_declared_interfaces(),
+				get_declared_classes(),
+			);
+
+			foreach ($lists as $list) {
+				foreach ($list as $name) {
+					$file_name = self::DIR_CLASS.'/'.self::get_class_file_name($name, true);
+					$file_path = \System\Composer::resolve($file_name);
+
+					if ($file_path) {
+						$cont = php_strip_whitespace($file_path);
+						$str .= preg_replace('/^<\?(php)?(.*)(\?>)?$/s', '$2', $cont);
+					}
+				}
+			}
+
+			return $str;
+		}
+
+
+		public static function cache_core()
+		{
+			\System\File::put(BASE_DIR.self::FILE_CORE, self::dump_core());
 		}
 
 
