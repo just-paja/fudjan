@@ -2,6 +2,6 @@
 <?
 
 define('ROOT', realpath(__DIR__.'/..'));
-define("BASE_DIR",  realpath(getcwd().'/..'));
+define("BASE_DIR",  ROOT);
 
 require_once ROOT."/etc/init.d/cli.php";
