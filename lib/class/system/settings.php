@@ -14,7 +14,7 @@ namespace System
 	 */
 	class Settings
 	{
-		const CACHE_FILE             = '/var/cache/settings';
+		const DIR_CACHE              = '/var/cache/settings';
 		const DIR_CONF_ALL           = '/etc';
 		const DIR_CONF_DIST          = '/etc/conf.d';
 		const DIR_CONF_GLOBAL        = '/etc/conf.d/global';
@@ -144,7 +144,7 @@ namespace System
 		 */
 		private static function get_cache_filename()
 		{
-			return BASE_DIR.self::CACHE_FILE.'-'.self::$env.'.serial';
+			return BASE_DIR.self::DIR_CACHE.DIRECTORY_SEPARATOR.self::$env.'.json';
 		}
 
 
@@ -159,7 +159,7 @@ namespace System
 				\System\Directory::create(dirname(self::get_cache_filename()), 0770);
 			}
 
-			$fp = \System\File::put(self::get_cache_filename(), serialize($conf));
+			$fp = \System\File::put(self::get_cache_filename(), json_encode($conf));
 			@chmod(self::get_cache_filename(), 0770);
 			Status::report('info', 'New settings saved');
 		}
