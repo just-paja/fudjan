@@ -150,31 +150,6 @@ namespace System
 		}
 
 
-		public static function request_icon(\System\Http\Response $response, $info)
-		{
-			$request = $response->request;
-			$dir = '/share/icons/'.dirname($info['path']);
-			$name = \System\Resource::strip_serial($info['path']);
-			$regex = '/^'.basename($name).'\.png$/';
-			$files = \System\Composer::find($dir, $regex);
-
-			if (any($files)) {
-				self::send_image(self::from_path($files[0]));
-			}
-
-			throw new \System\Error\NotFound();
-		}
-
-
-		public static function send_image(self $image)
-		{
-			$image->read_meta();
-
-			echo $image->get_content();
-			exit;
-		}
-
-
 		/** Check if thumb already exists
 		 * @param int  $width  Desired width
 		 * @param int  $height Desired height
