@@ -94,7 +94,7 @@ namespace System
 
 		public static function build_core()
 		{
-			\System\File::put(BASE_DIR.\System\Loader::FILE_CORE, self::dump_core());
+			\System\File::put(BASE_DIR.\System\Loader::FILE_CORE, \System\Loader::dump_core());
 		}
 
 
