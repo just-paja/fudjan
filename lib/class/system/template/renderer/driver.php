@@ -8,7 +8,11 @@ namespace System\Template\Renderer
 			'renderer' => array('object', 'model' => '\System\Template\Renderer'),
 		);
 
-		private static $resource_filter = array('scripts', 'styles');
+		private static $resource_filter = array(
+			'scripts' => 'script',
+			'styles'  => 'style'
+		);
+
 		private $first_layout = true;
 
 		protected $rendered  = array();
@@ -189,8 +193,8 @@ namespace System\Template\Renderer
 		 */
 		public function get_content_from($place)
 		{
-			if (is_array($this->content[$place]) && in_array($place, self::$resource_filter)) {
-				$this->content[$place] = \System\Resource::filter_output_content($place, $this->content[$place]);
+			if (is_array($this->content[$place]) && array_key_exists($place, self::$resource_filter)) {
+				$this->content[$place] = \System\Resource::filter_output_content(self::$resource_filter[$place], $this->content[$place]);
 			}
 
 			return $this->content[$place];
@@ -272,8 +276,8 @@ namespace System\Template\Renderer
 			return $this
 				->render_meta()
 				->render_title()
-				->render_scripts()
-				->render_styles()
+				//~ ->render_scripts()
+				//~ ->render_styles()
 				->render_frontend_config();
 		}
 

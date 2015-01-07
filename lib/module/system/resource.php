@@ -1,14 +1,20 @@
 <?
 
-/** Module that displays partial without locals
+/** Module that sends resource content
  * @package modules
  */
 
-//~ v($res_type);
-//~ v($res_path);
-//~ exit;
-
+$this->req('res_src');
 $this->req('res_type');
 $this->req('res_path');
 
-\System\Resource::request($response, $res_type, $res_path);
+$resource = \System\Resource::sort_out(array(
+	'request'  => $request,
+	'response' => $response,
+	'path' => $res_path,
+	'src'  => $res_src,
+	'type' => $res_type,
+));
+
+$resource->serve();
+

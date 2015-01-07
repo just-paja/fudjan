@@ -190,10 +190,21 @@ namespace System
 			$serial = array_pop($name);
 			$name[] = $suffix;
 			$name = implode('.', $name);
-			$files = \System\Composer::ls($dir, $name);
 
-			if (any($files)) {
-				$img = self::from_path($files[0]);
+			try {
+				$use_cache = \System\Settings::get('cache', 'resources');
+			} catch(\System\Error\Config $e) {
+				$use_cache = false;
+			}
+
+			if ($use_cache) {
+				//~ $file = BASE_DIR.\System\Cache::DIR_STATIC DIR_SEPARATOR
+			} else {
+				$file = \System\Composer::resolve($dir.DIR_SEPARATOR.$name);
+			}
+
+			if (any($file)) {
+				$img = self::from_path($file);
 
 				if ($request->get('w') || $request->get('h')) {
 					$w = $request->get('w') ? $request->get('w'):null;

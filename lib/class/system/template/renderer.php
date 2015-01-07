@@ -438,6 +438,12 @@ namespace System\Template
 		}
 
 
+		public function link_resource($type, $name)
+		{
+			return \System\Resource::get_url('static', $type, $name);
+		}
+
+
 		/** Return uniform resource locator
 		 * @param string $name Named route name
 		 * @param array  $args Arguments for route

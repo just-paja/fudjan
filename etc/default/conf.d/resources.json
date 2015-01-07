@@ -1,21 +1,23 @@
 {
 	"domain":null,
+	"map":{},
+
 	"tags":[
 		{
 			"name":"cfg",
-			"callback":["\\System\\Resource", "tag_cfg"]
+			"callback":["\\System\\Resource\\Text", "tag_cfg"]
 		},
 		{
 			"name":"pixmap",
-			"callback":["\\System\\Resource", "tag_pixmap"]
+			"callback":["\\System\\Resource\\Text", "tag_pixmap"]
 		},
 		{
 			"name":"icon",
-			"callback":["\\System\\Resource", "tag_icon"]
+			"callback":["\\System\\Resource\\Text", "tag_icon"]
 		},
 		{
 			"name":"resource",
-			"callback":["\\System\\Resource", "tag_resource"]
+			"callback":["\\System\\Resource\\Text", "tag_resource"]
 		}
 	]
 }

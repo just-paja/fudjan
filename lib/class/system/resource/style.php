@@ -1,0 +1,39 @@
+<?
+
+namespace System\Resource
+{
+	class Style extends \System\Resource\Text
+	{
+		const DIR_CACHE = '/var/cache/resources/styles';
+		const NOT_FOUND = '/* Style not found: %s */';
+		const MIME_TYPE = 'text/css';
+		const POSTFIX_OUTPUT = '.css';
+
+		static protected $postfixes = array('css', 'less');
+
+
+		public function parse()
+		{
+			if (class_exists('\Less_Parser')) {
+				$parser = new \Less_Parser();
+				$parser->SetOptions(array(
+					'compress' => $this->minify
+				));
+
+				try {
+					$parser->parse($this->content);
+				} catch(\Exception $e) {
+					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage(), $file);
+				}
+
+				$this->content = $parser->getCss();
+			} else throw new \System\Error\MissingDependency('Missing less parser', 'install oyejorge/less.php');
+		}
+
+
+		public function minify()
+		{
+			$this->content = \System\Minifier\Styles::minify($this->content);
+		}
+	}
+}
