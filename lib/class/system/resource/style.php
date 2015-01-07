@@ -4,7 +4,8 @@ namespace System\Resource
 {
 	class Style extends \System\Resource\Text
 	{
-		const DIR_CACHE = '/var/cache/resources/styles';
+		const DIR_SAVE  = '/var/cache/resources/scripts';
+		const DIR_CACHE = '/var/cache/static';
 		const NOT_FOUND = '/* Style not found: %s */';
 		const MIME_TYPE = 'text/css';
 		const POSTFIX_OUTPUT = '.css';
@@ -23,7 +24,7 @@ namespace System\Resource
 				try {
 					$parser->parse($this->content);
 				} catch(\Exception $e) {
-					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage(), $file);
+					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage());
 				}
 
 				$this->content = $parser->getCss();
@@ -33,7 +34,7 @@ namespace System\Resource
 
 		public function minify()
 		{
-			$this->content = \System\Minifier\Styles::minify($this->content);
+			//~ $this->content = \System\Minifier\Styles::minify($this->content);
 		}
 	}
 }

@@ -2,8 +2,9 @@
 
 namespace System\Resource
 {
-	class Text extends \System\Resource\Generic
+	class Text extends \System\Resource
 	{
+		const DIR_SAVE  = '/var/cache/resources/texts';
 		const NOT_FOUND = 'console.log("Jaffascript module not found: %s");';
 		const MIME_TYPE = 'text/javascript';
 		const POSTFIX_OUTPUT = '.txt';
@@ -93,12 +94,12 @@ namespace System\Resource
 		}
 
 
-		public static function get_content_from_files(array $files)
+		public function get_content_from_files(array $files)
 		{
 			$content = '';
 
 			foreach ($files[self::KEY_MISSING] as $file) {
-				$content .= sprintf($info[self::KEY_STRING_NOT_FOUND], $file);
+				$content .= sprintf($this::NOT_FOUND, $file);
 			}
 
 			foreach ($files[self::KEY_FOUND] as $file) {
@@ -206,12 +207,12 @@ namespace System\Resource
 			}
 
 			if ($use_cache) {
-				$dirs = array(BASE_DIR.\System\Cache::DIR_CACHE);
+				$dirs = array(BASE_DIR.$this::DIR_CACHE);
 			} else {
 				if ($this->src == 'static') {
-					$src = self::DIR_STATIC;
+					$src = $this::DIR_STATIC;
 				} else {
-					$src = self::DIR_MEDIA;
+					$src = $this::DIR_MEDIA;
 				}
 
 				$dirs = \System\Composer::list_dirs($src);
@@ -351,7 +352,7 @@ namespace System\Resource
 
 		public function get_resource_list_path()
 		{
-			return BASE_DIR.self::DIR_CACHE.DIRECTORY_SEPARATOR.$this->name.'.list';
+			return BASE_DIR.$this::DIR_CACHE.DIRECTORY_SEPARATOR.$this->name.'.list';
 		}
 
 
@@ -386,7 +387,7 @@ namespace System\Resource
 		 */
 		public function get_cache_name($sum)
 		{
-			return $sum.'.'.self::get_serial().(self::POSTFIX_OUTPUT);
+			return $sum.'.'.self::get_serial().($this::POSTFIX_OUTPUT);
 		}
 
 
@@ -398,7 +399,7 @@ namespace System\Resource
 		 */
 		public function get_cache_path($sum)
 		{
-			return BASE_DIR.self::DIR_CACHE.DIRECTORY_SEPARATOR.self::get_cache_name($sum);
+			return BASE_DIR.$this::DIR_SAVE.DIRECTORY_SEPARATOR.$this::get_cache_name($sum);
 		}
 	}
 }

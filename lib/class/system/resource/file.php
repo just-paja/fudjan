@@ -2,11 +2,11 @@
 
 namespace System\Resource
 {
-	class File extends \System\Resource\Generic
+	class File extends \System\Resource
 	{
 		const CLASS_FILE = '\\System\\File';
 
-		const DIR_CACHE    = '/var/cache/resources';
+		const DIR_CACHE    = '/var/cache/static';
 		const DIR_STATIC   = '/share';
 
 		protected $file_path;

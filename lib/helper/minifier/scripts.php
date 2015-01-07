@@ -43,7 +43,7 @@
  * @version    Release: 0.5.1
  */
 
-namespace System\Minifier
+namespace Helper\Minifier
 {
 	/** JavaScript Minifier
 	 *

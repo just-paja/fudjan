@@ -15,7 +15,7 @@ namespace System
 		const SEP_CLASS = '\\';
 		const SEP_LINK  = '_';
 		const SEP_MODEL = '.';
-		const FILE_CORE = '/var/cache/core.php';
+		const FILE_CORE = '/var/cache/runtime/core.php';
 
 
 		/** Run load all classes only once */

@@ -6,7 +6,7 @@ namespace System\Resource
 	{
 		const CLASS_FILE = '\\System\\Image';
 
-		const DIR_CACHE    = '/var/cache/resources/pixmaps';
+		const DIR_CACHE    = '/var/cache/static/pixmaps';
 		const DIR_STATIC   = '/share/pixmaps';
 	}
 }
