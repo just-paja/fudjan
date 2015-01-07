@@ -209,6 +209,11 @@ namespace System
 		}
 
 
+		public function cache_content()
+		{
+		}
+
+
 		public function redirect_to_current()
 		{
 			$this->response->redirect($this->get_url($this->src, $this->type, $this::POSTFIX_OUTPUT ? $this->name:$this->name_full));
