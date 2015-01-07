@@ -14,8 +14,6 @@ namespace System
 		const DIR_MEDIA    = '/var/files';
 		const DIR_STATIC   = '/share';
 
-		const FONTS_DIR = '/share/fonts';
-
 		const KEY_SUM              = 'sum';
 		const KEY_TYPE             = 'type';
 		const KEY_FOUND            = 'found';
@@ -41,9 +39,10 @@ namespace System
 
 
 		static private $map = array(
+			'font'   => '\\System\\Resource\\Font',
+			'pixmap' => '\\System\\Resource\\Pixmap',
 			'script' => '\\System\\Resource\\Script',
 			'style'  => '\\System\\Resource\\Style',
-			'pixmap' => '\\System\\Resource\\Pixmap',
 			'thumb'  => '\\System\\Resource\\Thumb',
 		);
 
