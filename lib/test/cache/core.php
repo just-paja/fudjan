@@ -7,7 +7,7 @@ namespace
 	{
 		public function test_core_building()
 		{
-			\System\Loader::cache_core();
+			\System\Cache::build_core();
 
 			$cmd = implode(';', array(
 				'cd '.BASE_DIR.'/var/cache',

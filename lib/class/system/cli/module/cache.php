@@ -19,14 +19,44 @@ namespace System\Cli\Module
 
 
 		protected static $commands = array(
-			"core" => array('Cache application core for faster run'),
+			"all"    => array('Build complete application cache'),
+			"clear"  => array('Completely erase application cache'),
+			"core"   => array('Cache application core for faster run'),
+			"static" => array('Cache static files to minimize folder lookups'),
 		);
 
 
-		public static function cmd_core()
+		public function cmd_clear()
 		{
 			\System\Init::basic();
-			\System\Loader::cache_core();
+			\System\Cache::clear();
+		}
+
+
+		public function cmd_all()
+		{
+			\System\Init::basic();
+
+			$this->cmd_core();
+			$this->cmd_static();
+		}
+
+
+		public function cmd_core()
+		{
+			\System\Init::basic();
+
+			$this->vout('Building system core');
+			\System\Cache::build_core();
+		}
+
+
+		public function cmd_static()
+		{
+			\System\Init::basic();
+
+			$this->vout('Building static cache');
+			\System\Cache::build_static();
 		}
 	}
 }

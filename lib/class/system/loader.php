@@ -81,12 +81,6 @@ namespace System
 		}
 
 
-		public static function cache_core()
-		{
-			\System\File::put(BASE_DIR.self::FILE_CORE, self::dump_core());
-		}
-
-
 		/** Load all classes inside directory
 		 * @param string $dir
 		 * @return void

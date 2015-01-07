@@ -8,6 +8,7 @@ namespace System
 	abstract class Cache
 	{
 		const TTL_DEFAULT = 3600;
+		const DIR_CACHE = '/var/cache';
 
 		static private $driver;
 		static private $enabled;
@@ -80,6 +81,34 @@ namespace System
 		public static function get_driver()
 		{
 			return self::$driver;
+		}
+
+
+		/**
+		 * Builds static resource cache
+		 */
+		public static function build_static()
+		{
+		}
+
+
+		public static function build_core()
+		{
+			\System\File::put(BASE_DIR.\System\Loader::FILE_CORE, self::dump_core());
+		}
+
+
+		public static function clear()
+		{
+			$files = glob(BASE_DIR.self::DIR_CACHE.'/*'); // get all file names
+
+			foreach ($files as $file) { // iterate files
+				if (is_file($file)) {
+					unlink($file); // delete file
+				} else if (is_dir($file)) {
+					\System\Directory::remove($file);
+				}
+			}
 		}
 	}
 }
