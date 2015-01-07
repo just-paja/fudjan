@@ -172,5 +172,26 @@ namespace System
 				}
 			}
 		}
+
+
+		public static function copy($src, $dest)
+		{
+			if (!is_dir($src)) {
+				throw new \System\Error\Wtf('Source must be a directory', $src);
+			}
+
+			$dir = new \RecursiveDirectoryIterator($src, \RecursiveDirectoryIterator::SKIP_DOTS);
+			$iter = new \RecursiveIteratorIterator($dir, \RecursiveIteratorIterator::SELF_FIRST);
+
+			self::check($dest);
+
+			foreach ($iter as $item) {
+				if ($item->isDir()) {
+					self::check($dest.DIRECTORY_SEPARATOR.$iter->getSubPathName());
+				} else {
+					copy($item, $dest.DIRECTORY_SEPARATOR.$iter->getSubPathName());
+				}
+			}
+		}
 	}
 }
