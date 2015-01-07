@@ -10,9 +10,9 @@ if (!defined('BASE_DIR')) {
 	define('BASE_DIR', ROOT);
 }
 
-if (file_exists(BASE_DIR.'/var/cache/core.php')) {
+if (file_exists(BASE_DIR.'/var/cache/runtime/core.php')) {
 
-	require_once BASE_DIR.'/var/cache/core.php';
+	require_once BASE_DIR.'/var/cache/runtime/core.php';
 
 } else {
 
