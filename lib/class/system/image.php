@@ -16,6 +16,7 @@ namespace System
 		const IMG_JPEG_OLD = 3;
 		const DIR_CACHE = '/var/cache';
 		const RESOURCE_TYPE = 'pixmap';
+		const RESOURCE_CNAME = '\\System\\Resource\\Pixmap';
 
 		const WIDTH_DEFAULT = 100;
 		const HEIGHT_DEFAULT = 100;

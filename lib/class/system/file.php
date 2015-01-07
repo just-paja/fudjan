@@ -19,6 +19,7 @@ namespace System
 		const MOD_DEFAULT = 0664;
 		const MIN_HASH_CHUNK_SIZE = 65536;
 		const RESOURCE_TYPE = 'pixmap';
+		const RESOURCE_CNAME = '\\System\\Resource\\File';
 
 		protected $content;
 
@@ -640,16 +641,17 @@ namespace System
 				$this->read_meta();
 			}
 
-			$path = str_replace(\System\File::DIR, '', $this->get_path_relative());
-			$src  = 'media';
+			$path  = str_replace(\System\File::DIR, '', $this->get_path_relative());
+			$src   = 'media';
+			$cname = $this::RESOURCE_CNAME;
+			$stat  = $cname::DIR_STATIC;
 
-			if (strpos($path, \System\Resource\Pixmap::DIR_STATIC) === 0) {
-				$path = str_replace(\System\Resource\Pixmap::DIR_STATIC, '', $path);
+			if (strpos($path, $stat) === 0 || strpos($path, $stat = substr($stat, 1)) === 0) {
+				$path = substr($path, strlen($stat));
 				$src  = 'static';
 			}
 
-			$url  = \System\Resource::get_url($src, self::RESOURCE_TYPE, preg_replace("/^\//", '', $path));
-			$path = $path;
+			$url = \System\Resource::get_url($src, self::RESOURCE_TYPE, preg_replace("/^\//", '', $path));
 
 			return array(
 				"url"    => $url,
