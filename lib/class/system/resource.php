@@ -42,21 +42,23 @@ namespace System
 
 		static private $map = array(
 			'script' => '\\System\\Resource\\Script',
-			'style' => '\\System\\Resource\\Style',
+			'style'  => '\\System\\Resource\\Style',
 			'pixmap' => '\\System\\Resource\\Pixmap',
-			'thumb' => '\\System\\Resource\\Thumb',
+			'thumb'  => '\\System\\Resource\\Thumb',
 		);
 
 
 		static protected $attrs = array(
-			'debug'    => array('boolean'),
-			'exists'   => array('boolean', 'default' => true),
-			'response' => array('object', "model" => '\System\Http\Response'),
-			'request'  => array('object', "model" => '\System\Http\Request'),
-			'serial'   => array('int'),
-			'src'      => array('string'),
-			'type'     => array('string'),
-			'path'     => array('string'),
+			'debug'     => array('boolean'),
+			'exists'    => array('boolean', 'default' => true),
+			'mime'      => array('string'),
+			'path'      => array('string'),
+			'response'  => array('object', "model" => '\System\Http\Response'),
+			'request'   => array('object', "model" => '\System\Http\Request'),
+			'serial'    => array('int'),
+			'src'       => array('string'),
+			'type'      => array('string'),
+			'use_cache' => array('boolean'),
 		);
 
 
@@ -153,6 +155,12 @@ namespace System
 		public function construct()
 		{
 			$this->strip_serial();
+
+			try {
+				$this->use_cache = \System\Settings::get('cache', 'resources');
+			} catch(\System\Error\Config $e) {
+				$this->use_cache = false;
+			}
 		}
 
 
@@ -195,7 +203,9 @@ namespace System
 			$headers = array();
 			$res = $this->response;
 
-			if ($this::MIME_TYPE) {
+			if ($this->mime) {
+				$res->header('Content-Type', $this->mime);
+			} else if ($this::MIME_TYPE) {
 				$res->header('Content-Type', $this::MIME_TYPE);
 			}
 
@@ -210,6 +220,12 @@ namespace System
 				$res->header('Expires', date(\DateTime::RFC1123, time() + $max_age + rand(0,60)));
 				$res->header('Age', '0');
 			}
+		}
+
+
+		public function set_response()
+		{
+			$this->response->set_content($this->content);
 		}
 	}
 }

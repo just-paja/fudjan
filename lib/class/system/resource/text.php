@@ -53,12 +53,6 @@ namespace System\Resource
 		}
 
 
-		public function set_response()
-		{
-			$this->response->set_content($this->content);
-		}
-
-
 		/** Get content of requested files and minify it
 		 * @param array $info  Type info
 		 * @param list  $files List of files
@@ -191,11 +185,7 @@ namespace System\Resource
 
 		public static function tag_pixmap($name)
 		{
-			$name = explode('.', $name);
-			$suffix = array_pop($name);
-			$name = implode('.', $name);
-
-			return self::tag_resource(self::TYPE_PIXMAPS, $name, $suffix);
+			return self::tag_resource(self::TYPE_PIXMAPS, $name);
 		}
 
 

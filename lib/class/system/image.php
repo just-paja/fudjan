@@ -181,55 +181,9 @@ namespace System
 		}
 
 
-		public static function request_pixmap(\System\Http\Response $response, $info)
-		{
-			$request = $response->request;
-			$dir = '/'.dirname($info['path']);
-			$name = explode('.', basename($info['path']));
-			$suffix = array_pop($name);
-			$serial = array_pop($name);
-			$name[] = $suffix;
-			$name = implode('.', $name);
-
-			try {
-				$use_cache = \System\Settings::get('cache', 'resources');
-			} catch(\System\Error\Config $e) {
-				$use_cache = false;
-			}
-
-			if ($use_cache) {
-				//~ $file = BASE_DIR.\System\Cache::DIR_STATIC DIR_SEPARATOR
-			} else {
-				$file = \System\Composer::resolve($dir.DIR_SEPARATOR.$name);
-			}
-
-			if (any($file)) {
-				$img = self::from_path($file);
-
-				if ($request->get('w') || $request->get('h')) {
-					$w = $request->get('w') ? $request->get('w'):null;
-					$h = $request->get('h') ? $request->get('h'):null;
-
-					redirect_now($img->thumb($w, $h));
-				} else {
-					if ($img->exists()) {
-						self::send_image($img);
-					} else {
-						throw new \System\Error\NotFound();
-					}
-				}
-			}
-
-			throw new \System\Error\NotFound();
-		}
-
-
 		public static function send_image(self $image)
 		{
 			$image->read_meta();
-
-			header('Content-Type: '.$image->mime);
-			header('Content-Length: '.$image->size);
 
 			echo $image->get_content();
 			exit;
