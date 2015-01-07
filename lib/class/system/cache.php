@@ -9,6 +9,7 @@ namespace System
 	{
 		const TTL_DEFAULT = 3600;
 		const DIR_CACHE = '/var/cache';
+		const DIR_STATIC = '/var/cache/static';
 
 		static private $driver;
 		static private $enabled;
@@ -87,8 +88,20 @@ namespace System
 		/**
 		 * Builds static resource cache
 		 */
-		public static function build_static()
+		public static function build_static_for($lib)
 		{
+			$base   = BASE_DIR.\System\Composer::DIR_VENDOR.'/'.$lib;
+			$static = $base.'/share';
+			$files  = \System\Directory::ls($static);
+			$target = BASE_DIR.self::DIR_STATIC;
+
+			foreach ($files as $file) {
+				if (is_dir($static.DIRECTORY_SEPARATOR.$file)) {
+					\System\Directory::copy($static.DIRECTORY_SEPARATOR.$file, $target.DIRECTORY_SEPARATOR.$file);
+				} else {
+					copy($static.DIRECTORY_SEPARATOR.$file, $target.DIRECTORY_SEPARATOR.$file);
+				}
+			}
 		}
 
 
@@ -100,11 +113,11 @@ namespace System
 
 		public static function clear()
 		{
-			$files = glob(BASE_DIR.self::DIR_CACHE.'/*'); // get all file names
+			$files = glob(BASE_DIR.self::DIR_CACHE.'/*');
 
-			foreach ($files as $file) { // iterate files
+			foreach ($files as $file) {
 				if (is_file($file)) {
-					unlink($file); // delete file
+					unlink($file);
 				} else if (is_dir($file)) {
 					\System\Directory::remove($file);
 				}

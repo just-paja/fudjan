@@ -46,7 +46,7 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			$this->vout('Building system core');
+			\System\Cli::out('Building system core');
 			\System\Cache::build_core();
 		}
 
@@ -55,8 +55,16 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			$this->vout('Building static cache');
-			\System\Cache::build_static();
+			$lib_list = \System\Composer::get_libs();
+			$libs = array();
+
+			foreach ($lib_list as $lib) {
+				$libs[$lib] = $lib;
+			}
+
+			\System\Cli::do_over($libs, function($key, $name) {
+				\System\Cache::build_static_for($name);
+			}, 'Collecting static files');
 		}
 	}
 }
