@@ -13,9 +13,13 @@ namespace System\Resource
 		static protected $postfixes = array('js');
 
 
-		public function compress()
+		public function read()
 		{
-			$this->content = \Helper\Minifier\Scripts::minify($this->content);
+			parent::read();
+
+			if (!$this->is_cached() && $this->minify) {
+				$this->content = \Helper\Minifier\Scripts::minify($this->content);
+			}
 		}
 	}
 }

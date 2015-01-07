@@ -13,28 +13,26 @@ namespace System\Resource
 		static protected $postfixes = array('css', 'less');
 
 
-		public function parse()
+		public function read()
 		{
-			if (class_exists('\Less_Parser')) {
-				$parser = new \Less_Parser();
-				$parser->SetOptions(array(
-					'compress' => $this->minify
-				));
+			parent::read();
 
-				try {
-					$parser->parse($this->content);
-				} catch(\Exception $e) {
-					throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage());
-				}
+			if (!$this->is_cached()) {
+				if (class_exists('\Less_Parser')) {
+					$parser = new \Less_Parser();
+					$parser->SetOptions(array(
+						'compress' => $this->minify
+					));
 
-				$this->content = $parser->getCss();
-			} else throw new \System\Error\MissingDependency('Missing less parser', 'install oyejorge/less.php');
-		}
+					try {
+						$parser->parse($this->content);
+					} catch(\Exception $e) {
+						throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage());
+					}
 
-
-		public function minify()
-		{
-			//~ $this->content = \System\Minifier\Styles::minify($this->content);
+					$this->content = $parser->getCss();
+				} else throw new \System\Error\MissingDependency('Missing less parser', 'install oyejorge/less.php');
+			}
 		}
 	}
 }

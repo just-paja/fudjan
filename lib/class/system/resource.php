@@ -73,6 +73,12 @@ namespace System
 				$opts['debug'] = true;
 			}
 
+			try {
+				$opts['cache'] = \System\Settings::get('cache', 'resources');
+			} catch (\System\Error $e) {
+				$opts['cache'] = false;
+			}
+
 			$map = self::get_map();
 
 			if (array_key_exists($opts['type'], $map)) {
@@ -189,6 +195,7 @@ namespace System
 			if ($this->exists) {
 				if ($this->debug || $this->serial == self::get_serial()) {
 					$this->read();
+					$this->cache_content();
 					$this->set_headers();
 					$this->set_response();
 

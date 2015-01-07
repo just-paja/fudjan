@@ -36,21 +36,13 @@ namespace System\Resource
 		public function read()
 		{
 			$this->content = $this->get_content($this->get_file_list($this->base));
-			$this->parse();
-
-			if ($this->minify) {
-				$this->compress();
-			}
 		}
 
 
-		public function parse()
+		public function is_cached()
 		{
-		}
-
-
-		public function compress()
-		{
+			$this->cached = !$this->debug && file_exists($this->get_cache_path());
+			return $this->cached;
 		}
 
 
@@ -61,18 +53,10 @@ namespace System\Resource
 		 */
 		private function get_content(array $files)
 		{
-			$cache = $this->get_cache_path($files[self::KEY_SUM]);
-
-			if (!$this->debug && file_exists($cache)) {
-				$content = \System\File::read($cache);
+			if ($this->is_cached()) {
+				$content = \System\File::read($this->get_cache_path());
 			} else {
 				$content = '';
-
-				try {
-					$cache = \System\Settings::get('cache', 'resources');
-				} catch (\System\Error $e) {
-					$cache = false;
-				}
 
 				if (any($info[self::KEY_CALLBACK_PARSE])) {
 					$content = call_user_func_array($info[self::KEY_CALLBACK_PARSE], array($info, $files));
@@ -84,13 +68,17 @@ namespace System\Resource
 					$list = "/* Used files\n\t".implode("\n\t", $files[self::KEY_FOUND])."\n*/\n\n";
 					$content = $list.$content;
 				}
-
-				if ($cache && !$this->debug) {
-					\System\File::put($this->get_cache_path($files[self::KEY_SUM]), $content);
-				}
 			}
 
 			return $content;
+		}
+
+
+		public function cache_content()
+		{
+			if ($this->cache && !$this->debug) {
+				\System\File::put($this->get_cache_path(), $this->content);
+			}
 		}
 
 
@@ -282,10 +270,12 @@ namespace System\Resource
 				}
 			}
 
+			$this->sum = self::get_module_sum_from_list($modules);
+
 			return array(
 				self::KEY_FOUND   => array_unique(array_filter($found)),
 				self::KEY_MISSING => array_unique(array_filter($missing)),
-				self::KEY_SUM     => self::get_module_sum_from_list($modules),
+				self::KEY_SUM     => $this->sum,
 			);
 		}
 
@@ -385,9 +375,9 @@ namespace System\Resource
 		 * @param string $sum
 		 * @return string
 		 */
-		public function get_cache_name($sum)
+		public function get_cache_name()
 		{
-			return $sum.'.'.self::get_serial().($this::POSTFIX_OUTPUT);
+			return $this->sum.'.'.self::get_serial().($this::POSTFIX_OUTPUT);
 		}
 
 
@@ -397,9 +387,9 @@ namespace System\Resource
 		 * @param string $sum
 		 * @return string
 		 */
-		public function get_cache_path($sum)
+		public function get_cache_path()
 		{
-			return BASE_DIR.$this::DIR_SAVE.DIRECTORY_SEPARATOR.$this::get_cache_name($sum);
+			return BASE_DIR.$this::DIR_SAVE.DIRECTORY_SEPARATOR.$this::get_cache_name();
 		}
 	}
 }
