@@ -4,7 +4,7 @@ namespace System\Template\Renderer\Driver
 {
 	class Jade extends \System\Template\Renderer\Driver
 	{
-		const DIR_CACHE = '/var/cache/jade';
+		const DIR_CACHE = '/var/cache/runtime/jade';
 
 		private $jade;
 
