@@ -209,11 +209,9 @@ namespace System
 						self::give_up('Unknown module or option "'.$module.'"', 1);
 					}
 				}
-
-				return self::show_usage($script);
 			}
 
-			self::show_info();
+			return self::show_usage($script);
 		}
 
 
