@@ -242,6 +242,8 @@ namespace System
 				}
 			}
 
+			sort($child_classes);
+
 			self::out('Modules:');
 			self::out_flist(array(
 				"list" => $child_classes,
