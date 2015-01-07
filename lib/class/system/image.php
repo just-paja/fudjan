@@ -288,10 +288,5 @@ namespace System
 		{
 			return \System\Cache\Thumb::find_all_by_hash($this->hash());
 		}
-
-
-		public function to_object()
-		{
-		}
 	}
 }
