@@ -18,6 +18,7 @@ namespace System
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
 		const MIN_HASH_CHUNK_SIZE = 65536;
+		const RESOURCE_TYPE = 'pixmap';
 
 		protected $content;
 
@@ -187,6 +188,12 @@ namespace System
 			}
 
 			return null;
+		}
+
+
+		public function get_path_relative()
+		{
+			return str_replace(BASE_DIR, '', $this->get_path());
 		}
 
 
@@ -633,9 +640,20 @@ namespace System
 				$this->read_meta();
 			}
 
+			$path = str_replace(\System\File::DIR, '', $this->get_path_relative());
+			$src  = 'media';
+
+			if (strpos($path, \System\Resource\Pixmap::DIR_STATIC) === 0) {
+				$path = str_replace(\System\Resource\Pixmap::DIR_STATIC, '', $path);
+				$src  = 'static';
+			}
+
+			$url  = \System\Resource::get_url($src, self::RESOURCE_TYPE, preg_replace("/^\//", '', $path));
+			$path = $path;
+
 			return array(
-				"url"    => $this->get_url(),
-				"path"   => $this->get_path_hashed_relative(),
+				"url"    => $url,
+				"path"   => $path,
 				"name"   => $this->name,
 				"mime"   => $this->mime,
 				"size"   => $this->size,

@@ -22,7 +22,7 @@ namespace System\Resource
 					$file = \System\Composer::resolve($this::DIR_STATIC.DIRECTORY_SEPARATOR.$this->name_full);
 				}
 			} else {
-				$file = $this::DIR_MEDIA.$this->name_full;
+				$file = $this::DIR_MEDIA.DIRECTORY_SEPARATOR.$this->name_full;
 			}
 
 			if (any($file)) {

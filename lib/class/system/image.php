@@ -15,6 +15,7 @@ namespace System
 		const FILE_BAD_THUMB = '/share/pixmaps/pwf/bad_thumb.jpg';
 		const IMG_JPEG_OLD = 3;
 		const DIR_CACHE = '/var/cache';
+		const RESOURCE_TYPE = 'pixmap';
 
 		const WIDTH_DEFAULT = 100;
 		const HEIGHT_DEFAULT = 100;
@@ -291,21 +292,6 @@ namespace System
 
 		public function to_object()
 		{
-			$path = explode('.', $this->get_path());
-			$suffix = array_pop($path);
-			$path = implode('.', $path);
-
-			$data = parent::to_object();
-			$path = str_replace(ROOT, '', $path);
-			$path = str_replace(BASE_DIR, '', $path);
-			$path = preg_replace('/^\//', '', $path);
-
-			$data['url'] = \System\Resource::get_url('media', \System\Resource::TYPE_PIXMAPS, $this->get_path_hashed_relative());
-			$data['path'] = $path.'.'.$suffix;
-
-			//~ v($data);
-
-			return $data;
 		}
 	}
 }

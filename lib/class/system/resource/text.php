@@ -64,7 +64,7 @@ namespace System\Resource
 			$cache = $this->get_cache_path($files[self::KEY_SUM]);
 
 			if (!$this->debug && file_exists($cache)) {
-				$content = \System\File::read($f);
+				$content = \System\File::read($cache);
 			} else {
 				$content = '';
 
