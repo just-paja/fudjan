@@ -5,6 +5,8 @@ namespace System
 	abstract class Composer
 	{
 		const DIR_VENDOR = '/lib/vendor';
+
+		protected static $libs = null;
 		/*
 		 * etc/default/conf.d
 		 * etc/default/routes.d
@@ -13,37 +15,48 @@ namespace System
 		 * lib/template
 		 */
 
+		public static function get_libs()
+		{
+			if (self::$libs === null) {
+				$libs    = array();
+				$base    = BASE_DIR.self::DIR_VENDOR;
+				$vendors = \System\Directory::ls($base, 'd');
+
+				foreach ($vendors as $vendor) {
+					$vendor_path = $base.'/'.$vendor;
+					$local = \System\Directory::ls($vendor_path, 'd');
+
+					foreach ($local as $key=>$lib) {
+						$local[$key] = $vendor.'/'.$lib;
+					}
+
+					$libs = array_merge($libs, $local);
+				}
+
+				self::$libs = $libs;
+			}
+
+			return self::$libs;
+		}
+
+
 		/**
 		 * @returns array List of directories
 		 */
 		public static function list_dirs($relative_path)
 		{
 			$list = array();
+			$libs = self::get_libs();
 
 			if (is_dir(ROOT.$relative_path)) {
 				$list[] = realpath(ROOT.$relative_path);
 			}
 
-			foreach (array(ROOT.self::DIR_VENDOR, BASE_DIR.self::DIR_VENDOR) as $base) {
-				if (is_dir($base)) {
-					$vendors = \System\Directory::ls($base, 'd');
+			foreach ($libs as $lib) {
+				$dir = BASE_DIR.self::DIR_VENDOR.'/'.$lib.'/'.$relative_path;
 
-					foreach ($vendors as $vendor) {
-						if ($vendor == 'composer') {
-							continue;
-						}
-
-						$vendor_path = $base.'/'.$vendor;
-						$libs = \System\Directory::ls($vendor_path, 'd');
-
-						foreach ($libs as $lib) {
-							$dir = $vendor_path.'/'.$lib.$relative_path;
-
-							if (\System\Directory::check($dir, false)) {
-								$list[] = realpath($dir);
-							}
-						}
-					}
+				if (\System\Directory::check($dir, false)) {
+					$list[] = realpath($dir);
 				}
 			}
 
