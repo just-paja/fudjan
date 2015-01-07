@@ -140,6 +140,11 @@ namespace System
 				}
 			}
 
+			if (!$post && strpos($name, '.')) {
+				$name = explode('.', $name);
+				$post = '.'.array_pop($name);
+				$name = implode('.', $name);
+			}
 
 			$name = $name.'.'.self::get_serial().($post ? $post:'');
 			$path = \System\Router::get_first_url('system_resource', array($src, $type, $name));
