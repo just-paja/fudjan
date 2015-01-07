@@ -150,21 +150,6 @@ namespace System
 		}
 
 
-		public static function request_thumb(\System\Http\Response $response, $info)
-		{
-			$request = $response->request;
-			\System\Init::full();
-
-			$hash = \System\Resource::strip_serial($info['path']);
-
-			if (!is_null($thumb = \System\Cache\Thumb::from_hash($hash))) {
-				if ($thumb->check()) {
-					self::send_image(\System\Image::from_path(BASE_DIR.$thumb->get_path()));
-				} else throw new \System\Error\File('Failed to generate image thumb.');
-			} else throw new \System\Error\NotFound();
-		}
-
-
 		public static function request_icon(\System\Http\Response $response, $info)
 		{
 			$request = $response->request;
@@ -340,7 +325,7 @@ namespace System
 			$path = str_replace(BASE_DIR, '', $path);
 			$path = preg_replace('/^\//', '', $path);
 
-			$data['url'] = \System\Resource::tag_resource(\System\Resource::TYPE_PIXMAPS, $path, $this->suffix());
+			$data['url'] = \System\Resource::get_url('media', \System\Resource::TYPE_PIXMAPS, $this->get_path_hashed_relative());
 			$data['path'] = $path.'.'.$suffix;
 
 			//~ v($data);
