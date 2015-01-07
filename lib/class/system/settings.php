@@ -188,7 +188,7 @@ namespace System
 		 */
 		private static function load_cache()
 		{
-			self::$conf = unserialize(\System\File::read(self::get_cache_filename()));
+			self::$conf = \System\Json::read(self::get_cache_filename());
 			ksort(self::$conf);
 		}
 
