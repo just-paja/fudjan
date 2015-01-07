@@ -106,7 +106,7 @@ namespace System\Cache
 
 		public function url()
 		{
-			return \System\Resource::get_resource_list_wget_name('thumb', $this->hash(), $this->image->suffix());
+			return \System\Resource::get_url('media', 'thumb', $this->hash().'.'.$this->image->suffix());
 		}
 
 
