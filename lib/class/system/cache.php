@@ -88,9 +88,14 @@ namespace System
 		/**
 		 * Builds static resource cache
 		 */
-		public static function build_static_for($lib)
+		public static function build_static_for($lib = null)
 		{
-			$base   = BASE_DIR.\System\Composer::DIR_VENDOR.'/'.$lib;
+			if ($lib === null) {
+				$base = BASE_DIR;
+			} else {
+				$base = BASE_DIR.\System\Composer::DIR_VENDOR.'/'.$lib;
+			}
+
 			$static = $base.'/share';
 			$files  = \System\Directory::ls($static);
 			$target = BASE_DIR.self::DIR_STATIC;

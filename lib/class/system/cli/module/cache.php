@@ -62,6 +62,8 @@ namespace System\Cli\Module
 				$libs[$lib] = $lib;
 			}
 
+			array_push($libs, null);
+
 			\System\Cli::do_over($libs, function($key, $name) {
 				\System\Cache::build_static_for($name);
 			}, 'Collecting static files');
