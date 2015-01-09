@@ -6,7 +6,7 @@ namespace System
 	{
 		const TYPE_STYLES  = 'style';
 		const TYPE_PIXMAPS = 'pixmap';
-		const TYPE_ICONS   = 'icons';
+		const TYPE_ICONS   = 'icon';
 		const TYPE_THUMB   = 'thumb';
 		const TYPE_FONT    = 'font';
 
@@ -40,6 +40,7 @@ namespace System
 
 		static private $map = array(
 			'font'   => '\\System\\Resource\\Font',
+			'icon'   => '\\System\\Resource\\Icon',
 			'pixmap' => '\\System\\Resource\\Pixmap',
 			'script' => '\\System\\Resource\\Script',
 			'style'  => '\\System\\Resource\\Style',

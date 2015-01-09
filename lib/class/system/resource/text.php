@@ -163,12 +163,12 @@ namespace System\Resource
 
 		public static function tag_icon($name, $size)
 		{
-			$name = explode('/', $name);
-			$cat = array_shift($name);
-			array_unshift($name, $size);
-			array_unshift($name, $cat);
+			$size = explode('x', $size);
 
-			return self::tag_resource(self::TYPE_ICONS, implode('/', $name), '.png');
+			def($size[0], '');
+			def($size[1], '');
+
+			return self::tag_resource(self::TYPE_ICONS, $name.'.png').'?width='.$size[0].'&height='.$size[1];
 		}
 
 
