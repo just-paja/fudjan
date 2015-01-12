@@ -646,9 +646,25 @@ namespace System
 			$cname = $this::RESOURCE_CNAME;
 			$stat  = $cname::DIR_STATIC;
 
-			if (strpos($path, $stat) === 0 || strpos($path, $stat = substr($stat, 1)) === 0) {
-				$path = substr($path, strlen($stat));
-				$src  = 'static';
+			try {
+				$cache = \System\Settings::get('cache', 'resources');
+			} catch (\System\Error $e) {
+				$cache = false;
+			}
+
+			if ($cache) {
+				$dirs = array($stat);
+			} else {
+				$dirs = \System\Composer::list_dirs($stat);
+				array_unshift($dirs, $stat);
+			}
+
+			foreach ($dirs as $dir) {
+				if (strpos($path, $dir) === 0 || strpos($path, $dir = substr($dir, 1)) === 0) {
+					$path = substr($path, strlen($dir));
+					$src  = 'static';
+					break;
+				}
 			}
 
 			$url = \System\Resource::get_url($src, self::RESOURCE_TYPE, preg_replace("/^\//", '', $path));
