@@ -57,8 +57,15 @@ namespace System\Model
 				}
 			}
 
-			$conds['trigger'] = 'model-'.$method;
-			$conds['name']    = \System\Loader::get_model_from_class($cname).\System\Loader::SEP_MODEL.$method;
+			$conds['trigger'] = array(
+				'trigger' => 'model-'.$method,
+				'trigger' => '*'
+			);
+
+			$conds['name']    = array(
+				'name' => \System\Loader::get_model_from_class($cname).\System\Loader::SEP_MODEL.$method,
+				'name' => '*'
+			);
 
 			$perm = get_first('System\User\Perm')->where($conds)->fetch();
 			return $perm ? $perm->allow:self::get_default_for($method);
