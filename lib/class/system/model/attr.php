@@ -279,6 +279,10 @@ namespace System\Model
 		public static function get_attr_type($model, $attr)
 		{
 			if (self::attr_exists($model, $attr)) {
+				if (isset($model::$attrs[$attr]['type'])) {
+					$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
+				}
+
 				return $model::$attrs[$attr][0];
 			} else throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist.', $attr, $model));
 		}
@@ -293,12 +297,13 @@ namespace System\Model
 		{
 			if (self::attr_exists($model, $attr)) {
 				$attr_data = &$model::$attrs[$attr];
+				$type = self::get_attr_type($model, $attr);
 
-				if (in_array($attr_data[0], array('varchar', 'password'))) {
+				if (in_array($type, array('varchar', 'password'))) {
 					if (!isset($attr_data['length'])) $attr_data['length'] = 255;
 				}
 
-				if ($attr_data[0] === 'text') {
+				if ($type === 'text') {
 					if (!isset($attr_data['length'])) $attr_data['length'] = 65535;
 				}
 
