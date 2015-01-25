@@ -106,7 +106,7 @@ namespace System
 		 */
 		public function set_locale($locale = null)
 		{
-			$this->locale = (is_null($locale) || !self::is_locale_available($locale)) ? self::get_default_lang():$locale;
+			$this->locale = is_null($locale) ? self::get_default_lang():$locale;
 			return $this->load_messages();
 		}
 
@@ -258,7 +258,29 @@ namespace System
 			}
 
 			if (!isset($this->messages[$locale])) {
-				$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
+				try {
+					$list = \System\Settings::get('locales', 'allowed');
+				} catch (\System\Error\Config $e) {
+					$list = array('en');
+				}
+
+				if (in_array($locale, $list) && self::is_locale_available($locale)) {
+					$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
+				} else {
+					$cname = '\System\Error\NotFound';
+
+					try {
+						$debug = \System\Settings::get('dev', 'debug', 'backend');
+					} catch (\System\Error\Config $e) {
+						$debug = true;
+					}
+
+					if ($debug) {
+						$cname = '\System\Error\Config';
+					}
+
+					throw new $cname('Unknown language', $locale);
+				}
 			}
 
 			return $this;

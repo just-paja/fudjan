@@ -517,7 +517,7 @@ namespace System\Http
 		public function init()
 		{
 			if (!$this->is_initialized()) {
-				$this->cookie_store('lang', $this->locales->get_lang());
+				$this->cookie_store('lang', $this->locales()->get_lang());
 
 				\System\Init::run($this->init, array(
 					"request"  => $this->request(),
