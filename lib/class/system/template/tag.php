@@ -7,7 +7,7 @@ namespace System\Template
 		private static $html_attrs = array(
 			'*' => array('class', 'id', 'onclick', 'onfocus', 'title', 'style'),
 			'#inputs'   => array('onchange', 'onkeyup', 'name', 'value'),
-			'#source'   => array('src'),
+			'#source'   => array('src', 'type'),
 			'#links'    => array('href'),
 			'#sizeable' => array('width', 'height'),
 			'table'     => array('cellspacing', 'cellpadding'),
@@ -21,6 +21,7 @@ namespace System\Template
 			'button'    => array('type'),
 			'html'      => array('xmlns', 'lang'),
 			'label'     => array('for'),
+			'link'      => array('rel', 'type'),
 		);
 
 		private static $noclose_tags = array(
