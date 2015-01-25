@@ -110,9 +110,11 @@ namespace System\Http
 			}
 
 			$response = new self($attrs);
+
 			$response->data['request'] = $request;
 			$response->data['flow']    = new \System\Module\Flow($response, $response->modules);
 			$response->data['locales'] = \System\Locales::create($response, $request->lang)->make_syswide();
+
 			return $response;
 		}
 
@@ -437,6 +439,28 @@ namespace System\Http
 		}
 
 
+		public function cookie_store($name, $val = null, array $params = array())
+		{
+			def($params['expire'], 0);
+			def($params['path'], null);
+			def($params['domain'], null);
+			def($params['secure'], false);
+			def($params['httponly'], false);
+
+			setcookie($name, $val, $params['expire'], $params['path'], $params['domain'], $params['secure'], $params['httponly']);
+		}
+
+
+		public function session_store($name, $val = null)
+		{
+			if ($val === null) {
+				unset($_SESSION[$name]);
+			} else {
+				$_SESSION[$name] = $val;
+			}
+		}
+
+
 		/** Run low level debug - Include a PHP file just after init and before module flow
 		 * @return void
 		 */
@@ -493,6 +517,8 @@ namespace System\Http
 		public function init()
 		{
 			if (!$this->is_initialized()) {
+				$this->cookie_store('lang', $this->locales->get_lang());
+
 				\System\Init::run($this->init, array(
 					"request"  => $this->request(),
 					"response" => $this,

@@ -53,6 +53,8 @@ namespace System\Http
 					"time"     => def($_SERVER['REQUEST_TIME_FLOAT'], microtime(true)),
 					"secure"   => any($_SERVER['HTTPS']),
 					"method"   => strtolower(def($_SERVER['REQUEST_METHOD'])),
+					"cookies"  => &$_COOKIE,
+					"session"  => &$_SESSION,
 				);
 
 				if ($data['query']) {
@@ -116,7 +118,9 @@ namespace System\Http
 			$this->load_config();
 
 			if ($this->get('lang')) {
-				\System\Locales::set_lang($this->get('lang'));
+				$this->lang = $this->get('lang');
+			} else if ($this->cookie('lang')) {
+				$this->lang = $this->cookie('lang');
 			}
 
 			\System\Init::run($this->init, array("request" => $this));
@@ -265,6 +269,24 @@ namespace System\Http
 		}
 
 
+		/** Get data from POST request data
+		 * @return mixed
+		 */
+		public function cookie($name)
+		{
+			return isset($this->cookie[$name]) ? $this->cookie[$name]:null;
+		}
+
+
+		/** Get data from POST request data
+		 * @return mixed
+		 */
+		public function sess($name)
+		{
+			return isset($this->session[$name]) ? $this->session[$name]:null;
+		}
+
+
 		/** Get current active user
 		 * @return System\User
 		 */
@@ -272,7 +294,7 @@ namespace System\Http
 		{
 			if ($this->user instanceof \System\User) {
 				return $this->user;
-			} elseif (any($_SESSION[\System\User::COOKIE_USER])) {
+			} else if ($this->sess(\System\User::COOKIE_USER)) {
 				try {
 					$login = \System\Settings::get('policies', 'auto_login');
 				} catch (\System\Error\Config $e) {
@@ -280,7 +302,7 @@ namespace System\Http
 				}
 
 				if ($login) {
-					$this->user = find("\System\User", $_SESSION[\System\User::COOKIE_USER]);
+					$this->user = find("\System\User", $this->sess(\System\User::COOKIE_USER));
 				}
 			}
 
