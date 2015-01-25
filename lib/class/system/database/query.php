@@ -506,6 +506,8 @@ namespace System\Database
 				case 'lte':
 					if (is_numeric($value)) {
 						$str = floatval($value);
+					} else if ($value instanceof \DateTime) {
+						$str = "'".$value->format('Y-m-d H:i:s')."'";
 					} else {
 						$str = "'".$value."'";
 					}
