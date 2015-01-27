@@ -15,6 +15,7 @@ namespace System\Template\Renderer
 
 		private $first_layout = true;
 
+		protected $current_slot = null;
 		protected $rendered  = array();
 		protected $content   = array();
 		protected $layout    = array();
@@ -55,10 +56,14 @@ namespace System\Template\Renderer
 		 */
 		public function render_yield()
 		{
-			$this->content_for('yield', ob_get_contents());
+			$content = ob_get_contents();
 
-			if (ob_get_level()) {
-				ob_clean();
+			if ($content) {
+				$this->content_for('yield', $content);
+
+				if (ob_get_level()) {
+					ob_clean();
+				}
 			}
 
 			$this->render_layout();
@@ -75,7 +80,11 @@ namespace System\Template\Renderer
 					$ctx['wrap'] = false;
 				}
 
-				$this->content_for('yield', $this->render_file($name, $ctx));
+				$content = $this->render_file($name, $ctx);
+
+				if ($content) {
+					$this->content_for('yield', $content);
+				}
 			}
 
 			return $this;
@@ -95,6 +104,8 @@ namespace System\Template\Renderer
 			}
 
 			foreach ($slots as $slot=>$partials) {
+				$this->current_slot = $slot;
+
 				if (isset($this->content['slots'][$slot])) {
 					while ($partial = array_shift($partials)) {
 						$locals = def($partial['locals'], array());
@@ -102,26 +113,53 @@ namespace System\Template\Renderer
 						$ctx['passed'] = &$locals;
 
 						if (any($partial['name'])) {
+							$str = null;
+
 							try {
-								$this->content['slots'][$slot][] = $this->render_file($partial['name'], $ctx);
+								$str = $this->render_file($partial['name'], $ctx);
 							} catch(Exception $e) {
 								v($e);
 								exit;
 							}
+
+							if ($str) {
+								$this->content['slots'][$slot][] = $str;
+							}
 						} else throw new \System\Error\File('Partials must have a name.', $partial);
 					}
+
 				} else {
 					throw new \System\Error\Config('Rendering partials into non-existent slot!', $slot);
 				}
 			}
 
-			foreach ($this->content['slots'] as $slot => $data) {
-				$this->content['slots'][$slot] = implode('', $data);
-			}
 
+//~ v($this->content);
+//~ exit;
+
+			$this->normalize();
 			$this->render_head();
 			$out = implode('', $this->content['yield']);
+
 			return $out;
+		}
+
+
+		public function normalize(array &$array = null)
+		{
+			if (!$array) {
+				$array = &$this->content['slots'];
+			}
+
+			foreach ($array as $name=>$data) {
+				if (is_array($data)) {
+					foreach ($data as $key=>$val) {
+						$this->normalize($data);
+					}
+
+					$array[$name] = implode('', $data);
+				}
+			}
 		}
 
 
@@ -149,7 +187,14 @@ namespace System\Template\Renderer
 		 */
 		public function content_from($place)
 		{
-			$this->content_for('yield', ob_get_level() > 0 ? ob_get_contents():'');
+			if (ob_get_level() > 0) {
+				$content = ob_get_contents();
+
+				if ($content) {
+					$this->content_for('yield', $content);
+				}
+			}
+
 			$this->content['yield'][] = &$this->content[$place];
 
 			if (ob_get_level()) {
@@ -221,11 +266,7 @@ namespace System\Template\Renderer
 		}
 
 
-		/** Output templates in a slot
-		 * @param string $name
-		 * @return void
-		 */
-		public function slot($name = \System\Template::DEFAULT_SLOT)
+		public function slot_check($name)
 		{
 			try {
 				$debug = \System\Settings::get('dev', 'debug', 'backend');
@@ -240,15 +281,39 @@ namespace System\Template\Renderer
 					$this->content['slots'][$name][] = '<!-- Slot: "'.$name.'" -->';
 				}
 			}
+		}
+
+
+		/** Output templates in a slot
+		 * @param string $name
+		 * @return void
+		 */
+		public function slot($name = \System\Template::DEFAULT_SLOT)
+		{
+			$this->slot_check($name);
 
 			if (!in_array($name, $this->rendered)) {
 				$this->rendered[] = $name;
-				$this->content['yield'][] = ob_get_level() > 0 ? ob_get_contents():'';
-				$this->content['yield'][] = &$this->content['slots'][$name];
-			}
+				$content = null;
 
-			if (ob_get_level()) {
-				ob_clean();
+				if (ob_get_level() > 0) {
+					$content = ob_get_contents();
+				}
+
+				$src = &$this->content['slots'][$name];
+
+				if ($this->current_slot) {
+					$target = &$this->content['slots'][$this->current_slot];
+				} else {
+					$target = &$this->content['yield'];
+				}
+
+				if ($content) {
+					$target[] = $content;
+					ob_clean();
+				}
+
+				$target[] = &$src;
 			}
 		}
 

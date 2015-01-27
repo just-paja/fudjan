@@ -25,16 +25,19 @@ namespace System\Template\Renderer\Driver
 
 		public function render_template($path, array $locals = array())
 		{
-			$name = str_replace('/', '-', $path);
 			$wrap = $locals['wrap'];
-			$out = '';
+
+			ob_start();
 
 			if ($wrap) {
-				$out = '<div class="template '.$locals['template'].'">';
+				echo '<div class="template '.$locals['template'].'">';
 			}
 
+			$file = $this->jade->cache($path);
+			extract($locals);
+
 			try {
-				$out .= $this->jade->render($path, $locals);
+				include $file;
 			} catch (\Exception $e) {
 				if (!($e instanceof \System\Error)) {
 					throw new \System\Error\Code('Failed to render jade template.', $e->getMessage(), $path);
@@ -42,8 +45,11 @@ namespace System\Template\Renderer\Driver
 			}
 
 			if ($wrap) {
-				$out .= '</div>';
+				echo '</div>';
 			}
+
+			$out = ob_get_contents();
+			ob_end_clean();
 
 			return $out;
 		}
