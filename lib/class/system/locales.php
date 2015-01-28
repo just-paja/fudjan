@@ -41,6 +41,62 @@ namespace System
 			"html5-full" => 'Y-m-d\\TH:i:sP',
 		);
 
+		protected static $dates = array(
+			'days' => array(
+				'normal' => array(
+					"1" => "monday",
+					"2" => "tuesday",
+					"3" => "wednesday",
+					"4" => "thursday",
+					"5" => "friday",
+					"6" => "saturday",
+					"7" => "sunday"
+				),
+
+				'short' => array(
+					"1" => "mon",
+					"2" => "tue",
+					"3" => "wed",
+					"4" => "thu",
+					"5" => "fri",
+					"6" => "sat",
+					"7" => "sun"
+				),
+			),
+
+			'months' => array(
+				'normal' => array(
+					"1" => "january",
+					"2" => "february",
+					"3" => "march",
+					"4" => "april",
+					"5" => "may",
+					"6" => "june",
+					"7" => "july",
+					"8" => "august",
+					"9" => "september",
+					"10" => "october",
+					"11" => "november",
+					"12" => "december"
+				),
+
+				'short' => array(
+					"1" => "jan",
+					"2" => "feb",
+					"3" => "mar",
+					"4" => "apr",
+					"5" => "may",
+					"6" => "jun",
+					"7" => "jul",
+					"8" => "aug",
+					"9" => "sep",
+					"10" => "oct",
+					"11" => "nov",
+					"12" => "dec"
+				)
+			)
+		);
+
 		private static $attrs_common = array('author', 'created_at', 'updated_at');
 
 
@@ -199,13 +255,12 @@ namespace System
 		private function load_date_translations()
 		{
 			if (is_null($this->date_trans)) {
-				$def = self::create($this->response, self::LANG_DEFAULT);
 				$this->date_trans = array(
 					"find" => array_merge(
-						(array) $def->trans('days', null, 'en'),
-						(array) $def->trans('days-short', null, 'en'),
-						(array) $def->trans('months', null, 'en'),
-						(array) $def->trans('months-short', null, 'en')
+						$this::$dates['days']['normal'],
+						$this::$dates['days']['short'],
+						$this::$dates['months']['normal'],
+						$this::$dates['months']['short']
 					),
 
 					"replace" => array_merge(
@@ -350,7 +405,7 @@ namespace System
 					$date = $helper;
 				}
 
-				$local_format = \System\Locales::trans('date-format-'.$format);
+				$local_format = $this->trans('date-format-'.$format);
 				$d = $date->format(is_null($local_format) ? $format:$local_format);
 
 				if ($translate == self::TRANS_NONE) {
