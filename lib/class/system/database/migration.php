@@ -61,10 +61,11 @@ namespace System\Database
 		 */
 		public static function checkout_folder(array $old = array())
 		{
-			$dir = opendir(BASE_DIR.self::DIR);
+			$files = \System\Composer::list_files(self::DIR);
 			$items = array();
 
-			while ($file = readdir($dir)) {
+			foreach ($files as $file_path) {
+				$file = basename($file_path);
 
 				if (preg_match("/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}\-[a-zA-Z\_\-]*\.php$/", $file)) {
 					$fname = explode('-', $file);
@@ -115,7 +116,7 @@ namespace System\Database
 		public function &run()
 		{
 			$this->sql("START TRANSACTION");
-			include($p = BASE_DIR.self::DIR.'/'.$this->get_filename());
+			include($this->get_file_path());
 			$this->sql("COMMIT");
 
 			$this->get_checksum();
@@ -129,7 +130,7 @@ namespace System\Database
 		private function get_checksum()
 		{
 			if (!$this->md5_sum) {
-				$this->md5_sum = md5(\System\File::read($p = BASE_DIR.self::DIR.'/'.$this->get_filename()));
+				$this->md5_sum = md5(\System\File::read($p = $this->get_file_path()));
 			}
 			return $this->md5_sum;
 		}
@@ -149,6 +150,12 @@ namespace System\Database
 		public function get_filename()
 		{
 			return $this->date->format('Y-m-d').'-'.$this->seoname.'.php';
+		}
+
+
+		public function get_file_path()
+		{
+			return \System\Composer::resolve(self::DIR.'/'.$this->get_filename());
 		}
 
 
