@@ -25,13 +25,7 @@ namespace System\Template\Renderer
 		public function get_context()
 		{
 			return array_merge(array('wrap' => true), $this->renderer->get_context(), array(
-				'ren'   => $this,
-				'trans' => function($str, $rewrite = null) {
-					return $this->renderer->trans($str, $rewrite);
-				},
-				'to_html' => function($obj) {
-					return to_html($this->renderer, $obj);
-				}
+				'ren' => $this
 			));
 		}
 
