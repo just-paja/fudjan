@@ -274,7 +274,7 @@ namespace System\Http
 		 */
 		public function cookie($name)
 		{
-			return isset($this->cookie[$name]) ? $this->cookie[$name]:null;
+			return isset($this->cookies[$name]) ? $this->cookies[$name]:null;
 		}
 
 
