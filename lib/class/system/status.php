@@ -113,6 +113,12 @@ namespace System
 				$cfg_ok = false;
 			}
 
+			try {
+				$debug = \System\Settings::get('dev', 'debug', 'backend');
+			} catch(\System\Error\Config $exc) {
+				$debug = true;
+			}
+
 			if (!($e instanceof \System\Error)) {
 				$e = \System\Error::from_exception($e);
 			}
@@ -148,10 +154,21 @@ namespace System
 				}
 
 				if (!isset($error_page['partial'])) {
-					$error_page['partial'] = 'system/error/bug';
+					$error_page['partial'] = array('system/error/bug');
 				}
 
-				$response->renderer()->partial($error_page['partial'], array("desc" => $e));
+				if (!is_array($error_page['partial'])) {
+					$error_page['partial'] = array($error_page['partial']);
+				}
+
+				if ($debug && !in_array('system/error/bug', $error_page['partial'])) {
+					$error_page['partial'][] = 'system/error/bug';
+				}
+
+				foreach ($error_page['partial'] as $partial) {
+					$response->renderer()->partial($partial, array("desc" => $e));
+				}
+
 				$response->render()->send_headers()->send_content();
 
 			} catch (\Exception $exc) {
