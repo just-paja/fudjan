@@ -2,6 +2,15 @@
 	"domain":null,
 	"map":{},
 
+	"packages":{
+		"style":{
+			"error-report":[
+				"styles/fudjan/fonts",
+				"styles/fudjan/errors"
+			]
+		}
+	},
+
 	"tags":[
 		{
 			"name":"cfg",

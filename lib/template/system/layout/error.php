@@ -4,8 +4,9 @@ echo doctype();
 echo html($loc->get_lang());
 
 	echo head();
-		$ren->content_for('styles', 'styles/pwf/fonts');
-		$ren->content_for('styles', 'styles/pwf/errors');
+		?>
+		<link rel="stylesheet" type="text/css" href="<?=$ren->link_resource('style', 'error-report')?>">
+		<?
 		$ren->content_for('title', 'Fudjan error');
 		$ren->content_from('head');
 	close('head');

@@ -1,24 +1,33 @@
 html,
 body
 {
-	background-color:#000;
+	background-color:#222;
 	font-family:dosis, "Arial", sans-serif;
 	font-size:15px;
+	padding:0;
+	margin:0;
 }
 
 body {
-	color:#efefef;
+	color:#fff;
+}
+
+ul {
+	margin:0 0 10px;
+	padding:0 5px;
 }
 
 h1 {
 	margin:0 0 10px;
 	font-size:24px;
 	font-weight:bold;
+	margin-top:0;
 }
 
 h2 {
 	font-size:24px;
 	margin-bottom:15px;
+	margin-top:0;
 }
 
 .header,
@@ -26,15 +35,13 @@ h2 {
 .advice,
 footer
 {
-	padding-left:20px;
-	padding-right:20px;
-	margin-bottom:20px;
+	padding:20px;
 }
 
 .header {
-	background:#630463;
+	background:#68001F;
 	padding:20px;
-	margin-bottom:20px;
+	margin-bottom:0;
 
 	strong {
 		font-size:18px
@@ -58,16 +65,7 @@ li.point
 {
 	margin-bottom:5px;
 	list-style:square inside;
-	color:#999;
 }
-
-li.err_0 { color:#fff; }
-li.err_1 { color:#eee; }
-li.err_2 { color:#ddd; }
-li.err_3 { color:#ddd; }
-li.err_4 { color:#ccc; }
-li.err_5 { color:#bbb; }
-li.err_6 { color:#aaa; }
 
 .err details {
 	display:inline-block;
@@ -75,4 +73,7 @@ li.err_6 { color:#aaa; }
 
 .err details .cont {
 	display:none;
+}
+
+#container {
 }
