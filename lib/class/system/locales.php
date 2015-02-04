@@ -111,16 +111,6 @@ namespace System
 		}
 
 
-		/** Is selected locale available
-		 * @param string $locale
-		 * @return bool
-		 */
-		public static function is_locale_available($locale)
-		{
-			return is_dir(BASE_DIR.self::DIR.'/'.$locale);
-		}
-
-
 		/** Get default language, if settings fail, skip
 		 * @return string
 		 */
@@ -319,22 +309,10 @@ namespace System
 					$list = array('en');
 				}
 
-				if (in_array($locale, $list) && self::is_locale_available($locale)) {
+				if (in_array($locale, $list)) {
 					$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
 				} else {
-					$cname = '\System\Error\NotFound';
-
-					try {
-						$debug = \System\Settings::get('dev', 'debug', 'backend');
-					} catch (\System\Error\Config $e) {
-						$debug = true;
-					}
-
-					if ($debug) {
-						$cname = '\System\Error\Config';
-					}
-
-					throw new $cname('Unknown language', $locale);
+					throw new \System\Error\Locales('Unknown language', $locale);
 				}
 			}
 
