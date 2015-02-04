@@ -199,6 +199,13 @@ namespace System
 		}
 
 
+		/**
+		 * Try to load at least some locales for error report if possible.
+		 *
+		 * @param \System\Http\Request $rq
+		 * @param \System\Http\Response $res
+		 * @return void
+		 */
 		protected static function load_locales_safe(\System\Http\Request $rq, \System\Http\Response $res)
 		{
 			try {
