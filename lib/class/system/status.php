@@ -101,10 +101,12 @@ namespace System
 		 */
 		public static function catch_exception(\Exception $e, $ignore_next = false)
 		{
+			// Kill output buffer
 			while (ob_get_level() > 0) {
 				ob_end_clean();
 			}
 
+			// Get error display definition
 			try {
 				$errors = \System\Settings::get('output', 'errors');
 				$cfg_ok = true;
@@ -113,68 +115,78 @@ namespace System
 				$cfg_ok = false;
 			}
 
+			// See if debug is on
 			try {
 				$debug = \System\Settings::get('dev', 'debug', 'backend');
 			} catch(\System\Error\Config $exc) {
 				$debug = true;
 			}
 
+			// Convert to standart class error if necessary
 			if (!($e instanceof \System\Error)) {
 				$e = \System\Error::from_exception($e);
 			}
 
+			// Try saving error into logfile
 			try {
 				self::report('error', $e);
 			} catch (\Exception $err) {
 				$e = $err;
 			}
 
-			if (array_key_exists($e->get_name(), $errors)) {
-				$error_page = $errors[$e->get_name()];
+			if ($e instanceof \System\Error\Request && $e::REDIRECTABLE && $e->location) {
+				header('Location: '. $e->location);
+				exit(0);
 			} else {
-				$error_page = array(
-					"title"    => 'Error occurred!',
-					"layout"   => array('system/layout/error'),
-					"partial"  => 'system/error/bug',
-				);
-			}
-
-			$error_page['format'] = 'html';
-			$error_page['render_with'] = 'basic';
-
-			try {
-				$request = \System\Http\Request::from_hit();
-				$response = $request->create_response($error_page);
-				$response->renderer()->format = 'html';
-
-				if (self::on_cli()) {
-					$response->renderer()->format = 'txt';
+				// Find error display template
+				if (array_key_exists($e->get_name(), $errors)) {
+					$error_page = $errors[$e->get_name()];
 				} else {
-					$response->status($e->get_http_status());
+					$error_page = array(
+						"title"    => 'Error occurred!',
+						"layout"   => array('system/layout/error'),
+						"partial"  => 'system/error/bug',
+					);
 				}
 
-				if (!isset($error_page['partial'])) {
-					$error_page['partial'] = array('system/error/bug');
+				// Setup output format for error page
+				$error_page['format'] = 'html';
+				$error_page['render_with'] = 'basic';
+
+				try {
+					$request = \System\Http\Request::from_hit();
+					$response = $request->create_response($error_page);
+					$response->renderer()->format = 'html';
+
+					if (self::on_cli()) {
+						$response->renderer()->format = 'txt';
+					} else {
+						$response->status($e->get_http_status());
+					}
+
+					if (!isset($error_page['partial'])) {
+						$error_page['partial'] = array('system/error/bug');
+					}
+
+					if (!is_array($error_page['partial'])) {
+						$error_page['partial'] = array($error_page['partial']);
+					}
+
+					if ($debug && !in_array('system/error/bug', $error_page['partial'])) {
+						$error_page['partial'][] = 'system/error/bug';
+					}
+
+					foreach ($error_page['partial'] as $partial) {
+						$response->renderer()->partial($partial, array("desc" => $e));
+					}
+
+					$response->render()->send_headers()->send_content();
+
+				} catch (\Exception $exc) {
+					echo "Fatal error when rendering exception details";
+					v($exc);
+					exit(1);
 				}
-
-				if (!is_array($error_page['partial'])) {
-					$error_page['partial'] = array($error_page['partial']);
-				}
-
-				if ($debug && !in_array('system/error/bug', $error_page['partial'])) {
-					$error_page['partial'][] = 'system/error/bug';
-				}
-
-				foreach ($error_page['partial'] as $partial) {
-					$response->renderer()->partial($partial, array("desc" => $e));
-				}
-
-				$response->render()->send_headers()->send_content();
-
-			} catch (\Exception $exc) {
-				echo "Fatal error";
-				v($exc);
-				exit(1);
 			}
 
 			exit(1);
