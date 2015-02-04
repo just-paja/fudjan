@@ -6,7 +6,9 @@ namespace System
 	{
 		protected $explanation = array();
 		protected $backtrace = array();
+
 		const HTTP_STATUS = 500;
+		const REDIRECTABLE = false;
 
 
 		function __construct()
