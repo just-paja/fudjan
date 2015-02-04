@@ -92,7 +92,7 @@ namespace System\Http
 		 * @param \System\Http\Request $request
 		 * @return self
 		 */
-		public static function from_request(\System\Http\Request $request, array $attrs = array())
+		public static function from_request(\System\Http\Request $rq, array $attrs = array())
 		{
 			def($attrs['format'], null);
 			def($attrs['start_time'], microtime(true));
@@ -106,14 +106,22 @@ namespace System\Http
 			}
 
 			if (!isset($attrs['layout'])) {
-				$attrs['layout'] = $request->layout;
+				$attrs['layout'] = $rq->layout;
 			}
 
 			$response = new self($attrs);
 
-			$response->data['request'] = $request;
+			$response->data['rq'] = $rq;
 			$response->data['flow']    = new \System\Module\Flow($response, $response->modules);
-			$response->data['locales'] = \System\Locales::create($response, $request->lang)->make_syswide();
+
+			try {
+				$response->data['locales'] = \System\Locales::create($response, $rq->lang)->make_syswide();
+			} catch (\System\Error\Locales $e) {
+				$err = new \System\Error\SeeOther();
+				$err->location = $rq->path .'?lang=cs';
+
+				throw $err;
+			}
 
 			return $response;
 		}
