@@ -78,19 +78,20 @@ namespace System\Http
 		public function create_response(array $attrs = null)
 		{
 			$this->args = array();
+			$response = false;
 
 			if (is_null($attrs)) {
 				if ($path = \System\Router::get_path($this->host, $this->path, $this->data['args'])) {
 					$attrs = isset($path[1]) ? $path[1]:array();
 					$attrs['request'] = $this;
 
-					return \System\Http\Response::from_request($this, $attrs);
+					$response = \System\Http\Response::from_request($this, $attrs);
 				}
 			} else {
-				return \System\Http\Response::from_request($this, $attrs);
+				$response = \System\Http\Response::from_request($this, $attrs);
 			}
 
-			return false;
+			return $response;
 		}
 
 

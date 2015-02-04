@@ -109,21 +109,13 @@ namespace System\Http
 				$attrs['layout'] = $rq->layout;
 			}
 
-			$response = new self($attrs);
+			$res = new self($attrs);
 
-			$response->data['rq'] = $rq;
-			$response->data['flow']    = new \System\Module\Flow($response, $response->modules);
+			$res->data['request'] = $rq;
+			$res->data['flow'] = new \System\Module\Flow($res, $res->modules);
+			$res->data['locales'] = \System\Locales::create($res, $rq->lang)->make_syswide();
 
-			try {
-				$response->data['locales'] = \System\Locales::create($response, $rq->lang)->make_syswide();
-			} catch (\System\Error\Locales $e) {
-				$err = new \System\Error\SeeOther();
-				$err->location = $rq->path .'?lang=cs';
-
-				throw $err;
-			}
-
-			return $response;
+			return $res;
 		}
 
 
@@ -539,8 +531,5 @@ namespace System\Http
 		{
 			return $this->init_done;
 		}
-
-
-
 	}
 }

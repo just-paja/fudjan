@@ -153,9 +153,24 @@ namespace System
 				$error_page['format'] = 'html';
 				$error_page['render_with'] = 'basic';
 
+				if (!isset($error_page['partial'])) {
+					$error_page['partial'] = array('system/error/bug');
+				}
+
+				if (!is_array($error_page['partial'])) {
+					$error_page['partial'] = array($error_page['partial']);
+				}
+
+				if ($debug && !in_array('system/error/bug', $error_page['partial'])) {
+					$error_page['partial'][] = 'system/error/bug';
+				}
+
+				$request = \System\Http\Request::from_hit();
+				$response = $request->create_response($error_page);
+
+				self::load_locales_safe($request, $response);
+
 				try {
-					$request = \System\Http\Request::from_hit();
-					$response = $request->create_response($error_page);
 					$response->renderer()->format = 'html';
 
 					if (self::on_cli()) {
@@ -164,32 +179,62 @@ namespace System
 						$response->status($e->get_http_status());
 					}
 
-					if (!isset($error_page['partial'])) {
-						$error_page['partial'] = array('system/error/bug');
-					}
-
-					if (!is_array($error_page['partial'])) {
-						$error_page['partial'] = array($error_page['partial']);
-					}
-
-					if ($debug && !in_array('system/error/bug', $error_page['partial'])) {
-						$error_page['partial'][] = 'system/error/bug';
-					}
-
 					foreach ($error_page['partial'] as $partial) {
 						$response->renderer()->partial($partial, array("desc" => $e));
 					}
-
-					$response->render()->send_headers()->send_content();
-
 				} catch (\Exception $exc) {
+					header('HTTP/1.1 500 Internal Server Error');
 					echo "Fatal error when rendering exception details";
 					v($exc);
 					exit(1);
 				}
+
+				$response
+					->render()
+					->send_headers()
+					->send_content();
 			}
 
 			exit(1);
+		}
+
+
+		protected static function load_locales_safe(\System\Http\Request $rq, \System\Http\Response $res)
+		{
+			try {
+				$res->locales->load_messages();
+			} catch (\System\Error\Locales $e) {
+				try {
+					$def = \System\Settings::get('locales', 'default_lang');
+				} catch (\System\Error\Config $e) {
+					try {
+						$list = \System\Settings::get('locales', 'allowed');
+					} catch (\System\Error\Config $e) {
+						echo "Fatal error when picking locales";
+						v($exc);
+						exit(1);
+					}
+
+					if (is_array($list) && count($list) > 0) {
+						$def = $list[0];
+					} else {
+						echo "Fatal error when picking locales. Settings key locales.allowed must be array.";
+						v($exc);
+						exit(1);
+					}
+				}
+
+				$rq->lang = $def;
+			}
+
+			try {
+				$res->locales
+					->set_locale($rq->lang)
+					->load_messages();
+			} catch (\System\Error\Locales $e) {
+				echo "Fatal error when picking locales. Default language is not allowed. Config path locales.default_lang.";
+				exit(1);
+			}
 		}
 
 

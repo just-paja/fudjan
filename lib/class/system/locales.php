@@ -153,7 +153,7 @@ namespace System
 		public function set_locale($locale = null)
 		{
 			$this->locale = is_null($locale) ? self::get_default_lang():$locale;
-			return $this->load_messages();
+			return $this;
 		}
 
 
@@ -222,8 +222,8 @@ namespace System
 		{
 			$lang = is_null($lang) ? $this->get_lang():$lang;
 
-			if (empty($this->messages[$lang])) {
-				$this->load_messages($lang);
+			if (!isset($this->messages[$lang])) {
+				$this->messages[$lang] = array();
 			}
 
 			$msg = isset($this->messages[$lang][$str]) ? $this->messages[$lang][$str]:$str;
@@ -296,7 +296,7 @@ namespace System
 		 * @param string $lang
 		 * @return void
 		 */
-		private function load_messages($locale = null)
+		public function load_messages($locale = null)
 		{
 			if (is_null($locale)) {
 				$locale = $this->locale;
