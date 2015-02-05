@@ -9,8 +9,9 @@ namespace
 		{
 			\System\Cache::build_core();
 
+			$dir = BASE_DIR.'/var/cache/runtime';
 			$cmd = implode(';', array(
-				'cd '.BASE_DIR.'/var/cache',
+				'cd '.$dir,
 				'php core.php'
 			));
 
@@ -21,6 +22,8 @@ namespace
 
 			$this->assertEquals('', implode('', $out));
 			$this->assertEquals(0, $stat);
+
+			unlink($dir.'/core.php');
 		}
 	}
 }
