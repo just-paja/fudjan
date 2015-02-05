@@ -280,11 +280,15 @@ namespace System
 						$obj->update_attrs($data_set);
 					} else {
 						$obj = new $model($data_set);
+						$obj->is_new_object = true;
 					}
 
 					try {
 						$obj->save();
-					} catch(\System\Error\Database $e) {}
+					} catch(\System\Error\Database $e) {
+						v($e);
+						exit;
+					}
 
 					foreach ($data_set as $attr=>$val) {
 						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
