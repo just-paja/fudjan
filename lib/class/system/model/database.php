@@ -398,7 +398,7 @@ namespace System\Model
 					));
 				}
 
-				$this->relations[$attr] = $value;
+				$this->relations[$attr] = $corrected;
 			} else throw new \System\Error\Model(sprintf(
 				"Value given to has_many relations must be array. Type of '%s' was supplied to attribute '%s' of model '%s'.",
 				gettype($value), $attr, get_model($this)
