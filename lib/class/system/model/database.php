@@ -719,7 +719,7 @@ namespace System\Model
 			if (isset($model::$required)) {
 				foreach ($model::$required as $attr) {
 					if (!$this->data[$attr]) {
-						//~ $this->errors[] = 'missing-attr-'.$attr;
+						$this->errors[] = 'missing-attr-'.$attr;
 						$e = true;
 					}
 				}
