@@ -33,6 +33,10 @@ namespace System\Form\Input
 							$valid = array_key_exists($item, $this->options);
 
 							if (!$valid) {
+								$this->form()->report_error($this->name, array(
+									'message' => 'out-of-options',
+									'value'   => $item
+								));
 								break;
 							}
 						}
