@@ -52,7 +52,8 @@ namespace System
 		 */
 		public static function from_path($path)
 		{
-			if (!file_exists($path)) {
+			// If file_exists throws error, path is inaccessible
+			if (!@file_exists($path)) {
 				$path = \System\Composer::resolve($path);
 			}
 
