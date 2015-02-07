@@ -472,6 +472,12 @@ namespace System\Database
 					}
 					break;
 
+				case 'is_null':
+					def($filter['is_null'], true);
+
+					$pass = '`'.$filter['attr'].'` '.($filter['is_null'] ? 'IS':'IS NOT').' NULL';
+					break;
+
 				case 'iexact':
 					$pass = "LOWER(`" . $filter['attr'] . "`) = LOWER('".$value."')";
 					break;
