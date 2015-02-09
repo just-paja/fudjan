@@ -24,6 +24,12 @@ namespace System
 		}
 
 
+		public function set_explanation(array $exp)
+		{
+			$this->explanation = $exp;
+		}
+
+
 		public function get_backtrace()
 		{
 			return $this->backtrace;
