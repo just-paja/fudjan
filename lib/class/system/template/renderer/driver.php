@@ -6,6 +6,8 @@ namespace System\Template\Renderer
 	{
 		protected static $attrs = array(
 			'renderer' => array('object', 'model' => '\System\Template\Renderer'),
+			'request'  => array('object', 'model' => '\System\Http\Request'),
+			'response' => array('object', 'model' => '\System\Http\Response'),
 		);
 
 		private static $resource_filter = array(
@@ -35,8 +37,6 @@ namespace System\Template\Renderer
 			$this->content = array(
 				'title'   => '',
 				'meta'    => array(),
-				'styles'  => array(),
-				'scripts' => array('bower/pwf.js'),
 				'slots'   => array(),
 				'yield'   => array(),
 			);
@@ -172,7 +172,20 @@ namespace System\Template\Renderer
 			}
 
 			$locals['template'] = str_replace('/', '-', $name);
-			return $this->render_template($path, $locals);
+
+			try {
+				return $this->render_template($path, $locals);
+			} catch(\System\Error $e) {
+				$exp = $e->get_explanation();
+
+				array_push($exp, 'Error in template');
+				array_push($exp, $path);
+
+				$err = new \System\Error\Template();
+				$err->set_explanation($exp);
+
+				throw $err;
+			}
 		}
 
 
@@ -316,13 +329,17 @@ namespace System\Template\Renderer
 		{
 			$args = func_get_args();
 			array_shift($args);
-			return $this->renderer->response()->locales()->trans($str, $args);
+			return $this->locales->trans($str, $args);
 		}
 
 
 		public function __call($name, $args)
 		{
-			return call_user_func_array(array($this->renderer, $name), $args);
+			$call = array($this->renderer, $name);
+
+			if (is_callable($call)) {
+				return call_user_func_array($call, $args);
+			} else throw new \System\Error\Template('Tried to call undefined method', $name);
 		}
 
 
@@ -372,54 +389,12 @@ namespace System\Template\Renderer
 		}
 
 
-		/** Render HTML javascript section
-		 * @return $this
-		 */
-		public function render_scripts()
-		{
-			$cont = $this->get_content_from("scripts");
-
-			if (!is_null($cont)) {
-				$this->content_for("head", '<script type="text/javascript" src="'.$cont.'" async="true"></script>');
-			}
-
-			return $this;
-		}
-
-
-		/** Render HTML css style section
-		 * @return $this
-		 */
-		public function render_styles()
-		{
-			$cont = $this->get_content_from("styles");
-
-			if (!is_null($cont)) {
-				$this->content_for("head", '<link type="text/css" crossorigin="anonymous" rel="stylesheet" href="'.$cont.'" />');
-			}
-
-			return $this;
-		}
-
-
 		public function render_frontend_config()
 		{
 			$conf = $this->renderer->response->request->fconfig;
 			$str = json_encode($conf);
 
 			$this->content_for('head', '<script type="text/javascript">var sys = '.$str.'</script>');
-			return $this;
-		}
-
-
-		public function collect_resources($types)
-		{
-			foreach ($types as $type=>$list) {
-				foreach($list as $str) {
-					$this->content_for($type, $str);
-				}
-			}
-
 			return $this;
 		}
 	}

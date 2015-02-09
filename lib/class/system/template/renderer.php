@@ -9,6 +9,8 @@ namespace System\Template
 		protected static $attrs = array(
 			"format"               => array('varchar'),
 			"start_time"           => array('float'),
+			"locales"              => array('object', "model" => '\System\Locales'),
+			"request"              => array('object', "model" => '\System\Http\Request'),
 			"response"             => array('object', "model" => '\System\Http\Response'),
 			"heading_layout_level" => array('int', "default" => 1),
 			"heading_level"        => array('int', "default" => null, "is_null" => true),
@@ -37,6 +39,9 @@ namespace System\Template
 			$renderer = new self($response->opts);
 			$renderer->format = $response->format;
 			$renderer->no_debug = $response->no_debug;
+
+			$renderer->locales  = $response->locales;
+			$renderer->request  = $response->request;
 			$renderer->response = $response;
 
 			if ($response->render_with) {
@@ -75,7 +80,10 @@ namespace System\Template
 			}
 
 			return new $name(array(
-				'renderer' => $this
+				'renderer' => $this,
+				'request'  => $this->request,
+				'response' => $this->response,
+				'locales'  => $this->locales,
 			));
 		}
 
@@ -95,12 +103,12 @@ namespace System\Template
 		public function get_context()
 		{
 			return array_merge(array(
-				'flow' => $this->response()->flow(),
-				'loc'  => $this->response()->locales(),
+				'flow' => $this->response->flow(),
+				'loc'  => $this->response->locales(),
 				'ren'  => $this,
-				'res'  => $this->response(),
-				'rq'   => $this->response()->request(),
-			), $this->response()->get_template_context());
+				'res'  => $this->response,
+				'rq'   => $this->response->request(),
+			), $this->response->get_template_context());
 		}
 
 
@@ -115,7 +123,7 @@ namespace System\Template
 			$this->start_time = microtime(true);
 
 			$cont = $driver->render();
-			$this->response()->set_content($cont);
+			$this->response->set_content($cont);
 
 			return $this;
 		}
@@ -146,20 +154,6 @@ namespace System\Template
 		}
 
 
-		/** Add default system resources
-		 * @return void
-		 */
-		public function add_default_resources()
-		{
-			$this->content_for('scripts', 'lib/functions');
-			$this->content_for('scripts', 'lib/jquery');
-			$this->content_for('scripts', 'lib/browser');
-			$this->content_for('scripts', 'pwf');
-			$this->content_for('scripts', 'pwf/storage');
-			$this->content_for('styles', 'pwf/elementary');
-		}
-
-
 		/** Add template into queue
 		 * @param string $template
 		 * @param string $slot
@@ -175,10 +169,6 @@ namespace System\Template
 				"name"   => $template,
 				"locals" => $locals,
 			);
-		}
-		public function response()
-		{
-			return $this->response;
 		}
 
 
@@ -196,7 +186,6 @@ namespace System\Template
 		{
 			return microtime(true) - $this->start_time;
 		}
-
 
 
 		private function heading_render($label, $level = null)
@@ -258,175 +247,9 @@ namespace System\Template
 		}
 
 
-		/** Render link (tag <a/>)
-		 * @param string $url    URL to refer to
-		 * @param string $label  Label to render with
-		 * @param array  $object Additional data (
-		 * 	"no-tag" => Render <span/> instead of <a/> if active
-		 * 	"strict" => Be strict when checking path - dont count subdirectories
-		 * 	 other   => HTML attributes that will be passed to the tag
-		 * )
-		 * @return string
-		 */
-		public function link($url, $label, array $object = array())
-		{
-			def($object['no-tag'], false);
-			def($object['strict'], false);
-			def($object['class'], array());
-
-			$is_root = false;
-			$is_selected = false;
-
-			if (!is_array($object['class'])) {
-				$object['class'] = explode(' ', $object['class']);
-			}
-
-			if ($url) {
-				$is_root = $url == '/' && $this->response()->request()->path == '/';
-				$is_selected = $object['strict'] ?
-					($url == $this->response()->request()->path || $url == $this->response()->request()->path.'/'):
-					(strpos($this->response()->request()->path, $url) === 0);
-			}
-
-			if ($is_root || ($url != '/' && $is_selected)) {
-				$object['class'][] = 'active';
-			}
-
-			if ($object['no-tag'] && $is_selected) {
-				$object['class'][] = 'link';
-				return span($object['class'], $label);
-			} else {
-				$object['content'] = $label;
-				$object['href'] = $url;
-				return \STag::a($object);
-			}
-		}
-
-
-		/** Render link (tag <a/>) with reverse url
-		 * @param string $url_name  URL that will be reversed
-		 * @param string $label    Label to render with
-		 * @param array  $object   Aditional data (
-		 * 	"args" => Arguments to pass to reverse render
-		 * 	other  => same as ::link() function
-		 * )
-		 */
-		public function link_for($url_name, $label, array $object = array())
-		{
-			def($args, def($object['args'], array()));
-			unset($object['args']);
-			return $this->link($this->response()->url($url_name, $args), $label, $object);
-		}
-
-
-		public function link_ext($url, $label, array $object = array())
-		{
-			def($object['class'], array());
-
-			if (!is_array($object['class'])) {
-				$object['class'] = explode(' ', $object['class']);
-			}
-
-			$object['class'][] = 'ext';
-			return $this->link($url, $label, $object);
-		}
-
-
-		/** Render icon
-		 * @param string|\System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string               $size   Icon size, eg '32' or '32x32'
-		 * @param array                $object Other attributes passed to icon object
-		 * @return string
-		 */
-		public function icon($icon, $size='32', array $object = array())
-		{
-			$size_e = explode('x', $size, 2);
-			isset($size_e[0]) && $w = $size_e[0];
-			isset($size_e[1]) && $h = $size_e[1];
-			!isset($h) && $h = $w;
-
-			$icon = $icon instanceof Image ?
-				$icon->thumb(intval($w), intval($h), def($object['crop'], false)):
-				self::URL_ICON_PREFIX.'/'.$size.'/'.$icon;
-
-			return \Stag::span(array(
-				"class" => 'icon isize-'.$size,
-				"style" => 'background-image:url('.$icon.'); width:'.$w.'px; height:'.$h.'px',
-				"close" => true,
-			));
-		}
-
-
-		/** Render icon as link
-		 * @param string|\System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string $url  URL to refer to
-		 * @param array  $object Additional data (
-		 * 	"size"  => Icon size, default is 32
-		 * 	other   => HTML attributes that will be passed to the link tag
-		 * )
-		 * @return string
-		 */
-		public function icon_for($url, $icon, $size='32', array $object = array())
-		{
-			return $this->link($url, $this->icon($icon, $size), $object);
-		}
-
-
-		/** Label with icon as link
-		 * @param string              $url
-		 * @param string              $label
-		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string              $size
-		 * @param array               $object
-		 * @return string
-		 */
-		public function label_for($url, $label, $icon, $size='32', array $object = array())
-		{
-			$html = array($this->icon($icon, $size), span('label', $label));
-
-			if (def($object['label_left'], false)) {
-				$html = array_reverse($html);
-			}
-
-			return $this->link($url, $html, $object);
-		}
-
-
-		/** Label with icon as link using reverse urls
-		 * @param string              $url
-		 * @param string              $label
-		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string              $size
-		 * @param array               $object
-		 * @return string
-		 */
-		public function label_for_url($url, $label, $icon, $size='32', array $object = array())
-		{
-			def($args, def($object['args'], array()));
-			unset($object['args']);
-
-			return $this->label_for($this->url($url, $args), $label, $icon, $size, $object);
-		}
-
-
-		/** Icon as link using reverse urls
-		 * @param string              $url
-		 * @param string              $label
-		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string              $size
-		 * @param array               $object
-		 * @return string
-		 */
-		public function icon_for_url($url, $icon, $size='32', array $object = array())
-		{
-			def($args, def($object['args'], array()));
-			unset($object['args']);
-
-			return $this->icon_for($this->url($url, $args), $icon, $size, $object);
-		}
-
-
-		/** URL alias for reponse::url
+		/**
+		 * URL alias for reponse::url
+		 *
 		 * @param string $name Named route name
 		 * @param array  $args Arguments for route
 		 * @param int    $var  Variation number of URL
@@ -434,7 +257,7 @@ namespace System\Template
 		 */
 		public function url($name, array $args = array(), $var = 0)
 		{
-			return \System\Router::get_url($this->response()->request()->host, $name, $args, $var);
+			return \System\Router::get_url($this->request->host, $name, $args, $var);
 		}
 
 
@@ -444,42 +267,22 @@ namespace System\Template
 		}
 
 
-		/** Return uniform resource locator
+		/**
+		 * Return uniform resource locator
+		 *
 		 * @param string $name Named route name
 		 * @param array  $args Arguments for route
 		 * @return string
 		 */
 		public function uri($name, array $args = array(), $var = 0)
 		{
-			$rq = $this->response()->request();
-			return ($rq->secure ? 'https':'http').'://'.$rq->host.$this->url($name, $args, $var);
-		}
-
-
-		/** Label with icon as link, name on left
-		 * @param string              $url
-		 * @param string              $label
-		 * @param string|System\Image $icon   Icon name ([theme/]type/name) or object
-		 * @param string              $size
-		 * @param array               $object
-		 * @return string
-		 */
-		public function label_for_left($url, $label, $icon, $size='32', array $object = array())
-		{
-			$object['label_left'] = true;
-			return $this->label_for($url, $label, $icon, $size, $object);
-		}
-
-
-		public function locales()
-		{
-			return $this->response()->locales();
+			return ($this->request->secure ? 'https':'http').'://'.$this->request->host.$this->url($name, $args, $var);
 		}
 
 
 		public function lang()
 		{
-			return $this->response()->locales()->get_lang();
+			return $this->locales->get_lang();
 		}
 
 
@@ -487,13 +290,13 @@ namespace System\Template
 		{
 			$args = func_get_args();
 			array_shift($args);
-			return $this->response()->locales()->trans($str, $args);
+			return $this->locales->trans($str, $args);
 		}
 
 
 		public function format_date($date, $format = 'std', $translate = true)
 		{
-			return $this->response()->locales()->format_date($date, $format, $translate);
+			return $this->locales->format_date($date, $format, $translate);
 		}
 	}
 }

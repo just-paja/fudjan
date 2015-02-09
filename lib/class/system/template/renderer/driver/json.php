@@ -22,7 +22,7 @@ namespace System\Template\Renderer\Driver
 			}
 
 			if (count($data) == 1) {
-				$this->renderer->response()->status(intval(def($data[0]['status'], 200)));
+				$this->response->status(intval(def($data[0]['status'], 200)));
 			}
 
 			return count($json) == 1 ? $json[0]:$json;
@@ -31,8 +31,8 @@ namespace System\Template\Renderer\Driver
 
 		public function render_template($path, array $locals = array())
 		{
-			return $this->renderer->response()->request()->get('callback') ?
-				$this->renderer->response()->request()->get('callback').'('.json_encode($locals).');':
+			return $this->request->get('callback') ?
+				$this->request->get('callback').'('.json_encode($locals).');':
 				json_encode($locals);
 		}
 
