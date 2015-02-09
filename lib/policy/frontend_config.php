@@ -8,7 +8,7 @@ $policy = function($rq, $res) {
 	}
 
 	try {
-		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("locale_list");
+		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("locale_messages", array('{lang}'));
 	} catch (\System\Error\NotFound $e) {
 		$locales_url = '';
 	}
@@ -30,7 +30,7 @@ $policy = function($rq, $res) {
 
 	$cont = array(
 		"locales" => array(
-			"url"      => substr($locales_url, 0, strlen($locales_url)-1),
+			"url"      => $locales_url,
 			"lang"     => $res->locales()->get_lang(),
 			"autoload" => $autoload,
 		),
