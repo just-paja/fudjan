@@ -42,14 +42,24 @@ namespace System
 				}
 
 				!self::on_cli() && $report .= ' '.$_SERVER['SERVER_NAME'].NL;
-				self::append_msg_info($msg, $report);
 
 				if (self::on_cli()) {
-					$report .= "> Run from console".NL;
+					$report .= "Run from console".NL;
 				} else {
-					$report .= "> Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
+					$report .= "Request: ".$_SERVER['REQUEST_METHOD'].' '.$_SERVER['SERVER_PROTOCOL'].' '.$_SERVER['REQUEST_URI']."'".NL;
 				}
 
+				if ($msg instanceof \System\Error) {
+					$exp = $msg->get_explanation();
+
+					foreach ($exp as $line) {
+						$report .= "> ".$line.NL;
+					}
+
+					$msg = $msg->get_backtrace();
+				}
+
+				$report .= self::get_msg_text(array($msg));
 				$report .= NL;
 
 				if (!$debug && $type == 'error') {
@@ -67,31 +77,55 @@ namespace System
 		}
 
 
-		/** Add message info to report
+		/**
+		 * Add message info to report
+		 *
 		 * @param mixed  $msg
 		 * @param string $report
 		 */
-		private static function append_msg_info($msg, &$report)
+		private static function get_msg_text($msg)
 		{
-			foreach ((array) $msg as $line) {
+			$report = '';
+
+			foreach ($msg as $line) {
 				if ($line) {
 					if (is_array($line)) {
-						if (isset($line[0])) {
-							self::append_msg_info($line, $report);
-						} else {
-							$data = @json_encode($line);
+						$row = array('', '');
 
-							if (json_last_error()) {
-								$data .= "Can't encode data!";
+						if (isset($line['file'])) {
+							$row[0] = $line['file'];
+
+							if (isset($line['line'])) {
+								$row[0] .= ":".$line['line'];
+							}
+						}
+
+						if (isset($line['class'])) {
+							$row[1] .= '  '.$line['class'].$line['type'];
+						}
+
+						if (isset($line['function'])) {
+							if (!isset($line['class'])) {
+								$row[1] .= '  ';
 							}
 
-							$report .= "> ".$data.NL;
+							$row[1] .= $line['function'];
+						}
+
+						if ($row) {
+							$report .= implode(NL, array_filter($row)).NL;
+						}
+
+						if (isset($line[0])) {
+							$report .= self::get_msg_text($line, $report);
 						}
 					} else {
 						$report .= "> ".$line.NL;
 					}
 				}
 			}
+
+			return $report;
 		}
 
 
