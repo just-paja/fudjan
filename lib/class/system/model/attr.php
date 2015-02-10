@@ -420,7 +420,7 @@ namespace System\Model
 					if ($val) {
 						if (isset($attr_data['model'])) {
 							if (!($val instanceof $attr_data['model'])) {
-								throw new \System\Error\Argument(sprintf("Value must be instance of '%s'", $attr_data['model']), $model, $attr);
+								throw new \System\Error\Argument(sprintf("Value must be instance of '%s'", $attr_data['model']), $model, $attr, is_object($val) ? get_class($val):gettype($val));
 							}
 						} else throw new \System\Error\Argument(sprintf("Attribute '%s' of model '%s' must have model defined!", $attr, $model));
 					}

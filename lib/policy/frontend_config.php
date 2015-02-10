@@ -31,7 +31,7 @@ $policy = function($rq, $res) {
 	$cont = array(
 		"locales" => array(
 			"url"      => $locales_url,
-			"lang"     => $res->locales()->get_lang(),
+			"lang"     => $res->locales->get_lang(),
 			"autoload" => $autoload,
 		),
 		"comm" => array(

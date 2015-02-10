@@ -158,12 +158,14 @@ namespace System
 
 						$module   = $this;
 						$response = $this->response();
-						$renderer = $this->response()->renderer();
-						$request  = $this->response()->request();
-						$flow     = $this->response()->flow();
-						$locales  = $this->response()->locales();
+						$renderer = $this->response()->renderer;
+						$request  = $this->response()->request;
+						$flow     = $this->response()->flow;
+						$locales  = $this->response()->locales;
 
 						$ren = &$renderer;
+						$res = &$response;
+						$rq  = &$request;
 
 						$required = require($path);
 
@@ -219,7 +221,7 @@ namespace System
 
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
-			$this->response()->renderer()->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
+			$this->response->renderer->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
 		}
 
 

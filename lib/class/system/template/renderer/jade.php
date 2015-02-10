@@ -1,8 +1,8 @@
 <?
 
-namespace System\Template\Renderer\Driver
+namespace System\Template\Renderer
 {
-	class Jade extends \System\Template\Renderer\Driver
+	class Jade extends \System\Template\Renderer
 	{
 		const DIR_CACHE = '/var/cache/runtime/jade';
 

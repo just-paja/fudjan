@@ -1,12 +1,12 @@
 <?
 
-namespace System\Template\Renderer\Driver
+namespace System\Template\Renderer
 {
-	class Json extends \System\Template\Renderer\Driver
+	class Json extends \System\Template\Renderer
 	{
-		public function render()
+		public function render_content()
 		{
-			$slots = $this->renderer->get_slots();
+			$slots = $this->get_slots();
 			$json = array();
 			$data = array();
 

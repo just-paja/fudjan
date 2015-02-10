@@ -125,6 +125,7 @@ namespace System\Http
 		public function exec()
 		{
 			return $this
+				->create_renderer()
 				->exec_lld()
 				->exec_policies()
 				->exec_flow()
@@ -258,7 +259,7 @@ namespace System\Http
 		public function render()
 		{
 			if (!$this->skip_render) {
-				$this->renderer = $this->renderer()->render();
+				$this->renderer->render();
 			}
 
 			return $this;
@@ -289,7 +290,7 @@ namespace System\Http
 						$mime = $this->mime;
 					} else {
 						try {
-							$mime = \System\Output::get_mime($this->renderer()->format);
+							$mime = \System\Output::get_mime($this->renderer->format);
 						} catch(\System\Error\Argument $e) {
 							$mime = 'text/html; charset=utf-8';
 						}
@@ -339,22 +340,47 @@ namespace System\Http
 		}
 
 
-		/** Get renderer object
-		 * @return \System\Template\Renderer
-		 */
-		public function renderer()
+		public function get_renderer_driver()
 		{
-			if (!$this->renderer) {
-				$this->data['renderer'] = \System\Template\Renderer::from_response($this);
+			$namespace = '\System\Template\Renderer\\';
+			$driver = 'Basic';
+
+			if ($this->render_with) {
+				$driver = $this->render_with;
+			} else {
+				try {
+					$driver = \System\Settings::get('template', 'renderer');
+				} catch (\System\Error\Config $e) {
+					$driver = 'basic';
+				}
 			}
 
-			return $this->renderer;
+			if ($this->format == 'html') {
+				$driver = ucfirst($driver);
+			} else {
+				$driver = ucfirst($this->format);
+			}
+
+			return $namespace.$driver;
 		}
 
 
-		public function locales()
+		/** Get renderer object
+		 * @return \System\Template\Renderer
+		 */
+		public function create_renderer()
 		{
-			return $this->locales;
+			if (!$this->renderer) {
+				$name = $this->get_renderer_driver();
+
+				if (class_exists($name)) {
+					$this->renderer = $name::from_response($this);
+				} else {
+					throw new \System\Error\Template('Renderer driver was not found', $name);
+				}
+			}
+
+			return $this;
 		}
 
 
@@ -469,10 +495,10 @@ namespace System\Http
 			if (!$this->no_debug && \System\Settings::get('dev', 'debug', 'backend')) {
 				if (file_exists(ROOT.'/lib/include/devel.php')) {
 					$response = $this;
-					$request  = $this->request();
-					$renderer = $this->renderer();
-					$locales  = $this->locales();
-					$flow     = $this->flow();
+					$request  = $this->request;
+					$renderer = $this->renderer;
+					$locales  = $this->locales;
+					$flow     = $this->flow;
 					$ren      = &$renderer;
 
 					include ROOT.'/lib/include/devel.php';
@@ -517,7 +543,7 @@ namespace System\Http
 		public function init()
 		{
 			if (!$this->is_initialized()) {
-				$this->cookie_store('lang', $this->locales()->get_lang());
+				$this->cookie_store('lang', $this->locales->get_lang());
 
 				\System\Init::run($this->init, array(
 					"request"  => $this->request(),

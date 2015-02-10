@@ -129,7 +129,9 @@ namespace System
 		}
 
 
-		/** General exception handler - Catches exception and displays error
+		/**
+		 * General exception handler - Catches exception and displays error
+		 *
 		 * @param \Exception $e
 		 * @param bool $ignore_next Don't inwoke another call of catch_exception from within
 		 */
@@ -205,16 +207,18 @@ namespace System
 				self::load_locales_safe($request, $response);
 
 				try {
-					$response->renderer()->format = 'html';
+					$response->format = 'html';
 
 					if (self::on_cli()) {
-						$response->renderer()->format = 'txt';
+						$response->format = 'txt';
 					} else {
 						$response->status($e->get_http_status());
 					}
 
+					$response->create_renderer();
+
 					foreach ($error_page['partial'] as $partial) {
-						$response->renderer()->partial($partial, array("desc" => $e));
+						$response->renderer->partial($partial, array("desc" => $e));
 					}
 				} catch (\Exception $exc) {
 					header('HTTP/1.1 500 Internal Server Error');

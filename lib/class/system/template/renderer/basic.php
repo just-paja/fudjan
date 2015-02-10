@@ -1,8 +1,8 @@
 <?
 
-namespace System\Template\Renderer\Driver
+namespace System\Template\Renderer
 {
-	class Basic extends \System\Template\Renderer\Driver
+	class Basic extends \System\Template\Renderer
 	{
 		public function render_template($path, array $locals = array())
 		{
