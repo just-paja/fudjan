@@ -6,8 +6,10 @@
 		"vendor-dir":"lib/vendor"
 	},
 	"require":{
-		"oyejorge/less.php":">1.6",
-		"kylekatarnls/jade-php":"@dev",
-		"phpunit/phpunit":"4.2"
+		"oyejorge/less.php":"^1.6",
+		"kylekatarnls/jade-php":"@dev"
+	},
+	"suggest":{
+		"phpunit/phpunit":"^4.2"
 	}
 }
