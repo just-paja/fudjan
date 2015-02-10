@@ -534,12 +534,17 @@ namespace System
 		 */
 		public function out(\System\Module $obj = NULL, array $locals = array())
 		{
+			$template = self::get_default_template();
+			$ctx = (array) $locals + array("f" => $this);
+
 			$this->group_end();
 			$this->tab_group_end();
 
-			return $obj instanceof \System\Module ?
-				$obj->partial(self::get_default_template(), (array) $locals + array("f" => $this)):
-				$this->response->renderer()->partial(self::get_default_template(), array("f" => $this));
+			if ($obj) {
+				return $obj->partial($template, $ctx);
+			} else {
+				return $this->response->renderer->partial($template, $ctx);
+			}
 		}
 
 
@@ -771,29 +776,5 @@ namespace System
 
 			return $attrs;
 		}
-
-
-		public function get_resources($type)
-		{
-			$list = self::$resources[$type];
-
-			foreach ($this->inputs as $input) {
-				$list = array_merge($list, $input->get_resources($type));
-			}
-
-			return $list;
-		}
-
-
-		public function render(\System\Template\Renderer\Driver $ren)
-		{
-			$ren->collect_resources(array(
-				'styles'  => $this->get_resources('styles'),
-				'scripts' => $this->get_resources('scripts')
-			));
-
-			return div(array('pwform'), '<span class="def" style="display:none">'.json_encode($this->to_object()).'</span>');
-		}
-
 	}
 }

@@ -22,13 +22,6 @@ namespace System\Form
 			'ident' => array("varchar"),
 		);
 
-		protected static $resources = array(
-			"scripts" => array(
-				'bower/pwf-form/lib/input/hidden',
-				'bower/pwf-form/lib/input/password',
-				'bower/pwf-form/lib/input/textarea'
-			)
-		);
 
 		private static $buttons = array('submit', 'button', 'reset');
 
@@ -90,12 +83,6 @@ namespace System\Form
 			}
 
 			return $data;
-		}
-
-
-		public function get_resources($type)
-		{
-			return isset($this::$resources[$type]) ? $this::$resources[$type]:array();
 		}
 	}
 }

@@ -4,15 +4,6 @@ namespace System\Form\Input
 {
 	class Time extends \System\Form\Input
 	{
-		protected static $resources = array(
-			"scripts" => array(
-				'bower/moment/moment',
-				'bower/pwf-moment-compat/lib/moment-compat',
-				'bower/pwf-form/lib/input/time'
-			),
-		);
-
-
 		public function is_valid()
 		{
 			$valid = parent::is_valid();

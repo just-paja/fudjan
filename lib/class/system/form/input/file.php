@@ -4,12 +4,6 @@ namespace System\Form\Input
 {
 	class File extends \System\Form\Input
 	{
-		protected static $resources = array(
-			'styles'  => array('bower/pwf-input-file/styles/file'),
-			'scripts' => array('bower/pwf-input-file/lib/file'),
-		);
-
-
 		private $resolved_value;
 
 

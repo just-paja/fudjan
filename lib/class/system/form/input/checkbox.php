@@ -4,11 +4,6 @@ namespace System\Form\Input
 {
 	class Checkbox extends \System\Form\Input
 	{
-		protected static $resources = array(
-			"scripts" => array('bower/pwf-form/lib/input/checkbox'),
-		);
-
-
 		public function construct()
 		{
 			parent::construct();
