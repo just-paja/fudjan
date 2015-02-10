@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Test extends \System\Cli\Module
+	class Test extends \Helper\Cli\Module
 	{
 		protected static $info = array(
 			'name' => 'test',

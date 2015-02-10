@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Cache extends \System\Cli\Module
+	class Cache extends \Helper\Cli\Module
 	{
 		protected static $info = array(
 			'name' => 'cache',
@@ -48,7 +48,7 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			\System\Cli::out('Building system core');
+			\Helper\Cli::out('Building system core');
 			\System\Cache::build_core();
 		}
 
@@ -57,7 +57,7 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			\System\Cli::out('Building system locales');
+			\Helper\Cli::out('Building system locales');
 			\System\Cache::build_locales();
 		}
 
@@ -75,7 +75,7 @@ namespace System\Cli\Module
 
 			array_push($libs, null);
 
-			\System\Cli::do_over($libs, function($key, $name) {
+			\Helper\Cli::do_over($libs, function($key, $name) {
 				\System\Cache::build_static_for($name);
 			}, 'Collecting static files');
 		}

@@ -3,7 +3,7 @@
 /** CLI core
  * @package core
  */
-namespace System\Cli
+namespace Helper\Cli
 {
 	/** Container class for commands and options
 	 * @package core
@@ -24,7 +24,7 @@ namespace System\Cli
 		public function vout($str = '', $break = true, $return = false)
 		{
 			if ($this->verbose) {
-				$str = \System\Cli::out($str, $break, $return);
+				$str = \Helper\Cli::out($str, $break, $return);
 				if ($return) return $str; else echo $str;
 			}
 		}
@@ -118,28 +118,28 @@ namespace System\Cli
 				}
 			}
 
-			\System\Cli::out(is_array($this::$info['head']) ? implode("\n", $this::$info['head']):$this::$info['head']);
-			\System\Cli::out();
+			\Helper\Cli::out(is_array($this::$info['head']) ? implode("\n", $this::$info['head']):$this::$info['head']);
+			\Helper\Cli::out();
 
 
-			\System\Cli::out("Usage:");
-			\System\Cli::out("  ./".$this->get_name()." ".$this::$accepts);
-			\System\Cli::out("  ./".$this->get_name()." ".$this::$accepts." [params]");
-			\System\Cli::out();
+			\Helper\Cli::out("Usage:");
+			\Helper\Cli::out("  ./".$this->get_name()." ".$this::$accepts);
+			\Helper\Cli::out("  ./".$this->get_name()." ".$this::$accepts." [params]");
+			\Helper\Cli::out();
 
 			if (!empty($cmd_list)) {
-				\System\Cli::out("Commands:");
-				\System\Cli::out_flist(array(
+				\Helper\Cli::out("Commands:");
+				\Helper\Cli::out_flist(array(
 					"list" => $cmd_list,
 					"semicolon" => false,
 					"margin" => 2
 				));
-				\System\Cli::out();
+				\Helper\Cli::out();
 			}
 
 			if (!empty($opt_list)) {
-				\System\Cli::out("Options:");
-				\System\Cli::out_flist(array(
+				\Helper\Cli::out("Options:");
+				\Helper\Cli::out_flist(array(
 					"list" => $opt_list,
 					"semicolon" => false,
 					"margin" => 2
@@ -181,8 +181,8 @@ namespace System\Cli
 
 				if (method_exists($this, $name)) {
 					$this->$name($params);
-				} else \System\Cli::give_up("Command is not defined!", 3);
-			} else \System\Cli::give_up("Please specify a valid command. Use --help option to get more info.", 2);
+				} else \Helper\Cli::give_up("Command is not defined!", 3);
+			} else \Helper\Cli::give_up("Please specify a valid command. Use --help option to get more info.", 2);
 
 			return $this;
 		}

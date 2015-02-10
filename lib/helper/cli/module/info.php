@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Info extends \System\Cli\Module
+	class Info extends \Helper\Cli\Module
 	{
 		protected static $info = array(
 			'name' => 'cache',
@@ -28,10 +28,10 @@ namespace System\Cli\Module
 		{
 			\System\Init::basic();
 
-			\System\Cli::out("Installed composer libraries");
-			\System\Cli::sep();
+			\Helper\Cli::out("Installed composer libraries");
+			\Helper\Cli::sep();
 
-			\System\Cli::out_flist(array(
+			\Helper\Cli::out_flist(array(
 				"list" => \System\Composer::get_libs(),
 				"margin" => 2,
 				"show_keys" => false
@@ -43,18 +43,18 @@ namespace System\Cli\Module
 		{
 			\System\Init::full();
 
-			\System\Cli::out_flist(array(
+			\Helper\Cli::out_flist(array(
 				"list" => array(
 					"Framework"   => \System\Status::introduce(),
 					"Environment" => \System\Settings::get_env()
 				)
 			));
 
-			\System\Cli::out();
-			\System\Cli::out("Loaded config files");
-			\System\Cli::sep();
+			\Helper\Cli::out();
+			\Helper\Cli::out("Loaded config files");
+			\Helper\Cli::sep();
 
-			\System\Cli::out_flist(array(
+			\Helper\Cli::out_flist(array(
 				"list" => \System\Settings::get_loaded_files(),
 				"margin" => 2,
 				"show_keys" => false
@@ -94,10 +94,10 @@ namespace System\Cli\Module
 					$stat = "Migrating database is necessary.";
 				}
 
-				\System\Cli::out('Database '.$db_ident);
-				\System\Cli::sep();
+				\Helper\Cli::out('Database '.$db_ident);
+				\Helper\Cli::sep();
 
-				\System\Cli::out_flist(array(
+				\Helper\Cli::out_flist(array(
 					"list" => array(
 						"Driver"         => $db_cfg['driver'],
 						"Host name"      => $db_cfg['host'],

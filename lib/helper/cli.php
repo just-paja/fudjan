@@ -2,7 +2,7 @@
 
 /** @package system
  */
-namespace System
+namespace Helper
 {
 	/** Container class encapsulating methods used on console
 	 */
@@ -139,7 +139,7 @@ namespace System
 				flush();
 
 				if($done == $total) {
-					\System\Cli::out();
+					\Helper\Cli::out();
 				}
 			}
 		}
@@ -183,7 +183,7 @@ namespace System
 
 		public static function lookup($name)
 		{
-			$cname = '\System\Cli\Module\\'.ucfirst($name);
+			$cname = '\Helper\Cli\Module\\'.ucfirst($name);
 
 			if (class_exists($cname)) {
 				return new $cname();
@@ -225,12 +225,13 @@ namespace System
 			self::out();
 
 			\System\Loader::load_all();
+			\System\Loader::load_all_helpers();
 
 			$all_classes = get_declared_classes();
 			$child_classes = array();
 
 			foreach ($all_classes as $class) {
-				if (is_subclass_of('\\'.$class, '\System\Cli\Module')) {
+				if (is_subclass_of('\\'.$class, '\Helper\Cli\Module')) {
 					$ref = new \ReflectionClass($class);
 
 					if (!$ref->isAbstract()) {
@@ -265,7 +266,7 @@ namespace System
 		public static function sep($return = false)
 		{
 			$str = '';
-			for ($i = 0; $i <= \System\Cli::get_width()-1; $i++) {
+			for ($i = 0; $i <= \Helper\Cli::get_width()-1; $i++) {
 				$str .= '-';
 			}
 			$str .= NL;

@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Db extends \System\Cli\Module
+	class Db extends \Helper\Cli\Module
 	{
 		protected static $info = array(
 			'name' => 'db',
@@ -61,7 +61,7 @@ namespace System\Cli\Module
 		 */
 		public function cmd_sync(array $params = array())
 		{
-			\System\Cli::out('Running structural sync');
+			\Helper\Cli::out('Running structural sync');
 
 			$this->structure && $this->sync_structure();
 			$this->relations && $this->sync_relations();
@@ -114,7 +114,7 @@ namespace System\Cli\Module
 						$this->import_sql($params[0]);
 					}
 
-					\System\Cli::out("Database restored");
+					\Helper\Cli::out("Database restored");
 				} else give_up("File not found!", 5);
 			} else {
 
@@ -134,15 +134,15 @@ namespace System\Cli\Module
 				rsort($files);
 
 				if (any($backups)) {
-					\System\Cli::out("Found these backups:");
-					\System\Cli::out_flist(array(
+					\Helper\Cli::out("Found these backups:");
+					\Helper\Cli::out_flist(array(
 						"list" => $backups,
 						"margin" => 2
 					));
 
-					\System\Cli::out('');
+					\Helper\Cli::out('');
 
-					$key = $this->force ? 0:\System\Cli::read("Pick one [0-".count($backups)."]: ", false);
+					$key = $this->force ? 0:\Helper\Cli::read("Pick one [0-".count($backups)."]: ", false);
 
 					if (array_key_exists($key, $backups)) {
 						if ($this->database_exists()) {
@@ -151,9 +151,9 @@ namespace System\Cli\Module
 
 						$this->database_create();
 
-						\System\Cli::out("Restoring to: ".$backups[$key]);
+						\Helper\Cli::out("Restoring to: ".$backups[$key]);
 						self::import_sql(BASE_DIR."/var/backups/".$files[$f]);
-						\System\Cli::out("Database restored");
+						\Helper\Cli::out("Database restored");
 
 					} else give_up("Invalid option.");
 				} else give_up("Did not find any backups");
@@ -170,7 +170,7 @@ namespace System\Cli\Module
 			$msg_done = NULL;
 			$msg_work = 'Syncing database structure';
 
-			\System\Cli::do_over($models, function($key, $name) {
+			\Helper\Cli::do_over($models, function($key, $name) {
 				\Helper\Database\Structure::sync_model($name);
 			});
 		}
@@ -178,7 +178,7 @@ namespace System\Cli\Module
 
 		public function sync_relations()
 		{
-			//~ \System\Cli::out('Syncing foreign keys is not implemented yet');
+			//~ \Helper\Cli::out('Syncing foreign keys is not implemented yet');
 		}
 
 
@@ -198,7 +198,7 @@ namespace System\Cli\Module
 				$models = \System\Model\Database::get_all_children();
 				$data = array();
 
-				\System\Cli::do_over($models, function($key, $model, &$data) {
+				\Helper\Cli::do_over($models, function($key, $model, &$data) {
 					$objects = get_all($model)->fetch();
 
 					if (any($objects)) {
@@ -250,15 +250,15 @@ namespace System\Cli\Module
 
 			if (self::database_exists()) {
 
-				\System\Cli::out("Are you sure you want to get rid of database? (yes/no) ", false);
+				\Helper\Cli::out("Are you sure you want to get rid of database? (yes/no) ", false);
 				$str = trim(shell_exec("read str; echo \$str"));
 
-				if (\System\Cli::is_yes($str)) {
+				if (\Helper\Cli::is_yes($str)) {
 					$db_ident = cfg('database', 'default');
 					$db_name = cfg('database', 'list', $db_ident, 'database');
 
 					self::save();
-					\System\Cli::out("Dropping database '".$db_name."'");
+					\Helper\Cli::out("Dropping database '".$db_name."'");
 					$cmd = "echo \"DROP DATABASE \`".$db_name."\`\" | ".self::assemble_mysql_command('mysql');
 					passthru($cmd);
 
@@ -296,7 +296,7 @@ namespace System\Cli\Module
 				$db_name  = cfg('database', 'list', $db_ident, 'database');
 
 				$file = BASE_DIR."/var/backups/".str_replace(" ", "-", date("Y-m-d H:i:s"))."_".$db_name.".sql";
-				\System\Cli::out("Creating backup of '".$db_name."' in '".$file."'");
+				\Helper\Cli::out("Creating backup of '".$db_name."' in '".$file."'");
 				$this->backup($file);
 			}
 		}
@@ -317,9 +317,9 @@ namespace System\Cli\Module
 			$this->cmd_sync();
 			$this->database_init();
 
-			\System\Cli::out();
+			\Helper\Cli::out();
 			$this->cmd_migrate();
-			\System\Cli::out();
+			\Helper\Cli::out();
 
 			$this->cmd_seed();
 		}
@@ -337,7 +337,7 @@ namespace System\Cli\Module
 				$name     = cfg('database', 'list', $db_ident, 'database');
 				$cmd = "echo \"CREATE DATABASE ".$name."\" | ".self::assemble_mysql_command("mysql", false);
 
-				\System\Cli::out("Creating database '".$name."'");
+				\Helper\Cli::out("Creating database '".$name."'");
 				shell_exec($cmd);
 			}
 
@@ -381,11 +381,11 @@ namespace System\Cli\Module
 
 				if (any($mig)) {
 
-					\System\Cli::out("Found ".count($mig)." migration".(count($mig) == 1 ? '':'s').":");
+					\Helper\Cli::out("Found ".count($mig)." migration".(count($mig) == 1 ? '':'s').":");
 					$this->print_migrations($mig, $padding = 2);
-					\System\Cli::out("");
+					\Helper\Cli::out("");
 
-					\System\Cli::out("Do you wish to proceed? (y/n) ", false);
+					\Helper\Cli::out("Do you wish to proceed? (y/n) ", false);
 					$str = trim(shell_exec("read str; echo \$str"));
 
 					if (in_array(strtolower($str), array("y", "1", "a"))) {
@@ -393,7 +393,7 @@ namespace System\Cli\Module
 						$this->process_migrations($mig);
 					}
 
-				} else \System\Cli::out("Did not match any migration");
+				} else \Helper\Cli::out("Did not match any migration");
 			}
 		}
 
@@ -421,7 +421,7 @@ namespace System\Cli\Module
 
 				$this->verbose ?
 					$this->print_migrations(array($m)):
-					\System\Cli::out('  '.$m->md5_sum.': '.$m->status);
+					\Helper\Cli::out('  '.$m->md5_sum.': '.$m->status);
 			}
 		}
 
@@ -453,7 +453,7 @@ namespace System\Cli\Module
 			$pad = str_repeat(' ', $padding);
 
 			foreach ($mig as $m) {
-					\System\Cli::out($pad.'['.$m->date->format('Y-m-d').'] '.$m->name);
+					\Helper\Cli::out($pad.'['.$m->date->format('Y-m-d').'] '.$m->name);
 					$this->vout($pad.'     Status: '.$m->status);
 					$this->vout($pad.'    MD5 sum: '.$m->md5_sum);
 					$this->vout($pad.'       Desc: '.$m->desc);
@@ -468,13 +468,13 @@ namespace System\Cli\Module
 		public static function cmd_seed(array $params = array())
 		{
 			\System\Init::full();
-			\System\Cli::out('Seeding initial system data ..');
+			\Helper\Cli::out('Seeding initial system data ..');
 
 			\System\Database::seed_initial_data();
 			$data = \System\Settings::read(\System\Database::DIR_INITIAL_DATA, true);
 
 			if ($data) {
-				\System\Cli::out("Injecting initial data ..");
+				\Helper\Cli::out("Injecting initial data ..");
 
 				foreach ($data as $data_set_name => $data_set_models) {
 					self::seed_data($data_set_name, $data_set_models);
@@ -491,7 +491,7 @@ namespace System\Cli\Module
 
 				$extra = array("model" => $model);
 
-				\System\Cli::do_over($data_set, function($key, $tdata, $extra) {
+				\Helper\Cli::do_over($data_set, function($key, $tdata, $extra) {
 					$model = $extra['model'];
 
 					$obj = null;
@@ -549,7 +549,7 @@ namespace System\Cli\Module
 		public function cmd_reset()
 		{
 			$this->cmd_rebuild();
-			\System\Cli::out();
+			\Helper\Cli::out();
 			$this->cmd_seed();
 
 			return $this;

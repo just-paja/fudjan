@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Assets extends \System\Cli\Module
+	class Assets extends \Helper\Cli\Module
 	{
 		protected static $info = array(
 			'name' => 'assets',
@@ -48,10 +48,10 @@ namespace System\Cli\Module
 			$found = exec('which bower');
 
 			if ($found) {
-				\System\Cli::out('Running bower update');
+				\Helper\Cli::out('Running bower update');
 				passthru('cd '.BASE_DIR.'; bower update');
 			} else {
-				\System\Cli::out('Please install node.js#bower first');
+				\Helper\Cli::out('Please install node.js#bower first');
 			}
 
 			unlink(BASE_DIR.'/.bowerrc');
@@ -66,10 +66,10 @@ namespace System\Cli\Module
 			$list = cfg('assets', 'dependencies');
 
 			if ($this->json) {
-				\System\Cli::out(json_encode(array("dependencies" => $list), JSON_PRETTY_PRINT));
+				\Helper\Cli::out(json_encode(array("dependencies" => $list), JSON_PRETTY_PRINT));
 			} else {
-				\System\Cli::out('Bower dependencies');
-				\System\Cli::out_flist(array(
+				\Helper\Cli::out('Bower dependencies');
+				\Helper\Cli::out_flist(array(
 					"list" => $list,
 					"margin" => 2
 				));

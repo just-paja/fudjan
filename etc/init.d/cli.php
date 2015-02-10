@@ -6,4 +6,4 @@ if (!defined('BASE_DIR')) {
 
 require_once ROOT."/etc/init.d/core.php";
 
-\System\Cli::parse_command($argv);
+\Helper\Cli::parse_command($argv);

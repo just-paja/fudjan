@@ -1,8 +1,8 @@
 <?
 
-namespace System\Cli\Module
+namespace Helper\Cli\Module
 {
-	class Deploy extends \System\Cli\Module
+	class Deploy extends \Helper\Cli\Module
 	{
 		protected static $accepts = 'environment';
 		protected static $info = array(
@@ -23,9 +23,9 @@ namespace System\Cli\Module
 		public function run_for($env)
 		{
 			if (!\System\Settings::env_exists($env)) {
-				$response = \System\Cli::read('Environment "'.$env.'" does not exist. Create? [Y/n] ');
+				$response = \Helper\Cli::read('Environment "'.$env.'" does not exist. Create? [Y/n] ');
 
-				if (\System\Cli::is_yes($response)) {
+				if (\Helper\Cli::is_yes($response)) {
 					\System\Settings::env_create($env);
 				}
 			}
@@ -46,20 +46,20 @@ namespace System\Cli\Module
 			do {
 				$cfg = $this->read_info($proceed !== NULL);
 
-				\System\Cli::sep();
-				\System\Cli::out("Please confirm, that these information are correct");
+				\Helper\Cli::sep();
+				\Helper\Cli::out("Please confirm, that these information are correct");
 
 				if ($cfg['protocol'] == 'file') {
 					$cfg['host'] = trim(shell_exec('uname -n'));
 				}
 
 				$this->print_info($cfg);
-				\System\Cli::out();
-				$proceed = \System\Cli::is_yes(\System\Cli::read("Do you wish to proceed? [Y/n]: "));
+				\Helper\Cli::out();
+				$proceed = \Helper\Cli::is_yes(\Helper\Cli::read("Do you wish to proceed? [Y/n]: "));
 
 				if (!$proceed) {
-					\System\Cli::sep();
-					\System\Cli::out("Not confirmed, rereading settings.");
+					\Helper\Cli::sep();
+					\Helper\Cli::out("Not confirmed, rereading settings.");
 				}
 
 				$attempts ++;
@@ -70,14 +70,14 @@ namespace System\Cli\Module
 				$this->save_config($cfg, $env);
 
 				if (method_exists($this, $deploy_method)) {
-					\System\Cli::out();
+					\Helper\Cli::out();
 					self::$deploy_method($cfg, $this->get_file_list());
 				} else {
-					\System\Cli::give_up("Your method of deployment has not yet been implemented");
+					\Helper\Cli::give_up("Your method of deployment has not yet been implemented");
 				}
-			} else \System\Cli::give_up("Giving up after being trolled 3 times");
+			} else \Helper\Cli::give_up("Giving up after being trolled 3 times");
 
-			\System\Cli::out();
+			\Helper\Cli::out();
 		}
 
 
@@ -151,7 +151,7 @@ namespace System\Cli\Module
 						$label .= ' ['.$cfg[$key].']';
 					}
 
-					$val = \System\Cli::read($label.': ', $params['type'] == 'password');
+					$val = \Helper\Cli::read($label.': ', $params['type'] == 'password');
 
 					if (!isset($params['options']) || in_array($val, $params['options'])) {
 						$data[$key] = $val;
@@ -173,7 +173,7 @@ namespace System\Cli\Module
 		 */
 		private function print_info($cfg)
 		{
-			\System\Cli::out_flist(array(
+			\Helper\Cli::out_flist(array(
 				"list" => array(
 					"Used protocol" => $cfg['protocol'],
 					"Hostname"      => $cfg['host'].($cfg['protocol'] == 'file' ? ' (forced)':''),
@@ -249,12 +249,12 @@ namespace System\Cli\Module
 		 */
 		private function deploy_over_file(array $cfg, array $files)
 		{
-			\System\Cli::out();
+			\Helper\Cli::out();
 			$this->vout("Copying files to another location ..");
 
 			!is_dir($cfg['root']) && mkdir($cfg['root'], 0775, true);
 
-			\System\Cli::do_over($files, function($number, $file, $cfg) {
+			\Helper\Cli::do_over($files, function($number, $file, $cfg) {
 				$fdir = dirname($file);
 				\System\Directory::check($cfg['root'].'/'.$fdir);
 				copy(BASE_DIR.'/'.$file, $cfg['root'].'/'.$file);
@@ -291,19 +291,19 @@ namespace System\Cli\Module
 					$this->vout("Deleting old queue files ..");
 					exec("rm -R ".$dir_spool." &> /dev/null");
 
-					\System\Cli::do_over($files, function($num, $file, $cfg) {
+					\Helper\Cli::do_over($files, function($num, $file, $cfg) {
 						$local = BASE_DIR.$file;
 						$remote = dirname($cfg['root'].substr($file, 1));
 						exec('ncftpput -bb -u "'.$cfg['user'].'" -p"'.$cfg['pass'].'" "'.$cfg['host'].'" "'.$remote.'" "'.$local.'" >& /dev/null');
 					}, "Adding files to FTP queue", $cfg);
 
 					$msg = "Uploading files";
-					\System\Cli::progress(0, $total, NULL, $msg);
+					\Helper\Cli::progress(0, $total, NULL, $msg);
 					$ph = popen("ncftpbatch -D", 'r');
 
 					while (!feof($ph) && $line = fgets($ph)) {
 						if (strpos($line, "Done") === 0) {
-							\System\Cli::progress(++$x, $total, $msg);
+							\Helper\Cli::progress(++$x, $total, $msg);
 						}
 					}
 

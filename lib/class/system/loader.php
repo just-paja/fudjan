@@ -11,7 +11,8 @@ namespace System
 	 */
 	class Loader
 	{
-		const DIR_CLASS = '/lib/class';
+		const DIR_CLASS  = '/lib/class';
+		const DIR_HELPER = '/lib/helper';
 		const SEP_CLASS = '\\';
 		const SEP_LINK  = '_';
 		const SEP_MODEL = '.';
@@ -44,16 +45,27 @@ namespace System
 		public static function load_all()
 		{
 			if (!self::$loaded) {
-				$dirs = \System\Composer::list_dirs(self::DIR_CLASS);
-
-				foreach ($dirs as $dir) {
-					self::load_dir($dir);
-				}
-
+				self::load_all_from_dirs(\System\Composer::list_dirs(self::DIR_CLASS));
 				self::$loaded = true;
 			}
 		}
 
+
+		/** Load all available classes
+		 * @return void
+		 */
+		public static function load_all_helpers()
+		{
+			self::load_all_from_dirs(\System\Composer::list_dirs(self::DIR_HELPER));
+		}
+
+
+		public static function load_all_from_dirs($dirs)
+		{
+			foreach ($dirs as $dir) {
+				self::load_dir($dir);
+			}
+		}
 
 		public static function dump_core()
 		{
