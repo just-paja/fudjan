@@ -17,7 +17,6 @@ namespace System
 		const DIR_TMP = '/var/tmp';
 		const FETCHED_SIGN = '-FETCHED';
 		const MOD_DEFAULT = 0664;
-		const MIN_HASH_CHUNK_SIZE = 65536;
 		const RESOURCE_TYPE = 'pixmap';
 		const RESOURCE_CNAME = '\\System\\Resource\\File';
 
@@ -247,30 +246,13 @@ namespace System
 		public function hash()
 		{
 			if (!$this->hash) {
-				if ($this->is_cached()) {
-					$chunks = chunk_split($this->get_content(), $this->get_digest_chunk_size(), '');
-					$this->hash = $this->hash_chunk($chunks[0]);
-				} else {
-					if ($this->path && $this->exists()) {
-						$fp = fopen($this->get_path(), 'r');
-						$data = fread($fp, $this->get_digest_chunk_size());
-						$this->hash = $this->hash_chunk($data);
-						fclose($fp);
-					} else throw new \System\Error\File('Cannot create hash from file. It does not exist on filesystem and is not cached.', var_export($this->path, true));
-				}
+				$this->hash = md5(implode('-', array(
+					$this->name,
+					$this->size()
+				)));
 			}
 
 			return $this->hash;
-		}
-
-
-		/** Hash chunk of file blob
-		 * @param string blob
-		 * @return string
-		 */
-		private function hash_chunk($blob)
-		{
-			return md5($blob).'-'.$this->size();
 		}
 
 
@@ -281,17 +263,6 @@ namespace System
 			}
 
 			return $this->time;
-		}
-
-
-		/** Get size of file chunk that will be hashed
-		 * @return int
-		 */
-		private function get_digest_chunk_size()
-		{
-			return $this->size() < self::MIN_HASH_CHUNK_SIZE ?
-				$this->size():
-				max(self::MIN_HASH_CHUNK_SIZE, round($this->size()*.25));
 		}
 
 
