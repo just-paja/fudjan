@@ -56,7 +56,7 @@ namespace System
 						$report .= "> ".$line.NL;
 					}
 
-					$msg = $msg->get_backtrace();
+					$msg = $msg->getTrace();
 				}
 
 				$report .= self::get_msg_text(array($msg));

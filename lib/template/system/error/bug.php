@@ -53,7 +53,7 @@ if (count($exp) >= 1) {
 echo div('advice');
 
 	Tag::h2(array("content" => $trace));
-	$back = $desc->get_backtrace();
+	$back = $desc->getTrace();
 	$num = 0;
 
 	Tag::ul(array('class' => 'trace'));

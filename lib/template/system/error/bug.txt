@@ -16,7 +16,7 @@ echo '-------------------------'.NL;
 
 
 $exp  = $desc->get_explanation();
-$back = $desc->get_backtrace();
+$back = $desc->getTrace();
 
 
 foreach ($exp as $ex) {

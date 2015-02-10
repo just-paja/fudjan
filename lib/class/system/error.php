@@ -14,7 +14,6 @@ namespace System
 		function __construct()
 		{
 			$this->explanation = func_get_args();
-			$this->backtrace = debug_backtrace();
 		}
 
 
@@ -27,12 +26,6 @@ namespace System
 		public function set_explanation(array $exp)
 		{
 			$this->explanation = $exp;
-		}
-
-
-		public function get_backtrace()
-		{
-			return $this->backtrace;
 		}
 
 
