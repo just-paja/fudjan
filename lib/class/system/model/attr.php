@@ -592,16 +592,6 @@ namespace System\Model
 		}
 
 
-		/** Convert attr model to html
-		 * @param \System\Template\Renderer $ren
-		 * @return string
-		 */
-		public function to_html(\System\Template\Renderer $ren)
-		{
-			return sprintf('%s', $ren->locales()->trans_class_name(get_class($this)));
-		}
-
-
 		/** Convert model to string
 		 * @return string
 		 */

@@ -1174,16 +1174,6 @@ namespace System\Model
 		}
 
 
-		/** Convert attr model to html
-		 * @param \System\Template\Renderer $ren
-		 * @return string
-		 */
-		public function to_html(\System\Template\Renderer $ren)
-		{
-			return sprintf('%s %s (#%s)', $ren->locales()->trans_class_name(get_class($this)), $this->get_name(), $this->id);
-		}
-
-
 		/** Convert model to string
 		 * @return string
 		 */

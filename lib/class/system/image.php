@@ -254,12 +254,6 @@ namespace System
 		}
 
 
-		public function to_html(\System\Template\Renderer $ren, $w = self::WIDTH_DEFAULT, $h = null, $crop = true)
-		{
-			return \Stag::img(array("src" => $this->thumb($w, $h, $crop), "alt" => ''));
-		}
-
-
 		public static function from_form($value)
 		{
 			return self::from_file(parent::from_form($value));
