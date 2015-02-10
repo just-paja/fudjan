@@ -55,6 +55,10 @@ namespace System\Template
 				'yield'   => array(),
 			);
 
+			if ($this->title) {
+				$this->content['title'] = $this->title;
+			}
+
 			return $this;
 		}
 
@@ -72,6 +76,7 @@ namespace System\Template
 			$ren->format = $res->format;
 			$ren->no_debug = $res->no_debug;
 
+			$ren->title    = $res->title;
 			$ren->locales  = $res->locales;
 			$ren->request  = $res->request;
 			$ren->response = $res;
