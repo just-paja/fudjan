@@ -209,16 +209,6 @@ namespace System
 		 */
 		public function partial($name, array $locals = array())
 		{
-			if ($name instanceof \System\Form)
-			{
-				$f = $name;
-				$f->check_group_end();
-				$f->check_tab_group_end();
-				$f->check_inputs_end();
-				$name = \System\Form::get_default_template();
-				$locals += array("f" => $f);
-			}
-
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
 			$this->response->renderer->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
