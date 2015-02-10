@@ -19,10 +19,11 @@ namespace System\Cli\Module
 
 
 		protected static $commands = array(
-			"all"    => array('Build complete application cache'),
-			"clear"  => array('Completely erase application cache'),
-			"core"   => array('Cache application core for faster run'),
-			"static" => array('Cache static files to minimize folder lookups'),
+			"all"     => array('Build complete application cache'),
+			"clear"   => array('Completely erase application cache'),
+			"core"    => array('Cache application core for faster run'),
+			"locales" => array('Cache application core for faster run'),
+			"static"  => array('Cache static files to minimize folder lookups'),
 		);
 
 
@@ -38,6 +39,7 @@ namespace System\Cli\Module
 			\System\Init::basic();
 
 			$this->cmd_core();
+			$this->cmd_locales();
 			$this->cmd_static();
 		}
 
@@ -48,6 +50,15 @@ namespace System\Cli\Module
 
 			\System\Cli::out('Building system core');
 			\System\Cache::build_core();
+		}
+
+
+		public function cmd_locales()
+		{
+			\System\Init::basic();
+
+			\System\Cli::out('Building system locales');
+			\System\Cache::build_locales();
 		}
 
 

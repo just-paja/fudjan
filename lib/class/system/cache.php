@@ -116,6 +116,19 @@ namespace System
 		}
 
 
+		public static function build_locales()
+		{
+			$cfg = \System\Settings::get('locales', 'allowed');
+			$loc = new \System\Locales();
+
+			foreach ($cfg as $lang) {
+				$loc->load_messages($lang);
+
+				\System\File::put(BASE_DIR.\System\Locales::DIR_CACHE.'/'.$lang.'.json', json_encode($loc->get_messages($lang)));
+			}
+		}
+
+
 		public static function clear()
 		{
 			$files = glob(BASE_DIR.self::DIR_CACHE.'/*');

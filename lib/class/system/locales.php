@@ -11,6 +11,8 @@ namespace System
 	class Locales
 	{
 		const DIR = '/etc/locales';
+		const DIR_CACHE = '/var/cache/locales';
+
 		const ENCODING = 'UTF-8';
 		const LANG_DEFAULT = 'en';
 		const TZ_DEFAULT = 'Europe/Prague';
@@ -310,7 +312,13 @@ namespace System
 				}
 
 				if (in_array($locale, $list)) {
-					$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
+					$file = BASE_DIR.self::DIR_CACHE.'/'.$locale.'.json';
+
+					if (file_exists($file)) {
+						$this->messages[$locale] = \System\Json::read($file);
+					} else {
+						$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
+					}
 				} else {
 					throw new \System\Error\Locales('Unknown language', $locale);
 				}
