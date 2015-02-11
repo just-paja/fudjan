@@ -1,20 +1,24 @@
-<?
+<!DOCTYPE html>
+<html lang="<?=$loc->get_lang()?>">
+	<head>
+		<link rel="stylesheet" type="text/css" href="<?=$ren->link_resource('style', 'error-report')?>">
 
-Tag::doctype();
-Tag::html();
+		<?
+			$ren->content_for('title', 'Fudjan error');
+			$ren->content_from('head');
+		?>
+	</head>
 
-	Tag::head();
-		$renderer->content_for('styles', 'pwf/base');
-		$renderer->content_for('styles', 'pwf/errors');
-		$renderer->content_from('head');
-	Tag::close('head');
-
-	Tag::body(array("class" => 'error'));
-		Tag::section(array("id" => 'container'));
+	<body class="error">
+		<section id="container">
+			<?
 
 			$desc = $exc;
 			require ROOT."/lib/template/partial/system/error/bug.php";
 
-		Tag::close('section');
-	Tag::close('body');
-Tag::close('html');
+			?>
+		</section>
+
+		<footer><?=\System\Status::introduce();?></footer>
+	</body>
+</html>

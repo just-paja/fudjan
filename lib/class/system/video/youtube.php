@@ -92,22 +92,6 @@ namespace System\Video
 		}
 
 
-		/** Get embed iframe
-		 * @return string
-		 */
-		public function embed()
-		{
-			return \Tag::iframe(array(
-				"class"           => 'video video_yt',
-				"src"             => $this->get_embed_url(),
-				"frameborder"     => 0,
-				"allowfullscreen" => true,
-				"output"          => false,
-				"close"           => true,
-			));
-		}
-
-
 		/** Convert youtube video to SQL
 		 * @return string
 		 */

@@ -5,4 +5,6 @@
  */
 
 echo $ren->heading($ren->trans('core_page_not_found'));
-Tag::p(array("class" => 'advice desc', "content" => $ren->trans('core_page_not_found_text')));
+?>
+
+<p class="advice desc"><?=$ren->trans('core_page_not_found_text')?></p>

@@ -111,7 +111,7 @@ namespace System
 				} else throw new \System\Error\Format(sprintf('Unknown archive format "%s", could not save archive.', $this->type));
 
 				if ($d) {
-					$this->extract_path = clear_url($path_prefix);
+					$this->extract_path = $path_prefix;
 
 					foreach ($this->dirs as $dir) {
 						\System\Directory::check($path_prefix.'/'.$dir);

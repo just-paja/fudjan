@@ -24,111 +24,112 @@ try {
 
 $exp = $desc->get_explanation();
 
-echo div('header');
-	if (isset($exp[0])) {
-		Tag::h1(array("content" => array_shift($exp)));
-		Tag::strong(array("content" => get_class($desc)));
-	} else {
-		Tag::h1(array("content" => get_class($desc)));
-	}
+?>
 
+<div class="header">
+	<?
+		if (isset($exp[0])) {
+			?>
+				<h1><?=array_shift($exp)?></h1>
+				<strong><?=get_class($desc)?></strong>
+			<?
+		} else {
+			?>
+				<h1><?=get_class($desc)?></h1>
+			<?
+		}
+	?>
+</div>
 
-close('div');
+<?
 
 if (count($exp) >= 1) {
+	?>
+	<div class="params">
+		<h2><?=$reason?></h2>
 
-	echo div('params');
-		Tag::h2(array("content" => $reason));
-		Tag::ul();
-
-		foreach ($exp as $ex) {
-			Tag::li(array('class' => 'point', "content" => $ex));
-		}
-
-		Tag::close('ul');
-	close('div');
-
+		<ul>
+			<?
+				foreach ($exp as $ex) {
+					?>
+						<li class="point"><?=$ex?></li>
+					<?
+				}
+			?>
+		</ul>
+	</div>
+	<?
 }
+?>
 
-echo div('advice');
+<div class="advice">
+	<h2><?=$trace?></h2>
+	<?
+		$back = $desc->getTrace();
+		$num = 0;
+	?>
 
-	Tag::h2(array("content" => $trace));
-	$back = $desc->getTrace();
-	$num = 0;
+	<ul class="trace">
+		<?
+			foreach ($back as $b) {
 
-	Tag::ul(array('class' => 'trace'));
+				$skip = isset($b['object']) && $b['object'] === $desc;
+				$num++;
 
-		foreach ($back as $b) {
+				?>
+					<li class="err err_<?=$num?>">
+						<?
+							$str = array();
+							$str_desc = array();
+							$str_args = array();
+							$str_obj  = array();
 
-			$skip = isset($b['object']) && $b['object'] === $desc;
-			$num++;
+							if (isset($b['file'])) {
+								$str_desc[] = $b['file'];
 
-			Tag::li(array("class" => 'err err_'.$num));
-				$str = array();
-				$str_desc = array();
-				$str_args = array();
-				$str_obj  = array();
+								if (isset($b['line'])) {
+									$str_desc[] = ':'.$b['line'];
+								}
 
-				if (isset($b['file'])) {
-					$str_desc[] = $b['file'];
+								$str_desc[] = ' ';
+							}
 
-					if (isset($b['line'])) {
-						$str_desc[] = ':'.$b['line'];
-					}
+							if (!$skip && isset($b['function'])) {
 
-					$str_desc[] = ' ';
-				}
+								$str_desc[] = 'in function ';
 
-				if (!$skip && isset($b['function'])) {
+								if (isset($b['class'])) {
+									$str_desc[] = $b['class'].'::';
+								}
 
-					$str_desc[] = 'in function ';
-
-					if (isset($b['class'])) {
-						$str_desc[] = $b['class'].'::';
-					}
-
-					$str_desc[] = $b['function'].'()';
-
-
-					if (false && isset($b['args']) && any($b['args'])) {
-						$args = array();
-
-						foreach ($b['args'] as $arg) {
-							$arg_content = is_object($arg) ? 'Instance of '.get_class($arg):var_export($arg, true);
-							$arg_content = is_array($arg) ? 'Array':var_export($arg, true);
-
-							$args[] = Stag::li(array("content" => $arg_content));
-						}
-
-						$str_args[] = STag::h3(array("content" => 'Arguments:'));
-						$str_args[] = Stag::ol(array("content" => $args));
-					}
-				}
-
-				//~ if (!$skip && isset($b['object'])) {
-					//~ $str_obj[] = STag::heading(array("content" => 'Object:'));
-					//~ $str_obj[] = Tag::div(array(
-						//~ "content" => '<pre>'.@var_export($b['object'], true).'</pre>',
-						//~ "output"  => false,
-					//~ ));
-				//~ }
-
-				$str[] = Tag::div(array(
-					"class" => 'desc',
-					"content" => implode('', $str_desc),
-					"output"  => false
-				));
-
-				Tag::details(array(
-					"content" => array(
-						Stag::summary(array("content" => $str)),
-						Stag::div(array("class" => 'cont', "content" => array_merge($str_args, $str_obj))),
-					)
-				));
+								$str_desc[] = $b['function'].'()';
 
 
-			Tag::close('li');
-		}
+								if (false && isset($b['args']) && any($b['args'])) {
+									$args = array();
 
-	close('ul');
-close('div');
+									foreach ($b['args'] as $arg) {
+										$arg_content = is_object($arg) ? 'Instance of '.get_class($arg):var_export($arg, true);
+										$arg_content = is_array($arg) ? 'Array':var_export($arg, true);
+
+										$args[] = '<li>'.implode('', $arg_content).'</li>';
+									}
+
+									$str_args[] = '<h3>Arguments:</h3>';
+									$str_args[] = '<ol>'.implode('', $args).'</ol>';
+								}
+							}
+
+							$str[] = '<div class="desc">'.implode('', $str_desc).'</div>';
+						?>
+
+						<details>
+							<summary><?=implode('', $str)?></summary>
+							<div class="cont"><?=implode('', array_merge($str_args, $str_obj))?></div>
+						</details>
+					</li>
+				<?
+			}
+		?>
+	</ul>
+</div>

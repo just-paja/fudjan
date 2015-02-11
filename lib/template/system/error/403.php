@@ -5,4 +5,6 @@
  */
 
 echo $ren->heading($ren->trans('core_access_denied'));
-Tag::p(array("class" => 'advice desc', "content" => $ren->trans('core_access_denied_text')));
+?>
+
+<p class="advice desc"><?=$ren->trans('core_access_denied_text')?></p>

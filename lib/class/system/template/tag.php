@@ -144,15 +144,5 @@ namespace System\Template
 
 			return (count($real_attrs) ? ' ':'').implode(' ', $real_attrs);
 		}
-
-
-		/** Output a doctype
-		 * @return string
-		 */
-		public static function doctype()
-		{
-			$o = '<!DOCTYPE html>';
-			return $o;
-		}
 	}
 }

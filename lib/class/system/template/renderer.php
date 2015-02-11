@@ -603,7 +603,7 @@ namespace System\Template
 
 			foreach ($meta as $name=>$value) {
 				if ($value) {
-					$this->content_for("head", '<meta'.\Tag::html_attrs('meta', $value).'>');
+					$this->content_for("head", '<meta'.\System\Template\Tag::html_attrs('meta', $value).'>');
 				}
 			}
 
@@ -616,7 +616,11 @@ namespace System\Template
 		 */
 		public function render_title()
 		{
-			$this->content_for("head", \Stag::title(array("content" => $this->get_content_from('title'))));
+			$this->content_for("head", \System\Template\Tag::title(array(
+				"output"  => false,
+				"content" => $this->get_content_from('title'))
+			));
+
 			return $this;
 		}
 

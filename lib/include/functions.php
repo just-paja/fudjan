@@ -15,26 +15,6 @@ namespace
 	}
 
 
-	/** Returns first item from array
-	 * @param array $array
-	 * @return mixed
-	 */
-	function first(array $array)
-	{
-		return reset($array);
-	}
-
-
-	/** Returns last item from array
-	 * @param array $array
-	 * @return mixed
-	 */
-	function last(array $array)
-	{
-		return $array[count($array) - 1];
-	}
-
-
 	/** Returns first key in array
 	 * @param array $array
 	 * @return string
@@ -43,27 +23,6 @@ namespace
 	{
 		$keys = array_keys($array);
 		return reset($keys);
-	}
-
-
-	/** Clear url slashes
-	 * @param string|array $url
-	 * @return string
-	 */
-	function clear_url($url)
-	{
-		if(!is_array($url)) $url = explode('/', $url);
-		return implode('/', $url);
-	}
-
-
-	/** Reference wrapper for clear_url
-	 * @param string $url
-	 * @return void
-	 */
-	function clear_this_url(&$url)
-	{
-		$url = clear_url($url);
 	}
 
 

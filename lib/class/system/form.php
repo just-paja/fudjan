@@ -29,19 +29,6 @@ namespace System
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');
 
-		protected static $resources = array(
-			'styles' => array(
-				'bower/pwf-form/styles/form'
-			),
-			'scripts' => array(
-				'bower/pwf-queue',
-				'bower/pwf-comm',
-				'bower/pwf-comm-form',
-				'bower/pwf-locales',
-				'bower/pwf-form',
-			)
-		);
-
 		protected $data_default  = array();
 		protected $data_commited = array();
 		protected $data_hidden   = array();
