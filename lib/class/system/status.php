@@ -202,23 +202,45 @@ namespace System
 				}
 
 				$request = \System\Http\Request::from_hit();
+				$response_default = null;
+
+				try {
+					$response_default = $request->create_response();
+				} catch (\Exception $e) {
+				}
+
+				if ($response_default) {
+					if ($response_default->format == 'json') {
+						$error_page['format'] = $response_default->format;
+						unset($error_page['render_with']);
+					}
+				}
+
 				$response = $request->create_response($error_page);
 
 				self::load_locales_safe($request, $response);
 
-				try {
+				if ($response->format != 'json') {
 					$response->format = 'html';
 
 					if (self::on_cli()) {
 						$response->format = 'txt';
-					} else {
-						$response->status($e->get_http_status());
 					}
+				}
 
+				if (!self::on_cli()) {
+					$response->status($e->get_http_status());
+				}
+
+				try {
 					$response->create_renderer();
 
 					foreach ($error_page['partial'] as $partial) {
-						$response->renderer->partial($partial, array("desc" => $e));
+						$response->renderer->partial($partial, array(
+							'status'  => $e->get_http_status(),
+							'desc'    => $e,
+							'message' => $e->get_explanation()
+						));
 					}
 				} catch (\Exception $exc) {
 					header('HTTP/1.1 500 Internal Server Error');
