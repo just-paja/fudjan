@@ -37,6 +37,7 @@ namespace System\Model
 		/** Allowed model relation types */
 		static protected $relation_types = array(self::REL_BELONGS_TO, self::REL_HAS_ONE, self::REL_HAS_MANY);
 
+		static protected $conversions = null;
 
 		static private $models_checked = array();
 
@@ -628,8 +629,9 @@ namespace System\Model
 
 		public static function get_schema()
 		{
-			$attrs = array();
-			$cname = get_called_class();
+			$attrs  = array();
+			$schema = array();
+			$cname  = get_called_class();
 
 			new $cname();
 			$def = \System\Model\Database::get_model_attr_list($cname, false, true);
@@ -691,7 +693,13 @@ namespace System\Model
 				}
 			}
 
-			return $attrs;
+			if (any($cname::$conversions)) {
+				$schema['conversions'] = $cname::$conversions;
+			}
+
+			$schema['attrs'] = $attrs;
+
+			return $schema;
 		}
 
 

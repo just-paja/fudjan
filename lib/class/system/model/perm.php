@@ -158,7 +158,7 @@ namespace System\Model
 					'model'
 				);
 
-				foreach ($schema as $key=>$attr) {
+				foreach ($schema['attrs'] as $key=>$attr) {
 					if (in_array($attr['type'], $rel_attrs)) {
 						$rel_cname = \System\Loader::get_class_from_model($attr['model']);
 
@@ -170,7 +170,8 @@ namespace System\Model
 					}
 				}
 
-				return $res;
+				$schema['attrs'] = $res;
+				return $schema;
 			} else throw new \System\Error\AccessDenied();
 		}
 	}
