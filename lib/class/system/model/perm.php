@@ -93,7 +93,7 @@ namespace System\Model
 		{
 			$data  = parent::to_object_with_id();
 			$model = get_class($this);
-			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {
@@ -120,7 +120,7 @@ namespace System\Model
 		{
 			$data  = array();
 			$model = get_class($this);
-			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+			$attrs = $model::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {

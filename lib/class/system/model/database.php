@@ -84,11 +84,16 @@ namespace System\Model
 			}
 
 			if (!$model::has_attr('created_at')) {
-				$model::$attrs['created_at'] = array('datetime', "default" => 'NOW()');
+				$model::$attrs['created_at'] = array(
+					"type" => 'datetime',
+					"default" => 'NOW()'
+				);
 			}
 
 			if (!$model::has_attr('updated_at')) {
-				$model::$attrs['updated_at'] = array('datetime');
+				$model::$attrs['updated_at'] = array(
+					"type" => 'datetime'
+				);
 			}
 
 			$model::check_relations();
@@ -196,7 +201,7 @@ namespace System\Model
 			$helper = new \System\Database\Query(
 				array(
 					"table" => self::get_table($model),
-					"cols"  => self::get_model_attr_list($model),
+					"cols"  => $model::get_attr_list_sql(),
 					"opts"  => $opts,
 					"conds" => $conds,
 					"model" => $model,
@@ -642,7 +647,7 @@ namespace System\Model
 			$cname  = get_called_class();
 
 			new $cname();
-			$def = \System\Model\Database::get_model_attr_list($cname, false, true);
+			$def = $cname::get_attr_list();
 
 			foreach ($def as $name) {
 				if ($name != \System\Model\Database::get_id_col($cname)) {
@@ -1063,38 +1068,33 @@ namespace System\Model
 		}
 
 
-		/** Get list of model attributes
-		 * @param string $model      Name of model class
-		 * @param bool   $sql_format Format names to sql
-		 * @return array
-		 */
-		public static function get_model_attr_list($model, $sql_format = true, $with_rels = false)
+		public static function get_attr_list_sql()
 		{
-			$attrs = array(self::get_id_col($model));
+			$model = get_called_class();
+			$attrs = $model::get_attr_list();
+			$list  = array();
 
-			foreach ($model::$attrs as $attr=>$def) {
+			foreach ($attrs as $attr) {
+				$def  = $model::get_attr($attr);
+				$type = $model::get_attr_type($attr);
+
 				if (empty($def['is_fake'])) {
-					if ($sql_format && $def[0] === 'point') {
-						$attrs[$attr] = 'AsWKT('.$attr.')';
-					} else {
-						if ($attr != self::get_id_col($model)) {
-							if (self::is_rel($model, $attr) && !$with_rels) {
-								$type = $model::get_attr_type($attr);
+					if ($type == 'point') {
+						$list[$attr] = 'AsWKT('.$attr.')';
+					}
 
-								if ($type === self::REL_BELONGS_TO) {
-									$attrs[] = self::get_belongs_to_id($model, $attr);
-								}
-
-							} else $attrs[] = $attr;
+					if ($model::is_rel($model, $attr)) {
+						if ($type == self::REL_BELONGS_TO) {
+							$list[] = self::get_belongs_to_id($model, $attr);
 						}
+
+					} else {
+						$list[] = $attr;
 					}
 				}
 			}
 
-			!in_array('created_at', $attrs) && $attrs[] = 'created_at';
-			!in_array('updated_at', $attrs) && $attrs[] = 'updated_at';
-
-			return $attrs;
+			return $list;
 		}
 
 
@@ -1202,7 +1202,7 @@ namespace System\Model
 		{
 			$model = get_class($this);
 			$data  = array();
-			$attrs = \System\Model\Database::get_model_attr_list($model, false, true);
+			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {

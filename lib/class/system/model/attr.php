@@ -233,19 +233,22 @@ namespace System\Model
 		}
 
 
-		/** Get list of model attributes
-		 * @param string $model Name of model class
+		/**
+		 * Get list of model attributes
+		 *
 		 * @return array
 		 */
-		public static function get_model_attr_list($model)
+		public static function get_attr_list()
 		{
-			$attrs = array();
+			$model = get_called_class();
+			$attrs = $model::get_attr_def();
+			$list  = array();
 
-			foreach ($model::$attrs as $attr=>$def) {
-				$attrs[] = $attr;
+			foreach ($attrs as $attr=>$def) {
+				$list[] = $attr;
 			}
 
-			return $attr;
+			return $list;
 		}
 
 
@@ -289,12 +292,17 @@ namespace System\Model
 		{
 			$model = get_called_class();
 			$def   = $model::get_attr($attr);
+			$src   = &$model::$attrs;
 
-			if (isset($model::$attrs[$attr]['type'])) {
-				$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
+			if (isset($src[$attr]['type'])) {
+				$src[$attr][0] = $src[$attr]['type'];
 			}
 
-			return $def[0];
+			if (!isset($src[$attr]['type'])) {
+				$src[$attr]['type'] = $src[$attr][0];
+			}
+
+			return $src[$attr]['type'];
 		}
 
 
@@ -500,13 +508,16 @@ namespace System\Model
 		 * @param string $attr
 		 * @return false|array
 		 */
-		public static function get_model_attr_options($model, $attr)
+		public static function get_attr_options($attr)
 		{
-			if ($model::has_attr($attr)) {
-				if (isset($model::$attrs[$attr]['options'])) {
-					return $model::$attrs[$attr]['options'];
-				} else return false;
-			} else throw new \System\Error\Model(sprintf('Attr %s does not exist.', $attr));
+			$model = get_called_class();
+			$attr  = $model::get_attr($attr);
+
+			if (isset($attr['options'])) {
+				return $attr['options'];
+			}
+
+			return null;
 		}
 
 
@@ -563,12 +574,16 @@ namespace System\Model
 						$def['type'] = $def[0];
 					}
 
+					if (!isset($def[0])) {
+						$def['0'] = $def['type'];
+					}
+
 					if ($def['type'] == 'varchar' && !isset($def['length'])) {
-						$def['type'] = 255;
+						$def['length'] = 255;
 					}
 
 					if ($def['type'] == 'text' && !isset($def['length'])) {
-						$def['type'] = 65535;
+						$def['length'] = 65535;
 					}
 				}
 
