@@ -23,6 +23,8 @@ namespace System\Model
 		/** Secondary data passed to object */
 		protected $opts = array();
 
+		protected static $resolved_models = array();
+
 		/** Has the initial check been called */
 		protected static $is_type_checked = false;
 
@@ -216,9 +218,8 @@ namespace System\Model
 		 */
 		public static function has_attr($attr)
 		{
-			if (is_string($attr)) {
-				$cname = get_called_class();
-				return array_key_exists($attr, $cname::$attrs);
+			if (is_string($attr) || is_numeric($attr)) {
+				return array_key_exists($attr, static::$attrs);
 			}
 
 			throw new \System\Error\Argument('First argument passed to has_attr must be string.', $attr);
@@ -231,10 +232,9 @@ namespace System\Model
 		 * @param string $attr
 		 * @return bool
 		 */
-		public function attr_required($attr)
+		public static function attr_required($attr)
 		{
-			$model = get_model($this);
-			return in_array($attr, $model::$required);
+			return in_array($attr, static::$required);
 		}
 
 
@@ -245,8 +245,7 @@ namespace System\Model
 		 */
 		public static function get_attr_list()
 		{
-			$model = get_called_class();
-			$attrs = $model::get_attr_def();
+			$attrs = static::get_attr_def();
 			$list  = array();
 
 			foreach ($attrs as $attr=>$def) {
@@ -264,8 +263,7 @@ namespace System\Model
 		 */
 		public static function get_attr_def()
 		{
-			$model = get_called_class();
-			return $model::$attrs;
+			return static::$attrs;
 		}
 
 
@@ -277,9 +275,8 @@ namespace System\Model
 		 */
 		public static function get_attr_type($attr)
 		{
-			$model = get_called_class();
-			$def   = $model::get_attr($attr);
-			$src   = &$model::$attrs;
+			$def = static::get_attr($attr);
+			$src = &static::$attrs;
 
 			if (isset($src[$attr]['type'])) {
 				$src[$attr][0] = $src[$attr]['type'];
@@ -301,13 +298,11 @@ namespace System\Model
 		 */
 		public static function get_attr($attr)
 		{
-			$model = get_called_class();
-
-			if ($model::has_attr($attr)) {
-				return $model::$attrs[$attr];
+			if (static::has_attr($attr)) {
+				return static::$attrs[$attr];
 			}
 
-			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, $model));
+			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, get_called_class()));
 		}
 
 
@@ -497,8 +492,7 @@ namespace System\Model
 		 */
 		public static function get_attr_options($attr)
 		{
-			$model = get_called_class();
-			$attr  = $model::get_attr($attr);
+			$attr  = static::get_attr($attr);
 
 			if (isset($attr['options'])) {
 				return $attr['options'];
@@ -540,7 +534,7 @@ namespace System\Model
 		{
 			$model = get_called_class();
 
-			if (!$model::$is_type_checked) {
+			if (empty(static::$resolved_models[$model])) {
 				if (!isset($model::$attrs)) {
 					throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
 				}
@@ -563,7 +557,7 @@ namespace System\Model
 					}
 				}
 
-				$model::$is_type_checked = true;
+				static::$resolved_models[$model] = true;
 			}
 		}
 
