@@ -44,7 +44,7 @@ namespace Helper\Cli
 		{
 			reset($argv);
 
-			$attrs = $this::get_model_attrs(get_class($this));
+			$attrs = $this::get_attr_def();
 			$commands = array();
 
 			while ($arg = array_shift($argv)) {

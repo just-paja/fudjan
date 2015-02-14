@@ -23,6 +23,7 @@ namespace System\Model
 		/** Secondary data passed to object */
 		protected $opts = array();
 
+		/** Has the initial check been called */
 		protected static $is_type_checked = false;
 
 		protected static $attrs = array();
@@ -249,24 +250,6 @@ namespace System\Model
 			}
 
 			return $list;
-		}
-
-
-		/** Get list of model attributes
-		 * @param string $model Name of model class
-		 * @return array
-		 */
-		public static function get_model_attrs($model)
-		{
-			$attrs = array();
-
-			foreach ($model::$attrs as $attr=>$def) {
-				if (empty($def['is_fake'])) {
-					$attrs[$attr] = $def;
-				}
-			}
-
-			return $attrs;
 		}
 
 
@@ -546,17 +529,6 @@ namespace System\Model
 			}
 
 			return $this->data[$attr];
-		}
-
-
-		/** Encode object into json
-		 * @param bool [true] $encode Encode into JSON string
-		 * @return string|array
-		 */
-		public function to_json($encode=true)
-		{
-			$data = \System\Template::to_json($this->get_data(), false);
-			return $encode ? \System\Template::to_json($data):$data;
 		}
 
 
