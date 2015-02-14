@@ -82,7 +82,7 @@ namespace System\Model
 				$name = null;
 
 				foreach ($model::$attrs as $attr_name=>$def) {
-					if (self::get_attr_type($model, $attr_name) === self::REL_BELONGS_TO) {
+					if ($model::get_attr_type($attr_name) === self::REL_BELONGS_TO) {
 						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
 						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name, $def));
 					}
@@ -192,7 +192,7 @@ namespace System\Model
 							if (!empty($b['cols'])) {
 								$attr_def = array();
 								foreach ($b['cols'] as $col) {
-									$t = self::get_attr_type($jmodel, $col);
+									$t = $jmodel::get_attr_type($col);
 									if (!isset($attr_def[$t])) {
 										$attr_def[$t] = array();
 									}
@@ -325,7 +325,7 @@ namespace System\Model
 			$model = get_model($this);
 
 			if (self::is_rel($model, $attr)) {
-				$type = self::get_attr_type($model, $attr);
+				$type = $model::get_attr_type($attr);
 
 				if ($type == self::REL_HAS_MANY) {
 					$this->set_rel_has_many($attr, $value);
@@ -403,7 +403,7 @@ namespace System\Model
 		public function set_rel_single_value($name, $value)
 		{
 			$model = get_model($this);
-			$type = self::get_attr_type($model, $name);
+			$type = $model::get_attr_type($name);
 			$def = $model::get_attr($name);
 			$value = empty($value) ? null:$value;
 			$is_null = !empty($def['is_null']) && is_null($value);
@@ -471,7 +471,7 @@ namespace System\Model
 			$model = get_model($this);
 
 			if (self::is_rel($model, $rel)) {
-				$type = self::get_attr_type($model, $rel);
+				$type = $model::get_attr_type($rel);
 
 				if ($type == self::REL_HAS_MANY) {
 					return $this->get_rel_has_many($rel);
@@ -1059,7 +1059,7 @@ namespace System\Model
 					} else {
 						if ($attr != self::get_id_col($model)) {
 							if (self::is_rel($model, $attr) && !$with_rels) {
-								$type = self::get_attr_type($model, $attr);
+								$type = $model::get_attr_type($attr);
 
 								if ($type === self::REL_BELONGS_TO) {
 									$attrs[] = self::get_belongs_to_id($model, $attr);

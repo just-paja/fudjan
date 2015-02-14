@@ -278,20 +278,23 @@ namespace System\Model
 		}
 
 
-		/** Get type of attribute
+		/**
+		 * Get type of attribute
+		 *
 		 * @param string $model Name of model class
 		 * @param string $attr  Name of attribute
 		 * @return mixed Type of attribute (string) or false on failure
 		 */
-		public static function get_attr_type($model, $attr)
+		public static function get_attr_type($attr)
 		{
-			if ($model::has_attr($attr)) {
-				if (isset($model::$attrs[$attr]['type'])) {
-					$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
-				}
+			$model = get_called_class();
+			$attr  = $model::get_attr($attr);
 
-				return $model::$attrs[$attr][0];
-			} else throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist.', $attr, $model));
+			if (isset($model::$attrs[$attr]['type'])) {
+				$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
+			}
+
+			return $model::$attrs[$attr][0];
 		}
 
 
@@ -306,7 +309,7 @@ namespace System\Model
 
 			if ($model::has_attr($attr)) {
 				$attr_data = &$model::$attrs[$attr];
-				$type = $model::get_attr_type($model, $attr);
+				$type = $model::get_attr_type($attr);
 
 				if (in_array($type, array('varchar', 'password'))) {
 					if (!isset($attr_data['length'])) $attr_data['length'] = 255;
