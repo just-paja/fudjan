@@ -51,9 +51,11 @@ if (count($exp) >= 1) {
 		<ul>
 			<?
 				foreach ($exp as $ex) {
-					?>
-						<li class="point"><?=$ex?></li>
-					<?
+					if (is_string($ex)) {
+						?>
+							<li class="point"><?=$ex?></li>
+						<?
+					}
 				}
 			?>
 		</ul>

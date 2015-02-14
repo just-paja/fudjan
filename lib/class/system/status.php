@@ -53,7 +53,9 @@ namespace System
 					$exp = $msg->get_explanation();
 
 					foreach ($exp as $line) {
-						$report .= "> ".$line.NL;
+						if (is_string($line)) {
+							$report .= "> ".$line.NL;
+						}
 					}
 
 					$msg = $msg->getTrace();
