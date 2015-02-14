@@ -63,9 +63,11 @@ namespace System\Model
 		protected static $merged_attrs = array();
 
 
-		/** Public constructor
+		/**
+		 * Public constructor
+		 *
 		 * @param array $dataray Set of data used by object
-		 * @return BasicModel
+		 * @return System\Model\Attr
 		 */
 		public function __construct(array $dataray = array())
 		{
@@ -93,7 +95,9 @@ namespace System\Model
 		}
 
 
-		/** Attribute getter
+		/**
+		 * Attribute getter
+		 *
 		 * @param string $attr
 		 * @return mixed
 		 */
@@ -113,10 +117,12 @@ namespace System\Model
 		}
 
 
-		/** Attribute setter
+		/**
+		 * Attribute setter
+		 *
 		 * @param string $attr
 		 * @param mixed  $value
-		 * @return BasicModel
+		 * @return System\Model\Attr
 		 */
 		public function __set($attr, $value)
 		{
@@ -125,7 +131,7 @@ namespace System\Model
 
 				if (!isset($def['writeable']) || $def['writeable']) {
 					$null_error = false;
-					$this->data[$attr] = self::convert_attr_val(get_model($this), $attr, $value);
+					$this->data[$attr] = $this::convert_attr_val($attr, $value);
 					$this->changed = true;
 				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_model($this)));
 			} else $this->opts[$attr] = $value;
@@ -134,6 +140,11 @@ namespace System\Model
 		}
 
 
+		/**
+		 * Set default value for attribute if applicable
+		 *
+		 * @return void
+		 */
 		public function set_default_value($attr)
 		{
 			$def = $this::get_attr($attr);
@@ -306,15 +317,16 @@ namespace System\Model
 		}
 
 
-		/** Prepare data of a kind to be saved, mostly conversions
-		 * @param string $model Name of model
+		/**
+		 * Prepare data of a kind to be saved, mostly conversions
+		 *
 		 * @param string $attr  Name of attribute
 		 * @param mixed  $val   Value to check and fix
 		 * @return mixed Fixed value
 		 */
-		public static function convert_attr_val($model, $attr, $val = null)
+		public static function convert_attr_val($attr, $val = null)
 		{
-			$attr_data = $model::get_attr($attr);
+			$attr_data = static::get_attr($attr);
 
 			if (isset($attr_data['is_null']) && $attr_data['is_null'] && is_null($val)) {
 				return $val = null;
@@ -386,7 +398,7 @@ namespace System\Model
 					if (any($val)) {
 						if (is_object($val)) {
 							if (!($val instanceof $cname)) {
-								throw new \System\Error\Model(sprintf('Value for attribute "%s" of model "%s" should be instance of "%s". Instance of "%s" was given.', $attr, $model, $cname, get_class($val)));
+								throw new \System\Error\Model(sprintf('Value for attribute "%s" of model "%s" should be instance of "%s". Instance of "%s" was given.', $attr, get_called_class(), $cname, get_class($val)));
 							}
 						} elseif (is_array($val)) {
 							$val = new $cname($val);
@@ -412,9 +424,9 @@ namespace System\Model
 					if ($val) {
 						if (isset($attr_data['model'])) {
 							if (!($val instanceof $attr_data['model'])) {
-								throw new \System\Error\Argument(sprintf("Value must be instance of '%s'", $attr_data['model']), $model, $attr, is_object($val) ? get_class($val):gettype($val));
+								throw new \System\Error\Argument(sprintf("Value must be instance of '%s'", $attr_data['model']), get_called_class(), $attr, is_object($val) ? get_class($val):gettype($val));
 							}
-						} else throw new \System\Error\Argument(sprintf("Attribute '%s' of model '%s' must have model defined!", $attr, $model));
+						} else throw new \System\Error\Argument(sprintf("Attribute '%s' of model '%s' must have model defined!", $attr, get_called_class()));
 					}
 					break;
 				}
@@ -485,8 +497,9 @@ namespace System\Model
 		}
 
 
-		/** Get options for model if defined
-		 * @param string $model
+		/**
+		 * Get options for model if defined
+		 *
 		 * @param string $attr
 		 * @return false|array
 		 */
@@ -502,7 +515,9 @@ namespace System\Model
 		}
 
 
-		/** Did object change since it's construction?
+		/**
+		 * Did object change since it's construction?
+		 *
 		 * @param string $status Change status to this
 		 * @return bool
 		 */
@@ -516,7 +531,9 @@ namespace System\Model
 		}
 
 
-		/** Get attribute value
+		/**
+		 * Get attribute value
+		 *
 		 * @param string $attr
 		 * @return mixed
 		 */
@@ -530,6 +547,11 @@ namespace System\Model
 		}
 
 
+		/**
+		 * Check if model is valid before operating
+		 *
+		 * @return void
+		 */
 		public static function check_model()
 		{
 			$model = get_called_class();
@@ -562,7 +584,9 @@ namespace System\Model
 		}
 
 
-		/** Convert model to string
+		/**
+		 * Convert model to string
+		 *
 		 * @return string
 		 */
 		public function __toString()
@@ -571,12 +595,25 @@ namespace System\Model
 		}
 
 
+		/**
+		 * Convert object to array
+		 *
+		 * @return array
+		 */
 		public function to_object()
 		{
 			return self::to_object_batch($this->get_data(), $this);
 		}
 
 
+		/**
+		 * Convert data object to array or simple type
+		 *
+		 * @param mixed  $data
+		 * @param object $obj
+		 * @param string $key
+		 * @return mixed
+		 */
 		public static function to_object_batch($data, $obj = null, $key = null)
 		{
 			if (is_array($data)) {
@@ -607,7 +644,7 @@ namespace System\Model
 
 				if ($attr) {
 					if (isset($attr['default'])) {
-						$data = self::to_object_batch(self::convert_attr_val($obj, $key, $attr['default']), $obj);
+						$data = self::to_object_batch($obj::convert_attr_val($key, $attr['default']), $obj);
 					}
 				}
 			}
