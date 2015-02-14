@@ -95,15 +95,17 @@ namespace System\Model
 		 */
 		public function __get($attr)
 		{
-			if (!in_array($attr, array('data', 'opts'))) {
-				$model = get_model($this);
-				$attr == 'id' && isset($model::$id_col) && $attr = $model::$id_col;
+			$model = get_class($this);
 
-				return $this->has_attr($attr) ?
-					$this->get_attr_value($attr):(isset($this->opts[$attr]) ? $this->opts[$attr]:null);
+			if ($attr == 'id' && isset($this::$id_col)) {
+				$attr = $this::$id_col;
 			}
 
-			throw new \System\Error\Argument(sprintf('Trying to access internal private attribute "%s" for model "%s"', $attr, get_model($this)));
+			if ($this::has_attr($attr)) {
+				return $this->get_attr_value($attr);
+			}
+
+			return isset($this->opts[$attr]) ? $this->opts[$attr]:null;
 		}
 
 
@@ -194,26 +196,16 @@ namespace System\Model
 		}
 
 
-		/** Does attribute exist
-		 * @param string $model Class name of desired model
-		 * @param string $attr  Name of attribute
-		 * @return bool
-		 */
-		public static function attr_exists($model, $attr)
-		{
-			if ($model && $attr) {
-				return array_key_exists($attr, $model::$attrs);
-			} else return false;
-		}
-
-
-		/** Instance version of model_attr_exist
+		/**
+		 * Does attribute exist
+		 *
 		 * @param string $attr Name of attribute
 		 * @return bool
 		 */
-		public function has_attr($attr)
+		public static function has_attr($attr)
 		{
-			return self::attr_exists(get_model($this), $attr);
+			$cname = get_called_class();
+			return array_key_exists($attr, $cname::$attrs);
 		}
 
 
@@ -278,7 +270,7 @@ namespace System\Model
 		 */
 		public static function get_attr_type($model, $attr)
 		{
-			if (self::attr_exists($model, $attr)) {
+			if ($model::has_attr($attr)) {
 				if (isset($model::$attrs[$attr]['type'])) {
 					$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
 				}
@@ -295,7 +287,7 @@ namespace System\Model
 		 */
 		public static function get_attr($model, $attr)
 		{
-			if (self::attr_exists($model, $attr)) {
+			if ($model::has_attr($attr)) {
 				$attr_data = &$model::$attrs[$attr];
 				$type = self::get_attr_type($model, $attr);
 
@@ -500,7 +492,7 @@ namespace System\Model
 		 */
 		public static function get_model_attr_options($model, $attr)
 		{
-			if (self::attr_exists($model, $attr)) {
+			if ($model::has_attr($attr)) {
 				if (isset($model::$attrs[$attr]['options'])) {
 					return $model::$attrs[$attr]['options'];
 				} else return false;

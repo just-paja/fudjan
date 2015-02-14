@@ -69,18 +69,6 @@ namespace System\Model
 		}
 
 
-		/** Does attribute of a model exist
-		 * @param string $model
-		 * @param string $attr
-		 * @return bool True if exists
-		 */
-		public static function attr_exists($model, $attr)
-		{
-			self::check_relations($model);
-			return $attr == self::get_id_col($model) || parent::attr_exists($model, $attr);
-		}
-
-
 		/** Does attribute belong to belongs_to relation?
 		 * @param string $model
 		 * @param string $attr
@@ -181,7 +169,7 @@ namespace System\Model
 		{
 			if (!$model || !class_exists($model)) throw new \System\Error\Argument(sprintf('Model %s not found', $model));
 
-			if (empty($opts['order-by']) && self::attr_exists($model, 'order')) {
+			if (empty($opts['order-by']) && $model::has_attr('order')) {
 				$opts['order-by'] = "`t0`.`order` ASC";
 			}
 
@@ -267,7 +255,7 @@ namespace System\Model
 
 				$col = self::get_id_col($model);
 				if (!is_numeric($ids)) {
-					if (self::attr_exists($model, 'seoname')) {
+					if ($model::has_attr('seoname')) {
 						$col = 'seoname';
 					} else {
 						$ids = \System\Url::get_seoid($ids);
@@ -317,7 +305,7 @@ namespace System\Model
 		 */
 		public static function is_rel($model, $attr)
 		{
-			if (self::attr_exists($model, $attr)) {
+			if ($model::has_attr($attr)) {
 				$def = self::get_attr($model, $attr);
 				return in_array($def[0], self::$relation_types);
 			}
@@ -527,7 +515,7 @@ namespace System\Model
 				);
 			}
 
-			self::attr_exists($rel_attrs['model'], 'order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
+			$rel_attrs['model']::has_attr('order') && $helper->add_opts(array("order-by" => "`t0`.".'`order` ASC'));
 
 
 			$helper->where(array($idc => $this->id), $join_alias);
@@ -988,7 +976,7 @@ namespace System\Model
 
 			$conds = array();
 			foreach (self::$quick_conds as $attr=>$val) {
-				self::attr_exists($model, $attr) && $conds[$attr] = $val;
+				$model::has_attr($attr) && $conds[$attr] = $val;
 			}
 			return $conds;
 		}
@@ -1090,13 +1078,17 @@ namespace System\Model
 		}
 
 
-		/** Instance version of model_attr_exist
+		/**
+		 * Does attribute exist? Includes model IDs
+		 *
 		 * @param string $attr Name of attribute
 		 * @return bool
 		 */
-		public function has_attr($attr)
+		public static function has_attr($attr)
 		{
-			return self::attr_exists(get_model($this), $attr);
+			$model = get_called_class();
+			$model::check_relations($model);
+			return $attr == $model::get_id_col($model) || parent::has_attr($attr);
 		}
 
 

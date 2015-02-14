@@ -23,10 +23,10 @@ namespace
 			$obj = new \Test\Model\Attr();
 
 			$this->assertFalse(false, $obj->has_attr('bad'));
-			$this->assertFalse(false, \Test\Model\Attr::attr_exists('\Test\Model\Attr', 'bad'));
+			$this->assertFalse(false, \Test\Model\Attr::has_attr('bad'));
 
 			$this->assertTrue($obj->has_attr('int_nil'));
-			$this->assertTrue(\Test\Model\Attr::attr_exists('\Test\Model\Attr', 'int_nil'));
+			$this->assertTrue(\Test\Model\Attr::has_attr('int_nil'));
 
 			$this->assertTrue($obj->has_attr('int_blank'));
 			$this->assertTrue($obj->has_attr('int_def'));
