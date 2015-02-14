@@ -51,14 +51,14 @@ namespace System\Model
 		);
 
 		/** Registered object handlers */
-		static protected $attr_type_objects = array(
+		protected static $attr_type_objects = array(
 			'object' => '\Object',
 			'image'  => '\System\Image',
 			'file'   => '\System\File',
 		);
 
 		/** Swap for attributes merged from related models */
-		static protected $merged_attrs = array();
+		protected static $merged_attrs = array();
 
 
 		/** Public constructor
@@ -216,8 +216,12 @@ namespace System\Model
 		 */
 		public static function has_attr($attr)
 		{
-			$cname = get_called_class();
-			return array_key_exists($attr, $cname::$attrs);
+			if (is_string($attr)) {
+				$cname = get_called_class();
+				return array_key_exists($attr, $cname::$attrs);
+			}
+
+			throw new \System\Error\Argument('First argument passed to has_attr must be string.', $attr);
 		}
 
 

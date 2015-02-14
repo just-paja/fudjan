@@ -482,7 +482,7 @@ namespace System\Model
 
 			if (any($rel_attrs['is_bilinear'])) {
 				$join_alias = 't_'.$rel;
-				$table_name = self::get_bilinear_table_name($model, $rel_attrs);
+				$table_name = $model::get_bilinear_table_name($rel_attrs);
 				$helper->join($table_name, "USING(".$rel_model::get_id_col().")", $join_alias);
 				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:$model::get_id_col();
 			} else {
@@ -579,9 +579,10 @@ namespace System\Model
 		 * @param array  $rel_attrs Relation definition
 		 * @return string
 		 */
-		public static function get_bilinear_table_name($model, array $rel_attrs)
+		public static function get_bilinear_table_name(array $rel_attrs)
 		{
-			$name = array();
+			$model = get_called_class();
+			$name  = array();
 
 			if (any($rel_attrs['is_master'])) {
 				$name['master'] = \System\Model\Database::get_table($model);
@@ -781,7 +782,7 @@ namespace System\Model
 				$ids_delete = array_diff($current, $new);
 
 				if (!empty($def['is_bilinear'])) {
-					$table_name = self::get_bilinear_table_name($model, $def);
+					$table_name = $model::get_bilinear_table_name($def);
 
 					if (any($def['is_master'])) {
 						$id_col = $model::get_id_col();
