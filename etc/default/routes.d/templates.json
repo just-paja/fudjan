@@ -1,6 +1,0 @@
-[
-	["^/api/templates/$", {
-		"format":"json",
-		"modules":[["system/template/precompiler"]]
-	}]
-]

@@ -1,7 +1,0 @@
-[
-	["^/api/form_search_query/$", {
-			"template":[],
-			"no_debug":true,
-			"modules":[["system/form/search_tool_query"]]
-		}]
-]
