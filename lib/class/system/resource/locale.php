@@ -6,17 +6,16 @@ namespace System\Resource
 	{
 		public function resolve()
 		{
-			if ($this->path == 'list') {
-			} else {
+			if ($this->name != 'list') {
 				try {
-					$this->response->locales->load_messages($this->path);
+					$this->response->locales->load_messages($this->name);
 				} catch (\System\Error\Locales $e) {
 					$this->exists = false;
 				}
+			}
 
-				if ($this->src != 'static') {
-					$this->exists = false;
-				}
+			if ($this->src != 'static') {
+				$this->exists = false;
 			}
 		}
 
@@ -25,10 +24,10 @@ namespace System\Resource
 		{
 			$this->mime = 'application/json';
 
-			if ($this->path == 'list') {
+			if ($this->name == 'list') {
 				$this->content = json_encode($this->response->locales->get_available());
 			} else {
-				$this->content = json_encode($this->response->locales->get_messages($this->path));
+				$this->content = json_encode($this->response->locales->get_messages($this->name));
 			}
 		}
 	}

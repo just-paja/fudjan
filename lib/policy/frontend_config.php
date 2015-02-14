@@ -1,6 +1,8 @@
 <?
 
 $policy = function($rq, $res) {
+	$serial = \System\Resource::get_serial();
+
 	try {
 		$static_domain = \System\Settings::get('resources', 'domain');
 	} catch (\System\Error\Config $e) {
@@ -8,7 +10,7 @@ $policy = function($rq, $res) {
 	}
 
 	try {
-		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("system_resource", array('static', 'locale', '{lang}'));
+		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("system_resource", array('static', 'locale', '{lang}.'.$serial.'.json'));
 	} catch (\System\Error\NotFound $e) {
 		$locales_url = '';
 	}
