@@ -23,6 +23,7 @@ namespace System\Model
 		/** Secondary data passed to object */
 		protected $opts = array();
 
+		protected static $is_type_checked = false;
 
 		protected static $attrs = array();
 
@@ -66,7 +67,7 @@ namespace System\Model
 		public function __construct(array $dataray = array())
 		{
 			$model = get_model($this);
-			self::check_properties($model);
+			$model::check_model();
 
 			$this->update_attrs($dataray);
 
@@ -281,25 +282,25 @@ namespace System\Model
 		/**
 		 * Get type of attribute
 		 *
-		 * @param string $model Name of model class
 		 * @param string $attr  Name of attribute
-		 * @return mixed Type of attribute (string) or false on failure
+		 * @return string
 		 */
 		public static function get_attr_type($attr)
 		{
 			$model = get_called_class();
-			$attr  = $model::get_attr($attr);
+			$def   = $model::get_attr($attr);
 
 			if (isset($model::$attrs[$attr]['type'])) {
 				$model::$attrs[$attr][0] = $model::$attrs[$attr]['type'];
 			}
 
-			return $model::$attrs[$attr][0];
+			return $def[0];
 		}
 
 
-		/** Get attr definition
-		 * @param string $model
+		/**
+		 * Get attr definition
+		 *
 		 * @param string $attr
 		 * @return array
 		 */
@@ -308,18 +309,7 @@ namespace System\Model
 			$model = get_called_class();
 
 			if ($model::has_attr($attr)) {
-				$attr_data = &$model::$attrs[$attr];
-				$type = $model::get_attr_type($attr);
-
-				if (in_array($type, array('varchar', 'password'))) {
-					if (!isset($attr_data['length'])) $attr_data['length'] = 255;
-				}
-
-				if ($type === 'text') {
-					if (!isset($attr_data['length'])) $attr_data['length'] = 65535;
-				}
-
-				return $attr_data;
+				return $model::$attrs[$attr];
 			}
 
 			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, $model));
@@ -559,17 +549,30 @@ namespace System\Model
 		}
 
 
-		/** Check static model class properties
-		 * @param string $model
-		 */
-		public static function check_properties($model)
+		public static function check_model()
 		{
-			if (!isset($model::$attrs)) {
-				$parent = get_parent_class($model);
+			$model = get_called_class();
 
-				if ($parent) {
-					return self::check_properties($model);
-				} else throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
+			if (!$model::$is_type_checked) {
+				if (!isset($model::$attrs)) {
+					throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
+				}
+
+				foreach ($model::$attrs as $name => &$def) {
+					if (!isset($def['type'])) {
+						$def['type'] = $def[0];
+					}
+
+					if ($def['type'] == 'varchar' && !isset($def['length'])) {
+						$def['type'] = 255;
+					}
+
+					if ($def['type'] == 'text' && !isset($def['length'])) {
+						$def['type'] = 65535;
+					}
+				}
+
+				$model::$is_type_checked = true;
 			}
 		}
 

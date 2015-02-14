@@ -69,23 +69,43 @@ namespace System\Model
 		}
 
 
-		/** Does attribute belong to belongs_to relation?
-		 * @param string $model
-		 * @param string $attr
-		 * @return bool
-		 */
-		public static function check_relations($model)
+		public static function check_model()
 		{
-			if (!isset(self::$models_checked[$model])) {
-				self::$models_checked[$model] = true;
-				$is_true = false;
-				$name = null;
+			$model = get_called_class();
+			$idc   = $model::get_id_col($model);
+			parent::check_model();
 
-				foreach ($model::$attrs as $attr_name=>$def) {
-					if ($model::get_attr_type($attr_name) === self::REL_BELONGS_TO) {
-						$rel_attr_name = self::get_belongs_to_id($model, $attr_name);
-						self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name, $def));
-					}
+			if (!$model::has_attr($idc)) {
+				$model::$attrs[$idc] = array(
+					"type"        => 'int',
+					"is_unsigned" => true,
+					"is_index"    => true
+				);
+			}
+
+			if (!$model::has_attr('created_at')) {
+				$model::$attrs['created_at'] = array('datetime', "default" => 'NOW()');
+			}
+
+			if (!$model::has_attr('updated_at')) {
+				$model::$attrs['updated_at'] = array('datetime');
+			}
+
+			$model::check_relations();
+		}
+
+
+		/**
+		 * Update relation attributes
+		 */
+		public static function check_relations()
+		{
+			$model = get_called_class();
+
+			foreach ($model::$attrs as $attr=>$def) {
+				if ($model::get_attr_type($attr) == self::REL_BELONGS_TO) {
+					$rel_attr_name = self::get_belongs_to_id($model, $attr);
+					self::add_attribute($model, $rel_attr_name, self::get_default_belongs_to_def($rel_attr_name, $def));
 				}
 			}
 		}
@@ -1087,33 +1107,7 @@ namespace System\Model
 		public static function has_attr($attr)
 		{
 			$model = get_called_class();
-			$model::check_relations($model);
 			return $attr == $model::get_id_col($model) || parent::has_attr($attr);
-		}
-
-
-		/** Override of constructor, adds id column, created_at and updated_at into attrs
-		 * @param array $update
-		 * @return new object
-		 */
-		public function __construct(array $update = array())
-		{
-			$model = get_model($this);
-			parent::check_properties($model);
-
-			if (!array_key_exists($idc = self::get_id_col($model), $model::$attrs)) {
-				$model::$attrs[$idc] = array("int", "is_unsigned" => true, "is_index" => true);
-			}
-
-			if (!$this->has_attr('created_at')) {
-				$model::$attrs['created_at'] = array('datetime', "default" => 'NOW()');
-			}
-
-			if (!$this->has_attr('updated_at')) {
-				$model::$attrs['updated_at'] = array('datetime');
-			}
-
-			return parent::__construct($update);
 		}
 
 
