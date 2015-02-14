@@ -142,8 +142,10 @@ namespace System\Model
 		}
 
 
-		/** Get all object data
-		 * @return array Data ray
+		/**
+		 * Get all object data
+		 *
+		 * @return array Object data
 		 */
 		public function get_data()
 		{
@@ -151,7 +153,9 @@ namespace System\Model
 		}
 
 
-		/** Return reference to object data store
+		/**
+		 * Return reference to object data store
+		 *
 		 * @return &array
 		 */
 		public function &get_data_ref()
@@ -160,7 +164,9 @@ namespace System\Model
 		}
 
 
-		/** Get all public non-attribute data from object
+		/**
+		 * Get all public non-attribute data from object
+		 *
 		 * @return array
 		 */
 		public function get_opts()
@@ -169,7 +175,9 @@ namespace System\Model
 		}
 
 
-		/** Get reference to non-attr data store
+		/**
+		 * Get reference to non-attr data store
+		 *
 		 * @return &array
 		 */
 		public function &get_opts_ref()
@@ -178,7 +186,9 @@ namespace System\Model
 		}
 
 
-		/** Update attributes and distribute all data into object containers
+		/**
+		 * Update attributes and distribute all data into object containers
+		 *
 		 * @param array $update Data
 		 * @return BasicModel
 		 */
@@ -209,7 +219,9 @@ namespace System\Model
 		}
 
 
-		/** Is attribute required
+		/**
+		 * Is attribute required
+		 *
 		 * @param string $attr
 		 * @return bool
 		 */
@@ -254,11 +266,14 @@ namespace System\Model
 		}
 
 
-		/** Gets definition of model attributes
-		 * @param string $model Name of model
+		/**
+		 * Gets definition of model attributes
+		 *
+		 * @return array
 		 */
-		public static function get_attr_def($model)
+		public static function get_attr_def()
 		{
+			$model = get_called_class();
 			return $model::$attrs;
 		}
 

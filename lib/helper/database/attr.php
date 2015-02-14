@@ -34,7 +34,7 @@ namespace Helper\Database
 		{
 			\System\Model\Database::check_relations($model);
 			$result = array();
-			$attrs  = $model::get_attr_def($model);
+			$attrs  = $model::get_attr_def();
 			$relations = \Helper\Database\Relation::get_from_model($model);
 			$id_col = $model::get_id_col($model);
 
