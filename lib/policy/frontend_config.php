@@ -8,7 +8,7 @@ $policy = function($rq, $res) {
 	}
 
 	try {
-		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("locale_messages", array('{lang}'));
+		$locales_url = ($static_domain ? '//'.$static_domain:'').$res->url("system_resource", array('static', 'locale', '{lang}'));
 	} catch (\System\Error\NotFound $e) {
 		$locales_url = '';
 	}

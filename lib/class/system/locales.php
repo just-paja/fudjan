@@ -175,6 +175,18 @@ namespace System
 		}
 
 
+		public static function get_available()
+		{
+			try {
+				$list = \System\Settings::get('locales', 'allowed');
+			} catch (\System\Error\Config $e) {
+				$list = array('en');
+			}
+
+			return $list;
+		}
+
+
 		/** Get list of all loaded locale files
 		 * @return array
 		 */
@@ -305,11 +317,7 @@ namespace System
 			}
 
 			if (!isset($this->messages[$locale])) {
-				try {
-					$list = \System\Settings::get('locales', 'allowed');
-				} catch (\System\Error\Config $e) {
-					$list = array('en');
-				}
+				$list = $this::get_available();
 
 				if (in_array($locale, $list)) {
 					$file = BASE_DIR.self::DIR_CACHE.'/'.$locale.'.json';

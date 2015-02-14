@@ -45,6 +45,7 @@ namespace System
 			'script' => '\\System\\Resource\\Script',
 			'style'  => '\\System\\Resource\\Style',
 			'thumb'  => '\\System\\Resource\\Thumb',
+			'locale' => '\\System\\Resource\\Locale',
 		);
 
 

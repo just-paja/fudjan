@@ -1,3 +1,3 @@
 <?
 
-$ren->partial('system/common', array('json_data' => \System\Directory::ls(ROOT.\System\Locales::DIR)));
+$ren->partial('system/common', array(\System\Directory::ls(ROOT.\System\Locales::DIR)));
