@@ -1,4 +1,4 @@
-# Pass request to YaWF
+# Pass request to pwf
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L,QSA]
