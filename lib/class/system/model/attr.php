@@ -514,36 +514,6 @@ namespace System\Model
 		}
 
 
-		/** Get translated attribute name
-		 * @param string $attr
-		 * @return string
-		 */
-		public function get_attr_name($attr)
-		{
-			return self::get_model_attr_name(get_model($this), $attr);
-		}
-
-
-		/** Get translated attribute description
-		 * @param string $attr
-		 * @return string
-		 */
-		public function get_attr_desc($attr)
-		{
-			return self::get_model_attr_desc(get_model($this), $attr);
-		}
-
-
-		/** Get translated model name
-		 * @param bool $plural
-		 * @return string
-		 */
-		public function get_model_name($plural = false)
-		{
-			return self::get_model_model_name($model, $plural);
-		}
-
-
 		/** Get attribute value
 		 * @param string $attr
 		 * @return mixed
