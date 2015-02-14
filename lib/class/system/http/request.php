@@ -303,7 +303,7 @@ namespace System\Http
 				}
 
 				if ($login) {
-					$this->user = find("\System\User", $this->sess(\System\User::COOKIE_USER));
+					$this->user = \System\User::find($this->sess(\System\User::COOKIE_USER));
 				}
 			}
 

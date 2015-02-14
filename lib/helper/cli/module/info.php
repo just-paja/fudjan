@@ -84,8 +84,11 @@ namespace Helper\Cli\Module
 				try {
 					$mig = \System\Database\Migration::get_new();
 					$mcount = count($mig);
-					$mlast = get_first("\System\Database\Migration")->where(array("status" => 'ok'))->sort_by("updated_at DESC")->fetch();
-					$stat = "Ok";
+					$stat  = "Ok";
+					$mlast = \System\Database\Migration::get_first()
+						->where(array("status" => 'ok'))
+						->sort_by("updated_at DESC")
+						->fetch();
 
 					if ($mlast) {
 						$mlast_date = $mlast->updated_at;

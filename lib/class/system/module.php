@@ -238,10 +238,12 @@ namespace System
 				$mod = array("path" => preg_replace('/\.php$/', '', substr($mod, strlen($path)+1)));
 
 				if ($with_perms) {
-					$mod['perms'] = get_all("\System\User\Perm", array(
-						"type" => 'module',
-						"trigger" => $mod['path'],
-					))->fetch();
+					$mod['perms'] = \System\User\Perm::get_all()
+						->where(array(
+							"type" => 'module',
+							"trigger" => $mod['path'],
+						))
+						->fetch();
 				}
 			}
 

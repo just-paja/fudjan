@@ -199,7 +199,7 @@ namespace Helper\Cli\Module
 				$data = array();
 
 				\Helper\Cli::do_over($models, function($key, $model, &$data) {
-					$objects = get_all($model)->fetch();
+					$objects = $model::get_all()->fetch();
 
 					if (any($objects)) {
 						$data[$model] = \System\Template::to_json($objects, false);
@@ -434,7 +434,7 @@ namespace Helper\Cli\Module
 		private function find_migrations($like)
 		{
 			$this->vout("Looking for migration described as ".$like." ..");
-			return get_all("System\Database\Migration")->where(array(
+			return System\Database\Migration::get_all()->where(array(
 					"`id_system_database_migration` LIKE '%".$like."%'",
 					"`name` LIKE '%".$like."%'",
 					"`seoname` LIKE '%".$like."%'",

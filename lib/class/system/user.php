@@ -109,7 +109,7 @@ namespace System
 						$conds[] = "id_group IN (".implode(',', $ids).")";
 					}
 
-					$this->rights = get_all("\System\User\Perm")
+					$this->rights = \System\User\Perm::get_all()
 						->where($conds, "t0", true)
 						->reset_cols()
 						->add_cols(array("trigger", "id_system_user_perm"), "t0")

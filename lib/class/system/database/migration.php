@@ -18,7 +18,7 @@ namespace System\Database
 		static function get_new()
 		{
 			try {
-				$old_items = get_all("System\Migration")->fetch();
+				$old_items = System\Migration::get_all()->fetch();
 			} catch (\System\Error $e) {
 				$old_items = array();
 			}
@@ -33,7 +33,7 @@ namespace System\Database
 			if (any($items)) {
 				$sums = collect(array('attr', 'md5_sum'), $items, true);
 				try {
-					$old = get_all("\System\Migration", array("t0.md5_sum IN ('".implode("','", $sums)."')"))->fetch();
+					$old = \System\Migration::get_all(array("t0.md5_sum IN ('".implode("','", $sums)."')"))->fetch();
 				} catch (\System\Error $e) {
 					$old = array();
 				}

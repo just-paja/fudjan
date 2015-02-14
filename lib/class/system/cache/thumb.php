@@ -28,7 +28,8 @@ namespace System\Cache
 
 		public static function find_all_by_hash($hash)
 		{
-			return get_all('\System\Cache\Thumb')->where(array("hash_image" => $hash))->fetch();
+			$model = get_called_class();
+			return $model::get_all()->where(array("hash_image" => $hash))->fetch();
 		}
 
 

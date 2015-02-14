@@ -17,7 +17,7 @@ if (isset($ident)) {
 	$conds['id_system_text'] = $id;
 }
 
-if ($text = get_first('\System\Text', $conds)->fetch()) {
+if ($text = \System\Text::get_first($conds)->fetch()) {
 
 	$this->partial($template, array(
 		"text" => $text,
