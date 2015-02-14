@@ -9,7 +9,7 @@ namespace
 		 */
 		public function test_address_validation($addr)
 		{
-			$this->assertTrue(\System\Offcom\Mail::is_addr_valid($addr));
+			$this->assertTrue(\Helper\Offcom\Mail::is_addr_valid($addr));
 		}
 
 
@@ -18,7 +18,7 @@ namespace
 		 */
 		public function test_address_invalidation($addr)
 		{
-			$this->assertFalse(\System\Offcom\Mail::is_addr_valid($addr, true));
+			$this->assertFalse(\Helper\Offcom\Mail::is_addr_valid($addr, true));
 		}
 
 
