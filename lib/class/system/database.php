@@ -293,7 +293,7 @@ namespace System
 					foreach ($data_set as $attr=>$val) {
 						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
 							if (\System\Model\Database::get_attr_type($model, $attr) == 'has-many') {
-								$def = \System\Model\Database::get_attr($model, $attr);
+								$def = $model::get_attr($attr);
 
 								if (any($def['is_bilinear']) && any($def['is_master'])) {
 									unset($obj->$attr);

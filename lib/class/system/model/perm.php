@@ -97,7 +97,7 @@ namespace System\Model
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {
-					$def = self::get_attr($model, $attr_name);
+					$def = $model::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
 					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
@@ -124,7 +124,7 @@ namespace System\Model
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {
-					$def = self::get_attr($model, $attr_name);
+					$def = $model::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
 					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);

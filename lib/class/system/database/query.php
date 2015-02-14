@@ -159,7 +159,8 @@ namespace System\Database
 		{
 			if (any($this->assoc_with_model)) {
 				foreach ($relations as $rel=>$ids) {
-					$rel_attrs = \System\Model\Database::get_attr($this->assoc_with_model, $rel);
+					$model = $this->assoc_with_model;
+					$rel_attrs = $model::get_attr($rel);
 					$rel_key   = \System\Model\Database::get_id_col($rel_attrs['model']);
 					$rel_conds = '';
 					$rel_table = any($rel_attrs['is_bilinear']) ?

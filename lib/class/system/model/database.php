@@ -115,7 +115,7 @@ namespace System\Model
 		public static function get_belongs_to_id($model, $attr)
 		{
 			if (self::is_rel($model, $attr)) {
-				$def = self::get_attr($model, $attr);
+				$def = $model::get_attr($attr);
 
 				if ($def[0] === self::REL_BELONGS_TO) {
 					if (any($def['foreign_key'])) {
@@ -306,7 +306,7 @@ namespace System\Model
 		public static function is_rel($model, $attr)
 		{
 			if ($model::has_attr($attr)) {
-				$def = self::get_attr($model, $attr);
+				$def = $model::get_attr($attr);
 				return in_array($def[0], self::$relation_types);
 			}
 
@@ -355,7 +355,7 @@ namespace System\Model
 			if (is_array($value)) {
 				$corrected = array();
 				$model = get_model($this);
-				$def = self::get_attr($model, $attr);
+				$def = $model::get_attr($attr);
 
 				foreach ($value as $val) {
 					if (is_object($val)) {
@@ -404,7 +404,7 @@ namespace System\Model
 		{
 			$model = get_model($this);
 			$type = self::get_attr_type($model, $name);
-			$def = self::get_attr($model, $name);
+			$def = $model::get_attr($name);
 			$value = empty($value) ? null:$value;
 			$is_null = !empty($def['is_null']) && is_null($value);
 
@@ -497,7 +497,7 @@ namespace System\Model
 		protected function get_rel_has_many($rel)
 		{
 			$model = get_model($this);
-			$rel_attrs = self::get_attr($model, $rel);
+			$rel_attrs = $model::get_attr($rel);
 			$join_alias = 't0';
 			$helper = get_all($rel_attrs['model'], array(), array());
 
@@ -528,7 +528,7 @@ namespace System\Model
 
 		protected function get_rel_has_many_ids($rel)
 		{
-			$def = self::get_attr(get_class($this), $rel);
+			$def = $this::get_attr($rel);
 			$idc = self::get_id_col($def['model']);
 			$data = $this->$rel->reset_cols()->add_cols($idc, 't0')->assoc_with(null)->fetch();
 			$ids = array();
@@ -549,7 +549,7 @@ namespace System\Model
 		{
 			if (empty($this->relations[$rel])) {
 				$model = get_model($this);
-				$rel_attrs = self::get_attr($model, $rel);
+				$rel_attrs = $model::get_attr($rel);
 
 				if (any($rel_attrs['foreign_key'])) {
 					$conds = array($rel_attrs['foreign_key'] => $this->id);
@@ -577,7 +577,7 @@ namespace System\Model
 		{
 			if (empty($this->relations[$rel])) {
 				$model = get_model($this);
-				$rel_attrs = self::get_attr($model, $rel);
+				$rel_attrs = $model::get_attr($rel);
 				$idf = any($rel_attrs['foreign_key']) ? $rel_attrs['foreign_key']:self::get_id_col($rel_attrs['model']);
 				$idl = any($rel_attrs['is_natural']) ? self::get_id_col($rel_attrs['model']):('id_'.$rel);
 
@@ -626,7 +626,7 @@ namespace System\Model
 
 			foreach ($def as $name) {
 				if ($name != \System\Model\Database::get_id_col($cname)) {
-					$attr = \System\Model\Database::get_attr($cname, $name);
+					$attr = $cname::get_attr($name);
 					$attr['name'] = $name;
 
 					switch ($attr[0])
@@ -791,7 +791,7 @@ namespace System\Model
 		{
 			if (isset($this->relations[$attr])) {
 				$model   = get_model($this);
-				$def     = self::get_attr($model, $attr);
+				$def     = $this::get_attr($attr);
 				$value   = $this->validate_relation_hasmany($attr);
 				$new     = collect_ids($value);
 				$current = collect_ids($this->$attr->fetch());
@@ -833,7 +833,7 @@ namespace System\Model
 				} else {
 					$model = get_model($this);
 					$foreign = self::get_rel_bound_to($model, $attr);
-					$foreign_key = self::get_attr($def['model'], $foreign);
+					$foreign_key = $def['model']::get_attr($foreign);
 					$idc = self::get_belongs_to_id($def['model'], $foreign);
 
 					if (any($ids_delete)) {
@@ -881,7 +881,7 @@ namespace System\Model
 		{
 			if (isset($this->relations[$attr])) {
 				$model     = get_model($this);
-				$def       = self::get_attr($model, $attr);
+				$def       = $this::get_attr($attr);
 				$value     = $this->relations[$attr];
 				$corrected = array();
 
@@ -1122,13 +1122,13 @@ namespace System\Model
 		 * @param string $attr
 		 * @return mixed
 		 */
-		public static function get_attr($model, $attr)
+		public static function get_attr($attr)
 		{
 			if ($attr === 'id') {
-				$attr = self::get_id_col($model);
+				$attr = self::get_id_col(get_called_class());
 			}
 
-			return parent::get_attr($model, $attr);
+			return parent::get_attr($attr);
 		}
 
 
@@ -1153,7 +1153,7 @@ namespace System\Model
 		 */
 		public static function get_rel_bound_to($model, $rel)
 		{
-			$def = self::get_attr($model, $rel);
+			$def = $model::get_attr($rel);
 			$match = array();
 
 			foreach ($def['model']::$attrs as $attr=>$def_attr) {
@@ -1212,7 +1212,7 @@ namespace System\Model
 
 			foreach ($attrs as $attr_name) {
 				if (self::is_rel($model, $attr_name)) {
-					$def = self::get_attr($model, $attr_name);
+					$def = $model::get_attr($attr_name);
 
 					if ($def[0] == self::REL_HAS_MANY) {
 						$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);

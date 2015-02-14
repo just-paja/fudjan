@@ -117,7 +117,7 @@ namespace System\Model
 		public function __set($attr, $value)
 		{
 			if ($this->has_attr($attr)) {
-				$def = self::get_attr(get_model($this), $attr);
+				$def = $this::get_attr($attr);
 
 				if (!isset($def['writeable']) || $def['writeable']) {
 					$null_error = false;
@@ -132,7 +132,7 @@ namespace System\Model
 
 		public function set_default_value($attr)
 		{
-			$def = self::get_attr(get_model($this), $attr);
+			$def = $this::get_attr($attr);
 
 			if (isset($def['default'])) {
 				$this->$attr = $def['default'];
@@ -285,11 +285,13 @@ namespace System\Model
 		 * @param string $attr
 		 * @return array
 		 */
-		public static function get_attr($model, $attr)
+		public static function get_attr($attr)
 		{
+			$model = get_called_class();
+
 			if ($model::has_attr($attr)) {
 				$attr_data = &$model::$attrs[$attr];
-				$type = self::get_attr_type($model, $attr);
+				$type = $model::get_attr_type($model, $attr);
 
 				if (in_array($type, array('varchar', 'password'))) {
 					if (!isset($attr_data['length'])) $attr_data['length'] = 255;
@@ -314,7 +316,7 @@ namespace System\Model
 		 */
 		public static function convert_attr_val($model, $attr, $val = null)
 		{
-			$attr_data = $model::get_attr($model, $attr);
+			$attr_data = $model::get_attr($attr);
 
 			if (isset($attr_data['is_null']) && $attr_data['is_null'] && is_null($val)) {
 				return $val = null;
@@ -592,7 +594,7 @@ namespace System\Model
 
 			if (is_null($data) && $obj && $key) {
 				try {
-					$attr = self::get_attr($obj, $key);
+					$attr = $obj::get_attr($key);
 				} catch (\System\Error\Model $e) {
 					$attr = null;
 				}

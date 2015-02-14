@@ -514,7 +514,7 @@ namespace Helper\Cli\Module
 					foreach ($tdata as $attr=>$val) {
 						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
 							if (\System\Model\Database::get_attr_type($model, $attr) == \System\Model\Database::REL_HAS_MANY) {
-								$def = \System\Model\Database::get_attr($model, $attr);
+								$def = $model::get_attr($attr);
 
 								if (any($def['is_bilinear']) && any($def['is_master'])) {
 									unset($obj->$attr);
