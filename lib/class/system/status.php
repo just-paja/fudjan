@@ -71,7 +71,7 @@ namespace System
 						$rcpt = array();
 					}
 
-					\System\Offcom\Mail::create('[Fudjan] Server error', $report, $rcpt)->send();
+					\Helper\Offcom\Mail::create('[Fudjan] Server error', $report, $rcpt)->send();
 				}
 
 				fwrite(self::$log_files[$type], $report);

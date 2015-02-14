@@ -4,7 +4,7 @@
  * @package system
  * @subpackage offcom
  */
-namespace System\Offcom
+namespace Helper\Offcom
 {
 	/** Remote request handling via CURL
 	 * @package system

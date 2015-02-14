@@ -321,7 +321,7 @@ namespace System
 		{
 			$u = explode('/', $url);
 			$name = end($u);
-			$data = \System\Offcom\Request::get($url);
+			$data = \Helper\Offcom\Request::get($url);
 
 			if ($data->ok()) {
 				$f = new self(array("name" => $name));
