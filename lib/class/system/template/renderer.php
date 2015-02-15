@@ -474,7 +474,7 @@ namespace System\Template
 		 */
 		public function content_for($place, $content, $overwrite = false)
 		{
-			if (!isset($this->content[$place]) || $overwrite) {
+			if (!isset($this->content[$place]) || $overwrite || $place == 'title') {
 				$this->content[$place] = $content;
 			} else {
 				is_array($this->content[$place]) && $this->content[$place][] = $content;
