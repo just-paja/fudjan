@@ -140,7 +140,7 @@ namespace System
 
 								$val === '#' && $val = end($input);
 								if (!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
-									$temp = $this->response()->request()->args;
+									$temp = $this->response()->request->args;
 									$temp_key = intval(substr($val, 2));
 
 									if (isset($temp[$temp_key])) {
@@ -287,7 +287,7 @@ namespace System
 		public function bind_to_flow(\System\Module\Flow $flow)
 		{
 			$this->response = $flow->response();
-			$this->request  = $flow->response()->request();
+			$this->request  = $flow->response()->request;
 			$this->flow     = $flow;
 			$this->dbus     = $flow->dbus();
 			return $this;

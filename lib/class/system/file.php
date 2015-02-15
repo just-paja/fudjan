@@ -42,7 +42,8 @@ namespace System
 		 */
 		public static function from_json($json)
 		{
-			return new self(\System\Json::decode($json));
+			$model = get_called_class();
+			return new $model(\System\Json::decode($json));
 		}
 
 
@@ -51,30 +52,33 @@ namespace System
 		 */
 		public static function from_path($path)
 		{
+			$model = get_called_class();
+
 			// If file_exists throws error, path is inaccessible
 			if (!@file_exists($path)) {
 				$path = \System\Composer::resolve($path);
 			}
 
-			$file = new self(array(
+			$file = new $model(array(
 				"path" => dirname($path),
 				"name" => basename($path),
 				"keep" => true
 			));
 
-			return $file->read_meta();
+			return $file;
 		}
 
 
 		public static function from_tmp($path, $real_name)
 		{
+			$model = get_called_class();
 			$suff = self::get_suffix_from_name($real_name);
 
 			if ($suff) {
 				$real_name = substr($real_name, 0, mb_strlen($real_name) - mb_strlen($suff));
 			}
 
-			$file = self::from_path($path)->rename(\System\Url::gen_seoname($real_name).($suff ? '.'.$suff:''));
+			$file = $model::from_path($path)->rename(\System\Url::gen_seoname($real_name).($suff ? '.'.$suff:''));
 			$file->keep = false;
 			return $file;
 		}
@@ -687,6 +691,7 @@ namespace System
 
 		public static function get_mime($file)
 		{
+
 			if (function_exists("finfo_file")) {
 				$finfo = finfo_open(FILEINFO_MIME_TYPE); // return mime type ala mimetype extension
 				$mime = finfo_file($finfo, $file);

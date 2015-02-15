@@ -17,4 +17,3 @@ $resource = \System\Resource::sort_out(array(
 ));
 
 $resource->serve();
-

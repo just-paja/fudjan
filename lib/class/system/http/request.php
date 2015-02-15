@@ -27,6 +27,7 @@ namespace System\Http
 			"context"  => array('list'),
 			"init"     => array('list'),
 			'rules'    => array('list'),
+			'session'  => array('list'),
 		);
 
 
@@ -293,25 +294,29 @@ namespace System\Http
 		 */
 		public function user()
 		{
-			if ($this->user instanceof \System\User) {
+			$cookie = \System\User::COOKIE_USER;
+
+			if ($this->user) {
 				return $this->user;
-			} else if ($this->sess(\System\User::COOKIE_USER)) {
+			} else if ($this->sess($cookie)) {
 				try {
 					$login = \System\Settings::get('policies', 'auto_login');
 				} catch (\System\Error\Config $e) {
 					$login = true;
 				}
 
+
 				if ($login) {
-					$this->user = \System\User::find($this->sess(\System\User::COOKIE_USER));
+					$this->user = \System\User::find($this->sess($cookie));
 				}
 			}
 
-			if (!($this->user instanceof \System\User)) {
+			if (!($this->user)) {
 				$this->user = \System\User::guest();
 			}
 
 			$this->user->get_rights();
+
 			return $this->user;
 		}
 

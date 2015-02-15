@@ -154,7 +154,7 @@ namespace System\Http
 			require($path);
 
 			if (isset($policy) && get_class($policy) == 'Closure') {
-				$this->pass = $policy($this->request(), $this);
+				$this->pass = $policy($this->request, $this);
 			} else throw new \System\Error\Code('Failed to use policy. Maybe you forgot define variable policy as function.', $path);
 
 			return $this;
@@ -219,7 +219,7 @@ namespace System\Http
 
 			if (isset($context)) {
 				if (get_class($context) == 'Closure') {
-					$data = $context($this->request(), $this);
+					$data = $context($this->request, $this);
 				} else {
 					$data = (array) $context;
 				}
@@ -413,21 +413,12 @@ namespace System\Http
 		}
 
 
-		/** Get request object
-		 * @return \System\Http\Request
-		 */
-		public function request()
-		{
-			return $this->request;
-		}
-
-
 		/** Get full path including query string
 		 * @return string
 		 */
 		public function path()
 		{
-			return $this->request()->path.($this->request()->query ? '?'.$this->request()->query:'');
+			return $this->request->path.($this->request->query ? '?'.$this->request->query:'');
 		}
 
 
@@ -517,7 +508,7 @@ namespace System\Http
 		 */
 		public function url($name, array $args = array(), $variation = 0)
 		{
-			return \System\Router::get_url($this->request()->host, $name, $args, $variation);
+			return \System\Router::get_url($this->request->host, $name, $args, $variation);
 		}
 
 
@@ -526,17 +517,19 @@ namespace System\Http
 		 */
 		public function is_readable()
 		{
-			if (!$this->request()->user()->is_root() && !empty($this->groups)) {
-				foreach ($this->request()->user()->get_group_ids() as $id) {
-					if (in_array($id, $this->groups)) {
-						return true;
-					}
-				}
-
-				return false;
+			if ($this->request->user()->is_root() || empty($this->groups)) {
+				return true;
 			}
 
-			return true;
+			$ids = $this->request->user()->get_group_ids();
+
+			foreach ($ids as $id) {
+				if (in_array($id, $this->groups)) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 
@@ -546,7 +539,7 @@ namespace System\Http
 				$this->cookie_store('lang', $this->locales->get_lang());
 
 				\System\Init::run($this->init, array(
-					"request"  => $this->request(),
+					"request"  => $this->request,
 					"response" => $this,
 				));
 			}

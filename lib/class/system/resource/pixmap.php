@@ -27,11 +27,14 @@ namespace System\Resource
 
 					$thumb->crop = $rq->get('crop') == '' || !!$rq->get('crop');
 					$thumb->check();
-					$thumb->save();
+
+					if (!$thumb->id) {
+						$thumb->save();
+					}
 
 					$this->file_path = BASE_DIR.$thumb->get_path();
 					$this->file_point = $cname::from_path($this->file_path);
-					$this->exists = $this->file_point->exists();
+					$this->exists = true;
 				}
 			}
 		}

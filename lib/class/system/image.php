@@ -167,53 +167,6 @@ namespace System
 		}
 
 
-
-		/** Create image instance from JSON
-		 * @param string $json
-		 */
-		public static function from_json($json)
-		{
-			return new self(\System\Json::decode($json));
-		}
-
-
-		/** Create image instance from path. Absolute path or http are not implemented
-		 * @param string $path
-		 * $return self|false False on failure
-		 */
-		public static function from_path($path)
-		{
-			$image = self::from_file(parent::from_path($path));
-			$image->keep = true;
-			return $image;
-		}
-
-
-		public static function from_tmp($path, $real_name)
-		{
-			$image = self::from_file(parent::from_tmp($path, $real_name));
-			$image->keep = true;
-			return $image;
-		}
-
-
-		public static function from_file(\System\File $file = null)
-		{
-			$img = null;
-
-			if (!is_null($file)) {
-				$img = new self($file->get_data());
-				$file->keep = true;
-
-				if ($file->is_cached()) {
-					$img->set_content($file->get_content());
-				}
-			}
-
-			return $img;
-		}
-
-
 		/** Generate bad thumbnail path
 		 * @param int $width
 		 * @param int $height
