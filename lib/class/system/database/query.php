@@ -441,17 +441,6 @@ namespace System\Database
 		}
 
 
-		/* Set up quick conditions if associated with a model
-		 * @return $this
-		 */
-		public function quick()
-		{
-			return isset($this->assoc_with_model) ?
-				$this->where(\System\Model\Database::get_quick_conds($this->assoc_with_model)):
-				$this;
-		}
-
-
 		public function get_filter_cond($filter, $table_alias)
 		{
 			$pass  = null;

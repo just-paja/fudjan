@@ -5,9 +5,9 @@ namespace System\User
 	class Group extends \System\Model\Perm
 	{
 		static protected $attrs = array(
-			"name"   => array('varchar'),
-			"users"  => array('has_many', "model" => 'System\User', "is_bilinear" => true),
-			"rights" => array('has_many', "model" => 'System\User\Perm'),
+			"name"   => array("type" => 'varchar'),
+			"users"  => array("type" => 'has_many', "model" => 'System\User', "is_bilinear" => true),
+			"rights" => array("type" => 'has_many', "model" => 'System\User\Perm'),
 		);
 
 

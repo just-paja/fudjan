@@ -17,11 +17,11 @@ namespace System\User
 		 * @param array
 		 */
 		static protected $attrs = array(
-			"group"     => array('belongs_to', "model" => 'System\User\Group'),
-			"name"      => array('varchar'),
-			"trigger"   => array('varchar'),
-			"public"    => array('bool'),
-			"allow"     => array('bool')
+			"group"   => array("type" => 'belongs_to', "model" => 'System\User\Group'),
+			"name"    => array("type" => 'varchar'),
+			"trigger" => array("type" => 'varchar'),
+			"public"  => array("type" => 'bool'),
+			"allow"   => array("type" => 'bool')
 		);
 	}
 }

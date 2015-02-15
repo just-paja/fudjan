@@ -24,7 +24,8 @@ namespace Helper\Database
 
 		public static function get_from_model($model)
 		{
-			$relations = $model::get_model_relations($model);
+			$model::check_model();
+			$relations = $model::get_model_relations();
 			$models = array();
 
 			foreach ($relations as $name=>$def) {
@@ -40,7 +41,6 @@ namespace Helper\Database
 			$def['parent'] = $parent;
 			$def['name'] = $name;
 			def($def['is_master'], false);
-			$def['type'] = $def[0];
 
 			if (strpos($def['model'], '\\') === 0) {
 				$def['model'] = substr($def['model'], 1);

@@ -46,7 +46,7 @@ namespace Helper\Database
 			));
 
 			foreach ($attrs as $name => $def) {
-				if (!\System\Model\Database::is_rel($model, $name)) {
+				if (!$model::is_rel($name)) {
 					$result[$name] = self::from_def($name, $def);
 				}
 			}

@@ -141,6 +141,19 @@ namespace System\Model
 
 
 		/**
+		 * Add attribute to this model
+		 *
+		 * @param string $attr
+		 * @param array  $def  Attribute definition
+		 * @return void
+		 */
+		public static function add_attr($attr, array $def)
+		{
+			static::$attrs[$attr] = $def;
+		}
+
+
+		/**
 		 * Set default value for attribute if applicable
 		 *
 		 * @return void
@@ -287,17 +300,7 @@ namespace System\Model
 		public static function get_attr_type($attr)
 		{
 			$def = static::get_attr($attr);
-			$src = &static::$attrs;
-
-			if (isset($src[$attr]['type'])) {
-				$src[$attr][0] = $src[$attr]['type'];
-			}
-
-			if (!isset($src[$attr]['type'])) {
-				$src[$attr]['type'] = $src[$attr][0];
-			}
-
-			return $src[$attr]['type'];
+			return $def['type'];
 		}
 
 
@@ -309,11 +312,14 @@ namespace System\Model
 		 */
 		public static function get_attr($attr)
 		{
-			if (static::has_attr($attr)) {
-				return static::$attrs[$attr];
+			$model = get_called_class();
+			$model::check_model();
+
+			if ($model::has_attr($attr)) {
+				return $model::$attrs[$attr];
 			}
 
-			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, get_called_class()));
+			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, $model));
 		}
 
 
@@ -332,7 +338,7 @@ namespace System\Model
 				return $val = null;
 			}
 
-			switch ($attr_data[0]) {
+			switch ($attr_data['type']) {
 				case 'int':
 				{
 					$val = filter_var($val,  FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
@@ -389,7 +395,7 @@ namespace System\Model
 				case 'image':
 				case 'file':
 				{
-					if ($attr_data[0] == 'image') {
+					if ($attr_data['type'] == 'image') {
 						$cname = '\System\Image';
 					} else {
 						$cname = '\System\File';
@@ -561,21 +567,21 @@ namespace System\Model
 					throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
 				}
 
-				foreach ($model::$attrs as $name => &$def) {
-					if (!isset($def['type'])) {
-						$def['type'] = $def[0];
+				$src = &$model::$attrs;
+
+				foreach ($src as $name=>$def) {
+					$attr = &$src[$name];
+
+					if (isset($attr[0]) && !isset($attr['type'])) {
+						$src[$name]['type'] = $attr[0];
 					}
 
-					if (!isset($def[0])) {
-						$def['0'] = $def['type'];
+					if ($attr['type'] == 'varchar' && !isset($attr['length'])) {
+						$attr['length'] = 255;
 					}
 
-					if ($def['type'] == 'varchar' && !isset($def['length'])) {
-						$def['length'] = 255;
-					}
-
-					if ($def['type'] == 'text' && !isset($def['length'])) {
-						$def['length'] = 65535;
+					if ($attr['type'] == 'text' && !isset($attr['length'])) {
+						$attr['length'] = 65535;
 					}
 				}
 

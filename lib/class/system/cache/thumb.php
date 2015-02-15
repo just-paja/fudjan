@@ -48,7 +48,7 @@ namespace System\Cache
 
 		public static function from_hash($hash)
 		{
-			return get_first('\System\Cache\Thumb')->where(array("hash" => $hash))->fetch();
+			return static::get_first()->where(array("hash" => $hash))->fetch();
 		}
 
 

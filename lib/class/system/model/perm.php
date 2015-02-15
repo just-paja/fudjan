@@ -96,7 +96,7 @@ namespace System\Model
 			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
-				if (self::is_rel($model, $attr_name)) {
+				if ($this::is_rel($attr_name)) {
 					$def = $model::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
@@ -123,7 +123,7 @@ namespace System\Model
 			$attrs = $model::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
-				if (self::is_rel($model, $attr_name)) {
+				if ($this::is_rel($attr_name)) {
 					$def = $model::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
@@ -133,7 +133,7 @@ namespace System\Model
 						if ($def[0] == self::REL_HAS_MANY) {
 							$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
 						} else if ($def[0] == self::REL_BELONGS_TO) {
-							$bid = self::get_belongs_to_id($model, $attr_name);
+							$bid = $model::get_belongs_to_id($attr_name);
 
 							if ($this->$bid) {
 								$data[$attr_name] = $this->$bid;
@@ -151,7 +151,7 @@ namespace System\Model
 		{
 			if (self::can_user(self::VIEW_SCHEMA, $user)) {
 				$cname  = get_called_class();
-				$schema = self::get_schema();
+				$schema = static::get_schema();
 				$res    = array();
 				$rel_attrs = array(
 					'collection',

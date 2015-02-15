@@ -19,15 +19,25 @@ namespace System
 
 		/** Attributes */
 		static protected $attrs = array(
-			"login"       => array('varchar', "is_unique" => true),
-			"first_name"  => array('varchar'),
-			"last_name"   => array('varchar'),
-			"nick"        => array('varchar', "is_null" => true),
-			"password"    => array('password', "default" => ''),
-			"avatar"      => array('image', "default" => '/share/pixmaps/pwf/anonymous_user.png'),
-			"last_login"  => array('datetime', "default" => 0),
-			"groups"      => array('has_many', "model" => 'System\User\Group', "is_bilinear" => true, "is_master" => true),
-			"contacts"    => array('has_many', "model" => 'System\User\Contact')
+			"login"       => array("type" => 'varchar', "is_unique" => true),
+			"first_name"  => array("type" => 'varchar'),
+			"last_name"   => array("type" => 'varchar'),
+			"nick"        => array("type" => 'varchar', "is_null" => true),
+			"password"    => array("type" => 'password', "default" => ''),
+			"avatar"      => array("type" => 'image', "default" => '/share/pixmaps/pwf/anonymous_user.png'),
+			"last_login"  => array("type" => 'datetime', "default" => 0),
+
+			"groups" => array(
+				"type" => 'has_many',
+				"model" => 'System\User\Group',
+				"is_bilinear" => true,
+				"is_master" => true
+			),
+
+			"contacts" => array(
+				"type" => 'has_many',
+				"model" => 'System\User\Contact'
+			)
 		);
 
 
