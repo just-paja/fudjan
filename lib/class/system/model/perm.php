@@ -104,7 +104,7 @@ namespace System\Model
 					if (!$is_allowed) {
 						unset($data[$attr_name]);
 
-						if ($def[0] == self::REL_BELONGS_TO) {
+						if ($def['type'] == self::REL_BELONGS_TO) {
 							unset($data[$this::get_belongs_to_id($attr_name)]);
 						}
 					}
@@ -128,9 +128,9 @@ namespace System\Model
 					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
 
 					if ($is_allowed) {
-						if ($def[0] == self::REL_HAS_MANY) {
+						if ($def['type'] == self::REL_HAS_MANY) {
 							$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
-						} else if ($def[0] == self::REL_BELONGS_TO) {
+						} else if ($def['type'] == self::REL_BELONGS_TO) {
 							$bid = $this::get_belongs_to_id($attr_name);
 
 							if ($this->$bid) {
