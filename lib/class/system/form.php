@@ -49,10 +49,10 @@ namespace System
 
 		public static function from_response(\System\Http\Response $response, array $attrs = array())
 		{
-			$attrs['request'] = $response->request();
+			$attrs['request'] = $response->request;
 
 			if (empty($attrs['action'])) {
-				$attrs['action'] = $response->request()->path;
+				$attrs['action'] = $response->request->path;
 			}
 
 			$form = new self($attrs);
@@ -136,7 +136,7 @@ namespace System
 		 */
 		protected function take_data_from_request()
 		{
-			$this->data_commited = $this->request()->input_by_prefix($this->prefix, $this->method);
+			$this->data_commited = $this->request->input_by_prefix($this->prefix, $this->method);
 
 			if (isset($this->data_commited['data_hidden'])) {
 				$this->data_hidden = \System\Json::decode(htmlspecialchars_decode($this->data_commited['data_hidden']));
@@ -612,26 +612,6 @@ namespace System
 			}
 
 			return $this->renderer;
-		}
-
-
-		public function response(\System\Http\Response $response = null)
-		{
-			if (!is_null($response)) {
-				$this->response = $response;
-			}
-
-			return $this->response;
-		}
-
-
-		public function request(\System\Http\Request $request = null)
-		{
-			if (!is_null($request)) {
-				$this->request = $request;
-			}
-
-			return $this->request;
 		}
 
 
