@@ -202,7 +202,7 @@ namespace Helper\Database\Mysqli
 					$front,
 					$this->attrs['type'].(any($this->attrs['length']) ? '('.$this->attrs['length'].')':''),
 					any($this->attrs['is_unsigned']) ? 'unsigned':'',
-					any($this->attrs['is_null']) ? 'NULL':'NOT NULL',
+					any($this->attrs['is_null']) && !isset($this->attrs['default']) ? 'NULL':'NOT NULL',
 					isset($this->attrs['default']) && !in_array($this->attrs['type'], self::$cols_no_default) ? 'DEFAULT '.$defval.'':'',
 					any($this->attrs['is_autoincrement']) ? 'AUTO_INCREMENT':'',
 					any($this->attrs['is_unique']) && empty($this->attrs['is_primary']) && empty($this->default['is_unique']) ? 'UNIQUE':'',
