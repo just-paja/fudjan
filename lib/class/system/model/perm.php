@@ -92,12 +92,11 @@ namespace System\Model
 		public function to_object_with_id_and_perms(\System\User $user)
 		{
 			$data  = parent::to_object_with_id();
-			$model = get_class($this);
 			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
 				if ($this::is_rel($attr_name)) {
-					$def = $model::get_attr($attr_name);
+					$def = $this::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
 					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
@@ -106,7 +105,7 @@ namespace System\Model
 						unset($data[$attr_name]);
 
 						if ($def[0] == self::REL_BELONGS_TO) {
-							unset($data[self::get_belongs_to_id($model, $attr_name)]);
+							unset($data[$this::get_belongs_to_id($attr_name)]);
 						}
 					}
 				}
@@ -119,12 +118,11 @@ namespace System\Model
 		public function get_rels_to_object_with_perms(\System\User $user)
 		{
 			$data  = array();
-			$model = get_class($this);
-			$attrs = $model::get_attr_list();
+			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
 				if ($this::is_rel($attr_name)) {
-					$def = $model::get_attr($attr_name);
+					$def = $this::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
 					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
@@ -133,7 +131,7 @@ namespace System\Model
 						if ($def[0] == self::REL_HAS_MANY) {
 							$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
 						} else if ($def[0] == self::REL_BELONGS_TO) {
-							$bid = $model::get_belongs_to_id($attr_name);
+							$bid = $this::get_belongs_to_id($attr_name);
 
 							if ($this->$bid) {
 								$data[$attr_name] = $this->$bid;
