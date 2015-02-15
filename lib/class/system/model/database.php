@@ -1114,9 +1114,7 @@ namespace System\Model
 				if (empty($def['is_fake'])) {
 					if ($type == 'point') {
 						$list[$attr] = 'AsWKT('.$attr.')';
-					}
-
-					if ($model::is_rel($attr)) {
+					} else if ($model::is_rel($attr)) {
 						if ($type == self::REL_BELONGS_TO) {
 							$list[] = $model::get_belongs_to_id($attr);
 						}
