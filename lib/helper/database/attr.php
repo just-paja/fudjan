@@ -32,7 +32,7 @@ namespace Helper\Database
 		 */
 		public static function get_from_model($model)
 		{
-			\System\Model\Database::check_relations($model);
+			$model::check_model();
 			$result = array();
 			$attrs  = $model::get_attr_def();
 			$relations = \Helper\Database\Relation::get_from_model($model);
@@ -65,7 +65,7 @@ namespace Helper\Database
 		 */
 		public static function from_def($name, array $def)
 		{
-			if (isset($def[0])) {
+			if (!isset($def['type']) && isset($def[0])) {
 				$def['type'] = $def[0];
 			}
 

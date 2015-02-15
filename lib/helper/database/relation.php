@@ -97,7 +97,5 @@ namespace Helper\Database
 
 			return implode('_has_', $name);
 		}
-
-
 	}
 }
