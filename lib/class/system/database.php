@@ -291,7 +291,7 @@ namespace System
 					}
 
 					foreach ($data_set as $attr=>$val) {
-						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
+						if (is_array($val) && $model::has_attr($attr) && $model::is_rel($attr)) {
 							if ($model::get_attr_type($attr) == 'has-many') {
 								$def = $model::get_attr($attr);
 

@@ -161,14 +161,15 @@ namespace System\Database
 				foreach ($relations as $rel=>$ids) {
 					$model = $this->assoc_with_model;
 					$rel_attrs = $model::get_attr($rel);
-					$rel_key   = \System\Model\Database::get_id_col($rel_attrs['model']);
+					$rel_model = $rel_attrs['model'];
+					$rel_key   = $rel_model::get_id_col();
 					$rel_conds = '';
 					$rel_table = any($rel_attrs['is_bilinear']) ?
-						\System\Model\Database::get_bilinear_table_name($this->assoc_with_model, $rel_attrs):
-						\System\Model\Database::get_table($this->assoc_with_model);
+						$model::get_bilinear_table_name($rel_attrs):
+						$model::get_table();
 
 					if (any($rel_attrs['is_bilinear'])) {
-						$rel_conds = 'USING('.\System\Model\Database::get_id_col($this->assoc_with_model).')';
+						$rel_conds = 'USING('.$model::get_id_col().')';
 					}
 
 					$this
@@ -448,7 +449,8 @@ namespace System\Database
 			$value = $filter[$type];
 
 			if ($filter['attr'] == 'id' && $this->assoc_with_model) {
-				$filter['attr'] = \System\Model\Database::get_id_col($this->assoc_with_model);
+				$model = $this->assoc_with_model;
+				$filter['attr'] = $model::get_id_col();
 			}
 
 			switch ($type) {
