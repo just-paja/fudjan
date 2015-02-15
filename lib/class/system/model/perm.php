@@ -67,7 +67,7 @@ namespace System\Model
 				'name' => '*'
 			);
 
-			$perm = get_first('System\User\Perm')->where($conds)->fetch();
+			$perm = \System\User\Perm::get_first()->where($conds)->fetch();
 			return $perm ? $perm->allow:self::get_default_for($method);
 		}
 
