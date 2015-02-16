@@ -128,8 +128,18 @@ namespace System
 				}
 
 				$res = $db->query($sql);
-				return $return_affected ? $db->get_affected_rows():$db->get_insert_id();
 
+				if ($return_affected) {
+					return $db->get_affected_rows();
+				}
+
+				$id = $db->get_insert_id();
+
+				if (!$id) {
+					throw new \System\Error\Database('Failed to create primary key value.', $table, $data);
+				}
+
+				return $id;
 			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
