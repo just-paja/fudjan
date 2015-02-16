@@ -4,7 +4,7 @@ namespace System\Resource
 {
 	class Style extends \System\Resource\Text
 	{
-		const DIR_SAVE  = '/var/cache/resources/scripts';
+		const DIR_SAVE  = '/var/cache/resources/styles';
 		const DIR_CACHE = '/var/cache/static';
 		const NOT_FOUND = '/* Style not found: %s */';
 		const MIME_TYPE = 'text/css';
