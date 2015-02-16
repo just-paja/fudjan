@@ -103,7 +103,8 @@ namespace System\Model
 					static::add_attr($idc, array(
 						"type"        => 'int',
 						"is_unsigned" => true,
-						"is_index"    => true
+						"is_primary"  => true,
+						"is_autoincrement" => true
 					));
 				}
 
