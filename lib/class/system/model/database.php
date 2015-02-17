@@ -339,7 +339,7 @@ namespace System\Model
 		 */
 		public function __get($attr)
 		{
-			if ($this::is_rel($attr)) {
+			if ($this::has_attr($attr) && $this::is_rel($attr)) {
 				return $this->get_rel($attr);
 			} else {
 				if ($attr == 'id' || $attr == $this::get_id_col()) {
@@ -524,7 +524,7 @@ namespace System\Model
 		protected function get_rel_has_many($rel)
 		{
 			$model = get_model($this);
-			$rel_attrs = $model::get_attr($rel);
+			$rel_attrs = $this::get_attr($rel);
 			$rel_model = $rel_attrs['model'];
 			$join_alias = 't0';
 			$helper = $rel_model::get_all();
@@ -532,15 +532,11 @@ namespace System\Model
 
 			if (any($rel_attrs['is_bilinear'])) {
 				$join_alias = 't_'.$rel;
-				$table_name = $model::get_bilinear_table_name($rel_attrs);
-				$using = $model::get_id_col();
-
-				if (any($rel_attrs['is_master'])) {
-					$using = $rel_model::get_id_col();
-				}
+				$table_name = $this::get_bilinear_table_name($rel_attrs);
+				$using = $rel_model::get_id_col();
 
 				$helper->join($table_name, "USING(".$using.")", $join_alias);
-				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:$model::get_id_col();
+				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:$this::get_id_col();
 			} else {
 				if ($foreign = self::get_rel_bound_to($model, $rel)) {
 					$idc = $rel_model::get_belongs_to_id($foreign);
