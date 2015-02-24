@@ -500,7 +500,9 @@ namespace System\Http
 		}
 
 
-		/** Shortcut for get_url
+		/**
+		 * Shortcut for get_url
+		 *
 		 * @param String $name
 		 * @param array  $args
 		 * @param int    $variation
@@ -509,6 +511,20 @@ namespace System\Http
 		public function url($name, array $args = array(), $variation = 0)
 		{
 			return \System\Router::get_url($this->request->host, $name, $args, $variation);
+		}
+
+
+		/**
+		 * Gets you full URL
+		 *
+		 * @param String $name
+		 * @param array  $args
+		 * @param int    $variation
+		 * @return String
+		 */
+		public function url_full($name, array $args = array(), $variation = 0)
+		{
+			return $this->request->protocol.'://'.$this->request->host.\System\Router::get_url($this->request->host, $name, $args, $variation);
 		}
 
 
