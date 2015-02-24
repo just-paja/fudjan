@@ -296,7 +296,7 @@ namespace System
 
 		public function renderer()
 		{
-			return $this->response()->renderer();
+			return $this->response()->renderer;
 		}
 
 
