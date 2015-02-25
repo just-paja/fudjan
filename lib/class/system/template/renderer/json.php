@@ -25,7 +25,7 @@ namespace System\Template\Renderer
 				$this->response->status(intval(def($data[0]['status'], 200)));
 			}
 
-			return json_encode(count($json) == 1 ? $json[0]:$json);
+			return count($json) == 1 ? $json[0]:$json;
 		}
 
 
