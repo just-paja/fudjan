@@ -30,11 +30,18 @@ $policy = function($rq, $res) {
 		);
 	}
 
+	$now = new \DateTime();
+	$tz  = new \DateTimeZone(\System\Settings::get('locales', 'timezone'));
+
+	$now->setTimeZone($tz);
+
 	$cont = array(
 		"locales" => array(
 			"url"      => $locales_url,
 			"lang"     => $res->locales->get_lang(),
 			"autoload" => $autoload,
+			"tz"       => -$tz->getOffset($now)/60,
+			"now"      => $now->format('c')
 		),
 		"comm" => array(
 			"blank" => '/share/html/blank.html'
