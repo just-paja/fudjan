@@ -384,6 +384,13 @@ namespace System\Http
 		}
 
 
+		public function reset_renderer()
+		{
+			$this->renderer = null;
+			return $this->create_renderer();
+		}
+
+
 		/** Clear response content
 		 * @return $this
 		 */
