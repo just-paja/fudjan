@@ -74,9 +74,9 @@ namespace System
 		public function accessible()
 		{
 			return
-				$this->request()->user()->is_root() ||
-				$this->request()->user()->has_right('*') ||
-				$this->request()->user()->has_right(substr($this->get_path(), 1));
+				$this->request->user()->is_root() ||
+				$this->request->user()->has_right('*') ||
+				$this->request->user()->has_right(substr($this->get_path(), 1));
 		}
 
 
@@ -112,7 +112,7 @@ namespace System
 						$locals = &$this->locals;
 
 						def($locals['per_page'], 20);
-						def($locals['page'], intval($this->request()->get('page')));
+						def($locals['page'], intval($this->request->get('page')));
 
 						$locals['per_page'] = intval($locals['per_page']);
 
@@ -120,7 +120,7 @@ namespace System
 							$propagated = array();
 
 							if (any($this->parents)) {
-								$propagated = $this->dbus()->get_data($this->parents);
+								$propagated = $this->dbus->get_data($this->parents);
 								$locals = array_merge($locals, $propagated);
 							}
 
@@ -140,7 +140,7 @@ namespace System
 
 								$val === '#' && $val = end($input);
 								if (!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
-									$temp = $this->response()->request->args;
+									$temp = $this->response->request->args;
 									$temp_key = intval(substr($val, 2));
 
 									if (isset($temp[$temp_key])) {
@@ -149,7 +149,7 @@ namespace System
 								}
 
 								if (!is_object($val) && !is_array($val) && strpos($val, '#user{') === 0) {
-									$val = soprintf(substr($val, 5), $this->request()->user());
+									$val = soprintf(substr($val, 5), $this->request->user());
 								}
 
 								$$key = &$val;
@@ -157,11 +157,11 @@ namespace System
 						}
 
 						$module   = $this;
-						$response = $this->response();
-						$renderer = $this->response()->renderer;
-						$request  = $this->response()->request;
-						$flow     = $this->response()->flow;
-						$locales  = $this->response()->locales;
+						$response = $this->response;
+						$renderer = $this->response->renderer;
+						$request  = $this->response->request;
+						$flow     = $this->response->flow;
+						$locales  = $this->response->locales;
 
 						$ren = &$renderer;
 						$res = &$response;
@@ -185,7 +185,7 @@ namespace System
 
 		private function propagate($name, $data)
 		{
-			$this->dbus()->add_data($this, $name, $data);
+			$this->dbus->add_data($this, $name, $data);
 			return $this;
 		}
 
@@ -287,7 +287,7 @@ namespace System
 		public function bind_to_flow(\System\Module\Flow $flow)
 		{
 			$this->response = $flow->response();
-			$this->request  = $flow->response()->request;
+			$this->request  = $this->response->request;
 			$this->flow     = $flow;
 			$this->dbus     = $flow->dbus();
 			return $this;
@@ -296,28 +296,7 @@ namespace System
 
 		public function renderer()
 		{
-			return $this->response()->renderer;
-		}
-
-
-		public function response()
-		{
-			return $this->response;
-		}
-
-
-		public function request()
-		{
-			return $this->request;
-		}
-
-
-		/** Get dbus instance
-		 * @return \System\Module\Dbus
-		 */
-		public function dbus()
-		{
-			return $this->dbus;
+			return $this->response->renderer;
 		}
 
 
@@ -329,9 +308,9 @@ namespace System
 			!is_null($message) && $response['message'] = $message;
 			!is_null($data) && $response['data'] = $data;
 
-			$this->renderer()->reset_layout();
-			$this->renderer()->format = 'json';
-			$this->response()->status($status);
+			$this->response->format = 'json';
+			$this->response->reset_renderer();
+			$this->response->status($status);
 
 			$this->partial('system/common', $response);
 			return $this->stop();
