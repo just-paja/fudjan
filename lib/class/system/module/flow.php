@@ -103,13 +103,13 @@ namespace System\Module
 				}
 
 				$mod = \System\Module::from_path($module, array(
-					"id"       => $id,
-					"dbus"     => $this->dbus(),
-					"flow"     => $this,
-					"parents"  => $parents,
-					"renderer" => $this->response->renderer,
-					"response" => $this->response,
-					"request"  => $this->response->request,
+					"module_id" => $id,
+					"dbus"      => $this->dbus(),
+					"flow"      => $this,
+					"parents"   => $parents,
+					"renderer"  => $this->response->renderer,
+					"response"  => $this->response,
+					"request"   => $this->response->request,
 				));
 
 				$mod->update_attrs($locals);

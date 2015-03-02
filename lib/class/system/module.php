@@ -30,7 +30,7 @@ namespace System
 		static private $array_forced_locals = array("conds", "opts");
 
 		static protected $attrs = array(
-			"id"        => array("type" => 'varchar', 'is_null' => true),
+			"module_id" => array("type" => 'varchar', 'is_null' => true),
 			"path"      => array("type" => 'varchar'),
 			"slot"      => array("type" => 'varchar', "is_null" => true, "default" => \System\Template::DEFAULT_SLOT),
 			"parents"   => array("type" => 'array', "is_null" => true),
@@ -38,6 +38,7 @@ namespace System
 			"request"   => array("type" => 'object', "model" => '\System\Http\Request'),
 			"response"  => array("type" => 'object', "model" => '\System\Http\Response'),
 			"flow"      => array("type" => 'object', "model" => '\System\Module\Flow'),
+			"dbus"      => array("type" => 'object', "model" => '\System\Module\DataBus'),
 		);
 
 
@@ -119,6 +120,7 @@ namespace System
 				}
 			}
 
+			$this->opts = $locals;
 			$this->run();
 			return $this;
 		}
@@ -147,7 +149,7 @@ namespace System
 		public function req($var_name)
 		{
 			if (!isset($this->opts[$var_name]) || is_null($this->$var_name)) {
-				throw new \System\Error\Argument(sprintf('Local variable "%s" must be defined and not null for module "%s"!', $var_name, $this->path));
+				throw new \System\Error\Argument(sprintf('Local variable must be defined and not null!'), $var_name, $this->get_data());
 			}
 
 			return $this->$var_name;
@@ -164,7 +166,7 @@ namespace System
 		public function partial($name, array $locals = array())
 		{
 			$locals = array_merge($this->opts, $locals);
-			$locals['module_id'] = $this->id;
+			$locals['module_id'] = $this->module_id;
 			$this->response->renderer->partial($name, $locals, $this->slot);
 			return $this;
 		}
