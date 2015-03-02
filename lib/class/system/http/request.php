@@ -84,11 +84,15 @@ namespace System\Http
 			$response = false;
 
 			if (is_null($attrs)) {
-				if ($path = \System\Router::get_path($this->host, $this->path, $this->data['args'])) {
-					$attrs = isset($path[1]) ? $path[1]:array();
-					$attrs['request'] = $this;
+				$domain = \System\Router::get_domain($this->host);
 
-					$response = \System\Http\Response::from_request($this, $attrs);
+				if ($domain) {
+					$path = \System\Router::get_path($domain, $this->path, $this->data['args']);
+
+					if ($path) {
+						$path['request'] = $this;
+						$response = \System\Http\Response::from_request($this, $path);
+					}
 				}
 			} else {
 				$response = \System\Http\Response::from_request($this, $attrs);

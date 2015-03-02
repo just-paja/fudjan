@@ -42,47 +42,35 @@ namespace System
 		}
 
 
-		/** Get definition of path
-		 * @param string $host Domain to choose from
+		/**
+		 * Get definition of path
+		 *
+		 * @param string $domain Domain to choose from
 		 * @param string $path Path to check
 		 * @param array  $args Place to put URL arguments
 		 * @return array|bool False on failure
 		 */
-		public static function get_path($host, $path, array &$args = array())
+		public static function get_path($domain, $path, array &$args = array())
 		{
-			if (self::is_domain($host)) {
-				$domain = $host;
-			} else {
-				$domain = self::get_domain($host);
+			try {
+				$routes = cfg('routes', $domain);
+			} catch (\System\Error\Config $e) {
+				$routes = array();
+				throw \System\Settings::get('dev', 'debug', 'backend') ?
+					new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):
+					new \System\Error\NotFound();
 			}
 
-			if ($domain) {
-				try {
-					$routes = cfg('routes', $domain);
-				} catch (\System\Error\Config $e) {
-					$routes = array();
-					throw \System\Settings::get('dev', 'debug', 'backend') ?
-						new \System\Error\Config(sprintf("There are no routes for domain '%s'.", $domain), sprintf("Create file '%s.json' in '%s' and make some routes.", $domain, \System\Settings::DIR_CONF_ROUTES)):
-						new \System\Error\NotFound();
-				}
+			foreach ($routes as $route) {
+				if (isset($route['url'])) {
+					$route_urls = is_array($route['url']) ? $route['url']:array($route['url']);
 
-				foreach ($routes as $route) {
-					if (isset($route[0])) {
-						$route_urls = is_array($route[0]) ? $route[0]:array($route[0]);
-
-						foreach ($route_urls as $route_url) {
-							$matches = array();
-
-							if (self::json_preg_match($route_url, $path, $args)) {
-								return $route;
-							}
+					foreach ($route_urls as $route_url) {
+						if (self::json_preg_match($route_url, $path, $args)) {
+							return $route;
 						}
 					}
 				}
-			} else {
-				throw \System\Settings::get('dev', 'debug', 'backend') ?
-					new \System\Error\Config(sprintf("Domain '%s' was not found in domain config.", $host), sprintf("Add it to your global config in '%s/domains.json'.", \System\Settings::DIR_CONF_GLOBAL)):
-					new \System\Error\NotFound();
 			}
 
 			return false;
@@ -122,6 +110,9 @@ namespace System
 		}
 
 
+		/**
+		 *
+		 */
 		public static function get_route($host, $name)
 		{
 			$route = null;
@@ -140,7 +131,7 @@ namespace System
 				}
 
 				foreach ($routes as $r) {
-					if (isset($r[0]) && isset($r[2]) && $name == $r[2]) {
+					if (isset($r['url']) && isset($r['name']) && $name == $r['name']) {
 						$route = $r;
 						break;
 					}
@@ -151,7 +142,9 @@ namespace System
 		}
 
 
-		/** Find named route and translate it with args
+		/**
+		 * Find named route and translate it with args
+		 *
 		 * @param string $host
 		 * @param string $name
 		 * @param array  $args
@@ -162,7 +155,7 @@ namespace System
 			$route = self::get_route($host, $name);
 
 			if ($route) {
-				$route_url = $route[0];
+				$route_url = $route['url'];
 				$search = 'open';
 				$route_args = array();
 				$path = str_split($route_url, 1);
@@ -248,12 +241,14 @@ namespace System
 		}
 
 
-		/** Match domain against allowed host list
+		/**
+		 * Match domain against allowed host list
+		 *
 		 * @param string $host
 		 * @param array  $config
 		 * @return bool
 		 */
-		private static function domain_match($host, array $config)
+		public static function domain_match($host, array $config)
 		{
 			foreach ($config['rules'] as $rule) {
 				if (self::json_preg_match($rule, $host)) {
@@ -265,7 +260,9 @@ namespace System
 		}
 
 
-		/** Short method for URL preg matching
+		/**
+		 * Short method for URL preg matching
+		 *
 		 * @param string $regexp  Regexp
 		 * @param string $subject Tested string
 		 * @param array  $matches Place to put matches
@@ -288,7 +285,8 @@ namespace System
 		}
 
 
-		/** Generate rules for mod rewrite htaccess
+		/**
+		 * Generate rules for mod rewrite htaccess
 		 * @return string
 		 */
 		public static function generate_rewrite_rules()
@@ -308,7 +306,8 @@ namespace System
 		}
 
 
-		/** Update htaccess rules
+		/**
+		 * Update htaccess rules
 		 * @return bool
 		 */
 		public static function update_rewrite()
@@ -335,8 +334,8 @@ namespace System
 				$path_list[$domain] = array();
 
 				foreach ($routes as $route) {
-					if (isset($route[0]) && isset($route[2])) {
-						$path_list[$domain][$route[2]] = $route[0];
+					if (isset($route['url']) && isset($route['name'])) {
+						$path_list[$domain][$route['name']] = $route['url'];
 					}
 				}
 			}

@@ -1,5 +1,7 @@
 [
-	["^/(static|media)/([a-zA-Z]+)/(.+)$", {
+	{
+		"name":"system_resource",
+		"url":"^/(static|media)/([a-zA-Z]+)/(.+)$",
 		"modules":[
 			["system.resource", {
 				"res_src": "#{0}",
@@ -7,5 +9,5 @@
 				"res_path":"#{2}"
 			}]
 		]
-	}, "system_resource"]
+	}
 ]
