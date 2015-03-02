@@ -116,6 +116,13 @@ namespace System
 		}
 
 
+		public static function build_modules()
+		{
+			\System\Loader::load_all_modules();
+			\System\File::put(BASE_DIR.\System\Loader::FILE_MODULES, \System\Loader::dump_core(true));
+		}
+
+
 		public static function build_locales()
 		{
 			$cfg = \System\Settings::get('locales', 'allowed');

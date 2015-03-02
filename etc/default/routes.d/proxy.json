@@ -3,6 +3,6 @@
 			"template":[],
 			"format":"json",
 			"no_debug":true,
-			"modules":[["system/proxy/head"]]
+			"modules":[["system.proxy.head"]]
 		}, "proxy_head"]
 ]

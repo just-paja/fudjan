@@ -11,12 +11,16 @@ namespace System
 	 */
 	class Loader
 	{
+		const DIR_LIB    = '/lib';
 		const DIR_CLASS  = '/lib/class';
+		const DIR_MODULE = '/lib/module';
 		const DIR_HELPER = '/lib/helper';
 		const SEP_CLASS = '\\';
 		const SEP_LINK  = '_';
 		const SEP_MODEL = '.';
+
 		const FILE_CORE = '/var/cache/runtime/core.php';
+		const FILE_MODULES = '/var/cache/runtime/modules.php';
 
 
 		/** Run load all classes only once */
@@ -51,6 +55,18 @@ namespace System
 		}
 
 
+
+		/**
+		 * Load all available modules
+		 *
+		 * @return void
+		 */
+		public static function load_all_modules()
+		{
+			self::load_all_from_dirs(\System\Composer::list_dirs(self::DIR_MODULE));
+		}
+
+
 		/** Load all available classes
 		 * @return void
 		 */
@@ -67,7 +83,7 @@ namespace System
 			}
 		}
 
-		public static function dump_core()
+		public static function dump_core($modules = false)
 		{
 			self::load_all();
 
@@ -79,12 +95,23 @@ namespace System
 
 			foreach ($lists as $list) {
 				foreach ($list as $name) {
-					$file_name = self::DIR_CLASS.'/'.self::get_class_file_name($name, true);
-					$file_path = \System\Composer::resolve($file_name);
+					$index = strpos($name, 'Module');
 
-					if ($file_path) {
-						$cont = php_strip_whitespace($file_path);
-						$str .= preg_replace('/^<\?(php)?(.*)(\?>)?$/s', '$2', $cont);
+					if (($modules &&  $index === 0) || (!$modules && $index !== 0)) {
+						$base = self::DIR_CLASS;
+
+						if ($index === 0) {
+							$base = self::DIR_LIB;
+						}
+
+						$file_name = $base.'/'.self::get_class_file_name($name, true);
+						$file_path = \System\Composer::resolve($file_name);
+
+
+						if ($file_path) {
+							$cont = php_strip_whitespace($file_path);
+							$str .= preg_replace('/^<\?(php)?(.*)(\?>)?$/s', '$2', $cont);
+						}
 					}
 				}
 			}
@@ -174,21 +201,14 @@ namespace System
 
 		public static function autoload($class_name)
 		{
+			$sources = array('/lib/class', '/lib');
+
 			$found = false;
 			$file = \System\Loader::get_class_file_name($class_name, true);
 			$helper_pos = strpos(\System\Loader::get_link_from_class($class_name), 'helper');
 			$is_helper = $helper_pos !== false && $helper_pos <= 1;
 
-			$classes = \System\Composer::list_dirs('/lib/class');
-
-			foreach ($classes as $dir) {
-				if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
-					$found = include_once($f);
-					break;
-				}
-			}
-
-			if (!$found && $is_helper) {
+			if ($is_helper) {
 				$helpers = \System\Composer::list_dirs('/lib/helper');
 
 				$file = explode('/', $file);
@@ -198,6 +218,21 @@ namespace System
 				foreach ($helpers as $dir) {
 					if (file_exists($f = $dir.'/'.$file)) {
 						$found = include_once($f);
+						break;
+					}
+				}
+			} else {
+				foreach ($sources as $source) {
+					$classes = \System\Composer::list_dirs($source);
+
+					foreach ($classes as $dir) {
+						if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
+							$found = include_once($f);
+							break;
+						}
+					}
+
+					if ($found) {
 						break;
 					}
 				}

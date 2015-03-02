@@ -97,17 +97,18 @@ namespace System\Module
 					$id = \System\Module::get_new_id();
 				}
 
-				$this->enqueue(new \System\Module(array(
+				$mod = \System\Module::from_path($module, array(
 					"id"       => $id,
 					"dbus"     => $this->dbus(),
 					"flow"     => $this,
-					"locals"   => $locals,
 					"parents"  => $parents,
-					"path"     => $module,
 					"renderer" => $this->response->renderer,
 					"response" => $this->response,
 					"request"  => $this->response->request,
-				)));
+				));
+
+				$mod->update_attrs($locals);
+				$this->enqueue($mod);
 			}
 		}
 

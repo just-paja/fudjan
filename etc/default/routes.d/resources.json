@@ -1,7 +1,7 @@
 [
 	["^/(static|media)/([a-zA-Z]+)/(.+)$", {
 		"modules":[
-			["system/resource", {
+			["system.resource", {
 				"res_src": "#{0}",
 				"res_type":"#{1}",
 				"res_path":"#{2}"

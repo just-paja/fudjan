@@ -23,6 +23,7 @@ namespace Helper\Cli\Module
 			"clear"   => array('Completely erase application cache'),
 			"core"    => array('Cache application core for faster run'),
 			"locales" => array('Cache application core for faster run'),
+			"modules" => array('Cache application modules for faster run'),
 			"static"  => array('Cache static files to minimize folder lookups'),
 		);
 
@@ -39,6 +40,7 @@ namespace Helper\Cli\Module
 			\System\Init::basic();
 
 			$this->cmd_core();
+			$this->cmd_modules();
 			$this->cmd_locales();
 			$this->cmd_static();
 		}
@@ -50,6 +52,15 @@ namespace Helper\Cli\Module
 
 			\Helper\Cli::out('Building system core');
 			\System\Cache::build_core();
+		}
+
+
+		public function cmd_modules()
+		{
+			\System\Init::basic();
+
+			\Helper\Cli::out('Building system modules');
+			\System\Cache::build_modules();
 		}
 
 
