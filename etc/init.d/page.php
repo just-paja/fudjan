@@ -7,6 +7,10 @@
 System\Init::basic();
 session_start();
 
+if (file_exists(BASE_DIR.\System\Loader::FILE_MODULES)) {
+	require_once BASE_DIR.\System\Loader::FILE_MODULES;
+}
+
 $request = System\Http\Request::from_hit();
 $request->init();
 
