@@ -355,14 +355,7 @@ namespace System\Template
 						$ctx['passed'] = &$locals;
 
 						if (any($partial['name'])) {
-							$str = null;
-
-							try {
-								$str = $this->render_file($partial['name'], $ctx);
-							} catch(Exception $e) {
-								v($e);
-								exit;
-							}
+							$str = $this->render_file($partial['name'], $ctx);
 
 							if ($str) {
 								$this->content['slots'][$slot][] = $str;
@@ -420,7 +413,11 @@ namespace System\Template
 
 			try {
 				return $this->render_template($path, $locals);
-			} catch(\System\Error $e) {
+			} catch(\Exception $e) {
+				if ($e instanceof \System\Error) {
+					throw $e;
+				}
+
 				$exp = $e->get_explanation();
 
 				array_push($exp, 'Error in template');
