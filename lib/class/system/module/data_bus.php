@@ -52,11 +52,11 @@ namespace System\Module
 		 */
 		public function add_data(\System\Module $module, $name, $data)
 		{
-			if (!isset($this->data[$module->get_id()])) {
-				$this->data[$module->get_id()] = array();
+			if (!isset($this->data[$module->id])) {
+				$this->data[$module->id] = array();
 			}
 
-			$this->data[$module->get_id()][$name] = $data;
+			$this->data[$module->id][$name] = $data;
 			return $this;
 		}
 	}

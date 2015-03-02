@@ -63,7 +63,7 @@ namespace System
 
 		public static function from_module(\System\Module $module, array $attrs = array())
 		{
-			return self::from_response($module->response(), $attrs);
+			return self::from_response($module->response, $attrs);
 		}
 
 

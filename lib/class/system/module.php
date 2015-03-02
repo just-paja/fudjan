@@ -12,7 +12,7 @@ namespace System
 	 * @property array  $locals  Local data for module
 	 * @property array  $parents List of parent IDs
 	 */
-	class Module
+	class Module extends \System\Model\Attr
 	{
 		const BASE_DIR = '/lib/module';
 
@@ -26,8 +26,17 @@ namespace System
 		 */
 		static private $array_forced_locals = array("conds", "opts");
 
-		/** Attributes of modules */
-		private $id, $path, $locals, $slot, $parents, $request, $response, $flow;
+		static protected $attrs = array(
+			"id"        => array("type" => 'varchar', 'is_null' => true),
+			"path"      => array("type" => 'varchar'),
+			"locals"    => array("type" => 'array'),
+			"slot"      => array("type" => 'varchar', "is_null" => true, "default" => \System\Template::DEFAULT_SLOT),
+			"parents"   => array("type" => 'array', "is_null" => true),
+			"renderer"  => array("type" => 'object', "model" => '\System\Template\Renderer'),
+			"request"   => array("type" => 'object', "model" => '\System\Http\Request'),
+			"response"  => array("type" => 'object', "model" => '\System\Http\Response'),
+			"flow"      => array("type" => 'object', "model" => '\System\Module\Flow'),
+		);
 
 
 		/** Public constructor
@@ -36,38 +45,10 @@ namespace System
 		 * @param array  $parents List of parent IDs
 		 * @return $this
 		 */
-		public function __construct($module, $locals = array(), $parents = array())
+		public function __construct(array $dataray)
 		{
-			self::$instance_count ++;
-			$this->path = '/'.$module;
-			$this->locals = $locals;
-			$this->parents = $parents;
-
-			if (!empty($this->locals['module_id'])) {
-				$this->id = $this->locals['module_id'];
-			} else {
-				$this->id = self::get_new_id();
-			}
-
-			$this->slot = def($locals['slot'], Template::DEFAULT_SLOT);
-		}
-
-
-		/** Get local path to module
-		 * @return string
-		 */
-		public function get_path()
-		{
-			return $this->path;
-		}
-
-
-		/** Get module id unique on a page
-		 * @return string
-		 */
-		public function get_id()
-		{
-			return $this->id;
+			$this::$instance_count ++;
+			return parent::__construct($dataray);
 		}
 
 
@@ -108,53 +89,38 @@ namespace System
 			if (file_exists($path)) {
 				if (is_readable($path)) {
 					if ($this->accessible()) {
-						if (!is_array($this->locals)) $this->locals = array($this->locals);
-						$locals = &$this->locals;
+						$locals = $this->locals;
 
 						def($locals['per_page'], 20);
 						def($locals['page'], intval($this->request->get('page')));
 
 						$locals['per_page'] = intval($locals['per_page']);
+						$propagated = array();
 
-						if (is_array($locals)) {
-							$propagated = array();
+						if (count($this->parents)) {
+							$propagated = $this->dbus->get_data($this->parents);
+							$locals = array_merge($locals, $propagated);
+						}
 
-							if (any($this->parents)) {
-								$propagated = $this->dbus->get_data($this->parents);
-								$locals = array_merge($locals, $propagated);
-							}
-
-							foreach (self::$array_forced_locals as $var) {
-								if (isset($locals[$var]) && !is_array($locals[$var])) {
-									throw new \System\Error\Argument(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->get_path()));
-								}
-							}
-
-							foreach ($locals as $key=>&$val) {
-								if (is_numeric($key)) {
-									$key = 'local_attr_'.$key;
-									$locals[$key] = &$val;
-								} else {
-									$key = str_replace('-', '_', $key);
-								}
-
-								$val === '#' && $val = end($input);
-								if (!is_object($val) && !is_array($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
-									$temp = $this->response->request->args;
-									$temp_key = intval(substr($val, 2));
-
-									if (isset($temp[$temp_key])) {
-										$val = $temp[$temp_key];
-									} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
-								}
-
-								if (!is_object($val) && !is_array($val) && strpos($val, '#user{') === 0) {
-									$val = soprintf(substr($val, 5), $this->request->user());
-								}
-
-								$$key = &$val;
+						foreach (self::$array_forced_locals as $var) {
+							if (isset($locals[$var]) && !is_array($locals[$var])) {
+								throw new \System\Error\Argument(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->get_path()));
 							}
 						}
+
+						foreach ($locals as $key=>&$val) {
+							if (is_string($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
+								$temp = $this->response->request->args;
+								$temp_key = intval(substr($val, 2));
+
+								if (isset($temp[$temp_key])) {
+									$locals[$key] = $temp[$temp_key];
+								} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
+							}
+						}
+
+						$this->locals = $locals;
+						extract($locals);
 
 						$module   = $this;
 						$response = $this->response;
@@ -281,22 +247,6 @@ namespace System
 			}
 
 			return empty($conds) || $result;
-		}
-
-
-		public function bind_to_flow(\System\Module\Flow $flow)
-		{
-			$this->response = $flow->response();
-			$this->request  = $this->response->request;
-			$this->flow     = $flow;
-			$this->dbus     = $flow->dbus();
-			return $this;
-		}
-
-
-		public function renderer()
-		{
-			return $this->response->renderer;
 		}
 
 

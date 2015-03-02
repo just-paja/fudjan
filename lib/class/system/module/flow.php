@@ -90,7 +90,24 @@ namespace System\Module
 		public function add($module, array $locals = array(), array $parents = array())
 		{
 			if (empty($locals['mod-conds']) || (is_array($locals['mod-conds']) && Module::eval_conds($locals['mod-conds']))) {
-				$this->enqueue(new \System\Module($module, $locals, $parents));
+
+				if (!empty($locals['module_id'])) {
+					$id = $locals['module_id'];
+				} else {
+					$id = \System\Module::get_new_id();
+				}
+
+				$this->enqueue(new \System\Module(array(
+					"id"       => $id,
+					"dbus"     => $this->dbus(),
+					"flow"     => $this,
+					"locals"   => $locals,
+					"parents"  => $parents,
+					"path"     => $module,
+					"renderer" => $this->response->renderer,
+					"response" => $this->response,
+					"request"  => $this->response->request,
+				)));
 			}
 		}
 
@@ -101,7 +118,7 @@ namespace System\Module
 		 */
 		public function enqueue(\System\Module $module)
 		{
-			$this->queue[] = $module->bind_to_flow($this);
+			$this->queue[] = $module;
 		}
 
 
