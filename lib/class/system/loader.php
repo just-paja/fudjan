@@ -15,11 +15,14 @@ namespace System
 		const DIR_CLASS  = '/lib/class';
 		const DIR_MODULE = '/lib/module';
 		const DIR_HELPER = '/lib/helper';
+		const DIR_REWRITE = '/etc/rewrite.d';
+
 		const SEP_CLASS = '\\';
 		const SEP_LINK  = '_';
 		const SEP_MODEL = '.';
 
-		const FILE_CORE = '/var/cache/runtime/core.php';
+		const FILE_REWRITE = '/.htaccess';
+		const FILE_CORE    = '/var/cache/runtime/core.php';
 		const FILE_MODULES = '/var/cache/runtime/modules.php';
 
 

@@ -12,11 +12,9 @@ namespace System
 	 */
 	abstract class Router
 	{
-		const DIR_REWRITE = '/etc/rewrite.d';
-		const REWRITE_TARGET = '/.htaccess';
-
-
-		/** Get request domain from request HTTP_HOST
+		/**
+		 * Get request domain from request HTTP_HOST
+		 *
 		 * @param string $host HTTP_HOST|Domain name
 		 * @return string|bool False on no match
 		 */
@@ -285,43 +283,6 @@ namespace System
 		}
 
 
-		/**
-		 * Generate rules for mod rewrite htaccess
-		 * @return string
-		 */
-		public static function generate_rewrite_rules()
-		{
-			$dir = ROOT.self::DIR_REWRITE;
-			$od = opendir($dir);
-			$files = array();
-
-			while ($file = readdir($od)) {
-				if (strpos($file, '.') !== 0) {
-					$files[$file] = \System\File::read($dir.'/'.$file);
-				}
-			}
-
-			ksort($files);
-			return implode("\n", $files);
-		}
-
-
-		/**
-		 * Update htaccess rules
-		 * @return bool
-		 */
-		public static function update_rewrite()
-		{
-			if (!\System\File::check($p = BASE_DIR.self::REWRITE_TARGET)) {
-				$val = \System\File::put($p, self::generate_rewrite_rules());
-				Status::report('info', "Rewrite rules refreshed");
-				return $val;
-			}
-
-			return true;
-		}
-
-
 		/** Get all named routes available
 		 * @return array
 		 */
@@ -341,6 +302,22 @@ namespace System
 			}
 
 			return $path_list;
+		}
+
+
+		/**
+		 * Update htaccess rules
+		 * @return bool
+		 */
+		public static function update_rewrite()
+		{
+			if (!\System\File::check($p = BASE_DIR.\System\Loader::FILE_REWRITE)) {
+				$val = \System\File::put($p, \Helper\Htaccess::generate_rewrite_rules());
+				Status::report('info', "Rewrite rules refreshed");
+				return $val;
+			}
+
+			return true;
 		}
 	}
 }
