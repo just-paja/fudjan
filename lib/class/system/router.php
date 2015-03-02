@@ -65,6 +65,10 @@ namespace System
 			}
 
 			foreach ($routes as $route) {
+				if (!isset($route['url'])) {
+					throw new \System\Error\Config('Index url must be defined for route', $route);
+				}
+
 				if (self::match($route['url'], $path, $args, $params)) {
 					$r = $route;
 					break;
