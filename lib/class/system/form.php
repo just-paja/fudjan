@@ -734,7 +734,7 @@ namespace System
 					$attrs['data'][$key] = $value->to_object();
 				}
 
-				$input = $this->get_input(str_replace($this->get_prefix(), '', $key));
+				$input = $this->get_input(preg_replace('/^'.$this->get_prefix().'/', '', $key));
 
 				if ($input && $input->type == 'password') {
 					unset($attrs['data'][$key]);
