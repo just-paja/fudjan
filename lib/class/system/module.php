@@ -16,12 +16,15 @@ namespace System
 	{
 		const BASE_DIR = '/lib/module';
 
-		/** Count of used module instances
+		/**
+		 * Count of used module instances
+		 *
 		 * @param int
 		 */
 		static private $instance_count = 0;
 
-		/** Locals that are forced to be of array
+		/**
+		 * Local variables that are forced to be of array
 		 * @param array
 		 */
 		static private $array_forced_locals = array("conds", "opts");
@@ -39,10 +42,8 @@ namespace System
 		);
 
 
-		/** Public constructor
-		 * @param string $module  Path to module
-		 * @param array  $locals  Local data for module
-		 * @param array  $parents List of parent IDs
+		/**
+		 * Public constructor compatible with attr model
 		 * @return $this
 		 */
 		public function __construct(array $dataray)
@@ -52,6 +53,11 @@ namespace System
 		}
 
 
+		/**
+		 * Is this module accessible by current user?
+		 *
+		 * @return bool
+		 */
 		public function accessible()
 		{
 			return
@@ -61,6 +67,11 @@ namespace System
 		}
 
 
+		/**
+		 * Get path to this module file location
+		 *
+		 * @return null|string
+		 */
 		public function get_file()
 		{
 			$path = explode('/', $this->path);
@@ -79,7 +90,9 @@ namespace System
 		}
 
 
-		/** Run module
+		/**
+		 * Execute this module
+		 *
 		 * @return void
 		 */
 		public function exec()
@@ -148,13 +161,13 @@ namespace System
 		}
 
 
-		public function stop()
-		{
-			$this->flow->stop();
-			return $this;
-		}
-
-
+		/**
+		 * Propagate this variable to child modules
+		 *
+		 * @param string $name
+		 * @param mixed $data
+		 * @return $this
+		 */
 		private function propagate($name, $data)
 		{
 			$this->dbus->add_data($this, $name, $data);
@@ -162,32 +175,42 @@ namespace System
 		}
 
 
-		/** Require variable input. Throws exception if variable was not defined in local variable set.
+		/**
+		 * Require variable input. Throws exception if variable was not defined in local variable set.
+		 *
 		 * @param string $var_name
-		 * @return
+		 * @return mixed
 		 */
 		public function req($var_name)
 		{
-			if (isset($this->locals[$var_name]) && !is_null($this->locals[$var_name])) {
-				return $this->locals[$var_name];
-			} else throw new \System\Error\Argument(sprintf('Local variable "%s" must be defined and not null for module "%s"!', $var_name, $this->get_path()));
+			if (!isset($this->locals[$var_name]) || is_null($this->locals[$var_name])) {
+				throw new \System\Error\Argument(sprintf('Local variable "%s" must be defined and not null for module "%s"!', $var_name, $this->get_path()));
+			}
+
+			return $this->locals[$var_name];
 		}
 
 
-		/** Insert template into output queue
+		/**
+		 * Insert template into output queue
+		 *
 		 * @param string $name  Template name begining at /lib/template/partial
 		 * @param array $locals Local variables for the template
-		 * @return void
+		 * @return $this
 		 */
 		public function partial($name, array $locals = array())
 		{
 			$locals = array_merge($this->locals, $locals);
 			$locals['module_id'] = $this->id;
 			$this->response->renderer->partial($name, $locals, def($locals['slot'], Template::DEFAULT_SLOT));
+			return $this;
 		}
 
 
-		/** Create new module id
+		/**
+		 * Create new module id
+		 *
+		 * @return string
 		 */
 		static public function get_new_id()
 		{
@@ -195,8 +218,11 @@ namespace System
 		}
 
 
-		/** Get all modules
+		/**
+		 * Get all available modules
+		 *
 		 * @param bool $with_perms
+		 * @return array
 		 */
 		public static function get_all($with_perms = false)
 		{
@@ -223,7 +249,9 @@ namespace System
 		}
 
 
-		/** Check if module exists
+		/**
+		 * Check if module exists
+		 *
 		 * @param string $mod
 		 */
 		public static function exists($mod)
@@ -232,7 +260,9 @@ namespace System
 		}
 
 
-		/** Evaluate conditions if the module can be used
+		/**
+		 * Evaluate conditions if the module can be used
+		 *
 		 * @param array $conds
 		 * @return bool
 		 */
@@ -256,6 +286,15 @@ namespace System
 		}
 
 
+		/**
+		 * Stop executing flow and immediately return JSON response from this module data
+		 *
+		 * @param string $status
+		 * @param string $message
+		 * @param array  $data
+		 * @param array  $meta
+		 * @return $this
+		 */
 		private function json_response($status, $message=null, $data=null, $meta=null)
 		{
 			$response = array("status" => $status);
@@ -269,7 +308,8 @@ namespace System
 			$this->response->status($status);
 
 			$this->partial('system/common', $response);
-			return $this->stop();
+			$this->flow->stop();
+			return $this;
 		}
 	}
 }
