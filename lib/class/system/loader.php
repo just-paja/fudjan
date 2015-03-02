@@ -188,7 +188,7 @@ namespace System
 		 */
 		public static function get_class_from_model($model)
 		{
-			return ucfirsts($model, self::SEP_MODEL, self::SEP_CLASS);
+			return ucfirsts(ucfirsts($model, self::SEP_MODEL, self::SEP_CLASS), '_', '');
 		}
 
 
