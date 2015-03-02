@@ -86,59 +86,65 @@ namespace System
 		{
 			$path = $this->get_file();
 
-			if (file_exists($path)) {
-				if (is_readable($path)) {
-					if ($this->accessible()) {
-						$locals = $this->locals;
+			if (!file_exists($path)) {
+				throw new \System\Error\File(sprintf('Module not found: "%s", expected on path "%s".', $this->get_path(), $path));
+			}
 
-						def($locals['per_page'], 20);
-						def($locals['page'], intval($this->request->get('page')));
+			if (!is_readable($path)) {
+				throw new \System\Error\Permissions(sprintf('Cannot access module "%s". File is not readable.', $this->get_path()));
+			}
 
-						$locals['per_page'] = intval($locals['per_page']);
-						$propagated = array();
+			if (!$this->accessible()) {
+				throw new \System\Error\Permissions(sprintf('Cannot access module "%s". Permission denied.', $this->get_path()));
+			}
 
-						if (count($this->parents)) {
-							$propagated = $this->dbus->get_data($this->parents);
-							$locals = array_merge($locals, $propagated);
-						}
+			$locals = $this->locals;
 
-						foreach (self::$array_forced_locals as $var) {
-							if (isset($locals[$var]) && !is_array($locals[$var])) {
-								throw new \System\Error\Argument(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->get_path()));
-							}
-						}
+			def($locals['per_page'], 20);
+			def($locals['page'], intval($this->request->get('page')));
 
-						foreach ($locals as $key=>&$val) {
-							if (is_string($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
-								$temp = $this->response->request->args;
-								$temp_key = intval(substr($val, 2));
+			$locals['per_page'] = intval($locals['per_page']);
+			$propagated = array();
 
-								if (isset($temp[$temp_key])) {
-									$locals[$key] = $temp[$temp_key];
-								} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
-							}
-						}
+			if (count($this->parents)) {
+				$propagated = $this->dbus->get_data($this->parents);
+				$locals = array_merge($locals, $propagated);
+			}
 
-						$this->locals = $locals;
-						extract($locals);
+			foreach (self::$array_forced_locals as $var) {
+				if (isset($locals[$var]) && !is_array($locals[$var])) {
+					throw new \System\Error\Argument(sprintf('Local variable "$%s" must be an array for module "%s"', $var, $this->get_path()));
+				}
+			}
 
-						$module   = $this;
-						$response = $this->response;
-						$renderer = $this->response->renderer;
-						$request  = $this->response->request;
-						$flow     = $this->response->flow;
-						$locales  = $this->response->locales;
+			foreach ($locals as $key=>&$val) {
+				if (is_string($val) && preg_match("/^\#\{[0-9]{1,3}\}$/", $val)) {
+					$temp = $this->response->request->args;
+					$temp_key = intval(substr($val, 2));
 
-						$ren = &$renderer;
-						$res = &$response;
-						$rq  = &$request;
+					if (isset($temp[$temp_key])) {
+						$locals[$key] = $temp[$temp_key];
+					} else throw new \System\Error\Argument(sprintf('Path variable #{%s} was not found.', $temp_key));
+				}
+			}
 
-						$required = require($path);
+			$this->locals = $locals;
+			extract($locals);
 
-						return !!$required;
-					} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". Permission denied.', $this->get_path()));
-				} else throw new \System\Error\Permissions(sprintf('Cannot access module "%s". File is not readable.', $this->get_path()));
-			} else throw new \System\Error\File(sprintf('Module not found: "%s", expected on path "%s".', $this->get_path(), $path));
+			$module   = $this;
+			$response = $this->response;
+			$renderer = $this->response->renderer;
+			$request  = $this->response->request;
+			$flow     = $this->response->flow;
+			$locales  = $this->response->locales;
+
+			$ren = &$renderer;
+			$res = &$response;
+			$rq  = &$request;
+
+			$required = require($path);
+
+			return !!$required;
 		}
 
 
