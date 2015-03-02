@@ -48,5 +48,17 @@ namespace
 		{
 			$this->assertFalse(\System\Router::match('/{res_src:varchar:yes:static,media}/{res_type:varchar}/{res_path:any}', '/api/schema/public'));
 		}
+
+
+		public function test_reversing()
+		{
+			$cfg = \System\Settings::get('domains');
+			$list = array_keys($cfg);
+			$host = $list[0];
+
+			$this->assertEquals(\System\Router::get_url($host, 'system_resource', array(
+				'static', 'a', 'b'
+			)), '/static/a/b');
+		}
 	}
 }
