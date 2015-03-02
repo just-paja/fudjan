@@ -3,9 +3,7 @@
 		"name":"system_resource",
 		"url":"/{res_src:varchar:yes:static,media}/{res_type:varchar}/{res_path:any}",
 		"modules":[
-			["system.resource", {
-				"res_src":"#{0}"
-			}]
+			["system.resource"]
 		]
 	}
 ]
