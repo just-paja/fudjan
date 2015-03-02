@@ -73,6 +73,11 @@ namespace System
 		}
 
 
+		public function run()
+		{
+		}
+
+
 		/**
 		 * Execute this module
 		 *
