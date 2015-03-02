@@ -44,6 +44,9 @@ namespace
 		}
 
 
-
+		public function test_matching()
+		{
+			$this->assertFalse(\System\Router::match('/{res_src:varchar:yes:static,media}/{res_type:varchar}/{res_path:any}', '/api/schema/public'));
+		}
 	}
 }

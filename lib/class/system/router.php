@@ -12,6 +12,9 @@ namespace System
 	 */
 	abstract class Router
 	{
+		const MATCH_ATTR = '/\{([a-z_]+:[a-z_]+(:[a-z]+(:[^:]+)?)?)\}/';
+
+
 		/**
 		 * Get request domain from request HTTP_HOST
 		 *
@@ -48,8 +51,10 @@ namespace System
 		 * @param array  $args Place to put URL arguments
 		 * @return array|bool False on failure
 		 */
-		public static function get_path($domain, $path, array &$args = array())
+		public static function get_path($domain, $path, array &$args = array(), array &$params = array())
 		{
+			$r = null;
+
 			try {
 				$routes = cfg('routes', $domain);
 			} catch (\System\Error\Config $e) {
@@ -60,18 +65,13 @@ namespace System
 			}
 
 			foreach ($routes as $route) {
-				if (isset($route['url'])) {
-					$route_urls = is_array($route['url']) ? $route['url']:array($route['url']);
-
-					foreach ($route_urls as $route_url) {
-						if (self::json_preg_match($route_url, $path, $args)) {
-							return $route;
-						}
-					}
+				if (self::match($route['url'], $path, $args, $params)) {
+					$r = $route;
+					break;
 				}
 			}
 
-			return false;
+			return $r;
 		}
 
 
@@ -96,6 +96,12 @@ namespace System
 		}
 
 
+		/**
+		 * Is this string usable as domain?
+		 *
+		 * @param string $host
+		 * @return bool
+		 */
 		public static function is_domain($host)
 		{
 			try {
@@ -109,7 +115,11 @@ namespace System
 
 
 		/**
+		 * Get named route from host or domain
 		 *
+		 * @param string $host
+		 * @param string $name
+		 * @return null|array
 		 */
 		public static function get_route($host, $name)
 		{
@@ -141,6 +151,106 @@ namespace System
 
 
 		/**
+		 * Get route with simplified arguments
+		 *
+		 * @param string $host
+		 * @param string $name
+		 * @return string
+		 */
+		public static function get_route_str($host, $name)
+		{
+			$route = self::get_route($host, $name);
+
+			if (!$route) {
+				throw new \System\Error\Config('Route was not found', $name);
+			}
+
+			return self::get_pattern_simplified($route['url']);
+		}
+
+
+		/**
+		 * Get simplified pattern
+		 *
+		 * @param string $pattern
+		 * @return string
+		 */
+		public static function get_pattern_simplified($pattern)
+		{
+			return preg_replace_callback(self::MATCH_ATTR, function($matches) {
+				$attr = explode(':', $matches[1]);
+				return '{' . $attr[0] . '}';
+			}, $pattern);
+		}
+
+
+		/**
+		 * Get list of pattern attributes
+		 *
+		 * @param string $pattern
+		 * @return array
+		 */
+		public static function get_pattern_attrs($pattern)
+		{
+			$test  = self::MATCH_ATTR;
+			$list  = array();
+			$match = array();
+			$res   = array();
+
+			preg_match_all($test, $pattern, $match);
+			array_shift($match);
+
+			if (isset($match[0])) {
+				$res = $match[0];
+			}
+
+			foreach ($res as $m) {
+				if ($m) {
+					$attr = explode(':', $m);
+					$list[] = array(
+						"name"     => $attr[0],
+						"type"     => isset($attr[1]) ? $attr[1]:'any',
+						"required" => isset($attr[2]) ? $attr[2] == 'yes':true,
+						"choices"  => isset($attr[3]) ? explode(',', $attr[3]):null
+					);
+				}
+			}
+
+			return $list;
+		}
+
+
+		public static function get_pattern_test($pat)
+		{
+			$attrs = self::get_pattern_attrs($pat);
+
+			foreach ($attrs as $attr) {
+				$cname = '\System\Router\Arg\\'.\System\Loader::get_class_from_model($attr['type']);
+				$test  = '/\{' . $attr['name'] . ':' . $attr['type'];
+
+				if ($attr['required']) {
+					$test .= '(:yes)?';
+				} else {
+					$test .= ':no';
+				}
+
+				if (isset($attr['choices'])) {
+					$test .= ':'.implode(',', $attr['choices']);
+					$sub = '('. implode('|', $attr['choices']) .')';
+				} else {
+					$sub = '(' . $cname::PATTERN . ')' . ($attr['required'] ? '':'?');
+				}
+
+				$test .=  '\}/';
+
+				$pat = preg_replace($test, $sub, $pat);
+			}
+
+			return $pat;
+		}
+
+
+		/**
 		 * Find named route and translate it with args
 		 *
 		 * @param string $host
@@ -153,84 +263,54 @@ namespace System
 			$route = self::get_route($host, $name);
 
 			if ($route) {
-				$route_url = $route['url'];
-				$search = 'open';
-				$route_args = array();
-				$path = str_split($route_url, 1);
+				$attrs = self::get_pattern_attrs($route['url']);
+				$c = count($attrs);
 
-				for ($pos = 0; $pos < count($path); $pos++) {
-					if ($search == 'open') {
-						if ($path[$pos] == '(') {
-							$arg = array($pos);
-							$search = 'close';
-						}
-					}
+				if ($c != count($args)) {
+					throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($attrs), count($args)));
+				}
 
-					if ($search == 'close') {
-						if ($path[$pos] == ')') {
-							$arg[1] = $pos + 1;
-							$route_args[] = $arg;
-							$search = 'open';
+				$str = self::get_pattern_simplified($route['url']);
+
+				if ($c > 0) {
+					$num = 0;
+
+					foreach ($attrs as $num=>$attr) {
+						$val = null;
+
+						if (isset($args[$attr['name']])) {
+							$val = $args[$attr['name']];
+						} else if (isset($args[$num])) {
+							$val = $args[$num];
 						}
+
+						if (is_object($val)) {
+							if ($val instanceof \System\Model\Database) {
+								$val = $val->get_seoname();
+							} else throw new \System\Error\Argument(sprintf("Argument '%s' passed to reverse build route '%s' must be string or instance of System::Model::Database", $num, $name), sprintf("Instance of '%s' was given.", get_class($arg)));
+						}
+
+						if (is_null($val) && $attr['required']) {
+							throw new \System\Error\Argument('Argument must be supplied to build route', $name, $attr);
+						}
+
+						$str = str_replace('{'.$attr['name'].'}', $val, $str);
 					}
 				}
 
-				if (($c = count($route_args)) <= count($args)) {
-					$str = '';
-
-					if ($c > 0) {
-						$num = 0;
-
-						foreach ($args as $num=>$arg) {
-							$start = $num == 0 ? 0:$route_args[$num-1][1];
-
-							for ($letter = $start; $letter < $route_args[$num][0]; $letter ++) {
-								$str .= $path[$letter];
-							}
-
-							if (is_object($arg)) {
-								if ($arg instanceof \System\Model\Database) {
-									$val = $arg->get_seoname();
-								} else throw new \System\Error\Argument(sprintf("Argument '%s' passed to reverse build route '%s' must be string or instance of System::Model::Database", $num, $name), sprintf("Instance of '%s' was given.", get_class($arg)));
-							} else $val = $arg;
-
-							$str .= $val;
-						}
-
-						$start = $route_args[$num][1];
-
-						for ($letter = $start; $letter < count($path); $letter ++) {
-							$str .= $path[$letter];
-						}
-					} else {
-						$str = implode('', $path);
-					}
-
-					$str = str_replace(array('^', '$'), '', $str);
-					if (self::is_domain($host)) {
-						$domain = $host;
-					} else {
-						$domain = self::get_domain($host);
-					}
-
-					$dns = \System\Settings::get('domains', $domain);
-
-					if (!array_key_exists('htaccess', $dns) || $dns['htaccess']) {
-						return $str;
-					}
-
-					return '?path=' . urlencode($str);
+				if (self::is_domain($host)) {
+					$domain = $host;
 				} else {
-					throw new \System\Error\Argument(sprintf("Named route called '%s' accepts %s arguments. %s were given.", $name, count($route_args), count($args)));
+					$domain = self::get_domain($host);
 				}
 
-				$result = $route_url;
-				foreach ($args as $arg) {
-					$result = preg_replace($route_url, $arg, $result);
+				$dns = \System\Settings::get('domains', $domain);
+
+				if (!array_key_exists('htaccess', $dns) || $dns['htaccess']) {
+					return $str;
 				}
 
-				return $result;
-
+				return '?path=' . urlencode($str);
 			} else {
 				throw new \System\Error\Config(sprintf("Named route called '%s' was not found for domain '%s'", $name, $host));
 			}
@@ -255,6 +335,30 @@ namespace System
 			}
 
 			return false;
+		}
+
+
+		public static function match($url, $path, array &$args = array(), array &$params = array())
+		{
+			$pattern = "^".self::get_pattern_test($url)."$";
+			$match   = self::json_preg_match($pattern, $path, $args);
+
+			if ($match) {
+				$attrs = self::get_pattern_attrs($url);
+
+				foreach ($attrs as $key=>$attr) {
+					if (isset($args[$key])) {
+						$params[$attr['name']] = $args[$key];
+					} else {
+						if ($attr['required']) {
+							$match = false;
+							break;
+						}
+					}
+				}
+			}
+
+			return !!$match;
 		}
 
 

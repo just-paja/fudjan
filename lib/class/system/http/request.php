@@ -19,6 +19,7 @@ namespace System\Http
 			"cli"      => array('bool'),
 			"ajax"     => array('bool'),
 			"args"     => array('list'),
+			"params"   => array('array'),
 			"get"      => array('list'),
 			"post"     => array('list'),
 			"protocol" => array('varchar'),
@@ -80,17 +81,22 @@ namespace System\Http
 		 */
 		public function create_response(array $attrs = null)
 		{
-			$this->args = array();
+			$args = array();
+			$params = array();
 			$response = false;
 
 			if (is_null($attrs)) {
 				$domain = \System\Router::get_domain($this->host);
 
 				if ($domain) {
-					$path = \System\Router::get_path($domain, $this->path, $this->data['args']);
+					$path = \System\Router::get_path($domain, $this->path, $args, $params);
 
 					if ($path) {
 						$path['request'] = $this;
+
+						$this->args   = $args;
+						$this->params = $params;
+
 						$response = \System\Http\Response::from_request($this, $path);
 					}
 				}

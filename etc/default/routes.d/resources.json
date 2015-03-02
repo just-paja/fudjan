@@ -1,12 +1,10 @@
 [
 	{
 		"name":"system_resource",
-		"url":"^/(static|media)/([a-zA-Z]+)/(.+)$",
+		"url":"/{res_src:varchar:yes:static,media}/{res_type:varchar}/{res_path:any}",
 		"modules":[
 			["system.resource", {
-				"res_src": "#{0}",
-				"res_type":"#{1}",
-				"res_path":"#{2}"
+				"res_src":"#{0}"
 			}]
 		]
 	}

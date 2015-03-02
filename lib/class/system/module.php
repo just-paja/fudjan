@@ -141,11 +141,11 @@ namespace System
 		 */
 		public function req($var_name)
 		{
-			if (is_null($this->opts[$var_name])) {
+			if (!isset($this->opts[$var_name]) || is_null($this->$var_name)) {
 				throw new \System\Error\Argument(sprintf('Local variable "%s" must be defined and not null for module "%s"!', $var_name, $this->path));
 			}
 
-			return $this->locals[$var_name];
+			return $this->$var_name;
 		}
 
 

@@ -69,6 +69,11 @@ namespace System\Module
 					$this->enqueue($mod);
 				} else {
 					$locals = isset($mod[1]) ? $mod[1]:array();
+					$params = $response->request->params;
+
+					foreach ($params as $key=>$param) {
+						$locals[$key] = $param;
+					}
 
 					if (!is_numeric($name)) {
 						$locals['module_id'] = $name;
