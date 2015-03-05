@@ -444,9 +444,15 @@ namespace System\Database
 
 		public function get_filter_cond($filter, $table_alias)
 		{
-			$pass  = null;
-			$type  = $filter['type'];
+			$pass = null;
+			$type = $filter['type'];
 			$value = $filter[$type];
+			$value = \System\Database::escape($value);
+			$value_soft = \System\Database::escape_soft($filter[$type]);
+
+			if (!empty($filter['self'])) {
+				$value = $value_soft;
+			}
 
 			if ($filter['attr'] == 'id' && $this->assoc_with_model) {
 				$model = $this->assoc_with_model;
@@ -471,53 +477,45 @@ namespace System\Database
 					break;
 
 				case 'iexact':
-					$pass = "LOWER(`" . $filter['attr'] . "`) = LOWER('".$value."')";
+					$pass = "LOWER(`" . $filter['attr'] . "`) = LOWER(".$value.")";
 					break;
 
 				case 'contains':
-					$pass = "`" . $filter['attr'] . "` LIKE '%".$value."%'";
+					$pass = "`" . $filter['attr'] . "` LIKE '%".$value_soft."%'";
 					break;
 
 				case 'icontains':
-					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value."%')";
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value_soft."%')";
 					break;
 
 				case 'starts_with':
-					$pass = "`" . $filter['attr'] . "` LIKE '".$value."%'";
+					$pass = "`" . $filter['attr'] . "` LIKE '".$value_soft."%'";
 					break;
 
 				case 'istarts_with':
-					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('".$value."%')";
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('".$value_soft."%')";
 					break;
 
 				case 'ends_with':
-					$pass = "`" . $filter['attr'] . "` LIKE '%".$value."'";
+					$pass = "`" . $filter['attr'] . "` LIKE '%".$value_soft."'";
 					break;
 
 				case 'iends_with':
-					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value."')";
+					$pass = "LOWER(`" . $filter['attr'] . "`) LIKE LOWER('%".$value_soft."')";
 					break;
 
 				case 'gt':
 				case 'gte':
 				case 'lt':
 				case 'lte':
-					if (is_numeric($value)) {
-						$str = floatval($value);
-					} else if ($value instanceof \DateTime) {
-						$str = "'".$value->format('Y-m-d H:i:s')."'";
-					} else {
-						$str = "'".$value."'";
-					}
-
 					if ($type == 'gt') {
-						$pass = "`" . $filter['attr'] . "` > ".$str."";
+						$pass = "`" . $filter['attr'] . "` > ".$value."";
 					} else if ($type == 'gte') {
-						$pass = "`" . $filter['attr'] . "` >= ".$str."";
+						$pass = "`" . $filter['attr'] . "` >= ".$value."";
 					} else if ($type == 'lt') {
-						$pass = "`" . $filter['attr'] . "` < ".$str."";
+						$pass = "`" . $filter['attr'] . "` < ".$value."";
 					} else if ($type == 'lte') {
-						$pass = "`" . $filter['attr'] . "` <= ".$str."";
+						$pass = "`" . $filter['attr'] . "` <= ".$value."";
 					}
 
 					break;
