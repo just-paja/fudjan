@@ -193,32 +193,66 @@ namespace System
 		}
 
 
+		public static function escape_soft($value)
+		{
+			if (is_array($value)) {
+				return array_walk($value, array('self', 'escape_soft'));
+			}
+
+			if (is_object($value)) {
+				if (is_callable(array($value, 'to_sql'))) {
+					$value = $value->to_sql();
+				} else {
+					if ($value instanceof \DateTime) {
+						$value = $value->format('Y-m-d H:i:s');
+					} else {
+						throw new \System\Error\Database('Unknown convert type', $value);
+					}
+				}
+			} else {
+				switch (gettype($value)) {
+					case 'boolean': $value = $value ? 1:0; break;
+					case 'integer': $value = self::num2db(intval($value)); break;
+					case 'double':
+					case 'float':
+						$value = self::num2db(floatval($value)); break;
+					case 'NULL': $value = 'NULL'; break;
+					default: $value = self::get_db()->escape_string($value);
+				}
+
+			}
+
+			return $value;
+		}
+
+
 		public static function escape(&$value)
 		{
 			if (is_array($value)) {
 				array_walk($value, array('self', 'escape'));
-			 } else {
+			}
 
-				if (is_object($value)) {
-					switch (get_class($value)) {
-						case 'DateTime': $value = "'".$value->format('Y-m-d H:i:s')."'"; break;
-						case 'System\Image': $value = "'".$value->to_json()."'"; break;
-						case 'System\Video\Youtube': $value = "'".$value->to_sql()."'"; break;
-						case 'System\Gps': $value = $value->to_sql(); break;
-					}
+			if (is_object($value)) {
+				if (is_callable(array($value, 'to_sql'))) {
+					$value = $value->to_sql();
 				} else {
-					switch (gettype($value)) {
-						case 'boolean': $value = $value ? 1:0; break;
-						case 'integer': $value = self::num2db(intval($value)); break;
-						case 'double': case 'float': $value = self::num2db(floatval($value)); break;
-						case 'NULL': $value = 'NULL'; break;
-						default: $value = "'".self::get_db()->escape_string($value)."'";
+					if ($value instanceof \DateTime) {
+						$value = "'".$value->format('Y-m-d H:i:s')."'";
 					}
-
+				}
+			} else {
+				switch (gettype($value)) {
+					case 'boolean': $value = $value ? 1:0; break;
+					case 'float': $value = self::num2db(floatval($value)); break;
+					case 'integer': $value = self::num2db(intval($value)); break;
+					case 'double': case 'float': $value = self::num2db(floatval($value)); break;
+					case 'NULL': $value = 'NULL'; break;
+					default: $value = "'".self::get_db()->escape_string($value)."'";
 				}
 
-				return $value;
 			}
+
+			return $value;
 		}
 
 
