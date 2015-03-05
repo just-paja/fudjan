@@ -196,7 +196,7 @@ namespace System
 		public static function escape_soft($value)
 		{
 			if (is_array($value)) {
-				return array_walk($value, array('self', 'escape_soft'));
+				return array_map(array('self', 'escape_soft'), $value);
 			}
 
 			if (is_object($value)) {
@@ -230,6 +230,7 @@ namespace System
 		{
 			if (is_array($value)) {
 				array_walk($value, array('self', 'escape'));
+				return $value;
 			}
 
 			if (is_object($value)) {
