@@ -124,33 +124,19 @@ namespace System\Cache
 		}
 
 
-		private function get_alternate_version()
-		{
-			$versions = $this->image->get_all_versions();
-
-			if (any($versions)) {
-				$this->image = array_pop($versions);
-			}
-
-			return $this;
-		}
-
-
 		public function gen()
 		{
 			if (!$this->image->exists()) {
-				$this->get_alternate_version();
+				throw new \System\Error\File('Cannot generate image thumb. It is not located on filesystem.', $this->image->to_object(), $this->get_path());
 			}
 
-			if ($this->image->exists()) {
-				if (extension_loaded('imagemagick')) {
-					$im = new ImageMagick($this->get_path(true));
-					$im->resampleImage($this->width, $this->height);
-					$im->writeImage(BASE_DIR.$this->get_path($this->width, $this->height, $this->crop));
-				} else {
-					self::gen_gd($this);
-				}
-			} else throw new \System\Error\File('Cannot generate image thumb. It is not located on filesystem.', $this->image->get_path(), $this->get_path());
+			if (extension_loaded('imagemagick')) {
+				$im = new ImageMagick($this->get_path(true));
+				$im->resampleImage($this->width, $this->height);
+				$im->writeImage(BASE_DIR.$this->get_path($this->width, $this->height, $this->crop));
+			} else {
+				self::gen_gd($this);
+			}
 
 			return $this;
 		}
