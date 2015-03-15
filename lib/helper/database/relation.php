@@ -17,10 +17,13 @@ namespace Helper\Database
 
 
 		protected static $allowed_types = array(
-			\System\Model\Database::REL_BELONGS_TO, \System\Model\Database::REL_HAS_MANY, \System\Model\Database::REL_HAS_ONE
+			\System\Model\Database::REL_BELONGS_TO,
+			\System\Model\Database::REL_HAS_MANY,
+			\System\Model\Database::REL_HAS_ONE
 		);
 
 		private $bilinear_rel;
+
 
 		public static function get_from_model($model)
 		{
@@ -63,6 +66,7 @@ namespace Helper\Database
 		public function get_bilinear_rel()
 		{
 			$relations = self::get_from_model($this->model);
+
 			foreach ($relations as $rel) {
 				if ($this->is_bilinear_with($rel)) {
 					$this->bilinear_rel = $rel;
@@ -86,13 +90,15 @@ namespace Helper\Database
 		public function get_bilinear_table_name()
 		{
 			$name = array();
+			$mp = $this->parent;
+			$mm = $this->model;
 
 			if ($this->is_master) {
-				$name['master'] = \System\Model\Database::get_table($this->parent);
-				$name['slave']  = \System\Model\Database::get_table($this->model);
+				$name['master'] = $mp::get_table();
+				$name['slave']  = $mm::get_table();
 			} else {
-				$name['master'] = \System\Model\Database::get_table($this->model);
-				$name['slave']  = \System\Model\Database::get_table($this->parent);
+				$name['master'] = $mm::get_table();
+				$name['slave']  = $mp::get_table();
 			}
 
 			return implode('_has_', $name);

@@ -124,15 +124,18 @@ namespace Helper\Database
 			$name = $rel->get_bilinear_table_name();
 			$db = self::get_database();
 			$table = $db->get_table($name);
-			$name_a = \System\Model\Database::get_id_col($rel->is_master ? $rel->parent:$rel->model);
-			$name_b = \System\Model\Database::get_id_col($rel->is_master ? $rel->model:$rel->parent);
+			$mp = $rel->parent;
+			$mm = $rel->model;
+
+			$name_a = $mp::get_id_col();
+			$name_b = $mm::get_id_col();
 
 			$attrs = array(
 				\Helper\Database\Attr::from_def('id_'.$name, array("type" => 'int', "is_unsigned" => true, "is_autoincrement" => true, "is_primary" => true)),
 				\Helper\Database\Attr::from_def($name_a, array("type" => 'int', "is_unsigned" => true)),
 				\Helper\Database\Attr::from_def($name_b, array("type" => 'int', "is_unsigned" => true)),
-				\Helper\Database\Attr::from_def("created_at", array("type" => 'datetime', "default" => 0)),
-				\Helper\Database\Attr::from_def("updated_at", array("type" => 'datetime', "default" => 0)),
+				\Helper\Database\Attr::from_def("created_at", array("type" => 'datetime', "default" => 'NOW()')),
+				\Helper\Database\Attr::from_def("updated_at", array("type" => 'datetime', "default" => 'NOW()')),
 			);
 
 			foreach ($attrs as $attr) {
