@@ -499,7 +499,7 @@ namespace Helper\Cli\Module
 
 					if (isset($tdata[$col = 'id']) || isset($tdata[$col = $idc])) {
 						$tdata[$idc] = $tdata[$col];
-						$obj = find($model, $tdata[$col]);
+						$obj = $model::find($tdata[$col]);
 					}
 
 					if ($obj) {
@@ -512,8 +512,8 @@ namespace Helper\Cli\Module
 					$obj->save();
 
 					foreach ($tdata as $attr=>$val) {
-						if (is_array($val) && \System\Model\Database::is_rel($model, $attr)) {
-							if ($model::get_attr_type($attr) == \System\Model\Database::REL_HAS_MANY) {
+						if (is_array($val) && $model::is_rel($attr)) {
+							if ($model::get_attr_type($attr) == $model::REL_HAS_MANY) {
 								$def = $model::get_attr($attr);
 
 								if (any($def['is_bilinear']) && any($def['is_master'])) {
