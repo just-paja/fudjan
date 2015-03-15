@@ -538,7 +538,7 @@ namespace System\Model
 				$helper->join($table_name, "USING(".$using.")", $join_alias);
 				$idc = any($rel_attrs['foreign_name']) ? $rel_attrs['foreign_name']:$this::get_id_col();
 			} else {
-				if ($foreign = self::get_rel_bound_to($model, $rel)) {
+				if ($foreign = $model::get_rel_bound_to($rel)) {
 					$idc = $rel_model::get_belongs_to_id($foreign);
 				} else throw new \System\Error\Model(
 					"Could not find model relation.",
@@ -589,19 +589,26 @@ namespace System\Model
 		{
 			if (empty($this->relations[$rel])) {
 				$rel_attrs = $this::get_attr($rel);
+				$bound = $this::get_rel_bound_to($rel);
 
 				if (any($rel_attrs['foreign_key'])) {
-					$conds = array($rel_attrs['foreign_key'] => $this->id);
+					$idc = $rel_attrs['foreign_key'];
 				} else {
-					$idc = any($rel_attrs['foreign_name']) ? 'id_'.$rel_attrs['foreign_name']:$this::get_id_col();
-					$conds = array($idc => $this->id);
+					if (any($rel_attrs['foreign_name'])) {
+						$idc = 'id_'.$rel_attrs['foreign_name'];
+					} else {
+						$idc = 'id_'.$bound;
+					}
 				}
 
-				if ($rel_attrs['conds']) {
+				$conds = array($idc => $this->id);
+
+				if (isset($rel_attrs['conds']) && is_array($rel_attrs['conds'])) {
 					$conds = array_merge($rel_attrs['conds'], $conds);
 				}
 
-				$this->relations[$rel] = $rel_attrs['model']::get_first($conds)->fetch();
+				$rm = $rel_attrs['model'];
+				$this->relations[$rel] = $rm::get_first($conds)->fetch();
 			}
 
 			return $this->relations[$rel];
@@ -889,7 +896,7 @@ namespace System\Model
 					}
 				} else {
 					$model = get_model($this);
-					$foreign = self::get_rel_bound_to($model, $attr);
+					$foreign = $model::get_rel_bound_to($attr);
 					$foreign_key = $def['model']::get_attr($foreign);
 					$idc = $rel_model::get_belongs_to_id($foreign);
 
@@ -946,10 +953,11 @@ namespace System\Model
 
 				foreach ($this->relations[$attr] as $val) {
 					if (gettype($val) == 'integer') {
-						$obj = find($def['model'], $val);
+						$m = $def['model'];
+						$obj = $m::find($val);
 
 						if ($obj) {
-							$corrected[] = find($def['model'], $val);
+							$corrected[] = $m::find($val);
 						} else throw new \System\Error\Model(sprintf(
 							"Cannot assign object '%s#%s' to instance of '%s'. Object does not exist.",
 							$def['model'], $val, $model
@@ -1174,8 +1182,9 @@ namespace System\Model
 		 * @param string $rel
 		 * @return false|array
 		 */
-		public static function get_rel_bound_to($model, $rel)
+		public static function get_rel_bound_to($rel)
 		{
+			$model = get_called_class();
 			$def = $model::get_attr($rel);
 			$match = array();
 			$rel_model = $def['model'];
@@ -1189,12 +1198,12 @@ namespace System\Model
 			if (any($match)) {
 				if (count($match) === 1) {
 					return $match[0];
-				} else {
-					throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
 				}
+
+				throw new \System\Error\Model(sprintf('Model %s has more belongs_to relations that match', $def['model']));
 			}
 
-			return false;
+			throw new \System\Error\Model('Relation target was not found.', $model.'::'.$rel);
 		}
 
 
