@@ -318,7 +318,7 @@ namespace System
 					$obj = null;
 
 					if (isset($data_set['id'])) {
-						$obj = find($model, $data_set['id']);
+						$obj = $model::find($data_set['id']);
 					}
 
 					if ($obj) {
