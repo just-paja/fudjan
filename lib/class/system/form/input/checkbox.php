@@ -19,7 +19,7 @@ namespace System\Form\Input
 			$valid = parent::is_valid();
 			$value = $this->val();
 
-			if ($value) {
+			if ($value && $this->multiple) {
 				$valid = is_array($value);
 
 				if ($valid) {
