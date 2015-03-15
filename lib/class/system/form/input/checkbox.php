@@ -14,6 +14,18 @@ namespace System\Form\Input
 		}
 
 
+		public function val($value = null)
+		{
+			$val = parent::val($value);
+
+			if ($val == 'false') {
+				return false;
+			}
+
+			return $val;
+		}
+
+
 		public function is_valid()
 		{
 			$valid = parent::is_valid();
