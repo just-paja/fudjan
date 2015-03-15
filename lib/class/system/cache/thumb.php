@@ -65,6 +65,7 @@ namespace System\Cache
 					$thumb->time       = 0;
 				}
 
+				$thumb->image->path = $image->path;
 				return $thumb;
 			}
 
