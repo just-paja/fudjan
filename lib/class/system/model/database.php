@@ -687,8 +687,30 @@ namespace System\Model
 					case 'bool': $attr['type'] = 'boolean'; break;
 					case 'varchar': $attr['type'] = 'string'; break;
 					case 'json': $attr['type'] = 'object'; break;
-					case self::REL_BELONGS_TO: $attr['type'] = 'model'; break;
-					case self::REL_HAS_MANY: $attr['type'] = 'collection'; break;
+
+					case self::REL_HAS_ONE:
+						$nm = $attr['model'];
+						$attr['type'] = 'model';
+						$attr['subtype'] = 'has_one';
+						$attr['bound_to'] = static::get_rel_bound_to($name);
+						break;
+
+					case self::REL_BELONGS_TO:
+						$attr['type'] = 'model';
+						break;
+
+					case self::REL_HAS_MANY:
+						$rm = $attr['model'];
+
+						if (empty($attr['is_bilinear'])) {
+							$attr['bound_to'] = static::get_rel_bound_to($name);
+							$attr['foreign_key'] = $rm::get_belongs_to_id($attr['bound_to']);
+						} else {
+							$attr['foreign_key'] = static::get_id_col();
+						}
+
+						$attr['type'] = 'collection';
+						break;
 				}
 
 				// Convert attribute model bindings
@@ -739,7 +761,6 @@ namespace System\Model
 			}
 
 			$schema['attrs'] = $attrs;
-
 			return $schema;
 		}
 
