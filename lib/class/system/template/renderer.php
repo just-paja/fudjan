@@ -103,14 +103,20 @@ namespace System\Template
 
 		public function get_context()
 		{
-			return array_merge(array(
+			$base = array(
 				'flow' => $this->flow,
 				'loc'  => $this->locales,
 				'ren'  => $this,
 				'res'  => $this->response,
 				'rq'   => $this->request,
 				'wrap' => true,
-			), $this->response->get_template_context());
+			);
+
+			if ($this->response) {
+				return array_merge($base, $this->response->get_template_context());
+			}
+
+			return $base;
 		}
 
 
@@ -624,10 +630,13 @@ namespace System\Template
 
 		public function render_frontend_config()
 		{
-			$conf = $this->request->fconfig;
-			$str = json_encode($conf);
+			if ($this->request) {
+				$conf = $this->request->fconfig;
+				$str = json_encode($conf);
 
-			$this->content_for('head', '<script type="text/javascript">var sys = '.$str.'</script>');
+				$this->content_for('head', '<script type="text/javascript">var sys = '.$str.'</script>');
+			}
+
 			return $this;
 		}
 	}
