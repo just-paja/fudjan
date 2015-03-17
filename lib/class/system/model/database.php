@@ -1271,10 +1271,7 @@ namespace System\Model
 						$data[$attr_name] = $this->get_rel_has_many_ids($attr_name);
 					} else if ($def['type'] == self::REL_BELONGS_TO) {
 						$bid = $this::get_belongs_to_id($attr_name);
-
-						if ($this->$bid) {
-							$data[$attr_name] = $this->$bid;
-						}
+						$data[$attr_name] = $this->$bid;
 					}
 				}
 			}
