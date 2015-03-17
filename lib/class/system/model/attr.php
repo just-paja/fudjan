@@ -14,6 +14,9 @@ namespace System\Model
 	 */
 	abstract class Attr
 	{
+		const USE_INITIAL_DATA = false;
+
+
 		/** Initial attribute data */
 		protected $data_initial = array();
 
@@ -76,7 +79,7 @@ namespace System\Model
 
 			$this->update_attrs($dataray);
 
-			if (any($dataray)) {
+			if (static::USE_INITIAL_DATA && any($dataray)) {
 				$this->data_initial = $this->data;
 			}
 
@@ -222,7 +225,7 @@ namespace System\Model
 		 */
 		public function update_attrs(array $update)
 		{
-			if ($update && empty($this->data_initial)) {
+			if (static::USE_INITIAL_DATA && $update && empty($this->data_initial)) {
 				$this->data_initial = $this->data;
 			}
 
