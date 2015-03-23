@@ -1209,6 +1209,7 @@ namespace System\Model
 			$def = $model::get_attr($rel);
 			$match = array();
 			$rel_model = $def['model'];
+			$rel_model::check_model();
 
 			foreach ($rel_model::$attrs as $attr=>$def_attr) {
 				if ($def_attr['type'] == self::REL_BELONGS_TO && $def_attr['model'] == $model) {
