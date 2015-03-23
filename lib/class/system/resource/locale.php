@@ -2,7 +2,7 @@
 
 namespace System\Resource
 {
-	class Locale extends \System\Resource
+	class Locale extends \System\Resource\Json
 	{
 		public function resolve()
 		{
