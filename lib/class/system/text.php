@@ -14,11 +14,11 @@ namespace System
 	{
 		/** Attributes */
 		static $attrs = array(
-			"ident"   => array('varchar'),
-			"name"    => array('varchar'),
-			"text"    => array('html'),
-			"author"  => array('belongs_to', "model" => 'System\User'),
-			"visible" => array('bool'),
+			"ident"   => array("type" => 'varchar'),
+			"name"    => array("type" => 'varchar'),
+			"text"    => array("type" => 'html'),
+			"author"  => array("type" => 'belongs_to', "model" => 'System\User'),
+			"visible" => array("type" => 'bool'),
 		);
 	}
 }

@@ -50,16 +50,16 @@ namespace System
 
 
 		static protected $attrs = array(
-			'debug'     => array('boolean'),
-			'exists'    => array('boolean', 'default' => true),
-			'mime'      => array('string'),
-			'path'      => array('string'),
-			'response'  => array('object', "model" => '\System\Http\Response'),
-			'request'   => array('object', "model" => '\System\Http\Request'),
-			'serial'    => array('int'),
-			'src'       => array('string'),
-			'type'      => array('string'),
-			'use_cache' => array('boolean'),
+			'debug'     => array("type" => 'boolean'),
+			'exists'    => array("type" => 'boolean', 'default' => true),
+			'mime'      => array("type" => 'string'),
+			'path'      => array("type" => 'string'),
+			'response'  => array("type" => 'object', "model" => '\System\Http\Response'),
+			'request'   => array("type" => 'object', "model" => '\System\Http\Request'),
+			'serial'    => array("type" => 'int'),
+			'src'       => array("type" => 'string'),
+			'type'      => array("type" => 'string'),
+			'use_cache' => array("type" => 'boolean'),
 		);
 
 

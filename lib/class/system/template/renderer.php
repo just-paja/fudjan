@@ -5,20 +5,20 @@ namespace System\Template
 	class Renderer extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"author"     => array('varchar'),
-			"copyright"  => array('varchar'),
-			"desc"       => array('text'),
-			"driver"     => array('varchar'),
-			"format"     => array('varchar'),
-			"keywords"   => array('varchar'),
-			"locales"    => array('object', "model" => '\System\Locales'),
-			"request"    => array('object', "model" => '\System\Http\Request'),
-			"response"   => array('object', "model" => '\System\Http\Response'),
-			"robots"     => array('varchar'),
-			"start_time" => array('float'),
+			"author"     => array("type" => 'varchar'),
+			"copyright"  => array("type" => 'varchar'),
+			"desc"       => array("type" => 'text'),
+			"driver"     => array("type" => 'varchar'),
+			"format"     => array("type" => 'varchar'),
+			"keywords"   => array("type" => 'varchar'),
+			"locales"    => array("type" => 'object', "model" => '\System\Locales'),
+			"request"    => array("type" => 'object', "model" => '\System\Http\Request'),
+			"response"   => array("type" => 'object', "model" => '\System\Http\Response'),
+			"robots"     => array("type" => 'varchar'),
+			"start_time" => array("type" => 'float'),
 
-			"heading_layout_level" => array('int', "default" => 1),
-			"heading_level"        => array('int', "default" => null, "is_null" => true),
+			"heading_layout_level" => array("type" => 'int', "default" => 1),
+			"heading_level"        => array("type" => 'int', "default" => null, "is_null" => true),
 		);
 
 		protected static $meta_tags = array(
