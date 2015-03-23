@@ -7,12 +7,12 @@ namespace System\Cache
 		const DIR = '/var/cache/thumbs';
 
 		protected static $attrs = array(
-			"hash"       => array('varchar', 'is_unique' => true),
-			"hash_image" => array('varchar', 'is_index' => true),
-			"width"      => array('int',     'is_unsigned' => true, "is_null" => true),
-			"height"     => array('int',     'is_unsigned' => true, "is_null" => true),
-			"crop"       => array('bool'),
-			"image"      => array('image'),
+			"hash"       => array("type" => 'varchar', 'is_unique' => true),
+			"hash_image" => array("type" => 'varchar', 'is_index' => true),
+			"width"      => array("type" => 'int',     'is_unsigned' => true, "is_null" => true),
+			"height"     => array("type" => 'int',     'is_unsigned' => true, "is_null" => true),
+			"crop"       => array("type" => 'bool'),
+			"image"      => array("type" => 'image'),
 		);
 
 
