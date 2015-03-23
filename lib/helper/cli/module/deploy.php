@@ -15,8 +15,8 @@ namespace Helper\Cli\Module
 
 
 		protected static $attrs = array(
-			"help"       => array('bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
-			"verbose"    => array('bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
+			"help"       => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
+			"verbose"    => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
 		);
 
 

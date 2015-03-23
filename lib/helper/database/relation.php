@@ -5,14 +5,14 @@ namespace Helper\Database
 	class Relation extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"name"        => array('varchar'),
-			"type"        => array('varchar'),
-			"model"       => array('varchar'),
-			"parent"      => array('varchar'),
-			"is_null"     => array('bool'),
-			"is_master"   => array('bool'),
-			"is_bilinear" => array('bool'),
-			"is_natural"  => array('bool'),
+			"name"        => array("type" => 'varchar'),
+			"type"        => array("type" => 'varchar'),
+			"model"       => array("type" => 'varchar'),
+			"parent"      => array("type" => 'varchar'),
+			"is_null"     => array("type" => 'bool'),
+			"is_master"   => array("type" => 'bool'),
+			"is_bilinear" => array("type" => 'bool'),
+			"is_natural"  => array("type" => 'bool'),
 		);
 
 

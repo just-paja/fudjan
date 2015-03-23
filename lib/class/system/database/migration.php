@@ -7,12 +7,12 @@ namespace System\Database
 
 		const DIR = '/etc/database/migrations.d';
 		static protected $attrs = array(
-			"seoname" => array('varchar'),
-			"name"    => array('varchar'),
-			"desc"    => array('varchar'),
-			"md5_sum" => array('varchar'),
-			"status"  => array('varchar'),
-			"date"    => array('datetime'),
+			"seoname" => array("type" => 'varchar'),
+			"name"    => array("type" => 'varchar'),
+			"desc"    => array("type" => 'varchar'),
+			"md5_sum" => array("type" => 'varchar'),
+			"status"  => array("type" => 'varchar'),
+			"date"    => array("type" => 'datetime'),
 		);
 
 		static function get_new()

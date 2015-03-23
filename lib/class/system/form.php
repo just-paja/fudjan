@@ -10,21 +10,21 @@ namespace System
 		const LABEL_SUBMIT_DEFAULT = 'send';
 
 		protected static $attrs = array(
-			"id"         => array('varchar'),
-			"method"     => array('varchar'),
-			"action"     => array('varchar'),
-			"enctype"    => array('varchar'),
-			"heading"    => array('varchar'),
-			"desc"       => array('varchar'),
-			"bool"       => array('no_prefix'),
-			"class"      => array('array'),
-			"prefix"     => array('varchar', 'default' => ''),
-			"use_comm"   => array('bool'),
-			"use_errors" => array('bool', 'default' => true),
-			"use_queue"  => array('bool', 'default' => true),
-			"renderer"   => array('object', "model" => '\System\Template\Renderer\Driver'),
-			"response"   => array('object', "model" => '\System\Http\Response'),
-			"request"    => array('object', "model" => '\System\Http\Request'),
+			"id"         => array("type" => 'varchar'),
+			"method"     => array("type" => 'varchar'),
+			"action"     => array("type" => 'varchar'),
+			"enctype"    => array("type" => 'varchar'),
+			"heading"    => array("type" => 'varchar'),
+			"desc"       => array("type" => 'varchar'),
+			"bool"       => array("type" => 'no_prefix'),
+			"class"      => array("type" => 'array'),
+			"prefix"     => array("type" => 'varchar', 'default' => ''),
+			"use_comm"   => array("type" => 'bool'),
+			"use_errors" => array("type" => 'bool', 'default' => true),
+			"use_queue"  => array("type" => 'bool', 'default' => true),
+			"renderer"   => array("type" => 'object', "model" => '\System\Template\Renderer\Driver'),
+			"response"   => array("type" => 'object', "model" => '\System\Http\Response'),
+			"request"    => array("type" => 'object', "model" => '\System\Http\Request'),
 		);
 
 		private static $methods_allowed = array('get', 'post', 'put', 'delete');

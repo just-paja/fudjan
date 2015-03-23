@@ -21,13 +21,13 @@ namespace Helper\Offcom
 
 		/** Attributes */
 		protected static $attrs = array(
-			"subject"  => array('varchar', "required" => true),
-			"message"  => array('text', "required" => true),
-			"rcpt"     => array('array', "required" => true),
-			"headers"  => array('array'),
-			"from"     => array('string', "is_null" => false),
-			"reply_to" => array('string', "is_null" => false),
-			"status"   => array('int', "is_unsigned" => true),
+			"subject"  => array("type" => 'varchar', "required" => true),
+			"message"  => array("type" => 'text', "required" => true),
+			"rcpt"     => array("type" => 'array', "required" => true),
+			"headers"  => array("type" => 'array'),
+			"from"     => array("type" => 'string', "is_null" => false),
+			"reply_to" => array("type" => 'string', "is_null" => false),
+			"status"   => array("type" => 'int', "is_unsigned" => true),
 		);
 
 

@@ -14,14 +14,14 @@ namespace Helper\Cli\Module
 
 
 		protected static $attrs = array(
-			"help"       => array('bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
-			"force"      => array('bool', "value" => false, "short" => 'f', "desc"  => 'Use the Force!'),
-			"skip"       => array('bool', "value" => false, "desc" => 'Mark first migration ok and skip it'),
-			"no_backups" => array('bool', "value" => false, "desc" => 'Make no backups during the process'),
-			"json"       => array('bool', "value" => false, "short" => 'j', "desc" => 'Output in json. Works with db dump functions.'),
-			"verbose"    => array('bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
-			"structure"  => array('bool', "value" => false, "short" => 's', "desc" => 'Structure', "default" => true),
-			"relations"  => array('bool', "value" => false, "short" => 'e', "desc" => 'Relations', "default" => true),
+			"help"       => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
+			"force"      => array("type" => 'bool', "value" => false, "short" => 'f', "desc"  => 'Use the Force!'),
+			"skip"       => array("type" => 'bool', "value" => false, "desc" => 'Mark first migration ok and skip it'),
+			"no_backups" => array("type" => 'bool', "value" => false, "desc" => 'Make no backups during the process'),
+			"json"       => array("type" => 'bool', "value" => false, "short" => 'j', "desc" => 'Output in json. Works with db dump functions.'),
+			"verbose"    => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
+			"structure"  => array("type" => 'bool', "value" => false, "short" => 's', "desc" => 'Structure', "default" => true),
+			"relations"  => array("type" => 'bool', "value" => false, "short" => 'e', "desc" => 'Relations', "default" => true),
 		);
 
 		protected static $commands = array(

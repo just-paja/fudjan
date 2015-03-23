@@ -5,16 +5,16 @@ namespace Helper\Database
 	class Attr extends \System\Model\Attr
 	{
 		protected static $attrs = array(
-			"name"        => array('varchar'),
-			"type"        => array('varchar'),
-			"default"     => array('varchar'),
-			"length"      => array('varchar'),
-			"is_primary"  => array('bool'),
-			"is_unique"   => array('bool'),
-			"is_null"     => array('bool'),
-			"is_unsigned" => array('bool'),
-			"is_index"    => array('bool'),
-			"is_autoincrement" => array('bool'),
+			"name"        => array("type" => 'varchar'),
+			"type"        => array("type" => 'varchar'),
+			"default"     => array("type" => 'varchar'),
+			"length"      => array("type" => 'varchar'),
+			"is_primary"  => array("type" => 'bool'),
+			"is_unique"   => array("type" => 'bool'),
+			"is_null"     => array("type" => 'bool'),
+			"is_unsigned" => array("type" => 'bool'),
+			"is_index"    => array("type" => 'bool'),
+			"is_autoincrement" => array("type" => 'bool'),
 		);
 
 		protected static $default_cols = array(

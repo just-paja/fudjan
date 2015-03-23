@@ -14,11 +14,11 @@ namespace Helper\Offcom
 	{
 		/** Attributes */
 		protected static $attrs = array(
-			"content" => array('blob'),
-			"headers" => array('array'),
-			"status"  => array('int'),
-			"size"    => array('int'),
-			"mime"    => array('varchar'),
+			"content" => array("type" => 'blob'),
+			"headers" => array("type" => 'array'),
+			"status"  => array("type" => 'int'),
+			"size"    => array("type" => 'int'),
+			"mime"    => array("type" => 'varchar'),
 		);
 
 

@@ -5,21 +5,21 @@ namespace System\Form
 	class Input extends \System\Form\Element
 	{
 		protected static $attrs = array(
-			"name"         => array("varchar"),
-			"type"         => array("varchar"),
-			"label"        => array("varchar"),
-			"desc"         => array("varchar"),
-			"placeholder"  => array('varchar'),
-			"maxlen"       => array('int'),
-			"step"         => array('float'),
-			"min"          => array('int'),
-			"max"          => array('int'),
-			"required"     => array('bool'),
-			"options"      => array('array'),
-			"multiple"     => array('bool'),
+			"name"         => array("type" => "varchar"),
+			"type"         => array("type" => "varchar"),
+			"label"        => array("type" => "varchar"),
+			"desc"         => array("type" => "varchar"),
+			"placeholder"  => array("type" => 'varchar'),
+			"maxlen"       => array("type" => 'int'),
+			"step"         => array("type" => 'float'),
+			"min"          => array("type" => 'int'),
+			"max"          => array("type" => 'int'),
+			"required"     => array("type" => 'bool'),
+			"options"      => array("type" => 'array'),
+			"multiple"     => array("type" => 'bool'),
 
 			// Widget specific
-			'ident' => array("varchar"),
+			'ident' => array("type" => "varchar"),
 		);
 
 

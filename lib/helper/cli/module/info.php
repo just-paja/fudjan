@@ -13,7 +13,7 @@ namespace Helper\Cli\Module
 
 
 		protected static $attrs = array(
-			"help"    => array('bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
+			"help"    => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
 		);
 
 

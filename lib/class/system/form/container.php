@@ -10,13 +10,13 @@ namespace System\Form
 		const TYPE_TAB       = 'tab';
 
 		protected static $attrs = array(
-			"id"          => array('varchar'),
-			"title"       => array('varchar'),
-			"name"        => array('varchar'),
-			"label"       => array('varchar'),
-			"type"        => array('varchar'),
-			"class"       => array('list'),
-			"class_outer" => array('list'),
+			"id"          => array("type" => 'varchar'),
+			"title"       => array("type" => 'varchar'),
+			"name"        => array("type" => 'varchar'),
+			"label"       => array("type" => 'varchar'),
+			"type"        => array("type" => 'varchar'),
+			"class"       => array("type" => 'list'),
+			"class_outer" => array("type" => 'list'),
 		);
 
 		protected static $types = array(

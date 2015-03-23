@@ -14,9 +14,9 @@ namespace Helper\Cli\Module
 
 
 		protected static $attrs = array(
-			"json"       => array('bool', "value" => false, "short" => 'j', "desc"  => 'Output assets list in json'),
-			"help"       => array('bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
-			"verbose"    => array('bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
+			"json"       => array("type" => 'bool', "value" => false, "short" => 'j', "desc"  => 'Output assets list in json'),
+			"help"       => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
+			"verbose"    => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
 		);
 
 		protected static $commands = array(
