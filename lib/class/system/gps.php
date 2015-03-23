@@ -14,8 +14,8 @@ namespace System
 
 
 		protected static $attrs = array(
-			"lat" => array('float'),
-			"lng" => array('float'),
+			"lat" => array("type" => 'float'),
+			"lng" => array("type" => 'float'),
 		);
 
 
