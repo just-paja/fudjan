@@ -24,16 +24,16 @@ namespace System
 
 		/** File attrmodel attributes */
 		static protected $attrs = array(
-			"hash" => array('varchar'), // DB
-			"path" => array('varchar', 'is_null' => true),
-			"name" => array('varchar'), // DB
-			"mime" => array('varchar'),
-			"suff" => array('varchar'), // DB
-			"size" => array('int', "is_null" => true),
-			"time" => array('int', "is_null" => true),
-			"cached" => array('bool'),
-			"temp"   => array('bool'),
-			"keep"   => array('bool'),
+			"hash" => array("type" => 'varchar'), // DB
+			"path" => array("type" => 'varchar', 'is_null' => true),
+			"name" => array("type" => 'varchar'), // DB
+			"mime" => array("type" => 'varchar'),
+			"suff" => array("type" => 'varchar'), // DB
+			"size" => array("type" => 'int', "is_null" => true),
+			"time" => array("type" => 'int', "is_null" => true),
+			"cached" => array("type" => 'bool'),
+			"temp"   => array("type" => 'bool'),
+			"keep"   => array("type" => 'bool'),
 		);
 
 

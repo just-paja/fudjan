@@ -1,7 +1,8 @@
 [
-	["^/$", {
+	{
+		"url":"^/$",
 		"layout":["system/layout/error", "system/error/no_routes"],
 		"format":"html",
 		"render_with":"basic"
-	}]
+	}
 ]

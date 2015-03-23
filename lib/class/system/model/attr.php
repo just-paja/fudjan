@@ -575,8 +575,8 @@ namespace System\Model
 				foreach ($src as $name=>$def) {
 					$attr = &$src[$name];
 
-					if (isset($attr[0]) && !isset($attr['type'])) {
-						$src[$name]['type'] = $attr[0];
+					if (!isset($attr['type'])) {
+						throw new \System\Error\Model('You must define type of attribute', $model.'.'.$name);
 					}
 
 					if ($attr['type'] == 'varchar' && !isset($attr['length'])) {
