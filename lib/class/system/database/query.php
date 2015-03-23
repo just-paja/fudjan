@@ -551,7 +551,7 @@ namespace System\Database
 			$valid = true;
 			$or = false;
 
-			if (isset($filter['type']) && isset($filter[$filter['type']])) {
+			if (isset($filter['type']) && array_key_exists($filter['type'], $filter)) {
 				$type  = $filter['type'];
 				$value = $filter[$type];
 
