@@ -112,10 +112,16 @@ namespace System\Http
 			$res = new self($attrs);
 
 			$res->data['request'] = $rq;
-			$res->data['flow'] = new \System\Module\Flow($res, $res->modules);
 			$res->data['locales'] = \System\Locales::create($res, $rq->lang)->make_syswide();
 
 			return $res;
+		}
+
+
+		public function create_flow()
+		{
+			$this->data['flow'] = new \System\Module\Flow($this, $this->modules);
+			return $this;
 		}
 
 

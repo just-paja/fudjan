@@ -33,6 +33,7 @@ if ($response) {
 		}
 
 		$response
+			->create_flow()
 			->exec()
 			->render()
 			->send_headers()
