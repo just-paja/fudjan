@@ -82,6 +82,30 @@ namespace System\Form
 				$data['element'] = 'input';
 			}
 
+			if (array_key_exists('options', $data)) {
+				$opts = array();
+
+				foreach ($data['options'] as $key=>$value) {
+					$name = $value;
+
+					if (is_object($name) && $name instanceof \System\Model\Attr) {
+						$name = $name->name;
+					}
+
+					if (is_array($value) && array_key_exists('name', $value) && array_key_exists('name', $value)) {
+						$opts[] = $value;
+					} else {
+						$opts[] = array(
+							"name"  => $name,
+							"value" => $key
+						);
+					}
+				}
+
+
+				$data['options'] = $opts;
+			}
+
 			return $data;
 		}
 	}
