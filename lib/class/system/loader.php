@@ -39,7 +39,7 @@ namespace System
 					require_once $f;
 				}
 
-				spl_autoload_register(array('\System\Loader', 'autoload'), true, true);
+				spl_autoload_register(array('\System\Loader', 'autoload'), true);
 				self::$ready = true;
 			}
 		}
@@ -211,34 +211,23 @@ namespace System
 			$helper_pos = strpos(\System\Loader::get_link_from_class($class_name), 'helper');
 			$is_helper = $helper_pos !== false && $helper_pos <= 1;
 
-			if ($is_helper) {
-				$helpers = \System\Composer::list_dirs('/lib/helper');
+			foreach ($sources as $key=>$source) {
+				$classes = \System\Composer::list_dirs($source);
 
-				$file = explode('/', $file);
-				unset($file[0]);
-				$file = implode('/', $file);
-
-				foreach ($helpers as $dir) {
+				foreach ($classes as $dir) {
 					if (file_exists($f = $dir.'/'.$file)) {
 						$found = include_once($f);
 						break;
 					}
 				}
-			} else {
-				foreach ($sources as $source) {
-					$classes = \System\Composer::list_dirs($source);
 
-					foreach ($classes as $dir) {
-						if (!$is_helper && file_exists($f = $dir.'/'.$file)) {
-							$found = include_once($f);
-							break;
-						}
-					}
-
-					if ($found) {
-						break;
-					}
+				if ($found) {
+					break;
 				}
+			}
+
+			if (!$found) {
+				throw new \System\Error\Code('Class not found', $class_name, $file);
 			}
 		}
 	}
