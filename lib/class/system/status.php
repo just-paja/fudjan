@@ -326,7 +326,16 @@ namespace System
 					}
 				}
 
-				self::catch_error(def($err['number']), def($err['message']), def($err['file']), def($err['line']));
+				$file = def($err['file']);
+
+				if ($file) {
+					$file .= ':'.def($err['line'], '?');
+				} else {
+					$file = 'undetermined file';
+				}
+
+				$exc = new \System\Error\Code(def($err['message']), $file, def($err['number']));
+				self::catch_exception($exc);
 			}
 		}
 
