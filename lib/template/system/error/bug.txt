@@ -25,7 +25,7 @@ foreach ($exp as $ex) {
 			echo NL.$e;
 		}
 	} else {
-		echo $ex;
+		echo NL.$ex;
 	}
 }
 
