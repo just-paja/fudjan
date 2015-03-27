@@ -39,7 +39,7 @@ namespace System
 					require_once $f;
 				}
 
-				spl_autoload_register(array('\System\Loader', 'autoload'), true);
+				spl_autoload_register(array('\System\Loader', 'autoload'), true, true);
 				self::$ready = true;
 			}
 		}
@@ -224,10 +224,6 @@ namespace System
 				if ($found) {
 					break;
 				}
-			}
-
-			if (!$found) {
-				throw new \System\Error\Code('Class not found', $class_name, $file);
 			}
 		}
 	}
