@@ -36,8 +36,7 @@ if ($response) {
 			->create_flow()
 			->exec()
 			->render()
-			->send_headers()
-			->send_content();
+			->send();
 
 	} else throw new \System\Error\AccessDenied();
 } else throw new \System\Error\NotFound();
