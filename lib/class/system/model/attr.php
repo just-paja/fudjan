@@ -513,7 +513,7 @@ namespace System\Model
 		 */
 		public static function get_attr_options($attr)
 		{
-			$attr  = static::get_attr($attr);
+			$attr = static::get_attr($attr);
 
 			if (isset($attr['options'])) {
 				return $attr['options'];
