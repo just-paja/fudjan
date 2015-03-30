@@ -53,17 +53,20 @@ namespace System
 		public static function from_path($path)
 		{
 			$model = get_called_class();
+			$file = null;
 
 			// If file_exists throws error, path is inaccessible
 			if (!@file_exists($path)) {
 				$path = \System\Composer::resolve($path);
 			}
 
-			$file = new $model(array(
-				"path" => dirname($path),
-				"name" => basename($path),
-				"keep" => true
-			));
+			if ($path) {
+				$file = new $model(array(
+					"path" => dirname($path),
+					"name" => basename($path),
+					"keep" => true
+				));
+			}
 
 			return $file;
 		}
@@ -127,13 +130,13 @@ namespace System
 				if ($this->is_cached()) {
 					$this->size = null;
 					return strlen($this->get_content());
+				}
+
+				if ($this->exists()) {
+					$this->size = filesize($this->get_path());
 				} else {
-					if ($this->exists()) {
-						$this->size = filesize($this->get_path());
-					} else {
-						$this->size = null;
-						return 0;
-					}
+					$this->size = null;
+					return 0;
 				}
 			}
 
@@ -481,10 +484,10 @@ namespace System
 		{
 			if ($this->is_cached()) {
 				return !is_null($this->content);
-			} else {
-				if ($this->exists()) {
-					return $this->size() <= 0;
-				}
+			}
+
+			if ($this->exists()) {
+				return $this->size() <= 0;
 			}
 
 			return true;
