@@ -18,7 +18,15 @@ namespace System\Resource
 			parent::read();
 
 			if (!$this->is_cached() && $this->minify) {
-				$this->content = \Helper\Minifier\Scripts::minify($this->content);
+				try {
+					$this->content = \Helper\Minifier\Scripts::minify($this->content);
+				} catch (\System\Error\Format $e) {
+					$exp = $e->get_explanation();
+					$exp[] = $this->get_file_list($this->base);
+					$e->set_explanation($exp);
+
+					throw $e;
+				}
 			}
 		}
 	}
