@@ -1,8 +1,8 @@
 <?
 
-namespace
+namespace Test\Model
 {
-	class All extends PHPUnit_Framework_TestCase
+	class All extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 * @dataProvider model_batch
@@ -23,9 +23,9 @@ namespace
 		}
 
 
-		public function model_relations_batch()
+		public static function model_relations_batch()
 		{
-			$list = self::get_children_of('System\Model\Database');
+			$list = static::get_children_of('System\Model\Database');
 			$data = array();
 
 			foreach ($list as $cname) {
@@ -40,9 +40,9 @@ namespace
 		}
 
 
-		public function model_batch()
+		public static function model_batch()
 		{
-			$list = self::get_children_of('System\Model\Attr');
+			$list = static::get_children_of('System\Model\Attr');
 			$data = array();
 
 			foreach ($list as $cname) {

@@ -1,9 +1,9 @@
 <?
 
 
-namespace
+namespace Test\Cache
 {
-	class Core extends PHPUnit_Framework_TestCase
+	class Core extends \PHPUnit_Framework_TestCase
 	{
 		public function test_core_building()
 		{

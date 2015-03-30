@@ -1,8 +1,8 @@
 <?
 
-namespace
+namespace Test\Offcom
 {
-	class Mail extends PHPUnit_Framework_TestCase
+	class Mail extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 * @dataProvider valid_batch

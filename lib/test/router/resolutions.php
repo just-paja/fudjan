@@ -1,8 +1,8 @@
 <?
 
-namespace
+namespace Test\Router
 {
-	class Resolutions extends PHPUnit_Framework_TestCase
+	class Resolutions extends \PHPUnit_Framework_TestCase
 	{
 		/**
 		 */
