@@ -28,6 +28,7 @@ namespace System
 
 		/** Run load all classes only once */
 		private static $loaded = false;
+		private static $loaded_modules = false;
 
 		private static $ready = false;
 
@@ -66,7 +67,10 @@ namespace System
 		 */
 		public static function load_all_modules()
 		{
-			self::load_all_from_dirs(\System\Composer::list_dirs(self::DIR_MODULE));
+			if (!self::$loaded_modules) {
+				self::load_all_from_dirs(\System\Composer::list_dirs(self::DIR_MODULE));
+				self::$loaded_modules = true;
+			}
 		}
 
 
