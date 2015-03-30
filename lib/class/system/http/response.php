@@ -569,10 +569,14 @@ namespace System\Http
 			if (!$this->is_initialized()) {
 				$this->cookie_store('lang', $this->locales->get_lang());
 
-				\System\Init::run($this->init, array(
-					"request"  => $this->request,
-					"response" => $this,
-				));
+				if ($this->init) {
+					\System\Init::run($this->init, array(
+						"request"  => $this->request,
+						"response" => $this,
+					));
+				}
+
+				$this->init_done = true;
 			}
 		}
 
