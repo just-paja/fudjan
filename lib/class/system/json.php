@@ -22,12 +22,8 @@ namespace System
 		{
 			$json = json_decode($str, true);
 
-			try {
-				$debug = \System\Settings::get('dev', 'debug', 'backend');
-			} catch (\System\Error $e) { $debug = true; }
-
 			/// Skipping this error as if nothing happened on production. The application will not failexit, although there will be no data.
-			if (!$silent && ($err = json_last_error()) !== JSON_ERROR_NONE && $debug) {
+			if (!$silent && ($err = json_last_error()) !== JSON_ERROR_NONE) {
 				throw new \System\Error\Format(self::get_error($err), $str);
 			}
 
@@ -41,7 +37,15 @@ namespace System
 		 */
 		public static function read($path, $silent = false)
 		{
-			return self::decode(\System\File::read($path, $silent));
+			try {
+				$data = self::decode(\System\File::read($path, $silent));
+			} catch (\System\Error\Format $e) {
+				$ex = new \System\Error\Format();
+				$ex->set_explanation(array_merge(array('Error when parsing JSON file', $path), $e->get_explanation()));
+				throw $ex;
+			}
+
+			return $data;
 		}
 
 
@@ -70,7 +74,7 @@ namespace System
 				while ($f = readdir($dir)) {
 					if (strpos($f, ".") !== 0 && strpos($f, ".json")) {
 						list($mod) = explode(".", $f);
-						$json = (array) self::decode(\System\File::read($dir_dist.'/'.$f));
+						$json = (array) self::read($dir_dist.'/'.$f);
 						$files[] = $dir_dist.'/'.$f;
 
 						if ($assoc_keys) {
