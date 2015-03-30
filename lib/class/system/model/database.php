@@ -464,23 +464,27 @@ namespace System\Model
 			}
 
 			if ($type == self::REL_BELONGS_TO || $type == self::REL_HAS_ONE) {
-				if (is_object($value) || $is_null) {
-					if (($value instanceof $rel_model) || $is_null) {
-						$this->relations[$name] = $value;
+				if (!is_object($value) && !$is_null) {
+					throw new \System\Error\Argument(
+						'Value must not be null',
+						\System\Loader::get_model_from_class(get_class($this)).'.'.$name
+					);
+				}
 
-						if ($type == self::REL_BELONGS_TO) {
-							$idc = $model::get_belongs_to_id($name);
-							$this->$idc = $is_null ? null:$value->id;
-						}
+				if (!($value instanceof $rel_model) && !$is_null) {
+					throw new \System\Error\Argument(
+						'Value bust be instance of related model',
+						\System\Loader::get_model_from_class(get_class($this)).'.'.$name,
+						$rel_model
+					);
+				}
 
-					} else throw new \System\Error\Argument(sprintf(
-						"Value for attr '%s' of model '%s' must be instance of '%s' by definition. Instance of '%s' was given.",
-						$name, $model, $rel_model, get_model($value)
-					));
-				} else throw new \System\Error\Argument(sprintf(
-					"Value for attr '%s' of model '%s' which is '%s' relation must be object that inherits System\Model\Database. '%s' was given.",
-					$name, $model, $type, gettype($value)
-				));
+				$this->relations[$name] = $value;
+
+				if ($type == static::REL_BELONGS_TO) {
+					$idc = $model::get_belongs_to_id($name);
+					$this->$idc = $is_null ? null:$value->id;
+				}
 			}
 
 			return $this;
@@ -495,21 +499,25 @@ namespace System\Model
 		 */
 		protected function get_rel($rel)
 		{
-			if ($this::is_rel($rel)) {
-				$type = $this::get_attr_type($rel);
-
-				if ($type == self::REL_HAS_MANY) {
-					return $this->get_rel_has_many($rel);
-				} elseif ($type == self::REL_HAS_ONE) {
-					return $this->get_rel_has_one($rel);
-				} elseif ($type == self::REL_BELONGS_TO) {
-					return $this->get_rel_belongs_to($rel);
-				} else throw new \System\Error\Argument(sprintf(
-					"Attribute '%s' of model '%s' is not a relation of any known type.",
+			if (!$this::is_rel($rel)) {
+				throw new \System\Error\Argument(sprintf(
+					"Attribute '%s' of model '%s' is not a relation of any kind.",
 					get_class($this), $rel
 				));
-			} throw new \System\Error\Argument(sprintf(
-				"Attribute '%s' of model '%s' is not a relation of any kind.",
+			}
+
+			$type = $this::get_attr_type($rel);
+
+			if ($type == self::REL_HAS_MANY) {
+				return $this->get_rel_has_many($rel);
+			} elseif ($type == self::REL_HAS_ONE) {
+				return $this->get_rel_has_one($rel);
+			} elseif ($type == self::REL_BELONGS_TO) {
+				return $this->get_rel_belongs_to($rel);
+			}
+
+			throw new \System\Error\Argument(sprintf(
+				"Attribute '%s' of model '%s' is not a relation of any known type.",
 				get_class($this), $rel
 			));
 		}
@@ -820,15 +828,7 @@ namespace System\Model
 					}
 				}
 
-				$nochange = array();
-				$data = $this->get_data();
-
-				// Unset attrs that did not change to spare DB
-				foreach ($nochange as $attr_name) {
-					unset($data[$attr_name]);
-				}
-
-				$this::prepare_data($data);
+				$data = $this->get_data_raw();
 
 				if (!$this->is_new() && !$this->is_new_object) {
 					\System\Database::simple_update($model::get_table(), $model::get_id_col(), $this->id, $data);
@@ -997,14 +997,19 @@ namespace System\Model
 		 * @param array  $data
 		 * @return void
 		 */
-		protected static function prepare_data(array &$data)
+		public function get_data_raw()
 		{
+			$data = $this->data;
+
 			foreach (static::$attrs as $attr=>$attr_def) {
-				if (empty($data[$attr]) && empty($attr_def['is_null']) && any($attr_def['default'])) {
+				$is_undefined = (!array_key_exists($attr, $data) || $data[$attr] === null);
+				$is_null = !empty($attr_def['is_null']);
+
+				if ($is_undefined && !$is_null && any($attr_def['default'])) {
 					if ($attr_def['default'] == 'NOW()') {
 						$data[$attr] = new \DateTime();
 					} else {
-						$data[$attr] = $attr_def['default'];
+						$data[$attr] = static::convert_attr_val($attr, $attr_def['default']);
 					}
 				}
 
@@ -1040,6 +1045,8 @@ namespace System\Model
 					}
 				}
 			}
+
+			return $data;
 		}
 
 
