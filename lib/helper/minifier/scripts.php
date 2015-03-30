@@ -343,7 +343,7 @@ namespace Helper\Minifier
 					}
 
 					if($char === false)
-						throw new \System\Error\Format('Stray comment. ' . $this->index);
+						throw new \System\Error\Format('Stray comment. ', $this->index);
 
 					// if we're here c is part of the comment and therefore tossed
 					if(isset($this->c))
@@ -393,7 +393,7 @@ namespace Helper\Minifier
 							break 2;
 
 						case "\n":
-							throw new \System\Error\Format('Unclosed string. ' . $this->index);
+							throw new \System\Error\Format('Unclosed string.', $this->index);
 							break;
 
 						case '\\':
