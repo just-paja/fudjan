@@ -285,43 +285,45 @@ namespace System\Http
 		 */
 		public function send_headers()
 		{
-			if (!\System\Status::on_cli()) {
-				session_write_close();
+			if (\System\Status::on_cli()) {
+				return $this;
+			}
 
-				def($this->headers['Content-Encoding'], 'gz');
-				def($this->headers['Generator'], 'pwf');
+			session_write_close();
 
-				if (!isset($this->headers['Content-Type'])) {
-					if ($this->mime) {
-						$mime = $this->mime;
-					} else {
-						try {
-							$mime = \System\Output::get_mime($this->renderer->format);
-						} catch(\System\Error\Argument $e) {
-							$mime = 'text/html; charset=utf-8';
-						}
+			def($this->headers['Content-Encoding'], 'gz');
+			def($this->headers['Generator'], 'pwf');
+
+			if (!isset($this->headers['Content-Type'])) {
+				if ($this->mime) {
+					$mime = $this->mime;
+				} else {
+					try {
+						$mime = \System\Output::get_mime($this->renderer->format);
+					} catch(\System\Error\Argument $e) {
+						$mime = 'text/html; charset=utf-8';
 					}
-
-					def($this->headers["Content-Type"], $mime.";charset=utf-8");
 				}
 
-				if (isset($this->size)) {
-					def($this->headers['Content-Length'], $this->size);
-				}
+				def($this->headers["Content-Type"], $mime.";charset=utf-8");
+			}
 
-				if ($this->status == self::OK && empty($this->content)) {
-					$this->status(self::NO_CONTENT);
-				}
+			if (isset($this->size)) {
+				def($this->headers['Content-Length'], $this->size);
+			}
 
-				header(self::get_status($this->status));
+			if ($this->status == self::OK && empty($this->content)) {
+				$this->status(self::NO_CONTENT);
+			}
 
-				foreach ($this->headers as $name => $content) {
-					if (is_numeric($name)) {
-						header($content);
-					} else {
-						$name = implode('-', array_map('ucfirst', explode('-', $name)));
-						header($name.": ".$content);
-					}
+			header(self::get_status($this->status));
+
+			foreach ($this->headers as $name => $content) {
+				if (is_numeric($name)) {
+					header($content);
+				} else {
+					$name = implode('-', array_map('ucfirst', explode('-', $name)));
+					header($name.": ".$content);
 				}
 			}
 
@@ -402,7 +404,7 @@ namespace System\Http
 		 */
 		public function flush()
 		{
-			$this->content = array('output' => array());
+			$this->content = '';
 			return $this;
 		}
 
