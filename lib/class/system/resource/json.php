@@ -11,6 +11,7 @@ namespace System\Resource
 
 			if ($cb) {
 				$cnt = $cb.'('.$cnt.');';
+				$this->response->header('Content-Length', strlen($cnt));
 			}
 
 			$this->response->set_content($cnt);
