@@ -179,13 +179,19 @@ namespace System
 		public function strip_serial()
 		{
 			$matches = null;
-			$match   = preg_match('/^(.+)\.([0-9]+)\.([a-zA-Z]+)/', $this->path, $matches);
+			$match   = preg_match('/^(.+)\.([0-9]+)(\.([a-zA-Z]+))?/', $this->path, $matches);
 
 			if ($match) {
-				$this->name      = $matches[1];
-				$this->name_full = $matches[1].'.'.$matches[3];
-				$this->postfix   = $matches[3];
-				$this->serial    = $matches[2];
+				$this->name = $matches[1];
+
+				if (array_key_exists(3, $matches)) {
+					$this->name_full = $matches[1].$matches[3];
+					$this->postfix = $matches[4];
+				} else {
+					$this->name_full = $this->name;
+				}
+
+				$this->serial = $matches[2];
 			}
 		}
 
