@@ -13,7 +13,47 @@ namespace
 		}
 
 
+		/**
+		 * @dataProvider model_relations_batch
+		 */
+		public function test_model_relations($cname, $rel)
+		{
+			$this->assertTrue(array_key_exists('model', $rel));
+			$this->assertTrue(class_exists($rel['model']));
+		}
+
+
+		public function model_relations_batch()
+		{
+			$list = self::get_children_of('System\Model\Database');
+			$data = array();
+
+			foreach ($list as $cname) {
+				$rels = $cname::get_model_relations();
+
+				foreach ($rels as $rel) {
+					$data[] = array($cname, $rel);
+				}
+			}
+
+			return $data;
+		}
+
+
 		public function model_batch()
+		{
+			$list = self::get_children_of('System\Model\Attr');
+			$data = array();
+
+			foreach ($list as $cname) {
+				$data[] = array($cname);
+			}
+
+			return $data;
+		}
+
+
+		public static function get_children_of($parent)
 		{
 			\System\Loader::load_all();
 
@@ -21,8 +61,8 @@ namespace
 			$all  = get_declared_classes();
 
 			foreach ($all as $cname) {
-				if (in_array('System\Model\Attr', class_parents($cname))) {
-					$list[] = array($cname);
+				if (in_array($parent, class_parents($cname))) {
+					$list[] = $cname;
 				}
 			}
 
