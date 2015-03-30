@@ -132,11 +132,11 @@ namespace System\Model
 			if ($this->has_attr($attr)) {
 				$def = $this::get_attr($attr);
 
-				if (!isset($def['writeable']) || $def['writeable']) {
+				if (!array_key_exists('writeable', $def) || $def['writeable']) {
 					$null_error = false;
 					$this->data[$attr] = $this::convert_attr_val($attr, $value);
 					$this->changed = true;
-				} else throw new \System\Error\Model(sprintf("Attribute '%s' is not publicly writeable for model '%s'.", $attr, get_model($this)));
+				} else throw new \System\Error\Model(sprintf("Attribute is readonly.", \System\Loader::get_model_from_class(get_class($this)).'.'.$attr));
 			} else $this->opts[$attr] = $value;
 
 			return $this;
@@ -166,9 +166,9 @@ namespace System\Model
 			$def = $this::get_attr($attr);
 
 			if (isset($def['default'])) {
-				$this->$attr = $def['default'];
+				$this->data[$attr] = $this::convert_attr_val($attr, $def['default']);
 			} else {
-				$this->$attr = null;
+				$this->data[$attr] = null;
 			}
 		}
 
@@ -315,14 +315,13 @@ namespace System\Model
 		 */
 		public static function get_attr($attr)
 		{
-			$model = get_called_class();
-			$model::check_model();
+			static::check_model();
 
-			if ($model::has_attr($attr)) {
-				return $model::$attrs[$attr];
+			if (static::has_attr($attr)) {
+				return static::$attrs[$attr];
 			}
 
-			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, $model));
+			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" does not exist!', $attr, get_called_class()));
 		}
 
 
