@@ -4,6 +4,13 @@ namespace System\Resource
 {
 	class Json extends \System\Resource
 	{
+		public function set_headers()
+		{
+			$this->mime = 'application/json';
+			return parent::set_headers();
+		}
+
+
 		public function set_response()
 		{
 			$cnt = $this->content;

@@ -22,8 +22,6 @@ namespace System\Resource
 
 		public function read()
 		{
-			$this->mime = 'application/json';
-
 			if ($this->name == 'list') {
 				$this->content = json_encode($this->response->locales->get_available());
 			} else {
