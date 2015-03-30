@@ -9,6 +9,7 @@ namespace Test\Model
 			'int_blank' => array("type" => 'int'),
 			'int_nil'   => array("type" => 'int', 'is_null' => true),
 			'int_def'   => array("type" => 'int', 'default' => 5),
+			'int_stat'  => array("type" => 'int', 'default' => 5, 'writeable' => false),
 		);
 	}
 }
@@ -40,14 +41,21 @@ namespace
 			$this->assertNull($obj->int_nil);
 			$this->assertNull($obj->int_blank);
 			$this->assertEquals(5, $obj->int_def);
+			$this->assertEquals(5, $obj->int_stat);
 
 			$obj->int_blank = 'asdf';
 			$obj->int_nil   = 'asdf';
 			$obj->int_def   = 'asdf';
 
+			try {
+				$obj->int_stat = 1;
+			} catch (\System\Error\Model $e) {
+			}
+
 			$this->assertEquals(0, $obj->int_blank);
 			$this->assertNull($obj->int_nil);
 			$this->assertEquals(5, $obj->int_def);
+			$this->assertEquals(5, $obj->int_stat);
 		}
 
 
