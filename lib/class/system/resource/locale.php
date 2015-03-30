@@ -23,9 +23,15 @@ namespace System\Resource
 		public function read()
 		{
 			if ($this->name == 'list') {
-				$this->content = json_encode($this->response->locales->get_available());
+				$this->content = json_encode(array(
+					"data" => $this->response->locales->get_available(),
+					"status" => 200
+				));
 			} else {
-				$this->content = json_encode($this->response->locales->get_messages($this->name));
+				$this->content = json_encode(array(
+					"data" => $this->response->locales->get_messages($this->name),
+					"status" => 200
+				));
 			}
 		}
 	}
