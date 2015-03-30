@@ -387,6 +387,10 @@ namespace System
 		 */
 		public function save()
 		{
+			if ($this->saved) {
+				return $this;
+			}
+
 			if ($this->is_cached()) {
 				self::put($this->get_path_hashed(), $this->get_content());
 			} else {
@@ -473,7 +477,7 @@ namespace System
 		 */
 		public function is_saved()
 		{
-			return $this->hash && file_exists($this->get_path_hashed());
+			return $this->hash && file_exists($this->get_path_hashed()) || $this->saved;
 		}
 
 
@@ -486,7 +490,7 @@ namespace System
 				return !is_null($this->content);
 			}
 
-			if ($this->exists()) {
+			if ($this->exists() || $this->saved) {
 				return $this->size() <= 0;
 			}
 
