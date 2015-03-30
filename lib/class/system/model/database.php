@@ -1030,7 +1030,11 @@ namespace System\Model
 						}
 
 						if ($empty) {
-							$data[$attr] = null;
+							if (isset($attr_def['default'])) {
+								$data[$attr] = $attr_def['default'];
+							} else {
+								$data[$attr] = null;
+							}
 						} else {
 							if (method_exists(get_class($data[$attr]), 'save')) {
 								$data[$attr]->save();
