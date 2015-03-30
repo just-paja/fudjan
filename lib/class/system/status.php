@@ -208,7 +208,7 @@ namespace System
 
 				try {
 					$response_default = $request->create_response();
-				} catch (\Exception $e) {
+				} catch (\Exception $exc) {
 				}
 
 				if ($response_default) {
@@ -219,7 +219,6 @@ namespace System
 				}
 
 				$response = $request->create_response($error_page);
-
 				self::load_locales_safe($request, $response);
 
 				if ($response->format != 'json') {
