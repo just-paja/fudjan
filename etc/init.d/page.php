@@ -12,11 +12,12 @@ if (file_exists(BASE_DIR.\System\Loader::FILE_MODULES)) {
 }
 
 $request = System\Http\Request::from_hit();
-$request->init();
+$request->load_config();
 
 System\Cache::init();
 System\Database::init();
 
+$request->init();
 $response = $request->create_response();
 
 if ($response) {

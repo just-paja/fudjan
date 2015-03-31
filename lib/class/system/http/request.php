@@ -111,7 +111,7 @@ namespace System\Http
 		/** Get domain init data
 		 * @return mixed
 		 */
-		private function load_config()
+		public function load_config()
 		{
 			$cfg = cfg('domains', \System\Router::get_domain($this->host));
 			$this->rules    = def($cfg['rules'], null);
@@ -129,12 +129,20 @@ namespace System\Http
 		 */
 		public function init()
 		{
-			$this->load_config();
-
 			if ($this->get('lang')) {
 				$this->lang = $this->get('lang');
 			} else if ($this->cookie('lang')) {
 				$this->lang = $this->cookie('lang');
+			}
+
+			try {
+				$login = \System\Settings::get('policies', 'auto_login');
+			} catch (\System\Error\Config $e) {
+				$login = true;
+			}
+
+			if ($login) {
+				$this->relogin();
 			}
 
 			\System\Init::run($this->init, array("request" => $this));
@@ -304,23 +312,16 @@ namespace System\Http
 		/** Get current active user
 		 * @return System\User
 		 */
-		public function user()
+		public function relogin()
 		{
 			$cookie = \System\User::COOKIE_USER;
 
 			if ($this->user) {
 				return $this->user;
-			} else if ($this->sess($cookie)) {
-				try {
-					$login = \System\Settings::get('policies', 'auto_login');
-				} catch (\System\Error\Config $e) {
-					$login = true;
-				}
+			}
 
-
-				if ($login) {
-					$this->user = \System\User::find($this->sess($cookie));
-				}
+			if ($this->sess($cookie)) {
+				$this->user = \System\User::find($this->sess($cookie));
 			}
 
 			if (!($this->user)) {
@@ -328,8 +329,6 @@ namespace System\Http
 			}
 
 			$this->user->get_rights();
-
-			return $this->user;
 		}
 
 
@@ -338,7 +337,7 @@ namespace System\Http
 		 */
 		public function logged_in()
 		{
-			return !!$this->user()->id;
+			return $this->user && $this->user->id;
 		}
 	}
 }

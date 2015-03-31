@@ -120,7 +120,7 @@ namespace System\Http
 
 		public function create_flow()
 		{
-			$this->data['flow'] = new \System\Module\Flow($this, $this->modules);
+			$this->data['flow'] = new \System\Module\Flow($this, (array) $this->modules);
 			return $this;
 		}
 
@@ -548,7 +548,7 @@ namespace System\Http
 		 */
 		public function is_readable()
 		{
-			if ($this->request->user()->is_root() || empty($this->groups)) {
+			if ($this->request->user->is_root() || empty($this->groups)) {
 				return true;
 			}
 
