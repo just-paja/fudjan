@@ -2,7 +2,7 @@
 
 namespace System\Form\Input
 {
-	class Radio extends \System\Form\Input
+	class Radio extends \System\Form\Input\Options
 	{
 		public function val($value = null)
 		{
@@ -18,24 +18,7 @@ namespace System\Form\Input
 
 		public function is_valid()
 		{
-			$valid = parent::is_valid();
-			$value = $this->val();
-
-			if ($valid && is_array($this->options)) {
-				$opts = $this->options;
-
-				$valid = array_key_exists($value, $opts);
-
-				if (!$valid) {
-					$this->form()->report_error($this->name, array(
-						'message' => 'out-of-options',
-						'value'   => $value,
-						'options' => $opts,
-					));
-				}
-			}
-
-			return $valid;
+			return parent::is_valid() && $this->is_in_options();
 		}
 	}
 }
