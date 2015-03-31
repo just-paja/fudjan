@@ -621,6 +621,7 @@ namespace System\Template
 		{
 			$this->content_for("head", \System\Template\Tag::title(array(
 				"output"  => false,
+				"close"   => true,
 				"content" => $this->get_content_from('title'))
 			));
 
