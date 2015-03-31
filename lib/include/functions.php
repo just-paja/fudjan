@@ -42,30 +42,33 @@ namespace
 	function v()
 	{
 		$trace = debug_backtrace();
+		$var = func_get_args();
 
-		foreach (func_get_args() as $var) {
-			$path = '';
-
-			if (isset($trace[0]['file'])) {
-				$path .= basename($trace[0]['file']);
-
-				if (isset($trace[0]['line'])) {
-					$path .= ":".$trace[0]['line'];
-				}
-
-				$path .= ", ";
-			}
-
-			if (isset($trace[0]['class'])) {
-				$path .= $trace[0]['class'].'::'.$trace[0]['function']."()";
-			} elseif (isset($trace[0]['function'])) {
-				$path .= $trace[0]['function']."()";
-			}
-
-			echo '<div class="debug dump"><b>'.$path."</b><pre>";
-				function_exists('var_export') && !is_string($var) ? var_dump($var):print_r($var);
-			echo '</pre></div>';
+		if (count($var) == 1) {
+			$var = $var[0];
 		}
+
+		$path = '';
+
+		if (isset($trace[0]['file'])) {
+			$path .= basename($trace[0]['file']);
+
+			if (isset($trace[0]['line'])) {
+				$path .= ":".$trace[0]['line'];
+			}
+
+			$path .= ", ";
+		}
+
+		if (isset($trace[0]['class'])) {
+			$path .= $trace[0]['class'].'::'.$trace[0]['function']."()";
+		} elseif (isset($trace[0]['function'])) {
+			$path .= $trace[0]['function']."()";
+		}
+
+		echo '<div class="debug dump"><b>'.$path."</b><pre>";
+			function_exists('var_export') && !is_string($var) ? var_dump($var):print_r($var);
+		echo '</pre></div>';
 	}
 
 
