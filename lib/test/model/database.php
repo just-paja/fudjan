@@ -92,7 +92,7 @@ namespace Test\Model
 
 			if ($obj->belongs_def) {
 				$this->assertFalse(array_key_exists('belongs', $data));
-				$this->assertTrue(array_key_exists('id_belongs', $data));
+				$this->assertTrue(array_key_exists('id_belongs_def', $data));
 			}
 
 			if ($obj->belongs_null) {
@@ -102,9 +102,11 @@ namespace Test\Model
 
 			if ($obj->file) {
 				$this->assertTrue(array_key_exists('file', $data));
+
 				$this->assertTrue(is_string($data['file']));
 
 				$file = json_decode($data['file'], true);
+
 				$this->assertTrue(array_key_exists('hash', $file));
 				$this->assertEquals($obj->file->hash, $file['hash']);
 			}
@@ -131,6 +133,19 @@ namespace Test\Model
 					array(
 						"belongs" => 1,
 						"file" => null,
+					)
+				),
+
+				array(
+					array(
+						"file" => array(
+							"path"  => BASE_DIR.'/var/cache/test/file.test',
+							"hash"  => 'b09d56139810ab6f2be0fadfbb171472',
+							"suff"  => 'test',
+							"name"  => 'file',
+							"saved" => true,
+							"size"  => 10
+						),
 					)
 				)
 			);
