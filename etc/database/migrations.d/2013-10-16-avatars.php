@@ -2,7 +2,7 @@
 #[Avatars]
 #[Migrate avatar db structure to use new file API]
 
-$users = get_all('\System\User')->fetch();
+$users = \System\User::get_all()->fetch();
 
 foreach ($users as $user) {
 	if ($user->avatar) {
