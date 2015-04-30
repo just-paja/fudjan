@@ -424,6 +424,7 @@ namespace System\Template
 					throw $e;
 				}
 
+				$e = \System\Error::from_exception($e);
 				$exp = $e->get_explanation();
 
 				array_push($exp, 'Error in template');
