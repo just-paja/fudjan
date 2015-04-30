@@ -43,9 +43,13 @@ namespace System
 
 		public static function from_exception(\Exception $e)
 		{
-			$exc = new self($e->getMessage());
-			$exc->backtrace = $e->getTrace();
-			return $exc;
+			if ($e instanceof \Exception && !($e instanceof \System\Error)) {
+				$exc = new self($e->getMessage());
+				$exc->backtrace = $e->getTrace();
+				return $exc;
+			}
+
+			return $e;
 		}
 	}
 }
