@@ -610,7 +610,15 @@ namespace System\Model
 		 */
 		public function to_object()
 		{
-			return self::to_object_batch($this->get_data(), $this);
+			$data = $this->get_data();
+
+			foreach ($data as $attr=>$value) {
+				if (is_null($value) || (is_string($value) && !$value)) {
+					unset($data[$attr]);
+				}
+			}
+
+			return self::to_object_batch($data, $this);
 		}
 
 
