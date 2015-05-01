@@ -10,6 +10,10 @@ namespace Test\Model
 			'int_nil'   => array("type" => 'int', 'is_null' => true),
 			'int_def'   => array("type" => 'int', 'default' => 5),
 			'int_stat'  => array("type" => 'int', 'default' => 5, 'writeable' => false),
+
+			'email'     => array("type" => 'email'),
+			'url'       => array("type" => 'url'),
+			'varchar'   => array("type" => 'varchar'),
 		);
 	}
 }
@@ -100,6 +104,46 @@ namespace
 			}
 
 			$this->assertInstanceOf('System\Error\Model', $e);
+		}
+
+
+		/**
+		 * @dataProvider blank_items_batch
+		 */
+		public function test_object_conv_blank($item)
+		{
+			$obj = new \Test\Model\Attr($item);
+			$arr = $obj->to_object();
+
+			$this->assertTrue(!array_key_exists('int_blank', $arr));
+			$this->assertTrue(!array_key_exists('int_nil', $arr));
+			$this->assertTrue(!array_key_exists('email', $arr));
+			$this->assertTrue(!array_key_exists('url', $arr));
+			$this->assertTrue(!array_key_exists('varchar', $arr));
+		}
+
+
+		static public function blank_items_batch()
+		{
+			return array(
+				array(
+					array(
+						"email"   => null,
+						"url"     => null,
+						"varchar" => null,
+					)
+				),
+
+				array(
+					array(
+						"int_blank" => '',
+						"int_nil"   => '',
+						"email"     => '',
+						"url"       => '',
+						"varchar"   => '',
+					)
+				)
+			);
 		}
 	}
 }
