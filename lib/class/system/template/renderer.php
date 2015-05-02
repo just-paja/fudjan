@@ -409,6 +409,8 @@ namespace System\Template
 
 		public function render_file($name, array $locals = array())
 		{
+			def($locals['wrap'], true);
+
 			$path = $this->get_template_path($name);
 
 			if (!$path) {
@@ -435,6 +437,12 @@ namespace System\Template
 
 				throw $err;
 			}
+		}
+
+
+		public function insert($name, array $locals = array())
+		{
+			echo $this->render_file($name, $locals);
 		}
 
 
