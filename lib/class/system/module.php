@@ -167,6 +167,8 @@ namespace System
 		{
 			$locals = array_merge($this->opts, $locals);
 			$locals['module_id'] = $this->module_id;
+			$locals['lang'] = $this->response->locales->get_lang();
+
 			$this->response->renderer->partial($name, $locals, $this->slot);
 			return $this;
 		}
