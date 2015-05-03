@@ -14,7 +14,7 @@ namespace Helper\Cli\Module
 
 		protected static $attrs = array(
 			"help"    => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
-			"purge"   => array("type" => 'bool', "value" => false, "short" => 'p', "desc" => 'Purge'),
+			"purge"   => array("type" => 'bool', "value" => false, "short" => 'p', "desc" => 'Purge persistent cache'),
 			"verbose" => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
 		);
 
@@ -29,6 +29,12 @@ namespace Helper\Cli\Module
 		);
 
 
+		/**
+		 * Delete cached files from temporary cache. Accepts purge parameter to
+		 * delete persistent files as well.
+		 *
+		 * @return void
+		 */
 		public function cmd_clean()
 		{
 			\System\Init::basic();
@@ -36,6 +42,11 @@ namespace Helper\Cli\Module
 		}
 
 
+		/**
+		 * Create local cache of everything possible.
+		 *
+		 * @return void
+		 */
 		public function cmd_all()
 		{
 			\System\Init::basic();
@@ -47,6 +58,11 @@ namespace Helper\Cli\Module
 		}
 
 
+		/**
+		 * Build system core cache
+		 *
+		 * @return void
+		 */
 		public function cmd_core()
 		{
 			\System\Init::basic();
@@ -56,6 +72,11 @@ namespace Helper\Cli\Module
 		}
 
 
+		/**
+		 * Build modules cache
+		 *
+		 * @return void
+		 */
 		public function cmd_modules()
 		{
 			\System\Init::basic();
@@ -65,6 +86,11 @@ namespace Helper\Cli\Module
 		}
 
 
+		/**
+		 * Build locales cache
+		 *
+		 * @return void
+		 */
 		public function cmd_locales()
 		{
 			\System\Init::basic();
@@ -74,6 +100,11 @@ namespace Helper\Cli\Module
 		}
 
 
+		/**
+		 * Build static cache
+		 *
+		 * @return void
+		 */
 		public function cmd_static()
 		{
 			\System\Init::basic();
