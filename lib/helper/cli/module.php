@@ -51,7 +51,7 @@ namespace Helper\Cli
 				if (strpos($arg, '-') !== false) {
 					foreach ($attrs as $long => $info) {
 						if (($arg == '--'.$long && $t = 'l') || (isset($info['short']) && $arg == '-'.$info['short'] && $t = 's')) {
-							if ($info[0] == 'bool') {
+							if ($info['type'] == 'bool') {
 								$this->$long = true;
 							} else {
 								switch ($info[0]) {
