@@ -17,7 +17,10 @@ foreach ($users as $user) {
 		} else {
 			if (any($opts['file_path'])) {
 				$avatar = \System\Image::from_path($opts['file_path']);
-				$avatar->keep = true;
+
+				if ($avatar) {
+					$avatar->keep = true;
+				}
 			} else {
 				$avatar = null;
 			}
