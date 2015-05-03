@@ -20,7 +20,7 @@ namespace Helper\Cli\Module
 
 		protected static $commands = array(
 			"all"     => array('Build complete application cache'),
-			"clear"   => array('Completely erase application cache'),
+			"clean"   => array('Completely erase application cache'),
 			"core"    => array('Cache application core for faster run'),
 			"locales" => array('Cache application core for faster run'),
 			"modules" => array('Cache application modules for faster run'),
@@ -28,7 +28,7 @@ namespace Helper\Cli\Module
 		);
 
 
-		public function cmd_clear()
+		public function cmd_clean()
 		{
 			\System\Init::basic();
 			\System\Cache::clear();
