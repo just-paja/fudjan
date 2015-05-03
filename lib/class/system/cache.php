@@ -16,6 +16,8 @@ namespace System
 		static private $ready = false;
 		static private $ttl = self::TTL_DEFAULT;
 
+		static protected $persistent = array('thumbs');
+
 
 		public static function init()
 		{
@@ -136,11 +138,18 @@ namespace System
 		}
 
 
-		public static function clear()
+		public static function clear($all=false)
 		{
-			$files = glob(BASE_DIR.self::DIR_CACHE.'/*');
+			$base  = BASE_DIR.self::DIR_CACHE;
+			$files = glob($base.'/*');
 
 			foreach ($files as $file) {
+				$name = str_replace($base.'/', '', $file);
+
+				if (!$all && in_array($name, static::$persistent)) {
+					continue;
+				}
+
 				if (is_file($file)) {
 					unlink($file);
 				} else if (is_dir($file)) {

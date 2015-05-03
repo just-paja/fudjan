@@ -14,6 +14,7 @@ namespace Helper\Cli\Module
 
 		protected static $attrs = array(
 			"help"    => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
+			"purge"   => array("type" => 'bool', "value" => false, "short" => 'p', "desc" => 'Purge'),
 			"verbose" => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
 		);
 
@@ -31,7 +32,7 @@ namespace Helper\Cli\Module
 		public function cmd_clean()
 		{
 			\System\Init::basic();
-			\System\Cache::clear();
+			\System\Cache::clear($this->purge);
 		}
 
 
