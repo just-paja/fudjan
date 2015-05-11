@@ -19,7 +19,8 @@ namespace Helper\Cli\Module
 
 
 		protected static $commands = array(
-			"all" => array('Run all tests'),
+			"all"  => array('Run all tests'),
+			"list" => array('Run all tests'),
 		);
 
 
@@ -35,6 +36,15 @@ namespace Helper\Cli\Module
 			));
 
 			$out = passthru($cmd);
+		}
+
+
+		public static function cmd_list()
+		{
+			\Helper\Cli::out_flist(array(
+				"list"      => self::get_all(),
+				"show_keys" => false,
+			));
 		}
 
 
