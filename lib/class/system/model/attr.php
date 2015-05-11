@@ -564,7 +564,7 @@ namespace System\Model
 		{
 			$model = get_called_class();
 
-			if (empty(static::$resolved_models[$model])) {
+			if (!array_key_exists($model, self::$resolved_models)) {
 				if (!isset($model::$attrs)) {
 					throw new \System\Error\Model(sprintf("You must define property 'protected static \$attrs' to model '%s' to inherit attr model properly.", $model));
 				}
@@ -587,7 +587,7 @@ namespace System\Model
 					}
 				}
 
-				static::$resolved_models[$model] = true;
+				self::$resolved_models[$model] = true;
 			}
 		}
 
@@ -638,7 +638,13 @@ namespace System\Model
 				}
 			} else if (is_object($data)) {
 				if (method_exists($data, 'to_object')) {
-					$empty = method_exists($data, 'is_empty') && $data->is_empty();
+					if (method_exists($data, 'exists')) {
+						$empty = $data->exists();
+					} else if (method_exists($data, 'is_empty')) {
+						$empty = $data->is_empty();
+					} else {
+						throw new \System\Error\Model('To object needs `exists` or `is_empty` method to interface with', $data);
+					}
 
 					if (!$empty) {
 						$data = $data->to_object();
@@ -649,7 +655,6 @@ namespace System\Model
 					$data = $data->format('c');
 				}
 			}
-
 
 			if (is_null($data) && $obj && $key) {
 				try {

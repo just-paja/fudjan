@@ -95,18 +95,20 @@ namespace System\Model
 			$attrs = $this::get_attr_list();
 
 			foreach ($attrs as $attr_name) {
-				if ($this::is_rel($attr_name)) {
-					$def = $this::get_attr($attr_name);
-					$rel_cname = $def['model'];
-					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
-					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
+				if (!array_key_exists($attr_name, $data) || !$this::is_rel($attr_name)) {
+					continue;
+				}
 
-					if (!$is_allowed) {
-						unset($data[$attr_name]);
+				$def = $this::get_attr($attr_name);
+				$rel_cname = $def['model'];
+				$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
+				$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
 
-						if ($def['type'] == self::REL_BELONGS_TO) {
-							unset($data[$this::get_belongs_to_id($attr_name)]);
-						}
+				if (!$is_allowed) {
+					unset($data[$attr_name]);
+
+					if ($def['type'] == self::REL_BELONGS_TO) {
+						unset($data[$this::get_belongs_to_id($attr_name)]);
 					}
 				}
 			}
