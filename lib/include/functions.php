@@ -66,9 +66,23 @@ namespace
 			$path .= $trace[0]['function']."()";
 		}
 
-		echo '<div class="debug dump"><b>'.$path."</b><pre>";
-			function_exists('var_export') && !is_string($var) ? var_dump($var):print_r($var);
-		echo '</pre></div>';
+		try {
+			$cli = \System\Status::on_cli();
+		} catch (\Exception $e) {
+			$cli = true;
+		}
+
+		if (!$cli) {
+			echo '<div class="debug dump"><b>'.$path."</b><pre>";
+		}
+
+		function_exists('var_export') && !is_string($var) ? var_dump($var):print_r($var);
+
+		if ($cli) {
+			echo "\n";
+		} else {
+			echo '</pre></div>';
+		}
 	}
 
 
