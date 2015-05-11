@@ -46,7 +46,7 @@ namespace System
 		 * Public constructor compatible with attr model
 		 * @return $this
 		 */
-		public function __construct(array $dataray)
+		public function __construct(array $dataray = array())
 		{
 			$this::$instance_count ++;
 			return parent::__construct($dataray);
