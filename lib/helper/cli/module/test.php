@@ -30,12 +30,18 @@ namespace Helper\Cli\Module
 
 			$all = self::get_all();
 			$path = \System\Composer::resolve('/etc/init.d/test.php');
-			$cmd = implode(';', array(
-				"cd '".BASE_DIR."'",
-				"phpunit --bootstrap '".$path."' --colors --test-suffix .php ".implode(" ", $all)
-			));
 
-			$out = passthru($cmd);
+			foreach ($all as $key=>$val) {
+				$cmd = implode(';', array(
+					"cd '".BASE_DIR."'",
+					"phpunit --bootstrap '".$path."' --colors --test-suffix .php '".$val."'"
+				));
+
+				\Helper\Cli::out($val);
+				$out = passthru($cmd);
+				\Helper\Cli::out();
+			}
+
 		}
 
 
