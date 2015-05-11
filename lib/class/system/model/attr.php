@@ -638,12 +638,12 @@ namespace System\Model
 				}
 			} else if (is_object($data)) {
 				if (method_exists($data, 'to_object')) {
+					$empty = false;
+
 					if (method_exists($data, 'exists')) {
 						$empty = $data->exists();
 					} else if (method_exists($data, 'is_empty')) {
 						$empty = $data->is_empty();
-					} else {
-						throw new \System\Error\Model('To object needs `exists` or `is_empty` method to interface with', $data);
 					}
 
 					if (!$empty) {
