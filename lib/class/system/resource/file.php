@@ -30,7 +30,12 @@ namespace System\Resource
 
 				$this->file_path  = $file;
 				$this->file_point = $cname::from_path($file);
-				$this->exists     = $this->file_point->exists();
+
+				if ($this->file_point) {
+					$this->exists = $this->file_point->exists();
+				} else {
+					$this->exists = false;
+				}
 			} else {
 				$this->exists = false;
 			}
