@@ -10,6 +10,11 @@ namespace System\User
 			"rights" => array("type" => 'has_many', "model" => 'System\User\Perm'),
 		);
 
+		static protected $access = array(
+			'schema' => true,
+			'browse' => true
+		);
+
 
 		public function count_users()
 		{
