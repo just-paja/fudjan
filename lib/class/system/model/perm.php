@@ -68,7 +68,7 @@ namespace System\Model
 			);
 
 			$perm = \System\User\Perm::get_first()->where($conds)->fetch();
-			return $perm ? $perm->allow:self::get_default_for($method);
+			return $perm ? $perm->allow:static::get_default_for($method);
 		}
 
 
@@ -79,7 +79,7 @@ namespace System\Model
 		 */
 		public function can_be($method, \System\User $user)
 		{
-			return self::can_user($method, $user);
+			return static::can_user($method, $user);
 		}
 
 
@@ -102,12 +102,12 @@ namespace System\Model
 				$def = $this::get_attr($attr_name);
 				$rel_cname = $def['model'];
 				$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
-				$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
+				$is_allowed  = $is_subclass && $rel_cname::can_user(static::BROWSE, $user);
 
 				if (!$is_allowed) {
 					unset($data[$attr_name]);
 
-					if ($def['type'] == self::REL_BELONGS_TO) {
+					if ($def['type'] == static::REL_BELONGS_TO) {
 						unset($data[$this::get_belongs_to_id($attr_name)]);
 					}
 				}
@@ -127,10 +127,10 @@ namespace System\Model
 					$def = $this::get_attr($attr_name);
 					$rel_cname = $def['model'];
 					$is_subclass = is_subclass_of($rel_cname, '\System\Model\Perm');
-					$is_allowed  = $is_subclass && $rel_cname::can_user(self::BROWSE, $user);
+					$is_allowed  = $is_subclass && $rel_cname::can_user(static::BROWSE, $user);
 
 					if ($is_allowed) {
-						if ($def['type'] == self::REL_BELONGS_TO) {
+						if ($def['type'] == static::REL_BELONGS_TO) {
 							$bid = $this::get_belongs_to_id($attr_name);
 
 							if ($this->$bid) {
@@ -147,7 +147,7 @@ namespace System\Model
 
 		public static function get_visible_schema(\System\User $user)
 		{
-			if (self::can_user(self::VIEW_SCHEMA, $user)) {
+			if (static::can_user(static::VIEW_SCHEMA, $user)) {
 				$cname  = get_called_class();
 				$schema = static::get_schema();
 				$res    = array();
@@ -160,7 +160,7 @@ namespace System\Model
 					if (in_array($attr['type'], $rel_attrs)) {
 						$rel_cname = \System\Loader::get_class_from_model($attr['model']);
 
-						if (class_exists($rel_cname) && is_subclass_of($rel_cname, '\System\Model\Perm') && $rel_cname::can_user(self::VIEW_SCHEMA, $user)) {
+						if (class_exists($rel_cname) && is_subclass_of($rel_cname, '\System\Model\Perm') && $rel_cname::can_user(static::VIEW_SCHEMA, $user)) {
 							$res[] = $attr;
 						}
 					} else {
