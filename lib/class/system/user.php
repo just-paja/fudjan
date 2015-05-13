@@ -235,5 +235,17 @@ namespace System
 			unset($data['password']);
 			return $data;
 		}
+
+
+		public static function can_user($method, \System\User $user)
+		{
+			$res = parent::can_user($method, $user);
+
+			if (!$res && ($method === static::VIEW_SCHEMA || $method === static::BROWSE)) {
+				return !$user->is_guest();
+			}
+
+			return $res;
+		}
 	}
 }
