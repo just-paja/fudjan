@@ -253,7 +253,7 @@ namespace System
 		public function hash()
 		{
 			if (!$this->hash) {
-				$this->hash = md5($this->name.'-'.$this->size);
+				$this->hash = md5($this->name.'-'.$this->size());
 			}
 
 			return $this->hash;
@@ -433,7 +433,9 @@ namespace System
 		 */
 		public function exists()
 		{
-			return !is_null($this->get_path()) && file_exists($this->get_path());
+			$path = $this->get_path();
+
+			return $path && file_exists($path);
 		}
 
 
