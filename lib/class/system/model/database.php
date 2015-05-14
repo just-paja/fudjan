@@ -173,21 +173,22 @@ namespace System\Model
 		public static function get_belongs_to_id($attr)
 		{
 			$model = get_called_class();
+			$def = $model::get_attr($attr);
 
-			if ($model::get_attr_type($attr) == self::REL_BELONGS_TO) {
-				$def = $model::get_attr($attr);
-
-				if (any($def['foreign_key'])) {
-					return $def['foreign_key'];
-				} else if (empty($def['is_natural'])) {
-					return "id_".$attr;
-				}
-
-				$rel = $def['model'];
-				return $rel::get_id_col();
+			if ($def['type'] !== self::REL_BELONGS_TO) {
+				throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" is not belongs_to relation.', $model, $attr));
 			}
 
-			throw new \System\Error\Model(sprintf('Attribute "%s" of model "%s" is not belongs_to relation.', $model, $attr));
+			if (any($def['foreign_key'])) {
+				return $def['foreign_key'];
+			}
+
+			if (empty($def['is_natural'])) {
+				return "id_".$attr;
+			}
+
+			$rel = $def['model'];
+			return $rel::get_id_col();
 		}
 
 
@@ -991,6 +992,20 @@ namespace System\Model
 		}
 
 
+		public function get_data()
+		{
+			$data = array();
+
+			foreach (static::$attrs as $attr=>$def) {
+				if (!static::is_rel($attr)) {
+					$data[$attr] = $this->$attr;
+				}
+			}
+
+			return $data;
+		}
+
+
 		/**
 		 * Prepare data to be saved and reJSON
 		 *
@@ -1221,6 +1236,10 @@ namespace System\Model
 			$match = array();
 			$rel_model = $def['model'];
 			$rel_model::check_model();
+
+			if (array_key_exists('rel', $def) && $def['rel']) {
+				return $def['rel'];
+			}
 
 			foreach ($rel_model::$attrs as $attr=>$def_attr) {
 				if ($def_attr['type'] == self::REL_BELONGS_TO && $def_attr['model'] == $model) {
