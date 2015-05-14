@@ -13,7 +13,19 @@ namespace Test\Model\Mock
 			'belongs_def' => array("type" => self::REL_BELONGS_TO, "model" => 'Test\Model\Mock\Database', "default" => 1),
 			'belongs_null' => array("type" => self::REL_BELONGS_TO, "is_null" => true, "model" => 'Test\Model\Mock\Database'),
 
-			'has_one' => array("type" => 'has_one', "is_null" => true, "model" => 'Test\Model\Mock\Database'),
+			'has_many' => array(
+				"type"   => self::REL_HAS_MANY,
+				"model"  => 'Test\Model\Mock\Database',
+				"rel"    => 'belongs',
+			),
+
+			'has_one' => array(
+				"type"    => 'has_one',
+				"is_null" => true,
+				"model"   => 'Test\Model\Mock\Database',
+				"rel"     => 'belongs_null',
+			),
+
 			'file' => array("type" => 'file', "is_null" => true),
 		);
 
@@ -64,11 +76,11 @@ namespace Test\Model
 	{
 		public function test_lifecycle()
 		{
-			$obj = new \Test\Model\Mock\Database();
+			$item = new \Test\Model\Mock\Database();
 
-			$this->assertTrue($obj->is_new());
-			$obj->save();
-			$this->assertFalse($obj->is_new());
+			$this->assertTrue($item->is_new());
+			$item->save();
+			$this->assertFalse($item->is_new());
 		}
 
 
@@ -82,25 +94,26 @@ namespace Test\Model
 			\System\Directory::check(BASE_DIR.'/var/cache/test');
 			file_put_contents($f, 'test');
 
-			$obj = new \Test\Model\Mock\Database($item);
-			$data = $obj->get_data_raw();
+			$item = new \Test\Model\Mock\Database($item);
+			$data = $item->get_data_raw();
+			$obj  = $item->to_object();
 
-			if ($obj->belongs) {
+			if ($item->belongs) {
 				$this->assertFalse(array_key_exists('belongs', $data));
 				$this->assertTrue(array_key_exists('id_belongs', $data));
 			}
 
-			if ($obj->belongs_def) {
+			if ($item->belongs_def) {
 				$this->assertFalse(array_key_exists('belongs', $data));
 				$this->assertTrue(array_key_exists('id_belongs_def', $data));
 			}
 
-			if ($obj->belongs_null) {
+			if ($item->belongs_null) {
 				$this->assertFalse(array_key_exists('belongs_null', $data));
 				$this->assertTrue(array_key_exists('id_belongs_null', $data));
 			}
 
-			if ($obj->file) {
+			if ($item->file) {
 				$this->assertTrue(array_key_exists('file', $data));
 
 				$this->assertTrue(is_string($data['file']));
@@ -108,7 +121,7 @@ namespace Test\Model
 				$file = json_decode($data['file'], true);
 
 				$this->assertTrue(array_key_exists('hash', $file));
-				$this->assertEquals($obj->file->hash, $file['hash']);
+				$this->assertEquals($item->file->hash, $file['hash']);
 			}
 
 			unlink($f);
