@@ -253,7 +253,7 @@ namespace System
 		public function hash()
 		{
 			if (!$this->hash) {
-				$this->hash = md5($this->name.'-'.$this->size());
+				$this->hash = md5($this->name.'-'.$this->size);
 			}
 
 			return $this->hash;
