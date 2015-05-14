@@ -180,7 +180,13 @@ namespace System\Model
 		 */
 		public function get_data()
 		{
-			return $this->data;
+			$data = array();
+
+			foreach (static::$attrs as $attr=>$def) {
+				$data[$attr] = $this->$attr;
+			}
+
+			return $data;
 		}
 
 

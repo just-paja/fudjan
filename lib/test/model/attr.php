@@ -14,6 +14,8 @@ namespace Test\Model
 			'email'     => array("type" => 'email'),
 			'url'       => array("type" => 'url'),
 			'varchar'   => array("type" => 'varchar'),
+			'file'      => array("type" => 'file'),
+			'file_def'  => array("type" => 'file', "default" => ROOT.'/README.md'),
 		);
 	}
 }
@@ -120,6 +122,8 @@ namespace
 			$this->assertTrue(!array_key_exists('email', $arr));
 			$this->assertTrue(!array_key_exists('url', $arr));
 			$this->assertTrue(!array_key_exists('varchar', $arr));
+			$this->assertTrue(!array_key_exists('file', $arr));
+			$this->assertTrue(array_key_exists('file_def', $arr));
 		}
 
 
@@ -131,6 +135,7 @@ namespace
 						"email"   => null,
 						"url"     => null,
 						"varchar" => null,
+						"file"    => null,
 					)
 				),
 
@@ -141,6 +146,7 @@ namespace
 						"email"     => '',
 						"url"       => '',
 						"varchar"   => '',
+						"file"      => '',
 					)
 				)
 			);
