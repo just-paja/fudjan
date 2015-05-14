@@ -18,7 +18,7 @@ namespace System\Cache
 
 		public function __get($attr)
 		{
-			if ($attr == 'hash' && !$this->hash) {
+			if ($attr == 'hash' && empty($this->data['hash'])) {
 				$this->hash = $this->hash();
 			}
 
@@ -92,7 +92,7 @@ namespace System\Cache
 
 		public function hash()
 		{
-			return self::create_hash($this->get_data(), $this->image->hash(), $this->image->suffix());
+			return self::create_hash($this->get_data_raw(), $this->image->hash(), $this->image->suffix());
 		}
 
 
