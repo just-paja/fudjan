@@ -647,15 +647,15 @@ namespace System\Model
 					$empty = false;
 
 					if (method_exists($data, 'exists')) {
-						$empty = $data->exists();
+						$empty = !$data->exists();
 					} else if (method_exists($data, 'is_empty')) {
 						$empty = $data->is_empty();
 					}
 
-					if (!$empty) {
-						$data = $data->to_object();
-					} else {
+					if ($empty) {
 						$data = null;
+					} else {
+						$data = $data->to_object();
 					}
 				} else if ($data instanceof \DateTime) {
 					$data = $data->format('c');
@@ -671,7 +671,7 @@ namespace System\Model
 
 				if ($attr) {
 					if (isset($attr['default'])) {
-						$data = self::to_object_batch($obj::convert_attr_val($key, $attr['default']), $obj);
+						$data = static::to_object_batch($obj::convert_attr_val($key, $attr['default']), $obj);
 					}
 				}
 			}
