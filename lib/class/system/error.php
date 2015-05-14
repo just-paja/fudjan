@@ -14,6 +14,7 @@ namespace System
 		function __construct()
 		{
 			$this->explanation = func_get_args();
+			$this->message = $this->explanation[0];
 		}
 
 
