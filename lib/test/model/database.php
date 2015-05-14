@@ -9,9 +9,9 @@ namespace Test\Model\Mock
 			'int_blank' => array("type" => 'int'),
 			'int_nil' => array("type" => 'int', 'is_null' => true),
 			'int_def' => array("type" => 'int', 'default' => 5),
-			'belongs' => array("type" => 'belongs_to', "model" => 'Test\Model\Mock\Database'),
-			'belongs_def' => array("type" => 'belongs_to', "model" => 'Test\Model\Mock\Database', "default" => 1),
-			'belongs_null' => array("type" => 'belongs_to', "is_null" => true, "model" => 'Test\Model\Mock\Database'),
+			'belongs' => array("type" => self::REL_BELONGS_TO, "model" => 'Test\Model\Mock\Database'),
+			'belongs_def' => array("type" => self::REL_BELONGS_TO, "model" => 'Test\Model\Mock\Database', "default" => 1),
+			'belongs_null' => array("type" => self::REL_BELONGS_TO, "is_null" => true, "model" => 'Test\Model\Mock\Database'),
 
 			'has_one' => array("type" => 'has_one', "is_null" => true, "model" => 'Test\Model\Mock\Database'),
 			'file' => array("type" => 'file', "is_null" => true),
