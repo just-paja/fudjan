@@ -14,7 +14,10 @@ namespace System
 		function __construct()
 		{
 			$this->explanation = func_get_args();
-			$this->message = $this->explanation[0];
+
+			if (array_key_exists(0, $this->explanation)) {
+				$this->message = $this->explanation[0];
+			}
 		}
 
 
