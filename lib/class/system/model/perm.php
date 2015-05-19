@@ -57,17 +57,26 @@ namespace System\Model
 				}
 			}
 
-			$conds['trigger'] = array(
-				'trigger' => 'model-'.$method,
-				'trigger' => '*'
-			);
+			$perm = \System\User\Perm::get_first()
+				->add_filter(array(
+					'attr' => 'trigger',
+					'type' => 'in',
+					'in'   => array(
+						'model-'.$method,
+						'*'
+					),
+				))
+				->add_filter(array(
+					'attr' => 'name',
+					'type' => 'in',
+					'in'   => array(
+						\System\Loader::get_model_from_class($cname).\System\Loader::SEP_MODEL.$method,
+						'*'
+					)
+				))
+				->where($conds)
+				->fetch();
 
-			$conds['name']    = array(
-				'name' => \System\Loader::get_model_from_class($cname).\System\Loader::SEP_MODEL.$method,
-				'name' => '*'
-			);
-
-			$perm = \System\User\Perm::get_first()->where($conds)->fetch();
 			return $perm ? $perm->allow:static::get_default_for($method);
 		}
 
