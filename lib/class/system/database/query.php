@@ -463,7 +463,7 @@ namespace System\Database
 				case 'in':
 				case 'exact':
 					if (is_array($value)) {
-						$value = implode(',', array_map('intval', $value));
+						$value = implode(',', $value);
 						$pass = "`" . $filter['attr'] . "` IN (".$value.")";
 					} else {
 						$pass = "`" . $filter['attr'] . "` = '".$value."'";
