@@ -1,4 +1,7 @@
 {
+	"def-week-start":1,
+	"def-date":"d. m. Y",
+
 	"date-format-human":"d.m.Y G:i",
 	"date-format-human-date":"d.m.",
 	"date-format-human-time":"G:i",
