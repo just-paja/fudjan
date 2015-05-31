@@ -518,7 +518,7 @@ namespace Helper\Cli\Module
 
 								if (any($def['is_bilinear']) && any($def['is_master'])) {
 									unset($obj->$attr);
-									$obj->assign_rel($attr, $val);
+									$obj->$attr = $val;
 								}
 							}
 						}
