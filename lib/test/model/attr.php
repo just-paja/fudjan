@@ -15,7 +15,7 @@ namespace Test\Model
 			'url'       => array("type" => 'url'),
 			'varchar'   => array("type" => 'varchar'),
 			'file'      => array("type" => 'file'),
-			'file_def'  => array("type" => 'file', "default" => ROOT.'/README.md'),
+			'file_def'  => array("type" => 'file', "default" => 'README.md'),
 		);
 	}
 }
