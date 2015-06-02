@@ -26,6 +26,7 @@ namespace Helper\Cli\Module
 			"locales" => array('Cache application core for faster run'),
 			"modules" => array('Cache application modules for faster run'),
 			"static"  => array('Cache static files to minimize folder lookups'),
+			"retire"  => array('Increment resource serial number by one retiring resources in public cache'),
 		);
 
 
@@ -121,6 +122,18 @@ namespace Helper\Cli\Module
 			\Helper\Cli::do_over($libs, function($key, $name) {
 				\System\Cache::build_static_for($name);
 			}, 'Collecting static files');
+		}
+
+
+		public function cmd_retire()
+		{
+			if (\System\Settings::get('dev', 'debug', 'backend') || \System\Settings::get('dev', 'disable', 'serial')) {
+				return;
+			}
+
+			$serial = \System\Settings::get('cache', 'resource', 'serial');
+			\System\Settings::set(array('cache', 'resource', 'serial'), $serial + 1);
+			\System\Settings::save('cache');
 		}
 	}
 }
