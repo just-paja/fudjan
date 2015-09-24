@@ -116,35 +116,44 @@ namespace System\Database
 		}
 
 
-		public function where(array $conds, $table_alias = null, $or = false)
+		public function where(array $conds, $table_alias = null, $or = false, &$dest = null)
 		{
 			if (any($conds)) {
-				if ($or) {
-					$temp = array();
-				} else {
-					$temp = &$this->conds;
+				if ($dest === null) {
+					$dest = &$this->conds;
 				}
 
 				$ta = $this->resolve_table_alias($table_alias);
 
 				if (!empty($conds)) {
 					foreach ($conds as $col=>$condition) {
-						if (is_array($condition)) {
-							$this->where($condition, $table_alias, !$or);
-							continue;
-						} if (is_object($condition)) {
+						if (is_object($condition)) {
 							throw new \System\Error\Argument("Query condition cannot be an object!", $condition);
+						}
+
+						if (is_array($condition)) {
+							$temp = array();
+							$this->where($condition, $table_alias, !$or, $temp);
+							$total = count($temp);
+
+							if ($total == 1) {
+								$dest[] = $temp[0];
+							} else if ($total > 1) {
+								if ($or) {
+									$dest[] = "(".join(" OR ", $temp).")";
+								} else {
+									$dest[] = "(".join(" AND ", $temp).")";
+								}
+							}
 						} elseif (is_numeric($col) && !is_array($condition)) {
 							if (strval($condition)) {
-								$temp[] = "$condition";
+								$dest[] = "$condition";
 							}
 						} else {
-							$temp[] = $ta."`$col` = '$condition'";
+							$dest[] = $ta."`$col` = '$condition'";
 						}
 					}
 				}
-
-				if ($or) $this->conds[] = "(".join(" OR ", $temp).")";
 			}
 
 			return $this;
@@ -294,14 +303,26 @@ namespace System\Database
 		}
 
 
-		public function select($get_query = false)
+		public function get_query_conds()
 		{
+			if ($this->conds) {
+				return " WHERE ".implode(' AND ', $this->conds);
+			}
+
+			return '';
+		}
+
+
+		public function get_select_query()
+		{
+			$conds = $this->get_query_conds();
+
 			if (any($this->opts['falsify-return-value'])) return $this->false_return_value;
 
 			$this->prepare();
 			$sql = "SELECT ".(any($this->opts['distinct']) ? " DISTINCT ":'').implode(',', $this->parsed['cols']).
 				"\n FROM ".implode(',', (array) $this->parsed['tables']).(!empty($this->joins) ? " ".implode(" ", $this->joins):NULL).
-				(!empty($this->conds) ? "\n WHERE ".implode(' AND ', $this->conds):null);
+				(!empty($conds) ? $conds:null);
 
 			if (!empty($this->opts['group-by'])) {
 				$sql .= "\n GROUP BY ".$this->opts['group-by'];
@@ -316,9 +337,14 @@ namespace System\Database
 				$sql .= "\n LIMIT ".intval($this->opts['offset']).",".intval($this->opts['per-page']);
 			}
 
-			//dump($sql);
+			return $sql;
+		}
+
+		public function select()
+		{
+			$sql = $this->get_select_query();
 			self::$queries ++;
-			return $get_query ? $sql:\System\Database::query($sql);
+			return \System\Database::query($sql);
 		}
 
 
@@ -538,18 +564,22 @@ namespace System\Database
 			}
 
 			foreach ($filters as $filter) {
-				$pass[] = $this->get_filter_cond($filter, $table_alias);
+				if (in_array($filter['type'], array('and', 'or'))) {
+					$or = $filter['type'] == 'or';
+					$pass[] = $this->get_filter_structure($filter, $table_alias, $or);
+				} else {
+					$pass[] = $this->get_filter_cond($filter, $table_alias);
+				}
 			}
 
 			return $pass;
 		}
 
 
-		public function add_filter($filter, $table_alias = null, $or = false)
+		public function get_filter_structure($filter, $table_alias = null, &$or = false)
 		{
 			$pass  = array();
 			$valid = true;
-			$or = false;
 
 			if (isset($filter['type']) && array_key_exists($filter['type'], $filter)) {
 				$type  = $filter['type'];
@@ -557,7 +587,7 @@ namespace System\Database
 
 				if ($type == 'or') {
 					$or = true;
-					$pass = $this->get_filter_batch_cond($value, $table_alias, true);
+					$pass = array($this->get_filter_batch_cond($value, $table_alias, true));
 				} else if ($type == 'and') {
 					$or = false;
 					$pass = $this->get_filter_batch_cond($value, $table_alias, false);
@@ -572,6 +602,22 @@ namespace System\Database
 
 			if (!$valid) {
 				throw new \System\Error\Argument('Failed to parse filters', var_export($filter, true));
+			}
+
+			return $pass;
+		}
+
+
+		public function add_filter($filter, $table_alias = null, $or = false)
+		{
+			if (empty($filter)) {
+				return $this;
+			}
+
+			$pass = $this->get_filter_structure($filter, $table_alias, $or);
+
+			if (empty($pass)) {
+				return $this;
 			}
 
 			return $this->where($pass, $table_alias, $or);
