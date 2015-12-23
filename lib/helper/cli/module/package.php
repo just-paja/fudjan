@@ -2,6 +2,33 @@
 
 namespace Helper\Cli\Module
 {
+	class ProjectDirectoryRecursiveIterator extends \RecursiveFilterIterator {
+
+		public static $filters = array(
+			'^\/\.git',
+			'^\/composer.lock',
+			'^\/etc\/conf\.d\/dev',
+			'^\/var',
+		);
+
+		public function accept() {
+			$accept = true;
+
+			foreach (self::$filters as $pattern) {
+				$path = $this->current()->getPathname();
+				$relative = str_replace(BASE_DIR, '', $path);
+
+				if (preg_match('/'.$pattern.'/', $relative)) {
+					$accept = false;
+					break;
+				}
+			}
+
+			return $accept;
+		}
+
+	}
+
 	class Package extends \Helper\Cli\Module
 	{
 		const DIR_PACKAGES = '/var/packages';
@@ -36,45 +63,33 @@ namespace Helper\Cli\Module
 
 		public function cmd_artifact(array $params = array())
 		{
-			$files = new \RecursiveIteratorIterator(
-				new \RecursiveDirectoryIterator(BASE_DIR),
-				\RecursiveIteratorIterator::LEAVES_ONLY
-			);
-
 			\System\Directory::check(BASE_DIR.static::DIR_PACKAGES);
 
-			$zip = new \ZipArchive();
-			$target = BASE_DIR.static::DIR_PACKAGES.'/artifact.zip';
+			$target = BASE_DIR.static::DIR_PACKAGES.'/artifact.tar';
+			$result = $target.'.gz';
 
 			if (isset($params[0])) {
 				$target = $params[0];
 			}
 
-			if ($zip->open($target, \ZipArchive::CREATE) !== true) {
-				throw new \System\Error('Could not open artifact target', $target);
+			if (file_exists($target)) {
+				unlink($target);
 			}
 
-			foreach ($files as $file) {
-				if ($file->isDir()) {
-					continue;
-				}
-
-				$filePath = $file->getRealPath();
-				$relativePath = str_replace(BASE_DIR, '', $filePath);
-				$ignore = false;
-
-				foreach (self::$ignored as $pattern) {
-					if (preg_match('/' . $pattern . '/', $relativePath)) {
-						$ignore = true;
-					}
-				}
-
-				if (!$ignore) {
-					$zip->addFile($filePath, $relativePath);
-				}
+			if (file_exists($result)) {
+				unlink($result);
 			}
 
-			$zip->close();
+			$iter = new \RecursiveDirectoryIterator(BASE_DIR);
+			$iter->setFlags(\FileSystemIterator::SKIP_DOTS);
+			$iter = new ProjectDirectoryRecursiveIterator($iter);
+			$iter = new \RecursiveIteratorIterator($iter);
+
+			$archive = new \PharData($target);
+			$archive->buildFromIterator($iter, BASE_DIR);
+
+			$archive->compress(\Phar::GZ);
+			unlink($target);
 		}
 
 	}
