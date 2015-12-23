@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** System static init
  * @package system

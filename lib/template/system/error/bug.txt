@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** This page is displayed on error
  * @format TXT

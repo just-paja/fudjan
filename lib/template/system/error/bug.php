@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** This page is displayed on error
  * @format any
@@ -41,7 +41,7 @@ $exp = $desc->get_explanation();
 	?>
 </div>
 
-<?
+<?php
 
 if (count($exp) >= 1) {
 	?>

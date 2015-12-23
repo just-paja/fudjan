@@ -1,4 +1,4 @@
-<?
+<?php
 
 $policy = function($rq, $res) {
 	$serial = \System\Resource::get_serial();

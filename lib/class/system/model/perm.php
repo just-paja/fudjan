@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Database data model handling */
 namespace System\Model

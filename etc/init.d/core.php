@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Load pwf essentials.
  * @package init

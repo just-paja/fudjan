@@ -1,4 +1,4 @@
-<?
+<?php
 
 foreach ($slots as $slot) {
 	$name = 'layout-'.$slot;
@@ -6,7 +6,7 @@ foreach ($slots as $slot) {
 
 	?>
 	<div class="$cname">
-		<? $ren->slot($name); ?>
+		<?php $ren->slot($name); ?>
 	</div>
 	<?
 }

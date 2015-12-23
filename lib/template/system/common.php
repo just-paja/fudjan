@@ -1,4 +1,4 @@
-<?
+<?php
 
 def($allow_jsonp, true);
 

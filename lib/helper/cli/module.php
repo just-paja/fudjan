@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** CLI core
  * @package core

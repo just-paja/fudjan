@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** System flow
  * @package system

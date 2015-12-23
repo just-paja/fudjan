@@ -1,4 +1,4 @@
-<?
+<?php
 
 $context = function($rq, $res) {
 	if ($rq->user) {

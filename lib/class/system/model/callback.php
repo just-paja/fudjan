@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Model callback handling
  * @package system

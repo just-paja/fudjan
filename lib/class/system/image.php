@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Image handling
  * @package system

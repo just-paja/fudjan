@@ -1,4 +1,4 @@
-<?
+<?php
 
 echo doctype();
 echo html($ren->lang());

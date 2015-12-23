@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** System locale settings
  * @package system

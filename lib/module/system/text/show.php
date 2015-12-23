@@ -1,4 +1,4 @@
-<?
+<?php
 
 
 /** Module that displays partial without locals

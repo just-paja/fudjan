@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Common constants
  * @package core

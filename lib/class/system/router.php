@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Rewrite handling
  * @package system

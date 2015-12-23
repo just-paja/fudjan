@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Actions that are done on regular page init
  * @package init

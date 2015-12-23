@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Attribute handling
  * @package system

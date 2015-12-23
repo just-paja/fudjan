@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Youtube video integration
  * @package system

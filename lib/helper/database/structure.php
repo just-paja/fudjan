@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Database structure handling
  * @package database

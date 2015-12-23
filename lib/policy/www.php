@@ -1,4 +1,4 @@
-<?
+<?php
 
 $policy = function($rq, $res) {
 	if (strpos($rq->host, 'www') === 0) {

@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Function aliases that make life easier
  * @package core

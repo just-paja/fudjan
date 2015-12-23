@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Functions that are not to be categorized under class
  * @package core

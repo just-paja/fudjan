@@ -1,4 +1,4 @@
-<?
+<?php
 #[Avatars]
 #[Migrate avatar db structure to use new file API]
 

@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** User permissions model
  * @package system

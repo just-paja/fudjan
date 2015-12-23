@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Remote request response
  * @package system

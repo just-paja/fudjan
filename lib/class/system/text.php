@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Static texts
  * @package system

@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Settings
  * @package system

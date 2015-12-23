@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace Helper\Cli\Module
 {

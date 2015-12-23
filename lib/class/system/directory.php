@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Directory handling
  * @package system

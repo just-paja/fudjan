@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Color model handling
  * @package system

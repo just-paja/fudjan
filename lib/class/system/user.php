@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** System users
  * @package system

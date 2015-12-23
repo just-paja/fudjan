@@ -1,4 +1,4 @@
-<?
+<?php
 
 $ren->render_yield();
 $ren->slot();

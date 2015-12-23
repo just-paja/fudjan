@@ -1,4 +1,4 @@
-<?
+<?php
 
 if (!defined('ROOT')) {
 	define('ROOT', realpath(__DIR__.'/../..'));

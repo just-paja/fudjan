@@ -1,4 +1,4 @@
-<?
+<?php
 
 $policy = function($rq, $res) {
 	if ($rq->method == 'post') {

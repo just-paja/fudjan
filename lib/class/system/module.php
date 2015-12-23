@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Modules
  * @package system

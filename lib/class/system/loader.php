@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** System class loader
  * @package system
@@ -94,7 +94,7 @@ namespace System
 		{
 			self::load_all();
 
-			$str   = '<? ';
+			$str   = '<?php ';
 			$lists = array(
 				get_declared_interfaces(),
 				get_declared_classes(),

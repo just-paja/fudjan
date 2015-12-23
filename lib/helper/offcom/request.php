@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Remote request handling via CURL
  * @package system

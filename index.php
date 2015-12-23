@@ -1,4 +1,4 @@
-<?
+<?php
 
 /** Basic pwf page, that is called most frequently. Runs page init
  * @package init
