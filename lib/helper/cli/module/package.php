@@ -4,6 +4,8 @@ namespace Helper\Cli\Module
 {
 	class Package extends \Helper\Cli\Module
 	{
+		const DIR_PACKAGES = '/var/packages';
+
 		protected static $info = array(
 			'name' => 'package',
 			'head' => array(
@@ -26,9 +28,9 @@ namespace Helper\Cli\Module
 
 		protected static $commands = array(
 			"artifact" => array(
-        'single' => 'Create deployable artifact',
-        'path' => 'Create deployable artifact on [path]'
-      ),
+				'single' => 'Create deployable artifact',
+				'path' => 'Create deployable artifact on [path]'
+			),
 		);
 
 
@@ -39,12 +41,14 @@ namespace Helper\Cli\Module
 				\RecursiveIteratorIterator::LEAVES_ONLY
 			);
 
-			$zip = new \ZipArchive();
-			$target = BASE_DIR.'/var/artifact.zip';
+			\System\Directory::check(BASE_DIR.static::DIR_PACKAGES);
 
-      if (isset($params[0])) {
-        $target = $params[0];
-      }
+			$zip = new \ZipArchive();
+			$target = BASE_DIR.static::DIR_PACKAGES.'/artifact.zip';
+
+			if (isset($params[0])) {
+				$target = $params[0];
+			}
 
 			if ($zip->open($target, \ZipArchive::CREATE) !== true) {
 				throw new \System\Error('Could not open artifact target', $target);
