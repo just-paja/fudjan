@@ -40,13 +40,6 @@ namespace Helper\Cli\Module
 			),
 		);
 
-		protected static $ignored = array(
-			'^\/\.git',
-			'^\/composer\.lock',
-			'^\/etc\/conf\.d\/dev',
-			'^\/var'
-		);
-
 		protected static $attrs = array(
 			"help"    => array("type" => 'bool', "value" => false, "short" => 'h', "desc"  => 'Show this help'),
 			"verbose" => array("type" => 'bool', "value" => false, "short" => 'v', "desc" => 'Be verbose'),
