@@ -30,12 +30,12 @@ $exp = $desc->get_explanation();
 	<?
 		if (isset($exp[0])) {
 			?>
-				<h1><?=array_shift($exp)?></h1>
-				<strong><?=get_class($desc)?></strong>
+				<h1><?php echo array_shift($exp)?></h1>
+				<strong><?php echo get_class($desc)?></strong>
 			<?
 		} else {
 			?>
-				<h1><?=get_class($desc)?></h1>
+				<h1><?php echo get_class($desc)?></h1>
 			<?
 		}
 	?>
@@ -46,14 +46,14 @@ $exp = $desc->get_explanation();
 if (count($exp) >= 1) {
 	?>
 	<div class="params">
-		<h2><?=$reason?></h2>
+		<h2><?php echo $reason?></h2>
 
 		<ul>
 			<?
 				foreach ($exp as $ex) {
 					if (is_string($ex)) {
 						?>
-							<li class="point"><?=$ex?></li>
+							<li class="point"><?php echo $ex?></li>
 						<?
 					}
 				}
@@ -65,7 +65,7 @@ if (count($exp) >= 1) {
 ?>
 
 <div class="advice">
-	<h2><?=$trace?></h2>
+	<h2><?php echo $trace?></h2>
 	<?
 		$back = $desc->getTrace();
 		$num = 0;
@@ -79,7 +79,7 @@ if (count($exp) >= 1) {
 				$num++;
 
 				?>
-					<li class="err err_<?=$num?>">
+					<li class="err err_<?php echo $num?>">
 						<?
 							$str = array();
 							$str_desc = array();
@@ -126,8 +126,8 @@ if (count($exp) >= 1) {
 						?>
 
 						<details>
-							<summary><?=implode('', $str)?></summary>
-							<div class="cont"><?=implode('', array_merge($str_args, $str_obj))?></div>
+							<summary><?php echo implode('', $str)?></summary>
+							<div class="cont"><?php echo implode('', array_merge($str_args, $str_obj))?></div>
 						</details>
 					</li>
 				<?

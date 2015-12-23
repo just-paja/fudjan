@@ -1,2 +1,2 @@
-<h1><?=$ren->trans('core_access_denied')?></h1>
-<p class="advice desc"><?=$ren->trans('core_access_denied_text')?></p>
+<h1><?php echo $ren->trans('core_access_denied')?></h1>
+<p class="advice desc"><?php echo $ren->trans('core_access_denied_text')?></p>

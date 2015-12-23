@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="<?=$loc->get_lang()?>">
+<html lang="<?php echo $loc->get_lang()?>">
 	<head>
-		<link rel="stylesheet" type="text/css" href="<?=$ren->link_resource('style', 'error-report')?>">
+		<link rel="stylesheet" type="text/css" href="<?php echo $ren->link_resource('style', 'error-report')?>">
 
 			<?
 				$ren->content_for('title', 'Fudjan error');
@@ -17,6 +17,6 @@
 			?>
 		</section>
 
-		<footer><?=\System\Status::introduce();?></footer>
+		<footer><?php echo \System\Status::introduce();?></footer>
 	</body>
 </html>
