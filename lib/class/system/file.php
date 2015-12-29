@@ -222,7 +222,7 @@ namespace System
 
 		public function get_path_hashed_name()
 		{
-			return $this->get_time().($this->suffix() ? '.'.$this->suffix():'');
+			return $this->get_generated_name().($this->suffix() ? '.'.$this->suffix():'');
 		}
 
 
@@ -235,6 +235,17 @@ namespace System
 		public function get_path_hashed_dir_relative()
 		{
 			return substr($this->hash(), 0, 4).'/'.substr($this->hash(), 4, 4).'/'.substr($this->hash(), 8, 4).'/'.substr($this->hash(), 12);
+		}
+
+
+		public function get_generated_name()
+		{
+			if ($this->name) {
+				return $this->name;
+			}
+
+			$this->name = $this->get_time().'-'.md5(rand(1,PHP_INT_MAX));
+			return $this->name;
 		}
 
 
