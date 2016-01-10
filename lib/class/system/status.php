@@ -24,6 +24,42 @@ namespace System
     }
 
 
+    /**
+     * Write error into log file
+     *
+     * @param string $type
+     * @param string $msg
+     * @return void
+     */
+    public static function report($type, $report)
+    {
+      try {
+        $debug = \System\Settings::get('dev', 'debug', 'backend');
+      } catch(\System\Error\Config $e) {
+        $debug = false;
+      }
+
+      \System\Directory::check(BASE_DIR.self::DIR_LOGS);
+      $log_to = fopen(BASE_DIR.self::DIR_LOGS.'/'.$type.'.log', 'a+');
+
+      if (!$debug && $type == 'error') {
+        try {
+          $rcpt = \System\Settings::get('dev', 'mailing', 'errors');
+        } catch(\System\Error\Config $e) {
+          $rcpt = null;
+        }
+
+        if ($rcpt) {
+          \Helper\Offcom\Mail::create('[Fudjan] Server error', $report, $rcpt)->send();
+        }
+      }
+
+      if (is_resource($log_to)) {
+        fwrite($log_to, $report);
+      }
+    }
+
+
     public static function getExceptionMessage(\Exception $exc)
     {
       return sprintf(
@@ -41,7 +77,7 @@ namespace System
      * General exception handler - Catches exception and displays error
      *
      * @param \Exception $e
-     * @param bool $ignore_next Don't inwoke another call of catch_exception from within
+     * @param bool $debug
      */
     public static function filterException(\Exception $e, $debug = false)
     {
@@ -123,7 +159,8 @@ namespace System
       $errorHandler->register();
 
       $errorHandler->on('fatal', function($exc, $debug, &$handler) {
-        \System\Status::filterException($exc, $debug);
+        static::filterException($exc, $debug);
+        static::report('error', static::getExceptionMessage($exc));
       });
 
       ini_set('log_errors',     true);
