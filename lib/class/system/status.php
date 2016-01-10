@@ -69,6 +69,10 @@ namespace System
         return;
       }
 
+      if (self::on_cli()) {
+        return;
+      }
+
       // Setup output format for error page
       $errorPage['format'] = 'html';
       $errorPage['render_with'] = 'basic';
@@ -78,33 +82,7 @@ namespace System
       }
 
       $request = \System\Http\Request::from_hit();
-      $responseDefault = null;
-
-      try {
-        $responseDefault = $request->create_response();
-      } catch (\Exception $exc) {
-      }
-
-      if ($responseDefault) {
-        if ($responseDefault->format == 'json') {
-          $errorPage['format'] = $responseDefault->format;
-          unset($errorPage['render_with']);
-        }
-      }
-
       $response = $request->create_response($errorPage);
-
-      if ($response->format != 'json') {
-        $response->format = 'html';
-
-        if (self::on_cli()) {
-          $response->format = 'txt';
-        }
-      }
-
-      if (!self::on_cli()) {
-        $response->status($e->get_http_status());
-      }
 
       try {
         $response->create_renderer();
