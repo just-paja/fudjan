@@ -102,6 +102,7 @@ namespace System
       }
 
       $response
+        ->status($e->get_http_status())
         ->render()
         ->send_headers()
         ->send_content();

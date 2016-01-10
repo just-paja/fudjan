@@ -454,6 +454,7 @@ namespace System\Http
 		{
 			if (isset(self::$states[$status])) {
 				$this->status = $status;
+        return $this;
 			} else throw new \System\Error\Argument(sprintf("HTTP status '%s' was not found.", $status));
 		}
 
