@@ -1,2 +1,13 @@
-<h1><?php echo $ren->trans('core_page_not_found')?></h1>
-<p class="advice desc"><?php echo $ren->trans('core_page_not_found_text')?></p>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+
+  <body class="error">
+    <section id="container">
+      <h1>Page not found</h1>
+      <p>This is the default 404 page</p>
+    </section>
+  </body>
+</html>
+

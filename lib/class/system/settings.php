@@ -107,8 +107,6 @@ namespace System
 					$list[] = $url;
 				}
 			}
-
-			Status::report('info', "Settings reloaded");
 		}
 
 
@@ -161,7 +159,6 @@ namespace System
 
 			$fp = \System\File::put(self::get_cache_filename(), json_encode($conf));
 			@chmod(self::get_cache_filename(), 0770);
-			Status::report('info', 'New settings saved');
 		}
 
 
