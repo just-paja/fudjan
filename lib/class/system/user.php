@@ -24,7 +24,10 @@ namespace System
       "last_name"   => array("type" => 'varchar'),
       "nick"        => array("type" => 'varchar', "is_null" => true),
       "password"    => array("type" => 'password', "default" => ''),
-      "avatar"      => array("type" => 'image', "default" => '/share/pixmaps/pwf/anonymous_user.png'),
+      "avatar"      => array(
+        "is_null" => true,
+        "type" => 'image',
+      ),
       "last_login"  => array("type" => 'datetime', "default" => 0),
 
       "groups" => array(
