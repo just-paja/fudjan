@@ -28,6 +28,11 @@ namespace System\Model
 			return !!$res;
 		}
 
+    public function get_groups()
+    {
+      return $this->groups->fetch();
+    }
+
 
 		/** Ask if user has right to do this
 		 * @param string      $method One of created, browsed
@@ -50,7 +55,7 @@ namespace System\Model
 			if ($user->is_guest()) {
 				$conds['public'] = true;
 			} else {
-				$groups = $user->groups->fetch();
+				$groups = $user->get_groups();
 
 				if (any($groups)) {
 					$conds[] = 'id_group IN ('.implode(',', collect_ids($groups)).')';
