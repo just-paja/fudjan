@@ -418,25 +418,7 @@ namespace System\Template
 			}
 
 			$locals['template'] = str_replace('/', '-', $name);
-
-			try {
-				return $this->render_template($path, $locals);
-			} catch(\Exception $e) {
-				if ($e instanceof \System\Error) {
-					throw $e;
-				}
-
-				$e = \System\Error::from_exception($e);
-				$exp = $e->get_explanation();
-
-				array_push($exp, 'Error in template');
-				array_push($exp, $path);
-
-				$err = new \System\Error\Template();
-				$err->set_explanation($exp);
-
-				throw $err;
-			}
+			return $this->render_template($path, $locals);
 		}
 
 
