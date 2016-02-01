@@ -26,6 +26,7 @@ namespace System\Template\Renderer
 		public function render_template($path, array $locals = array())
 		{
 			$wrap = $locals['wrap'];
+			\Jade\Parser::$includeNotFound = false;
 
 			ob_start();
 
