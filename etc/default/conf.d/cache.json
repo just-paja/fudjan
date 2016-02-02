@@ -10,5 +10,6 @@
 	},
 
 	"resources":true,
-	"settings":false
+	"settings":false,
+	"templates":false
 }

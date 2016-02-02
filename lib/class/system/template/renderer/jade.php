@@ -8,14 +8,14 @@ namespace System\Template\Renderer
 
 		private $jade;
 
-
 		public function construct($attrs)
 		{
 			\System\Directory::check(BASE_DIR.self::DIR_CACHE);
+			$cache = \System\Settings::getSafe(array('cache', 'templates'), true);
 
 			if (class_exists('Jade\Jade')) {
 				$this->jade = new \Jade\Jade(array(
-					'cache' => BASE_DIR.self::DIR_CACHE
+					'cache' => $cache ? BASE_DIR.self::DIR_CACHE:null
 				));
 			} else {
 				throw new \System\Error\MissingDependency('Could not find jade template compiler.', 'Please install ronan-gloo/jadephp');
@@ -28,31 +28,13 @@ namespace System\Template\Renderer
 			$wrap = $locals['wrap'];
 			\Jade\Parser::$includeNotFound = false;
 
-			ob_start();
+			$rendered = $this->jade->render($path, $locals);
 
 			if ($wrap) {
-				echo '<div class="template '.$locals['template'].'">';
+				$rendered = '<div class="template '.$locals['template'].'">'.$rendered.'</div>';
 			}
 
-			$file = $this->jade->cache($path);
-			extract($locals);
-
-			try {
-				include $file;
-			} catch (\Exception $e) {
-				if (!($e instanceof \System\Error)) {
-					throw new \System\Error\Code('Failed to render jade template.', $e->getMessage(), $path);
-				} else throw $e;
-			}
-
-			if ($wrap) {
-				echo '</div>';
-			}
-
-			$out = ob_get_contents();
-			ob_end_clean();
-
-			return $out;
+			return $rendered;
 		}
 
 

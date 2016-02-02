@@ -213,6 +213,15 @@ namespace System
 		}
 
 
+		public static function getSafe(array $path, $defaultValue) {
+			try {
+				return self::get($path);
+			} catch(\System\Error\Config $e) {
+				return $defaultValue;
+			}
+		}
+
+
 		/** Change config of a path
 		 * @param array $path
 		 * @param mixed $val
