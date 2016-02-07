@@ -33,21 +33,12 @@ namespace System
      */
     public static function report($type, $report)
     {
-      try {
-        $debug = \System\Settings::get('dev', 'debug', 'backend');
-      } catch(\System\Error\Config $e) {
-        $debug = false;
-      }
-
+      $debug = \System\Settings::getSafe(array('dev', 'debug', 'backend'), false);
       \System\Directory::check(BASE_DIR.self::DIR_LOGS);
       $log_to = fopen(BASE_DIR.self::DIR_LOGS.'/'.$type.'.log', 'a+');
 
       if (!$debug && $type == 'error') {
-        try {
-          $rcpt = \System\Settings::get('dev', 'mailing', 'errors');
-        } catch(\System\Error\Config $e) {
-          $rcpt = null;
-        }
+        $rcpt = \System\Settings::getSafe(array('dev', 'mailing', 'errors'), null);
 
         if ($rcpt) {
           \Helper\Offcom\Mail::create('[Fudjan] Server error', $report, $rcpt)->send();
@@ -149,12 +140,7 @@ namespace System
 
     public static function init()
     {
-      try {
-        $debug = \System\Settings::get('dev', 'debug', 'backend');
-      } catch(\System\Error\Config $e) {
-        $debug = false;
-      }
-
+      $debug = \System\Settings::getSafe(array('dev', 'debug', 'backend'), true);
       $errorHandler = new \Kuria\Error\ErrorHandler($debug);
       $errorHandler->register();
 
