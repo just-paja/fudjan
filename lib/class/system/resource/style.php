@@ -27,11 +27,11 @@ namespace System\Resource
 					try {
 						$parser->parse($this->content);
 					} catch(\Exception $e) {
-						throw new \System\Error\Format('Error while parsing LESS styles', $e->getMessage());
+						throw new \System\Error\Format(sprintf('Error while parsing LESS styles: %s', $e->getMessage()));
 					}
 
 					$this->content = $parser->getCss();
-				} else throw new \System\Error\MissingDependency('Missing less parser', 'install oyejorge/less.php');
+				} else throw new \System\Error\MissingDependency('Missing less parser. Please install oyejorge/less.php');
 			}
 		}
 	}
