@@ -8,7 +8,7 @@ namespace System
 			JSON_ERROR_DEPTH           => 'The maximum JSON stack depth has been exceeded',
 			JSON_ERROR_STATE_MISMATCH  => 'Invalid or malformed JSON string',
 			JSON_ERROR_CTRL_CHAR       => 'JSON control character error, possibly incorrectly encoded',
-			JSON_ERROR_SYNTAX          => 'Syntax error in JSON string',
+			JSON_ERROR_SYNTAX          => 'Syntax error in JSON',
 			JSON_ERROR_UTF8            => 'Malformed UTF-8 characters in JSON string, possibly incorrectly encoded',
 		);
 
@@ -40,8 +40,7 @@ namespace System
 			try {
 				$data = self::decode(\System\File::read($path, $silent));
 			} catch (\System\Error\Format $e) {
-				$ex = new \System\Error\Format();
-				$ex->set_explanation(array_merge(array('Error when parsing JSON file', $path), $e->get_explanation()));
+				$ex = new \System\Error\Format(sprintf('%s when parsing JSON file %s', $e->getMessage(), $path));
 				throw $ex;
 			}
 
