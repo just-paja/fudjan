@@ -55,5 +55,11 @@ namespace System
 
 			return $e;
 		}
+
+
+    public function setMessage($msg)
+    {
+      $this->message = $msg;
+    }
 	}
 }
