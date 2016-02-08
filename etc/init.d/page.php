@@ -28,8 +28,9 @@ if ($response) {
 		try {
 			$response->locales->load_messages();
 		} catch (\System\Error\Locales $e) {
+      $default = \System\Locales::get_default_lang();
 			$err = new \System\Error\SeeOther();
-			$err->location = $request->path .'?lang=cs';
+			$err->location = $request->path .'?lang='.$default;
 			throw $err;
 		}
 
