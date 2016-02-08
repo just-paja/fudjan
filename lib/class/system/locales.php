@@ -328,7 +328,7 @@ namespace System
 						$this->messages[$locale] = \System\Settings::read(self::DIR.'/'.$locale, false, $this->files);
 					}
 				} else {
-					throw new \System\Error\Locales('Unknown language', $locale);
+					throw new \System\Error\Locales(sprintf('Unknown language %s', $locale));
 				}
 			}
 
