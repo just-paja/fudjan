@@ -414,11 +414,20 @@ namespace System\Template
 			$path = $this->get_template_path($name);
 
 			if (!$path) {
-				throw new \System\Error\File('Could not find template.', $name, $this->get_suffix(), get_class($this));
+				throw new \System\Error\File(sprintf('Could not find template %s.%s for %s renderer', $name, $this->get_suffix(), get_class($this)));
 			}
 
 			$locals['template'] = str_replace('/', '-', $name);
-			return $this->render_template($path, $locals);
+
+      try {
+        $output = $this->render_template($path, $locals);
+      } catch (\System\Error $e) {
+        $msg = $e->getMessage();
+        $e->setMessage(sprintf('%s in %s', $msg, $path));
+        throw $e;
+      }
+
+      return $output;
 		}
 
 
