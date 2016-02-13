@@ -188,7 +188,7 @@ namespace System\Http
 
 					if ($file_path) {
 						array_push($files, $file_path);
-					} else throw new \System\Error\Config('Failed to load policy file.', $file);
+					} else throw new \System\Error\Config(sprintf('Failed to load policy called %s.', $file));
 				}
 			}
 
