@@ -324,8 +324,7 @@ namespace System
 					if ($obj) {
 						$obj->update_attrs($data_set);
 					} else {
-						$obj = new $model($data_set);
-						$obj->is_new_object = true;
+						continue;
 					}
 
 					try {
