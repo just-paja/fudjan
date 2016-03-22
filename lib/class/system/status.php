@@ -147,7 +147,10 @@ namespace System
       $errorHandler->on('fatal', function($exc, $debug, &$handler) {
         static::filterException($exc, $debug);
         static::report('error', static::getExceptionMessage($exc));
-        exit(20);
+
+        if (\System\Status::on_cli()) {
+          exit(20);
+        }
       });
 
       ini_set('log_errors',     true);
