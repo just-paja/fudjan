@@ -50,13 +50,37 @@ namespace System
       }
     }
 
+    /**
+     * Get name of the given exception
+     *
+     * @param object $exception
+     * @return string
+     */
+    public static function getExceptionName($exception)
+    {
+        $name = null;
+
+        if ($exception instanceof \ErrorException) {
+            $name = self::getErrorNameByCode($exception->getSeverity());
+        }
+
+        if (null === $name) {
+            $name = get_class($exception);
+        }
+
+        if (0 !== ($code = $exception->getCode())) {
+            $name .= " ({$code})";
+        }
+
+        return $name;
+    }
 
     public static function getExceptionMessage($exc)
     {
       return sprintf(
         "[%s] %s - %s in file %s on line %d\n",
         date('Y-m-d H:i:s'),
-        \Kuria\Error\Util\Debug::getExceptionName($exc),
+        static::getExceptionName($exc),
         $exc->getMessage(),
         $exc->getFile(),
         $exc->getLine()
