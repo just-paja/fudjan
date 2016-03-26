@@ -4,7 +4,7 @@
  * @package init
  */
 
-System\Init::basic();
+preloadFudjanCore(true);
 session_start();
 
 if (file_exists(BASE_DIR.\System\Loader::FILE_MODULES)) {
