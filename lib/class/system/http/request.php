@@ -202,8 +202,6 @@ namespace System\Http
 				$this->fix_input($this->data[$key]);
 			}
 
-			// Prevent using unescaped vars
-			unset($_GET, $_POST, $_FILES);
 			return $this;
 		}
 
