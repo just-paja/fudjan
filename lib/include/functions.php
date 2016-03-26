@@ -134,7 +134,8 @@ namespace
 						if ($dont_assoc) {
 							$names[] = $obj->$func[1];
 						} else {
-							$names[$obj->id] = $obj->$func[1];
+							$funcAttr = $func[1];
+							$names[$obj->id] = $obj->$funcAttr;
 						}
 					} elseif (is_array($obj)) {
 						$names[] = $obj[$func[1]];
