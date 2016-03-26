@@ -8,7 +8,7 @@
 	"require":{
 		"oyejorge/less.php":"^1.6",
 		"kylekatarnls/jade-php":"@dev",
-		"kuria/error": "^0.2.0"
+		"filp/whoops": "^2.1"
 	},
 	"suggest":{
 		"phpunit/phpunit":"^4.2"

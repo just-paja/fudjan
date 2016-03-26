@@ -99,10 +99,6 @@ namespace System
 			}
 
 			foreach (self::$conf['routes'] as &$list) {
-				if (empty($list)) {
-					$list = \System\Json::read(ROOT.self::DIR_CONF_ERRORS.'/no-routes.json');
-				}
-
 				foreach ($api as $url) {
 					$list[] = $url;
 				}

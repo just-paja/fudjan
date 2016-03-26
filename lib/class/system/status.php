@@ -51,7 +51,7 @@ namespace System
     }
 
 
-    public static function getExceptionMessage(\Exception $exc)
+    public static function getExceptionMessage($exc)
     {
       return sprintf(
         "[%s] %s - %s in file %s on line %d\n",
@@ -70,15 +70,21 @@ namespace System
      * @param \Exception $e
      * @param bool $debug
      */
-    public static function filterException(\Exception $e, $debug = false)
+    public static function filterException($e, $debug = false)
     {
-      if (!($e instanceof \System\Error)) {
-        return;
-      }
-
       if ($e instanceof \System\Error\Request && $e::REDIRECTABLE && $e->location) {
         header('Location: '. $e->location);
         exit(0);
+      }
+
+      if (!$debug) {
+        header('HTTP/1.1 500 Internal Server Error');
+        echo "Fatal error";
+        exit(1);
+      }
+
+      if (!($e instanceof \System\Error)) {
+        return;
       }
 
       // Get error display definition
@@ -109,23 +115,17 @@ namespace System
       }
 
       $request = \System\Http\Request::from_hit();
+
       $response = $request->create_response($errorPage);
+      $response->create_renderer();
 
-      try {
-        $response->create_renderer();
-
-        foreach ($errorPage['partial'] as $partial) {
-          $response->renderer->partial($partial, array(
-            'status'  => $e->get_http_status(),
-            'desc'    => $e,
-            'message' => $e->get_explanation(),
-            'wrap' => false,
-          ));
-        }
-      } catch (\Exception $exc) {
-        header('HTTP/1.1 500 Internal Server Error');
-        echo "Fatal error when rendering exception details";
-        exit(1);
+      foreach ($errorPage['partial'] as $partial) {
+        $response->renderer->partial($partial, array(
+          'status'  => $e->get_http_status(),
+          'desc'    => $e,
+          'message' => $e->get_explanation(),
+          'wrap' => false,
+        ));
       }
 
       $response
@@ -140,22 +140,21 @@ namespace System
 
     public static function init()
     {
-      $debug = \System\Settings::getSafe(array('dev', 'debug', 'backend'), true);
-      $errorHandler = new \Kuria\Error\ErrorHandler($debug);
-      $errorHandler->register();
+      $whoops = new \Whoops\Run;
 
-      $errorHandler->on('fatal', function($exc, $debug, &$handler) {
+      if (static::on_cli()) {
+        $whoops->pushHandler(new \Whoops\Handler\PlainTextHandler());
+      } else {
+        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
+      }
+
+      $whoops->pushHandler(function($exc, $inspector, $run) {
+        $debug = \System\Settings::getSafe(array('dev', 'debug', 'backend'), true);
         static::filterException($exc, $debug);
         static::report('error', static::getExceptionMessage($exc));
-
-        if (\System\Status::on_cli()) {
-          exit(20);
-        }
       });
 
-      ini_set('log_errors',     true);
-      ini_set('display_errors', false);
-      ini_set('html_errors',    false);
+      $whoops->register();
     }
   }
 }
