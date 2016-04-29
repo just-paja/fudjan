@@ -58,15 +58,7 @@ namespace System
      */
     public static function getExceptionName($exception)
     {
-        $name = null;
-
-        if ($exception instanceof \ErrorException) {
-            $name = self::getErrorNameByCode($exception->getSeverity());
-        }
-
-        if (null === $name) {
-            $name = get_class($exception);
-        }
+        $name = get_class($exception);
 
         if (0 !== ($code = $exception->getCode())) {
             $name .= " ({$code})";
