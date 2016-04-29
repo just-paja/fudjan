@@ -1,5 +1,5 @@
-#!/usr/bin/php
-<?
+#!/usr/bin/env php
+<?php
 
 define('ROOT', realpath(__DIR__.'/..'));
 define("BASE_DIR",  ROOT);

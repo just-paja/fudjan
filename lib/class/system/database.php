@@ -97,7 +97,7 @@ namespace System
 			if (($db = self::get_db($db_ident)) !== null) {
 				$res = $db->count($query);
 				self::$queries ++;
-				return $res;
+				return intval($res);
 			} else throw new \System\Error\Database('Not connected to database "'.$db_ident.'"');
 		}
 
@@ -306,9 +306,18 @@ namespace System
 			return self::$query_record;
 		}
 
+    public static function has_been_seeded()
+    {
+      return \System\Database\Migration::count_all(array('seoname' =>  'initial-seed')) !== 0;
+    }
+
 
 		public static function seed_initial_data()
 		{
+			if (static::has_been_seeded()) {
+				return;
+			}
+
 			foreach (self::$initial_data as $model=>$objects) {
 				foreach ($objects as $data_set) {
 					if (isset($data_set['password'])) {
@@ -324,15 +333,11 @@ namespace System
 					if ($obj) {
 						$obj->update_attrs($data_set);
 					} else {
-						continue;
+						$obj = new $model($data_set);
+						$obj->is_new_object = true;
 					}
 
-					try {
-						$obj->save();
-					} catch(\System\Error\Database $e) {
-						v($e);
-						exit;
-					}
+					$obj->save();
 
 					foreach ($data_set as $attr=>$val) {
 						if (is_array($val) && $model::has_attr($attr) && $model::is_rel($attr)) {
@@ -348,6 +353,14 @@ namespace System
 					}
 				}
 			}
+
+			\System\Database\Migration::create(array(
+				'seoname' => 'initial-seed',
+				'name' => 'Initial data seed',
+				'desc' => 'Initial data seed',
+				'status' => 'ok',
+				'date' => new \DateTime(),
+			));
 		}
 	}
 }
