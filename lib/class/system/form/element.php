@@ -44,7 +44,7 @@ namespace System\Form
 		public function to_object()
 		{
 			$containers = null;
-			$data = $this->get_data();
+			$data = array_merge($this->get_opts(), $this->get_data());
 			$data['element'] = $this->get_element_name();
 
 			if (isset($this->elements)) {
