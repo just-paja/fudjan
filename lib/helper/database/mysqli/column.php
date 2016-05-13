@@ -193,7 +193,7 @@ namespace Helper\Database\Mysqli
 						$defval = intval($defval);
 					}
 
-					if ($defval != 'NOW()' && !is_numeric($defval)) {
+					if ($defval != 'CURRENT_TIMESTAMP' && $defval != 'NOW()' && !is_numeric($defval)) {
 						$defval = "'".$defval."'";
 					}
 				}

@@ -111,7 +111,7 @@ namespace System\Model
 				if (!static::has_attr('created_at')) {
 					static::add_attr('created_at', array(
 						"type" => 'datetime',
-						"default" => 'NOW()'
+						"default" => 'CURRENT_TIMESTAMP'
 					));
 				}
 

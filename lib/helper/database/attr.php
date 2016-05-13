@@ -18,8 +18,8 @@ namespace Helper\Database
 		);
 
 		protected static $default_cols = array(
-			"created_at" => array('datetime', "default" => 0),
-			"updated_at" => array('datetime', "default" => 0),
+			"created_at" => array('datetime', "default" => 'CURRENT_TIMESTAMP'),
+			"updated_at" => array('datetime', "default" => 'CURRENT_TIMESTAMP'),
 		);
 
 		protected static $allowed_types = array(

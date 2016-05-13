@@ -28,7 +28,7 @@ namespace System
         "is_null" => true,
         "type" => 'image',
       ),
-      "last_login"  => array("type" => 'datetime', "default" => 0),
+      "last_login"  => array("type" => 'datetime', "default" => 'CURRENT_TIMESTAMP'),
 
       "groups" => array(
         "type" => 'has_many',
