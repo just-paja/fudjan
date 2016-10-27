@@ -7,7 +7,7 @@
 	},
 	"require":{
 		"oyejorge/less.php":"^1.6",
-		"kylekatarnls/jade-php":"@dev",
+		"pug-php/pug":"^2.4",
 		"filp/whoops": "^2.1"
 	},
 	"suggest":{
