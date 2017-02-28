@@ -132,7 +132,8 @@ namespace
 				foreach ($array as &$obj) {
 					if (is_object($obj)) {
 						if ($dont_assoc) {
-							$names[] = $obj->$func[1];
+							$funcAttr = $func[1];
+							$names[] = $obj->$funcAttr;
 						} else {
 							$funcAttr = $func[1];
 							$names[$obj->id] = $obj->$funcAttr;
